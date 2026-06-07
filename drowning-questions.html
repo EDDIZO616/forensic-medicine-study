@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forensic Medicine — Practice Questions</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --bg2: #161b27;
+  --bg3: #1e2535;
+  --border: #2a3347;
+  --text: #e2e8f0;
+  --text-muted: #8899b4;
+  --accent1: #e05a6b;
+  --accent2: #5ba4f5;
+  --accent3: #50d9b0;
+  --accent4: #f0b84b;
+  --accent5: #a78bfa;
+  --heading: #f0f4ff;
+  --correct: #22c55e;
+  --wrong: #ef4444;
+  --correct-bg: rgba(34,197,94,0.1);
+  --wrong-bg: rgba(239,68,68,0.1);
+  --correct-border: rgba(34,197,94,0.35);
+  --wrong-border: rgba(239,68,68,0.35);
+}
+.light {
+  --bg: #f0f4fb;
+  --bg2: #ffffff;
+  --bg3: #e4eaf5;
+  --border: #c8d3e8;
+  --text: #1a2035;
+  --text-muted: #526080;
+  --accent1: #c0384a;
+  --accent2: #1a5fb5;
+  --accent3: #1a8f6e;
+  --accent4: #b07010;
+  --accent5: #5a38b0;
+  --heading: #0d1220;
+  --correct: #16a34a;
+  --wrong: #dc2626;
+  --correct-bg: rgba(22,163,74,0.08);
+  --wrong-bg: rgba(220,38,38,0.08);
+  --correct-border: rgba(22,163,74,0.3);
+  --wrong-border: rgba(220,38,38,0.3);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-size:15px;line-height:1.7;transition:background .3s,color .3s;}
+
+/* TOP BAR */
+#topbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:56px;gap:1rem;backdrop-filter:blur(10px);}
+#topbar .logo{font-family:'Crimson Pro',serif;font-size:1.15rem;font-weight:700;color:var(--heading);white-space:nowrap;}
+#topbar .logo span{color:var(--accent1);}
+.nav-tabs{display:flex;gap:.25rem;flex-wrap:wrap;}
+.nav-tabs a{text-decoration:none;color:var(--text-muted);font-size:.72rem;font-weight:500;padding:.25rem .7rem;border-radius:20px;border:1px solid transparent;transition:all .2s;letter-spacing:.03em;text-transform:uppercase;}
+.nav-tabs a.mcq:hover,.nav-tabs a.mcq.active{color:var(--accent2);border-color:var(--accent2);background:color-mix(in srgb,var(--accent2) 12%,transparent);}
+.nav-tabs a.saq:hover,.nav-tabs a.saq.active{color:var(--accent3);border-color:var(--accent3);background:color-mix(in srgb,var(--accent3) 12%,transparent);}
+.nav-tabs a.laq:hover,.nav-tabs a.laq.active{color:var(--accent4);border-color:var(--accent4);background:color-mix(in srgb,var(--accent4) 12%,transparent);}
+.bar-right{display:flex;align-items:center;gap:.6rem;}
+#theme-toggle{background:var(--bg3);border:1px solid var(--border);color:var(--text);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;}
+#theme-toggle:hover{background:var(--border);}
+.score-chip{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:.25rem .9rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--accent3);white-space:nowrap;}
+
+/* LAYOUT */
+.page-wrap{max-width:900px;margin:0 auto;padding:76px 1.25rem 4rem;}
+
+/* HERO */
+.hero{text-align:center;padding:2.5rem 1rem 2rem;border-bottom:1px solid var(--border);margin-bottom:2.5rem;}
+.hero .tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent1);border:1px solid var(--accent1);padding:.2rem .7rem;border-radius:3px;margin-bottom:1rem;}
+.hero h1{font-family:'Crimson Pro',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;color:var(--heading);margin-bottom:.6rem;}
+.hero p{color:var(--text-muted);font-size:.9rem;}
+.stat-row{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;}
+.stat-pill{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.6rem 1.1rem;text-align:center;}
+.stat-pill .n{font-family:'Crimson Pro',serif;font-size:1.6rem;font-weight:700;color:var(--heading);line-height:1;}
+.stat-pill .l{font-size:.7rem;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;margin-top:.2rem;}
+.stat-pill.c1 .n{color:var(--accent2);}
+.stat-pill.c2 .n{color:var(--accent3);}
+.stat-pill.c3 .n{color:var(--accent4);}
+
+/* SECTION HEADERS */
+.section-header{display:flex;align-items:center;gap:.8rem;margin:2.5rem 0 1.2rem;padding-bottom:.8rem;border-bottom:2px solid var(--border);}
+.sec-badge{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:500;letter-spacing:.08em;padding:.25rem .6rem;border-radius:4px;}
+.sec-badge.b1{background:color-mix(in srgb,var(--accent2) 15%,transparent);color:var(--accent2);border:1px solid color-mix(in srgb,var(--accent2) 30%,transparent);}
+.sec-badge.b2{background:color-mix(in srgb,var(--accent3) 15%,transparent);color:var(--accent3);border:1px solid color-mix(in srgb,var(--accent3) 30%,transparent);}
+.sec-badge.b3{background:color-mix(in srgb,var(--accent4) 15%,transparent);color:var(--accent4);border:1px solid color-mix(in srgb,var(--accent4) 30%,transparent);}
+.sec-title{font-family:'Crimson Pro',serif;font-size:1.5rem;font-weight:700;color:var(--heading);}
+.sec-sub{font-size:.75rem;color:var(--text-muted);margin-left:auto;font-family:'JetBrains Mono',monospace;}
+
+/* PROGRESS BAR */
+.progress-wrap{margin-bottom:1.5rem;}
+.progress-label{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text-muted);margin-bottom:.35rem;font-family:'JetBrains Mono',monospace;}
+.progress-bar{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:2px;transition:width .4s ease;background:linear-gradient(90deg,var(--accent2),var(--accent3));}
+
+/* MCQ CARD */
+.mcq-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.2rem 1.3rem;margin-bottom:1rem;transition:border-color .2s;}
+.mcq-card.answered{border-color:var(--border);}
+.q-meta{display:flex;align-items:center;gap:.6rem;margin-bottom:.7rem;}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--text-muted);background:var(--bg3);padding:.15rem .5rem;border-radius:3px;}
+.q-topic{font-size:.65rem;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;}
+.q-text{font-size:.93rem;font-weight:500;color:var(--heading);margin-bottom:.9rem;line-height:1.5;}
+
+/* OPTIONS */
+.options{display:flex;flex-direction:column;gap:.45rem;}
+.option{display:flex;align-items:flex-start;gap:.65rem;padding:.6rem .85rem;border-radius:7px;border:1.5px solid var(--border);cursor:pointer;transition:all .18s;background:var(--bg3);user-select:none;}
+.option:hover:not(.disabled){background:color-mix(in srgb,var(--accent2) 8%,var(--bg3));border-color:var(--accent2);}
+.option.selected:not(.correct):not(.wrong){border-color:var(--accent2);background:color-mix(in srgb,var(--accent2) 12%,var(--bg3));}
+.option.correct{border-color:var(--correct-border);background:var(--correct-bg);}
+.option.wrong{border-color:var(--wrong-border);background:var(--wrong-bg);}
+.option.show-correct{border-color:var(--correct-border);background:var(--correct-bg);}
+.option.disabled{cursor:default;}
+.opt-letter{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:500;min-width:1.4rem;height:1.4rem;display:flex;align-items:center;justify-content:center;border-radius:3px;background:var(--bg);border:1px solid var(--border);color:var(--text-muted);flex-shrink:0;margin-top:.05rem;transition:all .18s;}
+.option.correct .opt-letter{background:var(--correct);border-color:var(--correct);color:#fff;}
+.option.wrong .opt-letter{background:var(--wrong);border-color:var(--wrong);color:#fff;}
+.option.show-correct .opt-letter{background:var(--correct);border-color:var(--correct);color:#fff;}
+.opt-text{font-size:.86rem;color:var(--text);line-height:1.4;}
+.option.correct .opt-text,.option.show-correct .opt-text{color:var(--correct);}
+.option.wrong .opt-text{color:var(--wrong);}
+
+/* FEEDBACK */
+.feedback{margin-top:.75rem;padding:.6rem .85rem;border-radius:6px;font-size:.83rem;display:none;}
+.feedback.show{display:block;}
+.feedback.correct-fb{background:var(--correct-bg);border:1px solid var(--correct-border);color:var(--correct);}
+.feedback.wrong-fb{background:var(--wrong-bg);border:1px solid var(--wrong-border);color:var(--wrong);}
+.feedback .fb-icon{font-weight:700;margin-right:.4rem;}
+.feedback .explanation{color:var(--text-muted);font-size:.8rem;margin-top:.3rem;}
+
+/* SAQ CARD */
+.saq-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.2rem 1.3rem;margin-bottom:1rem;}
+.saq-card .q-text{margin-bottom:.8rem;}
+.reveal-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text-muted);font-size:.78rem;font-family:'JetBrains Mono',monospace;padding:.35rem .9rem;border-radius:5px;cursor:pointer;transition:all .18s;letter-spacing:.04em;}
+.reveal-btn:hover{background:var(--border);color:var(--text);}
+.saq-answer{display:none;margin-top:.85rem;padding:.85rem 1rem;background:var(--bg3);border-radius:6px;border-left:3px solid var(--accent3);font-size:.87rem;line-height:1.6;}
+.saq-answer.show{display:block;}
+.saq-answer strong{color:var(--heading);}
+.self-mark{display:flex;gap:.5rem;margin-top:.65rem;}
+.mark-btn{flex:1;padding:.4rem;border-radius:5px;border:1px solid var(--border);font-size:.75rem;font-family:'Outfit',sans-serif;cursor:pointer;transition:all .18s;font-weight:500;}
+.mark-btn.got-it{background:color-mix(in srgb,var(--correct) 10%,var(--bg3));color:var(--correct);border-color:color-mix(in srgb,var(--correct) 30%,var(--border));}
+.mark-btn.got-it:hover,.mark-btn.got-it.active{background:var(--correct);color:#fff;border-color:var(--correct);}
+.mark-btn.missed{background:color-mix(in srgb,var(--wrong) 10%,var(--bg3));color:var(--wrong);border-color:color-mix(in srgb,var(--wrong) 30%,var(--border));}
+.mark-btn.missed:hover,.mark-btn.missed.active{background:var(--wrong);color:#fff;border-color:var(--wrong);}
+
+/* LAQ CARD */
+.laq-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.3rem 1.4rem;margin-bottom:1.2rem;}
+.laq-card .q-text{font-size:1rem;margin-bottom:1rem;}
+.laq-marks{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--accent4);background:color-mix(in srgb,var(--accent4) 12%,var(--bg3));padding:.2rem .6rem;border-radius:3px;border:1px solid color-mix(in srgb,var(--accent4) 25%,var(--border));}
+.answer-points{display:none;}
+.answer-points.show{display:block;}
+.points-list{list-style:none;padding:0;margin-top:.7rem;}
+.points-list li{padding:.5rem 0 .5rem 1.5rem;position:relative;border-bottom:1px dashed color-mix(in srgb,var(--border) 60%,transparent);font-size:.87rem;line-height:1.5;}
+.points-list li:last-child{border-bottom:none;}
+.points-list li::before{content:'✦';position:absolute;left:0;color:var(--accent4);font-size:.6rem;top:.65rem;}
+.points-list li strong{color:var(--heading);}
+.hint-box{background:color-mix(in srgb,var(--accent5) 8%,var(--bg3));border:1px solid color-mix(in srgb,var(--accent5) 25%,var(--border));border-radius:5px;padding:.65rem .85rem;margin-top:.75rem;font-size:.82rem;color:var(--text-muted);}
+.hint-box strong{color:var(--accent5);}
+
+/* SCORE SUMMARY */
+.score-summary{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-top:2rem;text-align:center;display:none;}
+.score-summary.show{display:block;}
+.score-big{font-family:'Crimson Pro',serif;font-size:3rem;font-weight:700;color:var(--heading);}
+.score-sub{color:var(--text-muted);font-size:.85rem;margin-top:.3rem;}
+.score-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:1.2rem;}
+.score-box{background:var(--bg3);border-radius:7px;padding:.75rem;border:1px solid var(--border);}
+.score-box .sn{font-family:'Crimson Pro',serif;font-size:1.5rem;font-weight:700;}
+.score-box .sl{font-size:.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;}
+
+/* SCROLL TOP */
+#scrolltop{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--bg3);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;opacity:0;transition:all .2s;z-index:999;text-decoration:none;}
+#scrolltop.visible{opacity:1;}
+#scrolltop:hover{background:var(--accent2);color:#fff;}
+
+@media(max-width:600px){.stat-row{gap:.5rem;}.stat-pill{padding:.5rem .7rem;}.score-grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="logo">FM <span>Questions</span></div>
+  <nav class="nav-tabs">
+    <a href="#mcq-section" class="mcq">MCQs (50)</a>
+    <a href="#saq-section" class="saq">SAQs (30)</a>
+    <a href="#laq-section" class="laq">LAQs (5)</a>
+  </nav>
+  <div class="bar-right">
+    <div class="score-chip" id="live-score">Score: 0 / 0</div>
+    <button id="theme-toggle">☀</button>
+  </div>
+</div>
+
+<a href="#" id="scrolltop">↑</a>
+
+<div class="page-wrap">
+
+  <div class="hero">
+    <div class="tag">Forensic Medicine · Practice Exam</div>
+    <h1>Practice Questions</h1>
+    <p>Drowning · Impotence &amp; Sterility · Paternity Testing</p>
+    <div class="stat-row">
+      <div class="stat-pill c1"><div class="n">50</div><div class="l">MCQs</div></div>
+      <div class="stat-pill c2"><div class="n">30</div><div class="l">Short Answer</div></div>
+      <div class="stat-pill c3"><div class="n">5</div><div class="l">Long Answer</div></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       MCQ SECTION
+  ══════════════════════════════ -->
+  <div id="mcq-section">
+    <div class="section-header">
+      <span class="sec-badge b1">PART A</span>
+      <span class="sec-title">Multiple Choice Questions</span>
+      <span class="sec-sub">50 questions · 1 mark each</span>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Progress</span><span id="mcq-progress-txt">0 / 50 answered</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="mcq-progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="mcq-container"></div>
+    <div class="score-summary" id="mcq-summary">
+      <div class="score-big" id="mcq-score-big">0/50</div>
+      <div class="score-sub">MCQ Score</div>
+      <div class="score-grid">
+        <div class="score-box"><div class="sn" id="s-correct" style="color:var(--correct)">0</div><div class="sl">Correct</div></div>
+        <div class="score-box"><div class="sn" id="s-wrong" style="color:var(--wrong)">0</div><div class="sl">Wrong</div></div>
+        <div class="score-box"><div class="sn" id="s-pct" style="color:var(--accent2)">0%</div><div class="sl">Score</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       SAQ SECTION
+  ══════════════════════════════ -->
+  <div id="saq-section">
+    <div class="section-header">
+      <span class="sec-badge b2">PART B</span>
+      <span class="sec-title">Short Answer Questions</span>
+      <span class="sec-sub">30 questions · Click to reveal answer</span>
+    </div>
+    <div id="saq-container"></div>
+  </div>
+
+  <!-- ══════════════════════════════
+       LAQ SECTION
+  ══════════════════════════════ -->
+  <div id="laq-section">
+    <div class="section-header">
+      <span class="sec-badge b3">PART C</span>
+      <span class="sec-title">Long Answer Questions</span>
+      <span class="sec-sub">5 questions · Essay format</span>
+    </div>
+    <div id="laq-container"></div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════
+
+const MCQs = [
+  // DROWNING (1-18)
+  {q:"Drowning is best classified as which type of death?",opts:["Mechanical asphyxia","Cardiac death","Chemical asphyxia","Neurogenic death"],ans:0,topic:"Drowning",exp:"Drowning is a form of asphyxial death due to aspiration of fluid into the air passages."},
+  {q:"Which of the following is TRUE about drowning?",opts:["Complete submersion is required","Submersion of nose and mouth alone is sufficient","The body must be fully underwater for at least 10 minutes","Only salt water can cause drowning"],ans:1,topic:"Drowning",exp:"Submersion of just the nose and mouth is sufficient — complete submersion is NOT necessary."},
+  {q:"What triggers the inevitable inhalation of water during the breath-holding phase of drowning?",opts:["Oxygen depletion","CO₂ accumulation stimulating the respiratory centre","Vagal stimulation","Drop in blood pressure"],ans:1,topic:"Drowning",exp:"CO₂ accumulates in the blood, stimulating the respiratory centre in the brain leading to inevitable inhalation."},
+  {q:"In fresh water drowning, death from ventricular fibrillation typically occurs within:",opts:["1–2 minutes","4–5 minutes","10–15 minutes","20–30 minutes"],ans:1,topic:"Drowning",exp:"The heart is submitted to anoxia, hypervolaemia, and potassium excess; ventricular fibrillation occurs within 4–5 minutes."},
+  {q:"Salt water drowning leads to:",opts:["Marked hypervolaemia","Ventricular fibrillation at 4 min","Fulminating pulmonary edema and progressive hypovolaemia","Haemolysis of red blood cells"],ans:2,topic:"Drowning",exp:"The hypertonicity of inhaled salt water draws fluid from circulation into the lungs, causing pulmonary edema and hypovolaemia."},
+  {q:"'Dry drowning' is best described as:",opts:["Drowning in shallow water","Intense laryngeal spasm preventing water from entering lungs","Drowning due to heart failure","Drowning in contaminated water"],ans:1,topic:"Drowning",exp:"Dry drowning involves intense laryngeal spasm so very little water enters lungs — and is the best case for resuscitation."},
+  {q:"Immersion syndrome (vagal inhibition) is caused by:",opts:["Prolonged cold water exposure","Inhalation of contaminated water","Sudden impact with very cold water causing cardiac arrest","Laryngeal spasm"],ans:2,topic:"Drowning",exp:"Sudden impact with very cold water stimulates the vagus nerve causing cardiac arrest. Often seen in young people with excess alcohol."},
+  {q:"Which finding is DIAGNOSTIC of ante-mortem drowning?",opts:["Froth at nose","Voluminous lungs","Diatoms in brain or bone marrow","Washer-woman's hands"],ans:2,topic:"Drowning",exp:"Only a live circulating body can transport diatoms from lungs to brain/bone marrow — making this diagnostic of ante-mortem drowning."},
+  {q:"Diatoms have a silicaceous cell wall that resists all of the following EXCEPT:",opts:["Acid digestion","Heat","Putrefaction","All are resisted — they resist everything listed"],ans:3,topic:"Drowning",exp:"Diatoms resist acid digestion, heat, AND putrefaction — all three. This is why they are useful as evidence."},
+  {q:"The size of diatoms is:",opts:["1–5 microns","10–80 microns","100–200 microns","0.1–1 micron"],ans:1,topic:"Drowning",exp:"Diatoms are microscopic unicellular algae measuring 10–80 microns in size."},
+  {q:"'Washer-woman's hands' typically appear after what duration of immersion?",opts:["6 hours","1 week","2 weeks","1 month"],ans:2,topic:"Drowning",exp:"Washer-woman's hands (keratin peeling in glove/stocking fashion) appear after approximately 2 weeks of immersion."},
+  {q:"Cutis anserina (goose-flesh) in drowning is due to:",opts:["Decomposition of skin","Spasm of erector pilae muscles from cold water at time of death","Prolonged immersion","Intrapulmonary haemorrhage"],ans:1,topic:"Drowning",exp:"Cutis anserina is due to spasm of erector pilae muscles from cold water exposure at the time of death, making it a vital reaction sign."},
+  {q:"Which of the following is the most characteristic internal finding in drowning lungs?",opts:["Consolidation","Voluminous, edematous, doughy lungs with rib markings and Paltauf's haemorrhages","Pneumothorax","Fibrosis"],ans:1,topic:"Drowning",exp:"Drowned lungs are voluminous, edematous, and doughy to feel with rib markings and characteristic Paltauf's haemorrhages."},
+  {q:"The 'Brides of the Bath' case is significant in forensic medicine because it demonstrates:",opts:["Accidental drowning in shallow water","Homicide by drowning is possible","That diatom testing is unreliable","Salt water drowning differs from fresh water"],ans:1,topic:"Drowning",exp:"The 'Brides of the Bath' case is a classic example proving that homicide by drowning is possible, even in shallow water."},
+  {q:"In secondary/near-drowning, death is primarily due to:",opts:["Ventricular fibrillation","Laryngeal spasm","Infection from inhalation of contaminated water leading to lung complications","Vagal inhibition"],ans:2,topic:"Drowning",exp:"Secondary drowning is mainly due to infection from inhaled contaminated water causing lung complications, hypoxia, and cerebral edema."},
+  {q:"Bilateral haemorrhages within the petrous temporal bones are a PM finding associated with:",opts:["Head injury","Drowning","Salt water poisoning","Asphyxia from strangulation"],ans:1,topic:"Drowning",exp:"Bilateral haemorrhages within the petrous temporal bones are a recognised post-mortem finding in drowning cases."},
+  {q:"In the vicious cycle of drowning, the correct sequence is:",opts:["Water enters → Deep inspiration → Air expelled → Need for air","Deep inspiration → Water enters → Air driven out → Need for air → Deep inspiration","Laryngeal spasm → Apnoea → Death","CO₂ rise → Apnoea → Water inhalation"],ans:1,topic:"Drowning",exp:"Deep inspiration → water enters respiratory passage → air driven out of lungs → need for more air → deep inspiration (cycle repeats)."},
+  {q:"Decomposition in a drowned body begins first in the:",opts:["Hands and feet","Dependent head, neck, abdomen, and thighs (4–10 days)","Trunk only","Extremities only"],ans:1,topic:"Drowning",exp:"Decomposition begins first in the dependent parts — head, neck, abdomen, and thighs — usually within 4–10 days."},
+
+  // IMPOTENCE & STERILITY (19-36)
+  {q:"Which is the most important and most frequent cause of impotence in males?",opts:["Age","Local penile disease","Psychological factors","Medication side-effects"],ans:2,topic:"Impotence & Sterility",exp:"Psychological factors are the most important and most frequent cause of impotence, though transient in nature."},
+  {q:"'Impotence quoad hanc' means:",opts:["Complete inability to have any erection","Impotence with one particular female but not another","Impotence due to anxiety","Psychological impotence only"],ans:1,topic:"Impotence & Sterility",exp:"'Quoad hanc' means 'as regards this one' — i.e., a male may be impotent with one particular female but not with another."},
+  {q:"Mumps orchitis causes:",opts:["Impotence only","Sterility only","Both impotence and sterility","Neither"],ans:1,topic:"Impotence & Sterility",exp:"Mumps orchitis causes sterility (damages spermatogenesis) but NOT impotence — the erectile mechanism is unaffected."},
+  {q:"Sterility is a ground for nullity of marriage. True or False?",opts:["True","False — only impotence is a ground","True only if both partners are sterile","True only if the wife is sterile"],ans:1,topic:"Impotence & Sterility",exp:"Sterility is NOT a ground for nullity of marriage. Only PERMANENT IMPOTENCE is a ground, as it prevents consummation."},
+  {q:"The bulbocavernosus reflex test involves:",opts:["Inserting a catheter into the urethra","Squeezing the glans of the penis; intact nerves cause immediate anal contraction","Injecting PGE1 into the corpora","Applying electromagnetic vibration to the glans"],ans:1,topic:"Impotence & Sterility",exp:"Squeezing the glans causes immediate contraction of the anus if nerve function is intact — this is the bulbocavernosus reflex."},
+  {q:"Nocturnal penile tumescence testing is useful for:",opts:["Measuring sperm count","Distinguishing psychogenic from organic impotence","Diagnosing Peyronie's disease","Measuring testosterone levels"],ans:1,topic:"Impotence & Sterility",exp:"Normal men have 5–6 erections during sleep (REM). Absence suggests organic defect — distinguishing psychogenic from organic impotence."},
+  {q:"Vasectomy provides immediate sterility. Which statement is correct?",opts:["Sterility is immediate after vasectomy","Additional protection is needed for ~2–3 months (≥20 ejaculations)","Sterility is achieved after 1 month","The procedure has 0% failure rate"],ans:1,topic:"Impotence & Sterility",exp:"A man is NOT sterile immediately after vasectomy. Additional protection needed for ~2–3 months or at least 20 ejaculations."},
+  {q:"AID performed without the husband's consent is ground for:",opts:["Criminal prosecution of the wife only","Divorce and the doctor can be sued (regarded as an act of cruelty)","Nullity of marriage only","No legal consequence"],ans:1,topic:"Impotence & Sterility",exp:"AID without the husband's consent is regarded as an act of cruelty — grounds for divorce and the doctor can be sued."},
+  {q:"A child born through AIH is:",opts:["Illegitimate","Legitimate","Illegitimate but can inherit property","Requires court order to be legitimate"],ans:1,topic:"Impotence & Sterility",exp:"AIH uses the husband's own sperm, so the child is fully legitimate."},
+  {q:"Which ART method is most commonly used and has the highest success rate?",opts:["IVI (intravaginal insemination)","ITI (intratubal insemination)","IUI (intrauterine insemination)","ICI (intracervical insemination)"],ans:2,topic:"Impotence & Sterility",exp:"IUI (intrauterine insemination) is the most commonly used method of AI with the highest success rate."},
+  {q:"ICSI (intracytoplasmic sperm injection) is specifically indicated in:",opts:["Female factor infertility","Male factor infertility","Unexplained infertility","Tubal blockage"],ans:1,topic:"Impotence & Sterility",exp:"ICSI involves injecting one sperm directly into an egg and is specifically indicated for male factor infertility."},
+  {q:"Can an unmarried woman legally undergo AID in Kenya?",opts:["Yes, with no restrictions","AID has not been legalized in Kenya; should only be at infertility centres after counselling","No, it is illegal","Yes, if she is above 35 years"],ans:1,topic:"Impotence & Sterility",exp:"AID has not been legalized in Kenya and should only be performed at infertility centres with appropriate counselling."},
+  {q:"Vaginismus in females involves spasm of:",opts:["Upper two-thirds of vagina","Lower one-third of vagina — levator ani and adductor femoris muscles","Uterine muscles only","The clitoris and labia"],ans:1,topic:"Impotence & Sterility",exp:"Vaginismus is severe spasm of the lower one-third of vagina involving the paravaginal muscles (levator ani and adductor femoris)."},
+  {q:"Chemical castration uses which agent?",opts:["Testosterone","Cyproterone acetate (antiandrogen), Depo-Provera, or Benperidol","Finasteride only","GnRH agonist exclusively"],ans:1,topic:"Impotence & Sterility",exp:"Chemical castration uses antiandrogen cyproterone acetate, contraceptive Depo-Provera, or antipsychotic Benperidol."},
+  {q:"The postcoital (Sims-Huhner) test evaluates:",opts:["Ovarian reserve","Amount and motility of spermatozoa in cervical mucus during the preovulatory period","Uterine cavity morphology","Fallopian tube patency"],ans:1,topic:"Impotence & Sterility",exp:"The postcoital test evaluates the number and motility of spermatozoa in cervical mucus during the preovulatory period."},
+  {q:"Oocyte freezing preserves eggs at:",opts:["-80°C","-120°C","-196°C","-273°C"],ans:2,topic:"Impotence & Sterility",exp:"Oocyte freezing preserves eggs at -196°C (liquid nitrogen temperature) for future use."},
+  {q:"The success rate of artificial insemination typically ranges between:",opts:["1–5%","5–30%","40–60%","70–90%"],ans:1,topic:"Impotence & Sterility",exp:"The success rate of AI varies between 5–30% depending on the type of insemination used."},
+  {q:"Adultery is committed when a wife undergoes AID without consent. True or False?",opts:["True — it involves external genetic material","False — there is no physical coitus involved, so it does not constitute adultery","True — under all legal systems","True only if done secretly"],ans:1,topic:"Impotence & Sterility",exp:"The recipient cannot be guilty of adultery because there is no physical union by coitus in artificial insemination."},
+
+  // PATERNITY TESTING (37-50)
+  {q:"According to Kenyan law (Children Act 2012), the presumed date of conception is counted back from the date of birth by:",opts:["Day 100–180","Day 182–300","Day 260–340","Day 150–250"],ans:1,topic:"Paternity Testing",exp:"Section of Children Act: presumed conception lies between day 182 and 300 inclusive, counted back from date of birth."},
+  {q:"Nullification of marriage after the child is born:",opts:["Extinguishes paternity","Does NOT affect paternity status","Requires a new court order","Automatically makes the child illegitimate"],ans:1,topic:"Paternity Testing",exp:"According to law, nullification of the marriage does NOT affect the status of paternity."},
+  {q:"Which blood group system has the highest exclusion possibility for paternity (single system)?",opts:["ABO (17.6%)","MNSs (32.1%)","Rh (28%)","Duffy (18%)"],ans:1,topic:"Paternity Testing",exp:"The MNSs system has the highest single-system exclusion possibility at 32.1%, making it one of the most powerful for paternity testing."},
+  {q:"In azoospermia, repeated findings:",opts:["Prove the man was always infertile","Only establish that at the time of examination he was sterile — cannot be extended back to the time of conception without doubt","Confirm permanent sterility","Are sufficient to exclude paternity beyond doubt"],ans:1,topic:"Paternity Testing",exp:"Azoospermia at examination only establishes sterility at the time of testing — extending this assumption to the time of conception opens serious doubt."},
+  {q:"Hyaline degeneration of tubular epithelium on testicular biopsy indicates:",opts:["Reversible infertility","Unequivocal sterility","Oligospermia only","Normal spermatogenesis with obstruction"],ans:1,topic:"Paternity Testing",exp:"Hyaline degeneration of the tubular epithelium on testicular biopsy allows unequivocal declaration of sterility."},
+  {q:"The HLA system exclusion possibility for paternity by phenotype examination alone is:",opts:["60%","75%","96%","99.9%"],ans:2,topic:"Paternity Testing",exp:"The HLA system, due to enormous polymorphism (>1 million genotype variations), has an exclusion possibility of 96% by phenotype alone."},
+  {q:"Bernstein's first principle states that a child:",opts:["Must have blood group antigens from both parents","Cannot have a blood group antigen that neither parent possesses","Always inherits the dominant gene","Must match the putative father's blood group exactly"],ans:1,topic:"Paternity Testing",exp:"Bernstein's 1st principle: A child cannot have a blood group antigen which neither parent possesses — basis of blood group exclusion."},
+  {q:"'Mater semper certa est' means:",opts:["The father is always certain","The mother is always certain","The child is always legitimate","Blood tests are always accurate"],ans:1,topic:"Paternity Testing",exp:"'Mater semper certa est' is a Latin principle meaning 'certainty of motherhood' — the mother is always certain."},
+  {q:"When isoenzyme systems are used together, the combined exclusion possibility is:",opts:["60%","78%","94%","99%"],ans:2,topic:"Paternity Testing",exp:"When AcP, PGM, AK, ADA, GPT, and EsD systems are used together, the combined exclusion possibility reaches 94%."},
+  {q:"The Duffy blood group system shows the most conspicuous racial difference because:",opts:["It is only found in Europeans","A 'quiet' gene (no antiserum reaction) exists in Black populations","It has more alleles than any other system","It is X-linked"],ans:1,topic:"Paternity Testing",exp:"A third 'quiet' gene exists in Black populations (no antiserum reaction found), making Duffy show the most conspicuous racial difference."},
+  {q:"Chromosomal examination for paternity uses chromosomes in which phase?",opts:["Interphase","Prophase","Metaphase","Telophase"],ans:2,topic:"Paternity Testing",exp:"Chromosomal examination must be done on chromosomes in metaphase, where the two chromatids joined at the centromere can be clearly seen."},
+  {q:"The Essen-Möller formula is used for:",opts:["Calculating time of death","Serostatistical probability calculations for paternity","Estimating age of a diatom","Calculating gestational age"],ans:1,topic:"Paternity Testing",exp:"The Essen-Möller formula is used for serostatistical probability calculations in paternity testing, forming the basis of Hummel gene statistics."},
+  {q:"If paternity is excluded on the basis of the HLA system, further examinations are:",opts:["Still required for confirmation","Superfluous — no further tests needed","Required for the blood groups at minimum","Required for chromosomal testing"],ans:1,topic:"Paternity Testing",exp:"If paternity is excluded by blood groups, HLA, serum factors, or enzyme systems, further examinations are superfluous."},
+  {q:"A WHO mature baby is born between which gestational weeks?",opts:["32nd–36th week","37th–42nd week (day 259–293)","28th–34th week","40th–45th week"],ans:1,topic:"Paternity Testing",exp:"WHO defines a mature baby as born between the 37th and 42nd week (day 259–293), weighing ≥2500g, 53 cm long, cranial circumference 36 cm."},
+];
+
+const SAQs = [
+  // DROWNING (1-10)
+  {n:1,q:"Define drowning and state why complete submersion is not necessary.",topic:"Drowning",a:"<strong>Definition:</strong> Drowning is a form of asphyxial death due to aspiration of fluid into the air passages by submersion of the body in water or fluid medium.<br><strong>Why not complete submersion:</strong> Submersion of just the nose and mouth is sufficient for aspiration of fluid into the airways; the entire body does not need to be under water."},
+  {n:2,q:"List the five phases/events of drowning in order.",topic:"Drowning",a:"<strong>1. Breath holding</strong> — CO₂ accumulates, stimulating the respiratory centre.<br><strong>2. Swallowing of water</strong> — coughing, vomiting, loss of consciousness; air escapes, replaced by water.<br><strong>3. Terminal phase</strong> — unconsciousness, convulsions, gasping, respiratory standstill, heart failure, <strong>death</strong>."},
+  {n:3,q:"What is the 'vicious cycle' of drowning? Describe the sequence.",topic:"Drowning",a:"Deep inspiration → Water enters respiratory passage → Air driven out of lungs → Need for more air → Deep inspiration again. This cycle rapidly fills the lungs with water until death occurs."},
+  {n:4,q:"Differentiate fresh water drowning from salt water drowning physiologically.",topic:"Drowning",a:"<strong>Fresh water:</strong> Hypotonic water crosses alveolar membrane → marked hypervolaemia → haemolysis → K⁺ excess → ventricular fibrillation (4–5 min).<br><strong>Salt water:</strong> Hypertonic water draws fluid from circulation into lungs → fulminating pulmonary oedema → progressive hypovolaemia."},
+  {n:5,q:"What is immersion syndrome? Who is most at risk?",topic:"Drowning",a:"Immersion syndrome (vagal inhibition) occurs due to sudden impact with very cold water, causing cardiac arrest from powerful vagal stimulation. Loss of consciousness is instantaneous and death occurs in minutes. Autopsy shows none of the usual drowning signs.<br><strong>At risk:</strong> Young people with excess of alcohol; inexperienced swimmers diving/falling feet first."},
+  {n:6,q:"What are diatoms and why are they diagnostically significant in drowning?",topic:"Drowning",a:"Diatoms are microscopic unicellular algae (size 10–80 µm) with a silicaceous cell wall that resists acid digestion, heat, and putrefaction. They are diagnostically significant because <strong>only a live body with active circulation</strong> can transport diatoms from the lungs to the brain or bone marrow. Finding diatoms in bone marrow or brain = definitive evidence of <em>ante-mortem drowning</em>."},
+  {n:7,q:"Describe 'washer-woman's skin' and when it appears.",topic:"Drowning",a:"Washer-woman's skin refers to keratin of the hands and feet peeling off in a 'glove and stocking' fashion following prolonged immersion. Nails and hair also loosen. It typically appears after <strong>approximately 2 weeks</strong> of immersion in warm water conditions."},
+  {n:8,q:"List four internal post-mortem findings specific to drowning.",topic:"Drowning",a:"1. Airways filled with froth, sand, or weeds from the water.<br>2. Lungs are voluminous, edematous, doughy with rib markings and <strong>Paltauf's haemorrhages</strong>.<br>3. Bilateral haemorrhages within the petrous temporal bones.<br>4. Haemorrhages in the middle ear and mastoid air cells.<br>5. Stomach may contain watery fluid or foreign material from the water (any 4 acceptable)."},
+  {n:9,q:"State the four main causes of death in drowning.",topic:"Drowning",a:"1. <strong>Asphyxia</strong> (most common) — airway obstruction by fluid.<br>2. <strong>Ventricular fibrillation</strong> — especially in fresh water drowning.<br>3. <strong>Laryngeal spasm</strong> — dry drowning.<br>4. <strong>Vagal inhibition</strong> — immersion syndrome.<br>5. Exhaustion (also acceptable)."},
+  {n:10,q:"State the three key medico-legal questions to be answered in a drowning case.",topic:"Drowning",a:"1. Was the death due to drowning or another cause (e.g., natural disease, injury before entering water)?<br>2. How long was the body in water?<br>3. Was the drowning <strong>accidental, suicidal, or homicidal</strong>?"},
+
+  // IMPOTENCE & STERILITY (11-22)
+  {n:11,q:"Distinguish between impotence, sterility, and infertility.",topic:"Impotence & Sterility",a:"<strong>Impotence:</strong> Inability to perform sexual intercourse (unable to copulate).<br><strong>Sterility:</strong> Absolute inability to procreate (male cannot make female conceive; female cannot conceive).<br><strong>Infertility:</strong> Failure to conceive after <em>1 year of unprotected regular intercourse</em> (regardless of cause).<br>Key: A sterile person may NOT be impotent; an impotent person may NOT be sterile."},
+  {n:12,q:"In which civil and criminal cases does the question of impotence/sterility arise?",topic:"Impotence & Sterility",a:"<strong>Civil:</strong> Divorce, adultery, nullity of marriage, disputed paternity/legitimacy, claims for damages for loss of sexual function.<br><strong>Criminal:</strong> Adultery, rape, and unnatural offences (where impotence is cited as a defence)."},
+  {n:13,q:"What is the legal significance of impotence vs sterility in marriage?",topic:"Impotence & Sterility",a:"<strong>Permanent impotence</strong> IS a ground for nullity of marriage or divorce because it prevents consummation (physical union by coitus). <strong>Sterility is NOT</strong> a ground for nullity or divorce."},
+  {n:14,q:"Name five causes of impotence and sterility specific to males.",topic:"Impotence & Sterility",a:"Any 5 from: Psychological (most common), Age, Developmental anomalies (hypospadias, cryptorchidism, Klinefelter syndrome), Local disease (Peyronie's, phimosis, orchitis after mumps — sterility not impotence), General disease (diabetes, MS, Leriche syndrome), Spinal cord injury, Chronic poisoning (lead, arsenic), Medications (SSRIs, antihypertensives), Chronic alcoholism/smoking, Addictions (opiates, cocaine)."},
+  {n:15,q:"What is vaginismus? List its aetiology.",topic:"Impotence & Sterility",a:"<strong>Vaginismus:</strong> Severe involuntary spasm of the lower one-third of the vagina involving the levator ani and adductor femoris muscles, making penetration impossible or painful.<br><strong>Aetiology:</strong> Male sexual dysfunction; psychosexually inhibiting influence (religious orthodoxy); prior sexual trauma; secondary to dyspareunia; personal dislike/disgust for coitus."},
+  {n:16,q:"What investigations are performed in male impotence/infertility assessment?",topic:"Impotence & Sterility",a:"Semen analysis (essential), blood counts, blood sugar, urinalysis, lipid/thyroid profiles, creatinine, liver enzymes, PSA, serum testosterone/LH/prolactin. Also: PGE1 corporal injection test, duplex ultrasonography, testicular USG, transrectal USG, <strong>nocturnal penile tumescence testing</strong> (5–6 erections during REM), penile biothesiometry."},
+  {n:17,q:"How is opinion given in a case of alleged impotence in a male?",topic:"Impotence & Sterility",a:"Opinion is given in <strong>double negative form</strong>: 'From examination of the male, there is nothing to suggest that the person is incapable of sexual intercourse.' A definite opinion of impotence cannot be given unless there is a gross deviation from normal. For infertility, a certain opinion can be given based on clinical and laboratory findings."},
+  {n:18,q:"Describe the medico-legal aspects of vasectomy.",topic:"Impotence & Sterility",a:"1. No absolute guarantee of sterility; may prove irreversible.<br>2. Man is NOT immediately sterile — additional protection for ~2–3 months / ≥20 ejaculations needed.<br>3. Written consent of both husband and wife is essential.<br>4. Desirable only for individuals >30 years with ≥2 children (one male).<br>5. Healthy persons without children should NOT be sterilized.<br>6. Failure may lead to suspected infidelity → litigation."},
+  {n:19,q:"Differentiate AIH from AID in terms of legitimacy and divorce.",topic:"Impotence & Sterility",a:"<strong>AIH:</strong> Husband's sperm → child is <strong>legitimate</strong>. Not a ground for divorce.<br><strong>AID with consent:</strong> Donor sperm → technically illegitimate but husband accepted as father in practice. Not a ground for divorce.<br><strong>AID without consent:</strong> Regarded as cruelty → <strong>ground for divorce</strong>; doctor can be sued."},
+  {n:20,q:"List the types of ART procedures.",topic:"Impotence & Sterility",a:"1. IVF (In Vitro Fertilization)<br>2. GIFT (Gamete Intrafallopian Transfer)<br>3. ZIFT (Zygote Intrafallopian Transfer)<br>4. ICSI (Intracytoplasmic Sperm Injection)<br>5. Ovum donation<br>6. Oocyte freezing<br>7. Micromanipulation (zona drilling/partial zona drilling)"},
+  {n:21,q:"What does ICSI stand for, and what is its indication?",topic:"Impotence & Sterility",a:"<strong>ICSI = Intracytoplasmic Sperm Injection.</strong> One sperm is directly injected into an egg prior to intrauterine transfer of the fertilised eggs. It is specifically indicated in <strong>male factor infertility</strong> where sperm cannot fertilize an egg naturally."},
+  {n:22,q:"Name four temporary methods of contraception.",topic:"Impotence & Sterility",a:"Any 4: Rhythm method (abstinence in fertile period), coitus interruptus (withdrawal), breastfeeding, barrier contraceptives (condom, diaphragm, spermicidal agents), IUDs (Copper T, Mirena/LNG-IUS, Lippes loop)."},
+
+  // PATERNITY TESTING (23-30)
+  {n:23,q:"What is the presumed date of conception according to Kenyan law?",topic:"Paternity Testing",a:"The presumed date of conception lies between <strong>day 182 and day 300 inclusive</strong>, counted back from the date of birth. However, it is possible to prove that conception occurred either before or after this presumed period."},
+  {n:24,q:"State Bernstein's two principles used in blood group paternity exclusion.",topic:"Paternity Testing",a:"<strong>Principle 1:</strong> A child cannot have a blood group antigen which <em>neither parent possesses</em>.<br><strong>Principle 2:</strong> If a trait is manifested in homozygote form in the offspring, then the <em>opposite gene homozygote</em> form in either parent is impossible (e.g., parents of an MM child cannot have the NN trait)."},
+  {n:25,q:"Name the blood group system with the highest single-system paternity exclusion rate and state the percentage.",topic:"Paternity Testing",a:"The <strong>MNSs system</strong> has the highest single-system exclusion possibility at <strong>32.1%</strong>. It is non-dominant, both genes are frequent, and the 4-test sera system is considered one of the most powerful for paternity testing."},
+  {n:26,q:"What is the combined exclusion percentage when all erythrocyte isoenzyme systems are used together?",topic:"Paternity Testing",a:"When AcP, PGM, AK, ADA, GPT, and EsD are all used together, the combined exclusion possibility reaches <strong>94%</strong>."},
+  {n:27,q:"What are the WHO criteria for a mature newborn, and why are they relevant to paternity?",topic:"Paternity Testing",a:"WHO mature baby: born between <strong>37th–42nd week (day 259–293)</strong>; weight ≥2500g; body length 53 cm; cranial circumference 36 cm. Relevant because the measurements of the newborn can indicate the time of conception, which is pivotal in establishing which man was with the mother at the presumed time of fertilisation."},
+  {n:28,q:"What is the HLA system's exclusion percentage in paternity and why is it so high?",topic:"Paternity Testing",a:"The HLA system achieves <strong>96% exclusion</strong> by phenotype examination alone. This is because its polymorphism is enormous — theoretically more than <strong>one million genotype variations</strong> exist. HLA antigens are transplantation antigens found on leukocytes and many other cells."},
+  {n:29,q:"What are the limitations of anthropological examination in paternity testing?",topic:"Paternity Testing",a:"1. Provides a <strong>probability opinion only</strong> — cannot by itself establish or exclude paternity.<br>2. Dominant traits may skip a generation.<br>3. Results must be combined with blood group and serostatistical methods.<br>4. Court must critically evaluate findings quantitatively.<br>5. The value is complementary to, not a replacement for, molecular/blood group methods."},
+  {n:30,q:"What is the Essen-Möller formula used for in paternity testing?",topic:"Paternity Testing",a:"The Essen-Möller formula is used for <strong>serostatistical probability calculations</strong> in disputed paternity cases. It forms the basis of Hummel gene statistic data. It differentiates the true father from a non-father statistically. <strong>Important limitation:</strong> It can only be applied to individuals of the <em>same ethnic group</em> from which the population data was derived."},
+];
+
+const LAQs = [
+  {
+    n:1,
+    q:"Discuss drowning under the following headings: (a) Definition and types, (b) Pathophysiology of fresh water vs salt water drowning, (c) Post-mortem findings, (d) Role of diatoms, (e) Medico-legal aspects.",
+    marks:"20 marks",
+    hint:"Structure your answer with each subheading. Emphasize the vicious cycle, the physiological differences, the five key PM signs, diatom diagnostics, and the three medico-legal questions.",
+    points:[
+      "<strong>(a) Definition & Types:</strong> Drowning = asphyxial death by aspiration of fluid into air passages. Submersion of nose and mouth sufficient. Types — Typical (wet: fresh water / salt water) and Atypical (dry drowning, immersion syndrome, submersion of unconscious, secondary/near-drowning).",
+      "<strong>(b) Pathophysiology:</strong> Fresh water — hypotonic, crosses alveolar membrane → hypervolaemia → haemolysis → K⁺ excess → VF (4–5 min). Salt water — hypertonic, draws fluid from circulation → pulmonary oedema → hypovolaemia. Dry drowning — laryngeal spasm, very little water, best for resuscitation. Immersion syndrome — sudden cold water → vagal cardiac arrest.",
+      "<strong>(c) PM Findings:</strong> External: froth at nose (proteinaceous, may be pink), cutis anserina, washer-woman's skin (2 weeks), maceration, decomposition (4–10 days dependent parts). Internal: voluminous doughy lungs, Paltauf's haemorrhages, airways with froth/weeds/sand, bilateral petrous haemorrhages, middle ear haemorrhages, stomach with watery fluid.",
+      "<strong>(d) Diatoms:</strong> Unicellular algae, silicaceous wall (resists acid/heat/putrefaction), size 10–80 µm. Only live circulating body transports them to brain/bone marrow. Isolated by acid digestion, seen under dark-ground illumination. Finding in bone marrow = definitive ante-mortem drowning.",
+      "<strong>(e) Medico-legal:</strong> Three questions — (1) Was death due to drowning? (2) Time body was in water? (3) Accidental/suicidal/homicide? 'Brides of the Bath' = homicide by drowning. Diatom matching to water source. Circumstantial evidence including position of body, absence of usual PM signs in immersion syndrome."
+    ]
+  },
+  {
+    n:2,
+    q:"Write a comprehensive essay on Impotence: its definition, causes in males and females, medico-legal significance, and how you would examine and give an opinion in an alleged case.",
+    marks:"20 marks",
+    hint:"Use the table of causes systematically (psychological, developmental, local, general, drugs, etc.). Don't forget the distinction between psychological and organic, the double-negative opinion, and the key legal rule about nullity.",
+    points:[
+      "<strong>Definitions:</strong> Impotence = inability to perform coitus. Erectile dysfunction = inability to develop/maintain erection for satisfactory intercourse without ejaculatory disorder. Quoad hanc = impotent with one female but not another. Sterility ≠ impotence. Arises in civil (nullity, divorce, damages) and criminal cases (rape, unnatural offences as defence).",
+      "<strong>Causes in Males (10 categories):</strong> Psychological (most common — fear, anxiety, dhat syndrome, PTSD); Age (before puberty, examination based on development); Developmental (hypospadias, Klinefelter, cryptorchidism); Local (phimosis, Peyronie, mumps orchitis — sterility only); General (diabetes, MS, Leriche, temporal lobe tumours); Injuries (SCI, penile fracture); Chronic poisoning (lead, arsenic); Medications (SSRIs, antihypertensives); Behavioural (smoking, obesity, tight underwear → ↑scrotal temp); Addictions (opiates, cocaine).",
+      "<strong>Causes in Females:</strong> Impotence only — vaginal occlusion, imperforate hymen (surgical cure), stricture, Bartholin cyst, vaginismus (spasm of lower 1/3 vagina; levator ani + adductor femoris; aetiology: trauma, orthodoxy, dyspareunia). Sterility only — absence of uterus/tubes, PID, endometriosis, gonorrhoea, lead/arsenic/X-rays. Psychological = active in females (vaginismus) vs passive in males (non-erection).",
+      "<strong>Medico-legal significance:</strong> Permanent impotence = ground for nullity of marriage (cannot consummate). Sterility alone is NOT. Examination only with court/police request. Informed consent mandatory. History: illness, surgery, sexual history, medications, smoking, diet.",
+      "<strong>Examination & Opinion:</strong> Male — CNS exam, bulbocavernosus reflex, testicular size/epididymis/varicocele. Investigations: semen analysis, hormones (T, LH, prolactin), duplex USG, nocturnal penile tumescence (5–6 REM erections). Female — gynae exam, Sims-Huhner test, bimanual, HSG/MRI. Opinion in DOUBLE NEGATIVE FORM: 'Nothing to suggest incapable of sexual intercourse.' Definitive opinion only with gross deviation from normal."
+    ]
+  },
+  {
+    n:3,
+    q:"Describe Artificial Insemination and Assisted Reproductive Technology (ART): types, procedures, and all medico-legal implications.",
+    marks:"15 marks",
+    hint:"Cover AIH/AID/AIHD, all routes (IUI most common), procedure of washing semen, success rates, then address each medico-legal aspect systematically: legitimacy, adultery, divorce, incest, legal status in Kenya.",
+    points:[
+      "<strong>AI Definition:</strong> Introduction of semen by instruments into vagina/uterus to achieve pregnancy when intercourse cannot. Types: AIH (husband), AID (donor), AIHD (pooled). Routes: IUI (most common, highest success) > ICI > IVI (low success) > ITI (most invasive). Procedure: semen after 1 week abstinence; washed in Ham's F10 at 37°C; deposited day 14 of cycle. Success: 5–30%.",
+      "<strong>AI Medico-legal aspects:</strong> (1) Litigation — doctor sued for defective child; screen donors for genetic defects. (2) Divorce — AI for sterility: NOT ground; AI for impotence: IS ground; AID without consent: ground + doctor liable (cruelty). (3) Legitimacy — AIH: legitimate; AID: technically illegitimate but husband accepted as father. (4) Adultery — no coitus → NOT adultery. (5) Incest risk. (6) Unmarried/widow — no legal bar; child legitimate. (7) Deceased husband's stored sperm — child legitimate. (8) Kenya — AID not legalized; only at infertility centres with counselling.",
+      "<strong>ART Definition:</strong> Gametes/embryos manipulated outside body then replaced. Egg retrieval = surgical removal. IVF = most common ART: hyperstimulation → transvaginal USG-guided oocyte retrieval → fertilisation in culture → transcervical zygote transfer (day 3–5).",
+      "<strong>ART Types:</strong> GIFT (unfertilised eggs + sperm into fallopian tube laparoscopically; fertilisation inside body). ZIFT (day 1 zygotes into fallopian tube). ICSI (1 sperm injected into egg; male factor infertility). Ovum donation (poor egg quality; donor eggs + husband sperm → patient uterus). Oocyte freezing (-196°C; 2–4 weeks process; used by women delaying pregnancy). Micromanipulation (zona drilling, partial zona drilling).",
+      "<strong>Infertility epidemiology:</strong> Female infertility 1/3; male infertility 1/3; combined 15%; unexplained remainder. No absolute ART guarantee; requires informed consent; risk of multiple gestations; psychological implications of donor conception."
+    ]
+  },
+  {
+    n:4,
+    q:"Discuss paternity testing: legal framework in Kenya, examination for fertility, blood group systems used, and statistical methods for proving paternity.",
+    marks:"20 marks",
+    hint:"Start with Kenya's Children Act provisions, then cover the stepwise approach: fertility exam (semen analysis classifications), blood group systems with their exclusion percentages, combined exclusion of isoenzymes (94%), HLA (96%), and end with Essen-Möller formula and its limitations.",
+    points:[
+      "<strong>Legal Framework:</strong> Children Act CAP 141 (2012). Father = person married to mother between conception and birth (day 182–300 counted back). Nullification of marriage does NOT affect paternity. If mother not married: man who acknowledges child, court-declared, or marries mother after birth. Maternity can also be disputed. No legal provision for AI paternity. Court may use scientific examinations (Bernstein's principles).",
+      "<strong>Methods of exclusion:</strong> (1) Fertility exam, (2) Time of conception + neonatal measurements, (3) Hereditary characteristics: blood groups, enzyme systems, serum factors, HLA, anthropological signs, chromosomal examination.",
+      "<strong>Fertility Examination:</strong> History (parotitis, TB, varicocele). Genital examination. Semen analysis: normospermia (3–6 ml, >40 million, ≥60% motile), hypospermia (<3 ml), azoospermia, necrospermia, asthenozoospermia (<70% motile). Testicular biopsy: hyaline degeneration = unequivocal sterility; Klinefelter findings = exclude fertility. Note: repeated azoospermia only proves sterility at time of test, not at conception.",
+      "<strong>Blood Group Systems:</strong> ABO (17.6%): 3 alleles A/B/O, cannot exclude AO vs AA. MNSs (32.1%): highest single-system; non-dominant; 4-test sera. Rh (28%): 3 linked loci C-c, D-d, E-e; crossing over not observed; D = Rh positivity. Duffy (18%): quiet gene in Blacks — racial significance. Kell (4.8%): rare, valuable for positive proof. Xg: X-linked dominant, 66% men, 84% women.",
+      "<strong>Serum/Enzyme systems:</strong> Haptoglobin (18%), Gm (12–13%), Gc (16%). Isoenzymes: AcP 21%, PGM 24.5%, AK 4.2%, ADA 4.5%, GPT 18.7%, EsD 9% → combined 94%. HLA: >1 million genotype variations → 96% exclusion alone. Chromosomal banding (G, C, Q) — metaphase; confirmatory if abnormality shared.",
+      "<strong>Essen-Möller formula:</strong> Serostatistical probability; Hummel gene statistics. Paternity Index (PI) differentiates true father from non-father. Limitation: only valid for same ethnic group. Rare markers in both child and putative father provide highest certainty. After exclusion by ANY system, further tests superfluous."
+    ]
+  },
+  {
+    n:5,
+    q:"Write an essay on sterilization: definition, classification, methods (surgical and chemical), and medico-legal aspects. Include a note on newer contraceptive methods.",
+    marks:"15 marks",
+    hint:"Define clearly (sterile ≠ impotent). Classify as compulsory vs voluntary (therapeutic, eugenic, contraceptive). Cover vasectomy and tubectomy methods, chemical castration agents, then all 5 medico-legal rules. Finish with newer methods.",
+    points:[
+      "<strong>Definition:</strong> Sterilization = rendering a person sterile WITHOUT affecting potency or sexual function. It must be distinguished from impotence.",
+      "<strong>Classification:</strong> Compulsory (State order: mentally/physically defective, sexual criminals, eugenics). Voluntary: Therapeutic (prevent danger from future pregnancy), Eugenic (prevent defective offspring), Contraceptive (family planning — most common).",
+      "<strong>Surgical methods:</strong> Males — vasectomy (dividing vas deferens); newer: chemical sclerosing agents (ethanol, formaldehyde, AgNO₃). Females — tubectomy (ligation), hysteroscopy (electrocoagulation/cauterization), laparotomy/minilap (Pomeroy, Madelener, Aldridge, cornual resection, fimbrectomy), laparoscopy (clips). Also: hysterectomy for therapeutic indications.",
+      "<strong>Chemical castration:</strong> Cyproterone acetate (antiandrogen), Depo-Provera, Benperidol (antipsychotic). NOT sterilization — does not remove organs. Reduces frequency/intensity of sexual drive, masturbation, fantasies. Used for sex offenders; alternative to imprisonment/death penalty.",
+      "<strong>Medico-legal aspects:</strong> (1) No absolute guarantee of sterility — may be irreversible; man not sterile immediately after vasectomy (2–3 months / 20 ejaculations needed). (2) Written consent of both husband and wife essential — doctor liable without consent. (3) Only for individuals >30 years with ≥2 children (one male). (4) Healthy childless persons NOT to be permanently sterilized. (5) Failure of male contraception may lead to divorce/illegitimacy litigation.",
+      "<strong>Newer contraceptives:</strong> Percutaneous vas occlusion (polyurethane elastomere plug — reversible; popular in China). Gossypol (cotton seed extract). GnRH analogues. Female — centchroman, transdermal nestorone, vaginal levonorgestrel rings, LHRH agonist, quinacrine pellet, frameless IUD (GyneFix), anti-hCG vaccine."
+    ]
+  },
+];
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let mcqAnswered = 0, mcqCorrect = 0, mcqWrong = 0;
+
+// ═══════════════════════════════════════════════════════
+// RENDER MCQs
+// ═══════════════════════════════════════════════════════
+function renderMCQs() {
+  const container = document.getElementById('mcq-container');
+  const letters = ['A','B','C','D'];
+  MCQs.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'mcq-card';
+    card.id = `mcq-${idx}`;
+    card.innerHTML = `
+      <div class="q-meta">
+        <span class="q-num">Q${idx+1}</span>
+        <span class="q-topic">${q.topic}</span>
+      </div>
+      <div class="q-text">${q.q}</div>
+      <div class="options" id="opts-${idx}">
+        ${q.opts.map((o,i) => `
+          <div class="option" data-idx="${idx}" data-opt="${i}" onclick="selectMCQ(${idx},${i})">
+            <span class="opt-letter">${letters[i]}</span>
+            <span class="opt-text">${o}</span>
+          </div>
+        `).join('')}
+      </div>
+      <div class="feedback" id="fb-${idx}">
+        <span class="fb-icon"></span><span class="fb-main"></span>
+        <div class="explanation" id="exp-${idx}"></div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function selectMCQ(qIdx, optIdx) {
+  const card = document.getElementById(`mcq-${qIdx}`);
+  if (card.classList.contains('answered')) return;
+  card.classList.add('answered');
+
+  const opts = card.querySelectorAll('.option');
+  const fb = document.getElementById(`fb-${qIdx}`);
+  const correct = MCQs[qIdx].ans;
+
+  opts.forEach(o => o.classList.add('disabled'));
+  opts[optIdx].classList.add(optIdx === correct ? 'correct' : 'wrong');
+  if (optIdx !== correct) opts[correct].classList.add('show-correct');
+
+  if (optIdx === correct) {
+    fb.className = 'feedback correct-fb show';
+    fb.querySelector('.fb-icon').textContent = '✓ Correct!';
+    mcqCorrect++;
+  } else {
+    fb.className = 'feedback wrong-fb show';
+    fb.querySelector('.fb-icon').textContent = '✗ Incorrect.';
+    mcqWrong++;
+  }
+  fb.querySelector('.fb-main').textContent = '';
+  document.getElementById(`exp-${qIdx}`).textContent = MCQs[qIdx].exp;
+
+  mcqAnswered++;
+  updateMCQProgress();
+  updateLiveScore();
+}
+
+function updateMCQProgress() {
+  const pct = (mcqAnswered / MCQs.length * 100).toFixed(0);
+  document.getElementById('mcq-progress-fill').style.width = pct + '%';
+  document.getElementById('mcq-progress-txt').textContent = `${mcqAnswered} / ${MCQs.length} answered`;
+  if (mcqAnswered === MCQs.length) showMCQSummary();
+}
+
+function showMCQSummary() {
+  const s = document.getElementById('mcq-summary');
+  s.classList.add('show');
+  document.getElementById('mcq-score-big').textContent = `${mcqCorrect}/${MCQs.length}`;
+  document.getElementById('s-correct').textContent = mcqCorrect;
+  document.getElementById('s-wrong').textContent = mcqWrong;
+  document.getElementById('s-pct').textContent = Math.round(mcqCorrect/MCQs.length*100) + '%';
+}
+
+function updateLiveScore() {
+  document.getElementById('live-score').textContent = `Score: ${mcqCorrect} / ${mcqAnswered}`;
+}
+
+// ═══════════════════════════════════════════════════════
+// RENDER SAQs
+// ═══════════════════════════════════════════════════════
+function renderSAQs() {
+  const container = document.getElementById('saq-container');
+  SAQs.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'saq-card';
+    card.innerHTML = `
+      <div class="q-meta">
+        <span class="q-num">Q${q.n}</span>
+        <span class="q-topic">${q.topic}</span>
+      </div>
+      <div class="q-text">${q.q}</div>
+      <button class="reveal-btn" onclick="revealSAQ(${idx})">▶ Reveal Answer</button>
+      <div class="saq-answer" id="saq-ans-${idx}">${q.a}
+        <div class="self-mark">
+          <button class="mark-btn got-it" onclick="markSAQ(${idx},'got')">✓ Got it</button>
+          <button class="mark-btn missed" onclick="markSAQ(${idx},'missed')">✗ Missed</button>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function revealSAQ(idx) {
+  const ans = document.getElementById(`saq-ans-${idx}`);
+  const btn = ans.previousElementSibling;
+  if (ans.classList.contains('show')) {
+    ans.classList.remove('show');
+    btn.textContent = '▶ Reveal Answer';
+  } else {
+    ans.classList.add('show');
+    btn.textContent = '▲ Hide Answer';
+  }
+}
+
+function markSAQ(idx, result) {
+  const gotBtn = document.querySelector(`#saq-ans-${idx} .got-it`);
+  const missBtn = document.querySelector(`#saq-ans-${idx} .missed`);
+  gotBtn.classList.remove('active');
+  missBtn.classList.remove('active');
+  if (result === 'got') gotBtn.classList.add('active');
+  else missBtn.classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════
+// RENDER LAQs
+// ═══════════════════════════════════════════════════════
+function renderLAQs() {
+  const container = document.getElementById('laq-container');
+  LAQs.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'laq-card';
+    card.innerHTML = `
+      <div class="q-meta" style="margin-bottom:.7rem;">
+        <span class="q-num">Q${q.n}</span>
+        <span class="laq-marks">${q.marks}</span>
+      </div>
+      <div class="q-text">${q.q}</div>
+      <div class="hint-box"><strong>Hint:</strong> ${q.hint}</div>
+      <button class="reveal-btn" style="margin-top:.9rem;" onclick="revealLAQ(${idx})">▶ Show Model Answer Points</button>
+      <div class="answer-points" id="laq-ans-${idx}">
+        <ul class="points-list">
+          ${q.points.map(p=>`<li>${p}</li>`).join('')}
+        </ul>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function revealLAQ(idx) {
+  const ans = document.getElementById(`laq-ans-${idx}`);
+  const btn = ans.previousElementSibling;
+  if (ans.classList.contains('show')) {
+    ans.classList.remove('show');
+    btn.textContent = '▶ Show Model Answer Points';
+  } else {
+    ans.classList.add('show');
+    btn.textContent = '▲ Hide Model Answer';
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// THEME & SCROLL
+// ═══════════════════════════════════════════════════════
+const toggleBtn = document.getElementById('theme-toggle');
+let isLight = false;
+toggleBtn.addEventListener('click', () => {
+  isLight = !isLight;
+  document.body.classList.toggle('light', isLight);
+  toggleBtn.textContent = isLight ? '🌙' : '☀';
+});
+
+const scrollTop = document.getElementById('scrolltop');
+window.addEventListener('scroll', () => {
+  scrollTop.classList.toggle('visible', window.scrollY > 400);
+  // nav highlighting
+  const sections = [{id:'mcq-section',cls:'mcq'},{id:'saq-section',cls:'saq'},{id:'laq-section',cls:'laq'}];
+  let current = '';
+  sections.forEach(s => {
+    const el = document.getElementById(s.id);
+    if (el && window.scrollY >= el.offsetTop - 80) current = s.cls;
+  });
+  document.querySelectorAll('.nav-tabs a').forEach(a => {
+    a.classList.remove('active');
+    if (a.classList.contains(current)) a.classList.add('active');
+  });
+});
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+renderMCQs();
+renderSAQs();
+renderLAQs();
+</script>
+</body>
+</html>

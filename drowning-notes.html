@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forensic Medicine — Study Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b27;
+    --bg3: #1e2535;
+    --border: #2a3347;
+    --text: #e2e8f0;
+    --text-muted: #8899b4;
+    --accent1: #e05a6b;
+    --accent2: #5ba4f5;
+    --accent3: #50d9b0;
+    --accent4: #f0b84b;
+    --accent5: #a78bfa;
+    --heading-color: #f0f4ff;
+  }
+  .light {
+    --bg: #f4f6fb;
+    --bg2: #ffffff;
+    --bg3: #e8edf7;
+    --border: #d0d9ec;
+    --text: #1e2535;
+    --text-muted: #5a6a8a;
+    --accent1: #c0384a;
+    --accent2: #1d6fd4;
+    --accent3: #1a9972;
+    --accent4: #c08010;
+    --accent5: #6b4fcf;
+    --heading-color: #0f1117;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* ── TOP BAR ── */
+  #topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 56px;
+    gap: 1rem;
+    backdrop-filter: blur(10px);
+  }
+  #topbar .logo {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--heading-color);
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+  #topbar .logo span { color: var(--accent1); }
+  .nav-tabs {
+    display: flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+  }
+  .nav-tabs a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .nav-tabs a:hover { background: var(--bg3); color: var(--text); border-color: var(--border); }
+  .nav-tabs a.t1:hover, .nav-tabs a.t1.active { color: var(--accent2); border-color: var(--accent2); background: color-mix(in srgb, var(--accent2) 10%, transparent); }
+  .nav-tabs a.t2:hover, .nav-tabs a.t2.active { color: var(--accent3); border-color: var(--accent3); background: color-mix(in srgb, var(--accent3) 10%, transparent); }
+  .nav-tabs a.t3:hover, .nav-tabs a.t3.active { color: var(--accent4); border-color: var(--accent4); background: color-mix(in srgb, var(--accent4) 10%, transparent); }
+
+  #theme-toggle {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  #theme-toggle:hover { background: var(--border); }
+
+  /* ── LAYOUT ── */
+  .page-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 1.5rem 4rem;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    padding: 3.5rem 1rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 3rem;
+  }
+  .hero .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent1);
+    border: 1px solid var(--accent1);
+    padding: 0.25rem 0.8rem;
+    border-radius: 3px;
+    margin-bottom: 1.2rem;
+    opacity: 0.9;
+  }
+  .hero h1 {
+    font-family: 'Crimson Pro', serif;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: var(--heading-color);
+    line-height: 1.1;
+    margin-bottom: 0.8rem;
+  }
+  .hero p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .topic-cards {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+  .topic-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.4rem;
+    text-decoration: none;
+    color: var(--text);
+    min-width: 180px;
+    text-align: left;
+    transition: all 0.2s;
+  }
+  .topic-card:hover { transform: translateY(-2px); }
+  .topic-card .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    opacity: 0.6;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.1em;
+  }
+  .topic-card .title { font-weight: 600; font-size: 0.9rem; }
+  .topic-card.c1 { border-top: 3px solid var(--accent2); }
+  .topic-card.c2 { border-top: 3px solid var(--accent3); }
+  .topic-card.c3 { border-top: 3px solid var(--accent4); }
+
+  /* ── TOPIC SECTION ── */
+  .topic-section { margin-bottom: 4rem; }
+  .topic-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+  }
+  .topic-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    padding: 0.3rem 0.7rem;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .t1-num { background: color-mix(in srgb, var(--accent2) 15%, transparent); color: var(--accent2); border: 1px solid color-mix(in srgb, var(--accent2) 30%, transparent); }
+  .t2-num { background: color-mix(in srgb, var(--accent3) 15%, transparent); color: var(--accent3); border: 1px solid color-mix(in srgb, var(--accent3) 30%, transparent); }
+  .t3-num { background: color-mix(in srgb, var(--accent4) 15%, transparent); color: var(--accent4); border: 1px solid color-mix(in srgb, var(--accent4) 30%, transparent); }
+  .topic-title {
+    font-family: 'Crimson Pro', serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 700;
+    color: var(--heading-color);
+    line-height: 1.1;
+  }
+  .topic-title small {
+    display: block;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    margin-top: 0.2rem;
+  }
+
+  /* ── SUBSECTION ── */
+  .subsection {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+  }
+  .subsection-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.9rem 1.2rem;
+    cursor: pointer;
+    transition: background 0.15s;
+    user-select: none;
+  }
+  .subsection-header:hover { background: var(--bg3); }
+  .sub-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    min-width: 2.5rem;
+  }
+  .sub-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    flex: 1;
+    color: var(--heading-color);
+  }
+  .chevron {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    transition: transform 0.2s;
+  }
+  .subsection.open .chevron { transform: rotate(180deg); }
+  .subsection-body {
+    display: none;
+    padding: 1rem 1.2rem 1.2rem 1.2rem;
+    border-top: 1px solid var(--border);
+  }
+  .subsection.open .subsection-body { display: block; }
+
+  /* ── CONTENT ELEMENTS ── */
+  p { margin-bottom: 0.8rem; color: var(--text); }
+  p:last-child { margin-bottom: 0; }
+
+  .item-list { list-style: none; padding: 0; }
+  .item-list li {
+    padding: 0.4rem 0 0.4rem 1.4rem;
+    position: relative;
+    color: var(--text);
+    border-bottom: 1px dashed color-mix(in srgb, var(--border) 60%, transparent);
+    font-size: 0.9rem;
+  }
+  .item-list li:last-child { border-bottom: none; }
+  .item-list li::before {
+    content: '›';
+    position: absolute;
+    left: 0.2rem;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  .num-list { padding: 0; }
+  .num-list li {
+    padding: 0.5rem 0 0.5rem 2rem;
+    position: relative;
+    color: var(--text);
+    border-bottom: 1px dashed color-mix(in srgb, var(--border) 60%, transparent);
+    font-size: 0.9rem;
+    counter-increment: items;
+  }
+  .num-list { counter-reset: items; }
+  .num-list li:last-child { border-bottom: none; }
+  .num-list li::before {
+    content: counter(items, decimal);
+    position: absolute;
+    left: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    width: 1.4rem;
+    text-align: right;
+    top: 0.55rem;
+  }
+
+  .label {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    margin-right: 0.4rem;
+    font-weight: 500;
+  }
+  .label-def { background: color-mix(in srgb, var(--accent5) 15%, transparent); color: var(--accent5); }
+  .label-note { background: color-mix(in srgb, var(--accent4) 15%, transparent); color: var(--accent4); }
+  .label-key { background: color-mix(in srgb, var(--accent1) 15%, transparent); color: var(--accent1); }
+  .label-law { background: color-mix(in srgb, var(--accent2) 15%, transparent); color: var(--accent2); }
+  .label-exam { background: color-mix(in srgb, var(--accent3) 15%, transparent); color: var(--accent3); }
+
+  .definition-box {
+    background: var(--bg3);
+    border-left: 3px solid var(--accent5);
+    border-radius: 0 6px 6px 0;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.8rem;
+    font-size: 0.88rem;
+  }
+  .definition-box strong { color: var(--heading-color); }
+
+  .highlight-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.8rem;
+    font-size: 0.88rem;
+  }
+  .highlight-box.warn { border-left: 3px solid var(--accent1); }
+  .highlight-box.info { border-left: 3px solid var(--accent2); }
+  .highlight-box.ok   { border-left: 3px solid var(--accent3); }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
+  @media(max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+  .col-box {
+    background: var(--bg3);
+    border-radius: 6px;
+    padding: 0.8rem;
+    border: 1px solid var(--border);
+  }
+  .col-box h5 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    color: var(--heading-color);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.84rem;
+    margin-bottom: 0.8rem;
+  }
+  th {
+    background: var(--bg3);
+    color: var(--heading-color);
+    font-weight: 600;
+    text-align: left;
+    padding: 0.5rem 0.7rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  td {
+    padding: 0.45rem 0.7rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+    color: var(--text);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: color-mix(in srgb, var(--bg3) 50%, transparent); }
+
+  h4 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 1rem 0 0.5rem;
+  }
+  h4:first-child { margin-top: 0; }
+
+  .key-point {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    background: color-mix(in srgb, var(--accent1) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent1) 25%, transparent);
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    margin: 0.6rem 0;
+    font-size: 0.88rem;
+  }
+  .key-point .icon { color: var(--accent1); font-size: 0.85rem; flex-shrink: 0; margin-top: 0.1rem; }
+
+  /* ── EXPAND ALL ── */
+  .expand-bar {
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 1.2rem;
+    justify-content: flex-end;
+  }
+  .expand-btn {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: all 0.15s;
+  }
+  .expand-btn:hover { background: var(--border); color: var(--text); }
+
+  /* ── SCROLL TO TOP ── */
+  #scrolltop {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    opacity: 0;
+    transition: all 0.2s;
+    z-index: 999;
+    text-decoration: none;
+  }
+  #scrolltop.visible { opacity: 1; }
+  #scrolltop:hover { background: var(--accent2); color: white; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div id="topbar">
+  <div class="logo">Forensic <span>Medicine</span></div>
+  <nav class="nav-tabs">
+    <a href="#drowning" class="t1">1. Drowning</a>
+    <a href="#impotence" class="t2">2. Impotence &amp; Sterility</a>
+    <a href="#paternity" class="t3">3. Paternity Testing</a>
+  </nav>
+  <button id="theme-toggle" title="Toggle theme">☀</button>
+</div>
+
+<a href="#" id="scrolltop">↑</a>
+
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="tag">Forensic Medicine · Exam Notes</div>
+    <h1>Forensic Medicine<br>Study Guide</h1>
+    <p>Complete organized notes covering Drowning, Impotence &amp; Sterility, and Paternity Testing. Click any section to expand.</p>
+    <div class="topic-cards">
+      <a class="topic-card c1" href="#drowning">
+        <div class="num">TOPIC 01</div>
+        <div class="title">Drowning</div>
+      </a>
+      <a class="topic-card c2" href="#impotence">
+        <div class="num">TOPIC 02</div>
+        <div class="title">Impotence &amp; Sterility</div>
+      </a>
+      <a class="topic-card c3" href="#paternity">
+        <div class="num">TOPIC 03</div>
+        <div class="title">Paternity Testing</div>
+      </a>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════
+       TOPIC 1: DROWNING
+  ════════════════════════════════════════════ -->
+  <div class="topic-section" id="drowning">
+    <div class="topic-header">
+      <div class="topic-num t1-num">TOPIC 01</div>
+      <div class="topic-title">Drowning
+        <small>Asphyxial death by submersion · Classification · PM findings · Medico-legal aspects</small>
+      </div>
+    </div>
+
+    <div class="expand-bar">
+      <button class="expand-btn" onclick="expandAll('drowning')">+ Expand All</button>
+      <button class="expand-btn" onclick="collapseAll('drowning')">− Collapse All</button>
+    </div>
+
+    <!-- 1.1 Definition -->
+    <div class="subsection" id="d1">
+      <div class="subsection-header" onclick="toggle('d1')">
+        <span class="sub-num">1.1</span>
+        <span class="sub-title">Definition &amp; Overview</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <div class="definition-box">
+          <strong>Drowning</strong> is a form of asphyxial death due to <em>aspiration of fluid into the air passages</em> by submersion of the body in water or fluid medium.
+        </div>
+        <div class="key-point">
+          <span class="icon">★</span>
+          <span><strong>Complete submersion is NOT necessary</strong> — submersion of just the nose and mouth is sufficient to cause drowning.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1.2 Circumstances -->
+    <div class="subsection" id="d2">
+      <div class="subsection-header" onclick="toggle('d2')">
+        <span class="sub-num">1.2</span>
+        <span class="sub-title">Circumstances of Body Found in Water</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <ul class="num-list">
+          <li>Died from natural disease <em>before</em> falling into the water</li>
+          <li>Died from natural disease <em>while already</em> in the water</li>
+          <li>Died from injury <em>before</em> being thrown into the water</li>
+          <li>Died from injury <em>while</em> in the water</li>
+          <li>Drowned accidentally or by submersion (suicide/homicide)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 1.3 Phases of drowning -->
+    <div class="subsection" id="d3">
+      <div class="subsection-header" onclick="toggle('d3')">
+        <span class="sub-num">1.3</span>
+        <span class="sub-title">Phases of Drowning</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <h4>Phase 1 — Breath Holding</h4>
+        <ul class="item-list">
+          <li>Lasts for a variable length of time</li>
+          <li>CO₂ accumulates in blood</li>
+          <li>Stimulation of the respiratory centre in the brain</li>
+          <li>Inevitable inhalation of large volumes of water</li>
+        </ul>
+
+        <h4>Phase 2 — Swallowing of Water</h4>
+        <ul class="item-list">
+          <li>Coughing, vomiting, progressive loss of consciousness</li>
+          <li>Escape of remaining air from lungs</li>
+          <li>Lungs replaced by water</li>
+        </ul>
+
+        <h4>Phase 3 — Terminal Phase</h4>
+        <ul class="item-list">
+          <li>Profound unconsciousness and convulsions</li>
+          <li>Gasping</li>
+          <li>Respiratory standstill</li>
+          <li>Failure of heart</li>
+          <li>Irreversible changes in the brain</li>
+          <li><strong>Death</strong></li>
+        </ul>
+
+        <div class="highlight-box info" style="margin-top:0.8rem;">
+          <strong>Vicious Cycle:</strong> Deep inspiration → Water enters respiratory passage → Air driven out of lungs → Need for more air → Deep inspiration (repeat)
+        </div>
+      </div>
+    </div>
+
+    <!-- 1.4 Classification -->
+    <div class="subsection" id="d4">
+      <div class="subsection-header" onclick="toggle('d4')">
+        <span class="sub-num">1.4</span>
+        <span class="sub-title">Classification of Drowning</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <div class="two-col">
+          <div class="col-box">
+            <h5>Typical Drowning</h5>
+            <ul class="item-list">
+              <li>Obstruction of airways and lungs by inhalation of fluid = "Wet Drowning"</li>
+              <li>Subtypes: Fresh water &amp; Salt water</li>
+            </ul>
+          </div>
+          <div class="col-box">
+            <h5>Atypical Drowning</h5>
+            <ul class="item-list">
+              <li>Very little or no fluid in air passages</li>
+              <li>Dry drowning</li>
+              <li>Immersion syndrome (vagal inhibition)</li>
+              <li>Submersion of the unconscious</li>
+              <li>Secondary/near-drowning</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Fresh Water Drowning</h4>
+        <ul class="item-list">
+          <li>Water crosses alveolar membrane into circulation → <strong>marked hypervolaemia</strong></li>
+          <li>Red cells swell or burst → haemolysis → liberation of K⁺</li>
+          <li>Heart submitted to anoxia, hypervolaemia, K⁺ excess, and sodium deficit</li>
+          <li>Ventricular fibrillation due to anoxia and potassium excess within <strong>4–5 minutes</strong></li>
+        </ul>
+
+        <h4>Salt Water Drowning</h4>
+        <ul class="item-list">
+          <li>Marked hypertonicity of inhaled water causes loss of fluid from circulation</li>
+          <li>Fulminating pulmonary edema and <strong>progressive hypovolaemia</strong></li>
+        </ul>
+
+        <h4>Atypical — Dry Drowning</h4>
+        <ul class="item-list">
+          <li>Intense laryngeal spasm due to entry of water into nasopharynx and larynx</li>
+          <li>Very little water enters the lungs</li>
+          <li><strong>Best case for resuscitation</strong></li>
+        </ul>
+
+        <h4>Atypical — Immersion Syndrome</h4>
+        <ul class="item-list">
+          <li>Due to sudden impact with very cold water → cardiac arrest from vagal inhibition</li>
+          <li>Victims often young people with excess of alcohol</li>
+          <li>It also results from falling/diving feet first or duck diving by inexperienced swimmers</li>
+          <li>Loss of consciousness instantaneous; death in few minutes</li>
+          <li>Autopsy: none of the usual signs of drowning</li>
+        </ul>
+
+        <h4>Atypical — Submersion of the Unconscious</h4>
+        <ul class="item-list">
+          <li>Victim suffers from epilepsy, heart disease, or is drunk/has head injury during fall</li>
+        </ul>
+
+        <h4>Secondary / Near-Drowning</h4>
+        <ul class="item-list">
+          <li>Mainly due to infection from inhalation of contaminated water</li>
+          <li>Lung complications, oxygen deficiency, tired heart, cerebral edema</li>
+          <li>Victim may look alert and breathing, may respond to initial resuscitation</li>
+          <li>Late stage: respiratory distress, hypotension, cardiac arrhythmia may cause death</li>
+          <li>Ballooning of lungs may be absent; foam formation may be negligible</li>
+          <li>Complete picture of death by drowning not found</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 1.5 Signs of Immersion -->
+    <div class="subsection" id="d5">
+      <div class="subsection-header" onclick="toggle('d5')">
+        <span class="sub-num">1.5</span>
+        <span class="sub-title">Signs of Immersion (External PM Findings)</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <table>
+          <tr><th>Sign</th><th>Details</th></tr>
+          <tr><td><strong>Maceration of skin</strong></td><td>In warm water</td></tr>
+          <tr><td><strong>'Washer-woman's skin'</strong></td><td>Keratin of hands and feet peels off in 'glove and stocking' fashion; nails and hair loosened</td></tr>
+          <tr><td><strong>Cutis anserina</strong></td><td>'Goose-flesh' — cold water, due to spasm of erector pilae muscles; skin granular and puckered with hair standing on end; extremities mainly affected</td></tr>
+          <tr><td><strong>Wrinkled fingers &amp; palms</strong></td><td>Half a day to 3 days</td></tr>
+          <tr><td><strong>Decomposition</strong></td><td>First in dependent head, neck, abdomen and thighs (4–10 days); bloating of face and abdomen with marbling; peeling of epidermis on hands and feet, slippage of scalp</td></tr>
+          <tr><td><strong>Fine froth at nose</strong></td><td>Proteinaceous exudates + surfactant mixed with water; usually white, may be pink or red-tinged (intrapulmonary bleeding)</td></tr>
+        </table>
+        <div class="key-point">
+          <span class="icon">★</span>
+          <span>'Washer-woman's hands' appear after <strong>2 weeks</strong> of immersion.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1.6 Internal PM Findings -->
+    <div class="subsection" id="d6">
+      <div class="subsection-header" onclick="toggle('d6')">
+        <span class="sub-num">1.6</span>
+        <span class="sub-title">Internal (Post-Mortem) Findings</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <h4>Lungs &amp; Respiratory Tract</h4>
+        <ul class="item-list">
+          <li>Airways filled with froth, sand, weeds, etc. found in the water</li>
+          <li>Lungs are <strong>voluminous, edematous, doughy</strong> to feel with rib markings</li>
+          <li>Paltauf's haemorrhages seen</li>
+          <li>Oozing of blood-stained frothy fluid and ballooning on cut section</li>
+        </ul>
+
+        <h4>Other Internal Findings</h4>
+        <ul class="item-list">
+          <li>Watery fluid transudates into pleural cavities during putrefaction</li>
+          <li>Hydrostatic haemorrhage: 2 metres depth — 20 min</li>
+          <li>Haemorrhages in the middle ear and mastoid air cells</li>
+          <li>Stomach may contain watery fluid or foreign material from the water (e.g. soil, sand)</li>
+          <li><strong>Bilateral haemorrhages within the petrous temporal bones</strong> in drowning</li>
+        </ul>
+
+        <h4>Death from Natural Causes Before Entering Water</h4>
+        <ul class="item-list">
+          <li>Myocardial infarct</li>
+          <li>Accidental or suicidal injuries may be inflicted</li>
+          <li>Trauma in the water is common</li>
+          <li>Sudden entry of cold water into pharynx and larynx (and nasal passages) can produce powerful stimulation of nerve endings in the mucosa</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 1.7 Diatoms -->
+    <div class="subsection" id="d7">
+      <div class="subsection-header" onclick="toggle('d7')">
+        <span class="sub-num">1.7</span>
+        <span class="sub-title">Diatoms — The Critical Evidence</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <div class="definition-box">
+          <strong>Diatoms</strong> are microscopic unicellular algae present in water. They have a <em>silicaceous cell wall</em> which resists acid digestion, heat and putrefaction.
+        </div>
+        <ul class="item-list">
+          <li>Size: <strong>10–80 microns</strong></li>
+          <li>Only a live body with circulation can transport diatoms from lungs to brain or bone marrow</li>
+          <li><strong>Isolation:</strong> acid digestion of tissue (commonly bone marrow)</li>
+          <li>Seen under <strong>dark-ground illumination</strong></li>
+        </ul>
+        <div class="key-point">
+          <span class="icon">★</span>
+          <span>Finding diatoms in <strong>brain or bone marrow</strong> = definitive evidence of <em>ante-mortem drowning</em> (required circulation to distribute them).</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1.8 Cause of Death -->
+    <div class="subsection" id="d8">
+      <div class="subsection-header" onclick="toggle('d8')">
+        <span class="sub-num">1.8</span>
+        <span class="sub-title">Cause of Death &amp; Diagnosis</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <div class="two-col">
+          <div class="col-box">
+            <h5>Causes of Death</h5>
+            <ol class="num-list">
+              <li>Asphyxia</li>
+              <li>Ventricular fibrillation</li>
+              <li>Laryngeal spasm</li>
+              <li>Vagal inhibition</li>
+              <li>Exhaustion</li>
+            </ol>
+          </div>
+          <div class="col-box">
+            <h5>Diagnosis of Drowning</h5>
+            <ul class="item-list">
+              <li>Froth at nose/mouth</li>
+              <li>Weeds &amp; gravel/soil in hand</li>
+              <li>Voluminous lungs</li>
+              <li>Diatoms in tissues</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1.9 Medico-legal Aspects -->
+    <div class="subsection" id="d9">
+      <div class="subsection-header" onclick="toggle('d9')">
+        <span class="sub-num">1.9</span>
+        <span class="sub-title">Medico-Legal Aspects</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <p>The key medico-legal questions to answer in a drowning case:</p>
+        <ol class="num-list">
+          <li>Was the death due to drowning or another cause?</li>
+          <li>Length of time the body was in water</li>
+          <li>Was it <strong>accidental / suicidal / homicide</strong>?</li>
+        </ol>
+        <div class="highlight-box warn" style="margin-top:0.8rem;">
+          <span class="label label-key">Classic Case</span>
+          <strong>"Brides of the Bath" case</strong> — a famous case where drowning was used as a method of murder; illustrates homicide by drowning is possible.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /TOPIC 1 -->
+
+
+  <!-- ═══════════════════════════════════════════
+       TOPIC 2: IMPOTENCE & STERILITY
+  ════════════════════════════════════════════ -->
+  <div class="topic-section" id="impotence">
+    <div class="topic-header">
+      <div class="topic-num t2-num">TOPIC 02</div>
+      <div class="topic-title">Impotence &amp; Sterility
+        <small>Definitions · Causes · Examination · Sterilization · Contraception · ART</small>
+      </div>
+    </div>
+
+    <div class="expand-bar">
+      <button class="expand-btn" onclick="expandAll('impotence')">+ Expand All</button>
+      <button class="expand-btn" onclick="collapseAll('impotence')">− Collapse All</button>
+    </div>
+
+    <!-- 2.1 Definitions -->
+    <div class="subsection" id="i1">
+      <div class="subsection-header" onclick="toggle('i1')">
+        <span class="sub-num">2.1</span>
+        <span class="sub-title">Key Definitions</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <div class="definition-box">
+          <strong>Impotence:</strong> Inability of a person to perform sexual intercourse and achieve gratification (unable to copulate).
+        </div>
+        <div class="definition-box">
+          <strong>Erectile Dysfunction:</strong> Inability to develop and maintain an erection for satisfactory sexual intercourse in the absence of an ejaculatory disorder such as premature ejaculation.
+        </div>
+        <div class="definition-box">
+          <strong>Quod (impotence quoad hanc):</strong> A male may be impotent with one particular female but not with another.
+        </div>
+        <div class="definition-box">
+          <strong>Frigidity:</strong> Inability to initiate or maintain sexual arousal pattern in female (absence of desire or incapacity to achieve orgasm).
+        </div>
+        <div class="definition-box">
+          <strong>Sterility:</strong> Absolute inability of either male or female to procreate. In males: inability to make female conceive. In females: inability to conceive.
+        </div>
+        <div class="definition-box">
+          <strong>Infertility:</strong> Failure to conceive (regardless of cause) after <em>1 year of unprotected and regular intercourse</em>.
+        </div>
+        <div class="key-point">
+          <span class="icon">★</span>
+          <span>A sterile person may or may not be impotent — and an impotent person may or may not be sterile. These are <strong>distinct concepts</strong>.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2.2 When does the question arise -->
+    <div class="subsection" id="i2">
+      <div class="subsection-header" onclick="toggle('i2')">
+        <span class="sub-num">2.2</span>
+        <span class="sub-title">When the Question Arises (Legal Context)</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <div class="two-col">
+          <div class="col-box">
+            <h5>Civil Cases</h5>
+            <ul class="item-list">
+              <li>Divorce</li>
+              <li>Adultery</li>
+              <li>Nullity of marriage</li>
+              <li>Disputed paternity and legitimacy</li>
+              <li>Claims for damages (loss of sexual function)</li>
+            </ul>
+          </div>
+          <div class="col-box">
+            <h5>Criminal Cases</h5>
+            <ul class="item-list">
+              <li>Adultery</li>
+              <li>Rape</li>
+              <li>Unnatural offences</li>
+              <li>(Impotence cited as defence)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="highlight-box warn">
+          <span class="label label-key">Key Legal Rule</span>
+          <strong>Permanent impotence</strong> = ground for nullity of marriage/divorce (incapable of consummation). <strong>Sterility alone</strong> is NOT a ground for nullity/divorce.
+        </div>
+      </div>
+    </div>
+
+    <!-- 2.3 Causes in Males -->
+    <div class="subsection" id="i3">
+      <div class="subsection-header" onclick="toggle('i3')">
+        <span class="sub-num">2.3</span>
+        <span class="sub-title">Causes of Impotence &amp; Sterility in Males</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <table>
+          <tr><th>#</th><th>Cause</th><th>Details</th></tr>
+          <tr><td>i</td><td><strong>Psychological</strong></td><td>Most important &amp; frequent. Dislike of partner, fear, anxiety, guilt, low self-esteem, 'dhat syndrome', masturbatory anxiety, PTSD, widower syndrome. Transient in nature.</td></tr>
+          <tr><td>ii</td><td><strong>Age</strong></td><td>Before puberty — impotent &amp; sterile. Examination depends more on penile development than age. In advanced age libido diminishes but not necessarily impotent/sterile. Fertile as long as live spermatozoa present.</td></tr>
+          <tr><td>iii</td><td><strong>Developmental &amp; Acquired</strong></td><td>Absence of penis, intersexuality, hypospadias, epispadias, absent testicles, Klinefelter syndrome, retrograde ejaculation, cryptorchidism.</td></tr>
+          <tr><td>iv</td><td><strong>Local Diseases</strong></td><td>Priapism, hydrocele, elephantiasis, phimosis, Peyronie's disease, adherent prepuce, orchitis (mumps — sterility NOT impotence), syphilis, TB. X-ray exposure → sterility.</td></tr>
+          <tr><td>v</td><td><strong>General Diseases</strong></td><td>Neurological (tabes dorsalis, MS, paraplegia, hemiplegia, syringomyelia, temporal lobe damage, 3rd ventricle tumors). Endocrine (diabetes, hypothyroidism, hyperprolactinaemia). CVS (Leriche syndrome). Malnutrition, Vit C &amp; zinc deficiency → ED.</td></tr>
+          <tr><td>vi</td><td><strong>Injuries</strong></td><td>Spinal cord injury (poor semen quality + ejaculatory dysfunction). Lower limb fracture surgery → perineal neurovascular injury → ED. Penile fracture (rupture of corpora cavernosa + urethral rupture) → impotence; commonest cause: coitus or masturbation.</td></tr>
+          <tr><td>vii</td><td><strong>Chronic Poisoning</strong></td><td>Lead, arsenic, pesticides, aphrodisiac agents.</td></tr>
+          <tr><td>viii</td><td><strong>Medications</strong></td><td>SSRIs, antipsychotics, antihypertensives, cimetidine, cholesterol-lowering agents, finasteride.</td></tr>
+          <tr><td>ix</td><td><strong>Behavioural</strong></td><td>Chronic alcoholism, smoking, overweight, no exercise. Tight underwear → increased scrotal temp → decreased sperm count.</td></tr>
+          <tr><td>x</td><td><strong>Addictions</strong></td><td>Morphine, heroin, opium, cannabis, cocaine, tobacco (smoking).</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- 2.4 Causes in Females -->
+    <div class="subsection" id="i4">
+      <div class="subsection-header" onclick="toggle('i4')">
+        <span class="sub-num">2.4</span>
+        <span class="sub-title">Causes of Impotence &amp; Sterility in Females</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <table>
+          <tr><th>Cause</th><th>Impotence</th><th>Sterility</th><th>Notes</th></tr>
+          <tr><td><strong>Age</strong></td><td>No effect</td><td>Yes</td><td>Fertile puberty → menopause. Kraurosis vulvae in old women may narrow vagina.</td></tr>
+          <tr><td><strong>Vaginal occlusion, imperforate hymen, adhesion of labia</strong></td><td>Yes</td><td>No</td><td>Curable by surgery</td></tr>
+          <tr><td><strong>Absence of uterus/ovaries/fallopian tubes</strong></td><td>No</td><td>Yes</td><td>–</td></tr>
+          <tr><td><strong>Bartholin cyst, stricture, prolapse, dyspareunia</strong></td><td>Yes</td><td>No</td><td>–</td></tr>
+          <tr><td><strong>PID, endometriosis, adhesions, ovarian cyst rupture</strong></td><td>No</td><td>Yes</td><td>Blockage of fallopian tubes</td></tr>
+          <tr><td><strong>Gonorrhoea, leucorrhoea, acidic secretions, rectovaginal fistula</strong></td><td>No</td><td>Yes</td><td>–</td></tr>
+          <tr><td><strong>Psychological — Vaginismus</strong></td><td>Yes (active)</td><td>No</td><td>Severe spasm of lower 1/3 of vagina (levator ani + adductor femoris). Involuntary reflex. Caused by male dysfunction, religious orthodoxy, prior trauma, dyspareunia.</td></tr>
+          <tr><td><strong>Lead, arsenic, X-rays, heat, microwave</strong></td><td>No</td><td>Yes</td><td>Environmental/occupational exposure</td></tr>
+          <tr><td><strong>Alcohol, opium dependence; chemotherapy</strong></td><td>No</td><td>Yes</td><td>–</td></tr>
+        </table>
+        <div class="key-point">
+          <span class="icon">★</span>
+          <span>In males, psychological factors cause <em>non-erection (passive)</em>. In females, psychological factors are <em>active</em> in nature, leading to vaginismus.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2.5 Examination -->
+    <div class="subsection" id="i5">
+      <div class="subsection-header" onclick="toggle('i5')">
+        <span class="sub-num">2.5</span>
+        <span class="sub-title">Examination of Alleged Impotence / Sterility</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <div class="highlight-box info">
+          <strong>Organic vs Psychological Impotence:</strong> If the patient has <em>NEVER</em> had an erection → likely organic. If <em>sometimes</em> → could be organic or psychological.
+        </div>
+
+        <h4>General Principles</h4>
+        <ul class="item-list">
+          <li>Examined only when asked by court or police</li>
+          <li>Informed consent is mandatory</li>
+          <li>Full history: illness, surgery, mental condition, sexual history, smoking, diet, obesity, medications</li>
+          <li>Psychosocial examination (interview + questionnaire); sexual partner may be interviewed</li>
+        </ul>
+
+        <h4>Male Examination</h4>
+        <ul class="item-list">
+          <li>Complete medical exam including CNS</li>
+          <li>Pulse, BP, secondary sexual characteristics, site of urethral meatus, stenosis, penile sensitivity, deformities</li>
+          <li>Testicular size, epididymis, spermatic cord, varicocele</li>
+          <li><strong>Bulbocavernosus reflex test:</strong> Squeeze glans → anus contracts if nerve intact</li>
+        </ul>
+
+        <h4>Male — Investigations</h4>
+        <ul class="item-list">
+          <li>Semen analysis (essential in infertility)</li>
+          <li>Blood counts, blood sugar, urinalysis, lipid &amp; thyroid profiles, creatinine, liver enzymes, PSA</li>
+          <li>Serum testosterone, LH, serum prolactin</li>
+          <li>PGE1 injection into corpora (erection if vasculature adequate)</li>
+          <li>Duplex ultrasonography (vascular function, atherosclerosis)</li>
+          <li>USG testes / transrectal USG (prostate)</li>
+          <li><strong>Nocturnal penile tumescence testing:</strong> Normal = 5–6 erections during sleep (REM). Absence suggests organic defect.</li>
+          <li>Penile biothesiometry (electromagnetic vibration — sensitivity &amp; nerve function)</li>
+        </ul>
+
+        <h4>Female Examination</h4>
+        <ul class="item-list">
+          <li>Hair distribution, clitoris size, Bartholin glands, labia majora/minora, lesions</li>
+          <li>Vaginal mucosa (estrogen deficiency or infection)</li>
+          <li>Cervix: Pap smear + STD cultures</li>
+          <li><strong>Postcoital (Sims-Huhner) test:</strong> Spermatozoa amount &amp; motility in cervical mucus during preovulatory period</li>
+          <li>Bimanual examination: uterus size/position, adnexal masses, fibroids, endometriosis</li>
+          <li>HSG, pelvic USG, hysterosonogram, MRI</li>
+        </ul>
+
+        <div class="key-point">
+          <span class="icon">★</span>
+          <span>Opinion for impotence in males is given in <strong>double negative form</strong>: "there is nothing to suggest the person is incapable of sexual intercourse." A definitive opinion cannot be given unless there is gross deviation from normal.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2.6 Sterilization -->
+    <div class="subsection" id="i6">
+      <div class="subsection-header" onclick="toggle('i6')">
+        <span class="sub-num">2.6</span>
+        <span class="sub-title">Sterilization — Types &amp; Medico-legal Aspects</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <div class="definition-box">
+          <strong>Sterilization:</strong> Process to render a person sterile without affecting potency or sexual functions.
+        </div>
+
+        <div class="two-col">
+          <div class="col-box">
+            <h5>Compulsory</h5>
+            <p style="font-size:0.85rem;">Ordered by the State; performed on mentally/physically defective persons, sexual criminals (as punishment), or for eugenics.</p>
+          </div>
+          <div class="col-box">
+            <h5>Voluntary</h5>
+            <ul class="item-list">
+              <li><strong>Therapeutic:</strong> Prevent danger to health/life from future pregnancy</li>
+              <li><strong>Eugenic:</strong> Prevent conception of physically/mentally defective children</li>
+              <li><strong>Contraceptive:</strong> Family planning</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Surgical Methods</h4>
+        <ul class="item-list">
+          <li><strong>Males:</strong> Vasectomy (dividing vas deferens). Chemical: ethanol, formaldehyde, AgNO₃.</li>
+          <li><strong>Females:</strong> Tubectomy (ligation), hysteroscopy (electrocoagulation), laparotomy/minilap (Pomeroy, Madelener, Aldridge, cornual resection, fimbrectomy), laparoscopy (clips).</li>
+        </ul>
+
+        <h4>Chemical Castration</h4>
+        <ul class="item-list">
+          <li>Antiandrogen cyproterone acetate, Depo-Provera, or antipsychotic Benperidol</li>
+          <li>Does NOT remove organs — not a form of sterilization</li>
+          <li>Reduces sexual drive, masturbation frequency, sexual fantasies</li>
+          <li>Treatment strategy for sex offenders (alternative to imprisonment/death penalty)</li>
+        </ul>
+
+        <h4>Medico-legal Aspects</h4>
+        <ul class="num-list">
+          <li>No absolute guarantee of sterility; may prove irreversible. Man is NOT sterile immediately after vasectomy — additional protection needed for ~2–3 months (≥20 ejaculations).</li>
+          <li>Written consent of both husband and wife essential; doctor liable if performed without consent.</li>
+          <li>Desirable only in individuals above 30 years with at least 2 children (one male).</li>
+          <li>Healthy unmarried or married persons without children should NOT be permanently sterilized even if they volunteer.</li>
+          <li>Failure of male contraceptive → suspicion of wife's infidelity → litigation (divorce, illegitimacy, disputed paternity).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2.7 Contraception -->
+    <div class="subsection" id="i7">
+      <div class="subsection-header" onclick="toggle('i7')">
+        <span class="sub-num">2.7</span>
+        <span class="sub-title">Contraception</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <h4>Steroidal Contraception</h4>
+        <ul class="item-list">
+          <li><strong>OCP:</strong> Progestins (levonorgestrel, norethisterone, desogestrel) + estrogens (ethinyl-estradiol or mestranol)</li>
+          <li><strong>Injectable:</strong> DMPA (Depo medroxyprogesterone acetate), NETEN (norethisterone enanthate)</li>
+          <li><strong>Implants:</strong> Norplant (levonorgestrel), Implanon (desogestrel)</li>
+        </ul>
+
+        <h4>Permanent</h4>
+        <ul class="item-list">
+          <li>Males: Vasectomy / chemical sclerosing agents</li>
+          <li>Females: Tubectomy, hysteroscopy, laparotomy/minilap, laparoscopy with clips</li>
+        </ul>
+
+        <h4>Temporary / Natural</h4>
+        <ul class="item-list">
+          <li>Rhythm method (abstinence during fertile period)</li>
+          <li>Coitus interruptus (withdrawal before ejaculation)</li>
+          <li>Breastfeeding</li>
+          <li>Barrier: diaphragm (female), condom (male), spermicidal agents</li>
+          <li>IUDs: Copper T 200, Cu T 380A, Multiload 250/375, levonorgestrel IUS, Progestasert, Lippes loop</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2.8 Artificial Insemination -->
+    <div class="subsection" id="i8">
+      <div class="subsection-header" onclick="toggle('i8')">
+        <span class="sub-num">2.8</span>
+        <span class="sub-title">Artificial Insemination (AI)</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <div class="definition-box">
+          <strong>AI:</strong> Introduction of semen from husband or donor by instruments into vagina/uterus to achieve pregnancy not attainable by sexual intercourse.
+        </div>
+
+        <h4>Types</h4>
+        <table>
+          <tr><th>Type</th><th>Description</th></tr>
+          <tr><td><strong>AIH</strong></td><td>Artificial insemination homologous/husband</td></tr>
+          <tr><td><strong>AID</strong></td><td>Artificial insemination donor</td></tr>
+          <tr><td><strong>AIHD</strong></td><td>'Pooled' — donor semen + husband's semen; technical possibility husband is father</td></tr>
+        </table>
+
+        <h4>Routes (in order of common use)</h4>
+        <ul class="item-list">
+          <li><strong>IUI</strong> — intrauterine (most common; highest success rate)</li>
+          <li><strong>ICI</strong> — intracervical</li>
+          <li><strong>IVI</strong> — intravaginal (low success rate)</li>
+          <li><strong>ITI</strong> — intratubal (most invasive, higher infection risk)</li>
+        </ul>
+
+        <h4>Procedure</h4>
+        <ul class="item-list">
+          <li>Semen obtained by masturbation after 1 week abstinence; 1 ml deposited just above internal os at ovulation (day 14)</li>
+          <li>Semen 'washed' in Ham's F10 media (no L-glutamine) at 37°C — removes mucus and non-motile sperms</li>
+          <li>Success rate: <strong>5–30%</strong> depending on type; affected by stress, egg and sperm quality</li>
+        </ul>
+
+        <h4>Medico-legal Aspects of AI</h4>
+        <ol class="num-list">
+          <li><strong>Litigation:</strong> Doctor may be sued after birth of defective child. Donor must be screened for genetic defects.</li>
+          <li><strong>Divorce:</strong> AI for sterility = NOT a ground for divorce. AI for impotence = IS a ground. AID without husband's consent = ground + doctor liable (cruelty).</li>
+          <li><strong>Legitimacy:</strong> AIH = legitimate child. AID = technically illegitimate but husband accepted as father in practice.</li>
+          <li><strong>Adultery:</strong> No physical coitus = NOT adultery.</li>
+          <li><strong>Incest:</strong> Risk of incestuous relationship between AI offspring and donor's children.</li>
+          <li><strong>Unmarried/widow:</strong> No legal bar. Child of single woman through AID = legitimate. AID should be done only on married woman with husband's written consent.</li>
+          <li><strong>Deceased husband:</strong> Child born through AIH with stored sperm of deceased husband = legitimate.</li>
+          <li><strong>Kenya:</strong> AID has NOT been legalized; should only be undertaken at infertility centres after counselling.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- 2.9 ART -->
+    <div class="subsection" id="i9">
+      <div class="subsection-header" onclick="toggle('i9')">
+        <span class="sub-num">2.9</span>
+        <span class="sub-title">Assisted Reproductive Technology (ART)</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <div class="definition-box">
+          <strong>ART:</strong> Any fertility treatment in which gametes (sperms and eggs) are manipulated outside the body; gametes/embryos are replaced back to establish pregnancy.
+        </div>
+
+        <h4>Female infertility: 1/3 · Male infertility: 1/3 · Combined: 15% · Unexplained: remainder</h4>
+
+        <table>
+          <tr><th>#</th><th>Procedure</th><th>Key Features</th></tr>
+          <tr><td>1</td><td><strong>IVF</strong> (In Vitro Fertilization)</td><td>Controlled ovarian hyperstimulation → transvaginal USG-guided oocyte retrieval → fertilization in culture (or ICSI) → transcervical transfer of zygotes (day 3–5). Most common ART.</td></tr>
+          <tr><td>2</td><td><strong>GIFT</strong> (Gamete Intrafallopian Transfer)</td><td>Laparoscopic transfer of unfertilized eggs + sperms into fallopian tube; fertilization inside body.</td></tr>
+          <tr><td>3</td><td><strong>ZIFT</strong> (Zygote Intrafallopian Transfer)</td><td>Day 1 fertilized eggs (zygotes) laparoscopically transferred into fallopian tube.</td></tr>
+          <tr><td>4</td><td><strong>ICSI</strong> (Intracytoplasmic Sperm Injection)</td><td>One sperm directly injected into egg; indicated in male factor infertility.</td></tr>
+          <tr><td>5</td><td><strong>Ovum Donation</strong></td><td>Donor IVF for poor egg numbers/quality; eggs fertilized by husband's sperm → transferred to patient's uterus.</td></tr>
+          <tr><td>6</td><td><strong>Oocyte Freezing</strong></td><td>Ovum preserved at -196°C; takes 2–4 weeks (hormones → stimulate ovulation → egg retrieval). Used by women delaying pregnancy.</td></tr>
+          <tr><td>7</td><td><strong>Micromanipulation</strong></td><td>Zona drilling, partial zona drilling.</td></tr>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /TOPIC 2 -->
+
+
+  <!-- ═══════════════════════════════════════════
+       TOPIC 3: PATERNITY TESTING
+  ════════════════════════════════════════════ -->
+  <div class="topic-section" id="paternity">
+    <div class="topic-header">
+      <div class="topic-num t3-num">TOPIC 03</div>
+      <div class="topic-title">Paternity Testing
+        <small>Legal framework · Fertility examination · Blood groups · DNA · Anthropological signs</small>
+      </div>
+    </div>
+
+    <div class="expand-bar">
+      <button class="expand-btn" onclick="expandAll('paternity')">+ Expand All</button>
+      <button class="expand-btn" onclick="collapseAll('paternity')">− Collapse All</button>
+    </div>
+
+    <!-- 3.1 Legal Framework -->
+    <div class="subsection" id="p1">
+      <div class="subsection-header" onclick="toggle('p1')">
+        <span class="sub-num">3.1</span>
+        <span class="sub-title">Legal Framework (Kenya)</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <ul class="item-list">
+          <li><span class="label label-law">Law</span><strong>Children Act CAP 141 (2012)</strong> — governs child status in family.</li>
+          <li>Section 81: Child custody = parental rights/duties relating to possession of child.</li>
+          <li>Article 53(1)(e) — Constitution: Child has right to equal responsibility from <em>both</em> parents.</li>
+          <li>Section 76(3)(f): Court considers financial ability of each parent. Both parents swear affidavit of means.</li>
+        </ul>
+
+        <h4>Presumption of Paternity</h4>
+        <ul class="item-list">
+          <li>Father = person married to mother from <strong>conception to birth</strong> (or any portion thereof)</li>
+          <li>Nullification of marriage does <strong>NOT</strong> affect paternity status</li>
+          <li>Presumed date of conception: <strong>day 182–300</strong> (counted back from date of birth)</li>
+        </ul>
+
+        <h4>If Mother Was Not Married</h4>
+        <p>Father = the man who:</p>
+        <ol class="num-list">
+          <li>By complete and open declaration acknowledges the child as his, or</li>
+          <li>Is declared father by valid court judgment, or</li>
+          <li>Marries the mother after birth of the child under existing legal conditions</li>
+        </ol>
+
+        <div class="highlight-box warn">
+          <span class="label label-law">Important</span>
+          There is <strong>no legal provision</strong> to establish paternity in cases of artificial insemination.
+        </div>
+      </div>
+    </div>
+
+    <!-- 3.2 Methods of Exclusion -->
+    <div class="subsection" id="p2">
+      <div class="subsection-header" onclick="toggle('p2')">
+        <span class="sub-num">3.2</span>
+        <span class="sub-title">Methods of Excluding Paternity</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <ol class="num-list">
+          <li>Examination for fertility (andrological)</li>
+          <li>Establishment of time of conception and maturity of newborn</li>
+          <li>Examination of hereditary characteristics:
+            <ul class="item-list" style="margin-top:0.4rem;">
+              <li>Blood group examination (ABO, MN, Rh)</li>
+              <li>Examination of enzyme systems (isoenzymes)</li>
+              <li>Hereditary serum factors (haptoglobin, Gm, Gc)</li>
+              <li>HLA system</li>
+              <li>Hereditary anthropological signs</li>
+              <li>Chromosomal examination</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- 3.3 Fertility Examination -->
+    <div class="subsection" id="p3">
+      <div class="subsection-header" onclick="toggle('p3')">
+        <span class="sub-num">3.3</span>
+        <span class="sub-title">Fertility Examination (Andrological)</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <ul class="item-list">
+          <li>Opinion of andrologist requested</li>
+          <li>History (parotitis, TB, varicocele — diseases damaging spermiogenesis)</li>
+          <li>Genital inspection: hypo/epispadias, induration penis plastica, irreducible scrotal hernia</li>
+          <li>Examine testes: undescended (severe spermiogenesis disturbance), cysts, tumours, varicoceles</li>
+        </ul>
+
+        <h4>Semen Analysis</h4>
+        <ul class="item-list">
+          <li>Produced by masturbation — NOT from brought sample (motility/pH changes rapidly; condom spermicides damage cells)</li>
+          <li>Visual: greyish-white, sticky, 3–6 ml; fresh pH ~7.2; becomes fluid after 20–30 min</li>
+        </ul>
+
+        <table>
+          <tr><th>Term</th><th>Definition</th></tr>
+          <tr><td><strong>Normospermia</strong></td><td>3–6 ml; sperm count &gt;40 million; ≥60% motile</td></tr>
+          <tr><td><strong>Hypospermia</strong></td><td>&lt;3 ml; sperm count 10–20 million/ml</td></tr>
+          <tr><td><strong>Azoospermia</strong></td><td>No sperm in ejaculate</td></tr>
+          <tr><td><strong>Necrospermia</strong></td><td>Sperm do not react to intervention (supravital staining, warming)</td></tr>
+          <tr><td><strong>Asthenozoospermia</strong></td><td>&lt;70% motile</td></tr>
+        </table>
+
+        <h4>Testicular Biopsy Findings</h4>
+        <ul class="num-list">
+          <li>Hypoplasia of germinal epithelium with sperm precursors + normal Leydig cells</li>
+          <li>Tubular obstruction with normal spermatogenesis + azoospermia</li>
+          <li>Damage to germinal cells — development only to spermatocyte level, no spermatids/mature sperm</li>
+          <li>Only Sertoli cells visible; occasional Leydig cell damage</li>
+          <li>Hyaline degeneration of tubular epithelium → unequivocal sterility</li>
+          <li>Leydig cell tumour</li>
+        </ul>
+        <div class="key-point">
+          <span class="icon">★</span>
+          <span>Hyaline degeneration + testicular atrophy on biopsy = <strong>unequivocal sterility</strong>. The biopsy provides indication of <em>previous</em> fertilization capability over years.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3.4 Time of Conception -->
+    <div class="subsection" id="p4">
+      <div class="subsection-header" onclick="toggle('p4')">
+        <span class="sub-num">3.4</span>
+        <span class="sub-title">Calculation of Time of Conception</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <ul class="item-list">
+          <li>Presumed conception: <strong>day 182–300</strong> counted back from date of birth</li>
+          <li>Father must have been living with mother during this period</li>
+          <li>WHO: Mature baby born between <strong>37th–42nd week</strong> (day 259–293); weight ≥2500 g; body length 53 cm; cranial circumference 36 cm</li>
+          <li>Wide variation in weight; cranial circumference and body length are fairly stable</li>
+          <li>Newborn measurements can narrow down the conception window → pivotal in paternity</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3.5 Blood Group Systems -->
+    <div class="subsection" id="p5">
+      <div class="subsection-header" onclick="toggle('p5')">
+        <span class="sub-num">3.5</span>
+        <span class="sub-title">Blood Group Systems for Paternity</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <p>Blood group antigens on red cells are hereditarily determined; their genetics are among the best studied in heredity.</p>
+
+        <h4>Bernstein's Principles</h4>
+        <ol class="num-list">
+          <li>A child CANNOT have a blood group antigen which <em>neither parent possesses</em>.</li>
+          <li>If a trait is in homozygote form in offspring, neither parent can be homozygote for the <em>opposite</em> gene.</li>
+        </ol>
+        <div class="highlight-box info" style="margin-bottom:0.8rem;">
+          "Mater semper certa est" — certainty of motherhood is assumed; characteristics in child not found in mother must come from father.
+        </div>
+
+        <table>
+          <tr><th>System</th><th>Exclusion %</th><th>Key Points</th></tr>
+          <tr><td><strong>ABO</strong></td><td>17.6%</td><td>3 alleles: A, B, O. A &amp; B dominant over O. Subtypes of A (A₁, A₂, A₃) rare — valuable for proof. Cannot differentiate AO from AA by serology alone.</td></tr>
+          <tr><td><strong>MNSs</strong></td><td>32.1%</td><td>MM, NN homozygote; MN heterozygote. Combined with S and s: MS, Ms, NS, Ns. Non-dominant. One of the most powerful systems with 4-test sera.</td></tr>
+          <tr><td><strong>Rh</strong></td><td>28%</td><td>Linked loci: C-c, D-d, E-e. D = Rh positivity. Crossing over not observed. 36 genotypes possible; 5 clinically listed in European populations.</td></tr>
+          <tr><td><strong>Duffy (FY)</strong></td><td>18%</td><td>Fya, Fyb, and quiet gene in blacks. Most conspicuous racial difference among blood groups.</td></tr>
+          <tr><td><strong>Kell-Cellano</strong></td><td>4.8%</td><td>K dominant over k. Genotypes: KK, Kk, kk. Rare, so useful for positive proof of paternity.</td></tr>
+          <tr><td><strong>Xg</strong></td><td>–</td><td>X-linked dominant. Present in 66% men, 84% women. Women have allele pair (XX); men have one allele only (XY).</td></tr>
+        </table>
+
+        <div class="key-point">
+          <span class="icon">★</span>
+          <span>If paternity is excluded by blood groups, HLA, serum factors, or enzyme systems → <strong>further tests are superfluous</strong>.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3.6 Serum Factors & Enzymes -->
+    <div class="subsection" id="p6">
+      <div class="subsection-header" onclick="toggle('p6')">
+        <span class="sub-num">3.6</span>
+        <span class="sub-title">Hereditary Serum Factors &amp; Enzyme Systems</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <table>
+          <tr><th>System</th><th>Exclusion %</th><th>Notes</th></tr>
+          <tr><td><strong>Haptoglobin (Hp)</strong></td><td>18%</td><td>Hp 1-1, Hp 2-1, Hp 2-2; examined earliest; can be investigated in fetal life</td></tr>
+          <tr><td><strong>Gm (γ-globulin)</strong></td><td>12–13%</td><td>–</td></tr>
+          <tr><td><strong>Gc (α-protein)</strong></td><td>16%</td><td>Gc 1-1, Gc 2-1, Gc 2-2</td></tr>
+        </table>
+
+        <h4>Isoenzyme Systems (Erythrocyte)</h4>
+        <table>
+          <tr><th>Enzyme</th><th>Abbreviation</th><th>Exclusion %</th></tr>
+          <tr><td>Acid phosphatase</td><td>AcP</td><td>21%</td></tr>
+          <tr><td>Phosphoglucomutase</td><td>PGM</td><td>24.5%</td></tr>
+          <tr><td>Adenylate kinase</td><td>AK</td><td>4.2%</td></tr>
+          <tr><td>Adenosine deaminase</td><td>ADA</td><td>4.5%</td></tr>
+          <tr><td>Glutamate-pyrofructate transaminase</td><td>GPT</td><td>18.7%</td></tr>
+          <tr><td>Esterase D</td><td>EsD</td><td>9.0%</td></tr>
+        </table>
+        <div class="key-point">
+          <span class="icon">★</span>
+          <span>All above isoenzyme systems used together → <strong>combined exclusion possibility of 94%</strong>.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3.7 HLA System -->
+    <div class="subsection" id="p7">
+      <div class="subsection-header" onclick="toggle('p7')">
+        <span class="sub-num">3.7</span>
+        <span class="sub-title">HLA System</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <ul class="item-list">
+          <li>HLA antigens found on leukocytes and other cells = <em>transplantation antigens</em></li>
+          <li>Enormous polymorphism: theoretically &gt;1 million genotype variations</li>
+          <li>Exclusion of non-fathers by phenotype examination alone: <strong>96%</strong></li>
+          <li>By this method alone, very powerful for both exclusion and proof of paternity</li>
+          <li>Used in serostatistical examinations as positive proof of paternity</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3.8 Anthropological Examination -->
+    <div class="subsection" id="p8">
+      <div class="subsection-header" onclick="toggle('p8')">
+        <span class="sub-num">3.8</span>
+        <span class="sub-title">Anthropological Examination</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <p>Based on heritable morphological characteristics. Usually ordered by court alongside blood group examinations.</p>
+
+        <h4>Morphological Signs Examined</h4>
+        <ul class="item-list">
+          <li>Hair colour, skull form, facial form (anthropometric measurements)</li>
+          <li>Nose: form, size, shape of nasal openings</li>
+          <li>Brow shape, eye colour, iris variety</li>
+          <li>Mouth: lip curve, upper/lower lip position, corner of mouth, chin form</li>
+          <li>Ear: size/shape of ear lobes (tapering or hanging free), auricle position</li>
+          <li>Hands and nails</li>
+        </ul>
+
+        <h4>Dominantly Inherited Traits (High Value)</h4>
+        <ul class="item-list">
+          <li>Arachnodactyly, brachydactyly, syndactyly</li>
+          <li>Hypoplasia of the enamel</li>
+          <li>Carabelli tubercle</li>
+        </ul>
+
+        <div class="highlight-box warn">
+          <span class="label label-note">Limitation</span>
+          Anthropological examinations alone <strong>DO NOT establish proof of paternity</strong>. They are complementary. A probability opinion only. Trait may skip a generation. Must be combined with blood group and serostatistical methods.
+        </div>
+      </div>
+    </div>
+
+    <!-- 3.9 Chromosomal Examination -->
+    <div class="subsection" id="p9">
+      <div class="subsection-header" onclick="toggle('p9')">
+        <span class="sub-num">3.9</span>
+        <span class="sub-title">Chromosomal Examination</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <ul class="item-list">
+          <li>One chromosome of each pair inherited from father, one from mother</li>
+          <li>Chromosomes examined in <strong>metaphase</strong> (cell division inhibited)</li>
+          <li>Two chromatids joined at centromere visible in this stage</li>
+          <li>Chromosomes numbered 1–22; sex chromosomes XX or XY</li>
+          <li>If chromosomal abnormality in child matches putative father (and is rare in population) = positive proof</li>
+        </ul>
+
+        <h4>Chromosomal Banding Techniques</h4>
+        <ul class="item-list">
+          <li><strong>G-banding, C-banding, Q-banding</strong> — characteristic dark/light band configurations</li>
+          <li>Results are confirmatory and unambiguous when alteration found in father is passed to child</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3.10 Proof of Paternity & Statistics -->
+    <div class="subsection" id="p10">
+      <div class="subsection-header" onclick="toggle('p10')">
+        <span class="sub-num">3.10</span>
+        <span class="sub-title">Proof of Paternity &amp; Statistical Methods</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="subsection-body">
+        <ul class="item-list">
+          <li>Under optimal conditions, combined blood group + enzyme + protein examination can exclude non-fathers in &gt;90% of cases</li>
+          <li><strong>Paternity Index (PI):</strong> Probability statistics differentiating true father from non-father</li>
+          <li><strong>Essen-Möller formula:</strong> Serostatistical calculation; basis of Hummel gene statistic data; applicable only to same ethnic groups</li>
+          <li>Gene frequency values crucial — calculations valid only within the same population group</li>
+          <li>Rare markers in both child and putative father greatly increase certainty of proof</li>
+          <li>Superfecundation (simultaneous fertilization by different fathers) must be considered in expanded pedigree analysis</li>
+        </ul>
+
+        <div class="key-point">
+          <span class="icon">★</span>
+          <span>Positive proof requires rare markers in both the child and supposed father that do <strong>not or very rarely appear</strong> in the general population. The more such shared rare markers, the higher the certainty.</span>
+        </div>
+
+        <h4>When Chromosomal Examination is Especially Indicated</h4>
+        <ul class="item-list">
+          <li>Two men with non-significantly different serostatistical values</li>
+          <li>Blood group does not exclude the named father but serostatistical result is uncertain</li>
+          <li>Anthropological examination is not convincing</li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /TOPIC 3 -->
+
+</div><!-- /page-wrap -->
+
+<script>
+  // Toggle subsection
+  function toggle(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('open');
+  }
+
+  // Expand/Collapse all within a topic section
+  function expandAll(topicId) {
+    const section = document.getElementById(topicId);
+    section.querySelectorAll('.subsection').forEach(el => el.classList.add('open'));
+  }
+  function collapseAll(topicId) {
+    const section = document.getElementById(topicId);
+    section.querySelectorAll('.subsection').forEach(el => el.classList.remove('open'));
+  }
+
+  // Theme toggle
+  const toggleBtn = document.getElementById('theme-toggle');
+  const body = document.body;
+  let isLight = false;
+  toggleBtn.addEventListener('click', () => {
+    isLight = !isLight;
+    body.classList.toggle('light', isLight);
+    toggleBtn.textContent = isLight ? '🌙' : '☀';
+  });
+
+  // Scroll to top
+  const scrollTop = document.getElementById('scrolltop');
+  window.addEventListener('scroll', () => {
+    scrollTop.classList.toggle('visible', window.scrollY > 400);
+  });
+
+  // Active nav highlighting
+  const sections = ['drowning', 'impotence', 'paternity'];
+  const navLinks = document.querySelectorAll('.nav-tabs a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY >= el.offsetTop - 100) current = id;
+    });
+    navLinks.forEach(a => {
+      const href = a.getAttribute('href').replace('#', '');
+      a.classList.toggle('active', href === current);
+    });
+  });
+
+  // Open first subsection of each topic by default
+  ['d1','i1','p1'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('open');
+  });
+</script>
+</body>
+</html>

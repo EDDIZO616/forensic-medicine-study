@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forensic Medicine — Exam Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root[data-theme="dark"] {
+  --bg: #0c0e15;
+  --bg2: #111420;
+  --bg3: #171b2a;
+  --bg4: #1e2438;
+  --surface: #1a1e2e;
+  --border: #282e46;
+  --accent: #f0c060;
+  --accent2: #6ab4d8;
+  --accent3: #b87ad4;
+  --green: #5ec47a;
+  --red: #e06868;
+  --text: #ddd9d0;
+  --text2: #9e9a92;
+  --text3: #5e5a52;
+  --heading: #f4f0e6;
+  --correct-bg: #5ec47a14;
+  --correct-border: #5ec47a55;
+  --wrong-bg: #e0686814;
+  --wrong-border: #e0686855;
+  --option-hover: #f0c06014;
+  --sidebar-bg: #0a0c12;
+}
+:root[data-theme="light"] {
+  --bg: #f2ede4;
+  --bg2: #e8e2d8;
+  --bg3: #ddd6ca;
+  --bg4: #cec6b8;
+  --surface: #ffffff;
+  --border: #c4bdb0;
+  --accent: #9a6010;
+  --accent2: #1a6890;
+  --accent3: #7030a0;
+  --green: #207840;
+  --red: #c03030;
+  --text: #2a2420;
+  --text2: #5a5248;
+  --text3: #8a8278;
+  --heading: #18140c;
+  --correct-bg: #20784014;
+  --correct-border: #20784055;
+  --wrong-bg: #c0303014;
+  --wrong-border: #c0303055;
+  --option-hover: #9a601014;
+  --sidebar-bg: #ebe5db;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  min-height:100vh;
+  transition:background .3s,color .3s;
+}
+
+/* SIDEBAR */
+#sidebar{
+  width:280px;min-width:280px;
+  background:var(--sidebar-bg);
+  border-right:1px solid var(--border);
+  height:100vh;position:fixed;top:0;left:0;
+  overflow-y:auto;
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+  z-index:100;display:flex;flex-direction:column;
+}
+#sidebar.collapsed{transform:translateX(-280px);}
+.sb-head{
+  padding:22px 18px 14px;
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;background:var(--sidebar-bg);z-index:2;
+}
+.sb-title{
+  font-family:'Libre Baskerville',serif;
+  font-size:12px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:3px;
+}
+.sb-sub{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
+.sb-nav{padding:10px 0 30px;}
+.sb-section{
+  padding:10px 18px 4px;
+  font-size:10px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--text3);font-family:'JetBrains Mono',monospace;
+}
+.sb-item{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 18px 7px 24px;
+  font-size:12.5px;color:var(--text2);
+  text-decoration:none;cursor:pointer;
+  border-left:2px solid transparent;
+  transition:all .2s;
+}
+.sb-item:hover,.sb-item.active{
+  color:var(--accent);
+  background:var(--option-hover);
+  border-left-color:var(--accent);
+}
+.sb-item .snum{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--text3);min-width:26px;
+}
+.sb-item .sdot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--border);flex-shrink:0;
+  transition:background .2s;
+}
+.sb-item.done .sdot{background:var(--green);}
+.sb-item.active .sdot{background:var(--accent);}
+
+/* CONTROLS */
+#toggle-btn{
+  position:fixed;top:14px;left:14px;z-index:200;
+  background:var(--accent);color:var(--bg);
+  border:none;width:34px;height:34px;border-radius:8px;
+  cursor:pointer;font-size:14px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;box-shadow:0 2px 12px #0009;
+}
+#toggle-btn:hover{transform:scale(1.07);}
+#theme-btn{
+  position:fixed;top:14px;right:14px;z-index:200;
+  background:var(--surface);color:var(--text);
+  border:1px solid var(--border);padding:6px 14px;border-radius:20px;
+  cursor:pointer;font-size:11px;
+  font-family:'JetBrains Mono',monospace;letter-spacing:.06em;
+  transition:all .2s;
+}
+#theme-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+/* MAIN */
+#main{
+  margin-left:280px;flex:1;
+  transition:margin-left .35s cubic-bezier(.4,0,.2,1);
+  min-width:0;
+}
+#main.expanded{margin-left:0;}
+
+/* TOP BAR */
+.topbar{
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:14px 60px 14px 76px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;
+}
+.topbar-title{
+  font-family:'Libre Baskerville',serif;
+  font-size:14px;font-weight:700;color:var(--heading);
+}
+.score-pill{
+  background:var(--bg3);border:1px solid var(--border);
+  padding:5px 14px;border-radius:20px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text2);transition:all .3s;
+}
+
+/* HERO */
+.hero{
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:50px 76px 44px;position:relative;overflow:hidden;
+}
+.hero::after{
+  content:'';position:absolute;bottom:-80px;right:-80px;
+  width:300px;height:300px;
+  background:radial-gradient(circle,var(--accent)10,transparent 70%);
+  border-radius:50%;pointer-events:none;
+}
+.hero-eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:12px;
+}
+.hero h1{
+  font-family:'Libre Baskerville',serif;
+  font-size:clamp(28px,4vw,44px);font-weight:700;
+  color:var(--heading);line-height:1.15;margin-bottom:14px;
+}
+.hero-desc{font-size:14px;color:var(--text2);max-width:580px;line-height:1.7;margin-bottom:24px;}
+.hero-stats{display:flex;gap:24px;flex-wrap:wrap;}
+.stat{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:10px;padding:12px 20px;text-align:center;
+}
+.stat-num{
+  font-family:'Libre Baskerville',serif;
+  font-size:28px;font-weight:700;color:var(--accent);line-height:1;
+}
+.stat-label{font-size:11px;color:var(--text3);margin-top:3px;font-family:'JetBrains Mono',monospace;letter-spacing:.06em;}
+
+/* SECTION HEADER */
+.section-wrap{padding:50px 76px 0;}
+.section-header{
+  display:flex;align-items:flex-start;gap:18px;
+  margin-bottom:28px;padding-bottom:18px;
+  border-bottom:1px solid var(--border);
+}
+.section-num{
+  font-family:'Libre Baskerville',serif;
+  font-size:44px;font-weight:700;color:var(--accent);
+  opacity:.22;line-height:1;min-width:56px;
+}
+.section-meta{flex:1;}
+.section-type{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;
+}
+.section-title{
+  font-family:'Libre Baskerville',serif;
+  font-size:clamp(18px,2.5vw,26px);font-weight:700;color:var(--heading);
+}
+.section-info{font-size:12.5px;color:var(--text3);margin-top:4px;font-family:'JetBrains Mono',monospace;}
+
+/* QUESTIONS WRAPPER */
+.questions-list{padding:0 76px 30px;}
+
+/* MCQ */
+.mcq{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;margin-bottom:16px;
+  overflow:hidden;transition:border-color .2s;
+  scroll-margin-top:80px;
+}
+.mcq.answered-correct{border-color:var(--green)66;}
+.mcq.answered-wrong{border-color:var(--red)66;}
+.mcq-head{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:18px 20px 14px;
+}
+.mcq-num{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--accent);font-weight:600;min-width:28px;padding-top:2px;
+}
+.mcq-q{font-size:14px;line-height:1.65;color:var(--text);font-weight:500;}
+.mcq-opts{padding:0 20px 18px 62px;display:flex;flex-direction:column;gap:7px;}
+.opt{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 14px;border-radius:8px;
+  border:1px solid var(--border);
+  cursor:pointer;transition:all .2s;
+  font-size:13.5px;line-height:1.5;color:var(--text2);
+  user-select:none;
+}
+.opt:hover:not(.locked){background:var(--option-hover);border-color:var(--accent)55;color:var(--text);}
+.opt .opt-letter{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--text3);min-width:18px;padding-top:1px;font-weight:600;
+}
+.opt.correct{background:var(--correct-bg)!important;border-color:var(--correct-border)!important;color:var(--green)!important;}
+.opt.correct .opt-letter{color:var(--green)!important;}
+.opt.wrong{background:var(--wrong-bg)!important;border-color:var(--wrong-border)!important;color:var(--red)!important;}
+.opt.wrong .opt-letter{color:var(--red)!important;}
+.opt.reveal-correct{background:var(--correct-bg);border-color:var(--correct-border);color:var(--green);}
+.opt.reveal-correct .opt-letter{color:var(--green);}
+.opt.locked{cursor:default;}
+.mcq-feedback{
+  margin:0 20px 14px 62px;padding:10px 14px;
+  border-radius:8px;font-size:13px;line-height:1.6;
+  display:none;
+}
+.mcq-feedback.show{display:block;}
+.mcq-feedback.correct{background:var(--correct-bg);color:var(--green);border:1px solid var(--correct-border);}
+.mcq-feedback.wrong{background:var(--wrong-bg);color:var(--red);border:1px solid var(--wrong-border);}
+.mcq-feedback strong{font-weight:700;}
+
+/* SAQ */
+.saq{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;margin-bottom:16px;
+  overflow:hidden;scroll-margin-top:80px;
+}
+.saq-head{padding:18px 20px 12px;display:flex;gap:14px;align-items:flex-start;}
+.saq-num{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--accent2);font-weight:600;min-width:28px;padding-top:2px;
+}
+.saq-q{flex:1;}
+.saq-q .qtxt{font-size:14px;line-height:1.65;color:var(--text);font-weight:500;margin-bottom:4px;}
+.saq-q .qmarks{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--accent2);letter-spacing:.08em;
+}
+.saq-toggle{
+  background:none;border:1px solid var(--border);
+  color:var(--text2);padding:6px 14px;border-radius:20px;
+  cursor:pointer;font-size:11px;font-family:'JetBrains Mono',monospace;
+  letter-spacing:.06em;transition:all .2s;white-space:nowrap;margin-left:10px;
+}
+.saq-toggle:hover{border-color:var(--accent2);color:var(--accent2);}
+.saq-answer{
+  display:none;padding:0 20px 18px 62px;
+}
+.saq-answer.open{display:block;}
+.ans-label{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.15em;text-transform:uppercase;
+  color:var(--accent2);margin-bottom:8px;
+}
+.ans-body{
+  background:var(--bg3);border:1px solid var(--border);
+  border-left:3px solid var(--accent2);
+  border-radius:0 8px 8px 0;padding:14px 16px;
+  font-size:13.5px;line-height:1.75;color:var(--text);
+}
+.ans-body ol{padding-left:0;list-style:none;counter-reset:ans;}
+.ans-body ol li{
+  counter-increment:ans;display:flex;gap:10px;
+  margin-bottom:8px;
+}
+.ans-body ol li::before{
+  content:counter(ans)".";
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--accent2);
+  min-width:20px;padding-top:2px;
+}
+.ans-body strong{color:var(--accent2);}
+
+/* CASE STUDY */
+.case{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;margin-bottom:24px;
+  overflow:hidden;scroll-margin-top:80px;
+}
+.case-head{
+  background:var(--bg3);border-bottom:1px solid var(--border);
+  padding:18px 22px;
+}
+.case-label{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--accent3);
+  margin-bottom:6px;
+}
+.case-title{
+  font-family:'Libre Baskerville',serif;
+  font-size:17px;font-weight:700;color:var(--heading);
+}
+.case-marks{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--accent3);margin-top:3px;
+}
+.case-scenario{
+  padding:18px 22px;border-bottom:1px solid var(--border);
+  font-size:14px;line-height:1.75;color:var(--text2);
+  background:var(--accent3)07;
+  border-left:3px solid var(--accent3);
+}
+.case-scenario strong{color:var(--accent3);}
+.case-questions{padding:18px 22px;}
+.cq{margin-bottom:20px;}
+.cq-num{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--accent3);font-weight:600;margin-bottom:6px;
+}
+.cq-q{font-size:14px;font-weight:500;color:var(--text);line-height:1.6;margin-bottom:10px;}
+.cq-marks{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--text3);margin-bottom:8px;
+}
+.case-toggle{
+  background:none;border:1px solid var(--border);
+  color:var(--text2);padding:7px 16px;border-radius:20px;
+  cursor:pointer;font-size:11px;font-family:'JetBrains Mono',monospace;
+  letter-spacing:.06em;transition:all .2s;margin-top:4px;
+}
+.case-toggle:hover{border-color:var(--accent3);color:var(--accent3);}
+.case-answer{
+  display:none;margin-top:10px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-left:3px solid var(--accent3);
+  border-radius:0 8px 8px 0;padding:14px 16px;
+  font-size:13.5px;line-height:1.75;color:var(--text);
+}
+.case-answer.open{display:block;}
+.case-answer ol{list-style:none;padding:0;counter-reset:ca;}
+.case-answer ol li{counter-increment:ca;display:flex;gap:10px;margin-bottom:8px;}
+.case-answer ol li::before{
+  content:counter(ca)".";
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--accent3);min-width:20px;padding-top:2px;
+}
+.case-answer strong{color:var(--accent3);}
+
+/* SCORE MODAL */
+.score-bar{
+  position:fixed;bottom:0;left:280px;right:0;
+  background:var(--bg2);border-top:1px solid var(--border);
+  padding:14px 40px;display:flex;align-items:center;
+  justify-content:space-between;z-index:80;
+  transition:left .35s;
+}
+.score-bar.expanded{left:0;}
+.score-bar-info{
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text2);
+}
+.score-bar-num{
+  font-family:'Libre Baskerville',serif;font-size:20px;
+  font-weight:700;color:var(--accent);
+}
+.reset-btn{
+  background:none;border:1px solid var(--border);
+  color:var(--text2);padding:7px 16px;border-radius:20px;
+  cursor:pointer;font-size:11px;font-family:'JetBrains Mono',monospace;
+  transition:all .2s;
+}
+.reset-btn:hover{border-color:var(--red);color:var(--red);}
+
+.divider{border:none;border-top:1px solid var(--border);margin:20px 0;}
+.pb{padding-bottom:80px;}
+
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)88;}
+
+@media(max-width:768px){
+  #main{margin-left:0;}
+  #sidebar{transform:translateX(-280px);}
+  #sidebar.open{transform:translateX(0);}
+  .section-wrap,.questions-list{padding-left:20px;padding-right:20px;}
+  .hero{padding:36px 20px 30px;}
+  .topbar{padding-left:56px;}
+  .score-bar{left:0;}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sb-head">
+    <div class="sb-title">Forensic Medicine</div>
+    <div class="sb-sub">Exam Practice · 85 Questions</div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-section">Section A — MCQs (50)</div>
+    <a class="sb-item" href="#mcq-1"><span class="snum">Q1</span><span class="sdot"></span>Forensic Entomology Basics</a>
+    <a class="sb-item" href="#mcq-11"><span class="snum">Q11</span><span class="sdot"></span>Insect Succession & Stages</a>
+    <a class="sb-item" href="#mcq-21"><span class="snum">Q21</span><span class="sdot"></span>PMI & Temperature</a>
+    <a class="sb-item" href="#mcq-31"><span class="snum">Q31</span><span class="sdot"></span>Causes & Manner of Death</a>
+    <a class="sb-item" href="#mcq-41"><span class="snum">Q41</span><span class="sdot"></span>Narcoanalysis</a>
+    <div class="sb-section">Section B — SAQs (30)</div>
+    <a class="sb-item" href="#saq-1"><span class="snum">SAQ1</span><span class="sdot"></span>Entomology Questions</a>
+    <a class="sb-item" href="#saq-11"><span class="snum">SAQ11</span><span class="sdot"></span>Death Classification</a>
+    <a class="sb-item" href="#saq-21"><span class="snum">SAQ21</span><span class="sdot"></span>Narcoanalysis Questions</a>
+    <div class="sb-section">Section C — Case Studies (5)</div>
+    <a class="sb-item" href="#case-1"><span class="snum">C1</span><span class="sdot"></span>Body in the Field</a>
+    <a class="sb-item" href="#case-2"><span class="snum">C2</span><span class="sdot"></span>Apartment Death</a>
+    <a class="sb-item" href="#case-3"><span class="snum">C3</span><span class="sdot"></span>Suspicious Homicide</a>
+    <a class="sb-item" href="#case-4"><span class="snum">C4</span><span class="sdot"></span>Narcoanalysis Scenario</a>
+    <a class="sb-item" href="#case-5"><span class="snum">C5</span><span class="sdot"></span>Delayed Death</a>
+  </div>
+</nav>
+
+<button id="toggle-btn" onclick="toggleSidebar()">☰</button>
+<button id="theme-btn" onclick="toggleTheme()">☀ Light</button>
+
+<div id="main">
+  <div class="topbar">
+    <span class="topbar-title">Forensic Medicine — Exam Practice</span>
+    <div class="score-pill" id="score-pill">MCQ Score: 0 / 50</div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Forensic Medicine · Practice Examination</div>
+    <h1>Exam Question Bank</h1>
+    <p class="hero-desc">Full examination covering all three units. MCQs provide instant feedback with explanations. Model answers reveal on demand for SAQs and Case Studies.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">50</div><div class="stat-label">MCQs · 1 mark</div></div>
+      <div class="stat"><div class="stat-num">30</div><div class="stat-label">SAQs · 5 marks</div></div>
+      <div class="stat"><div class="stat-num">5</div><div class="stat-label">Cases · 20 marks</div></div>
+      <div class="stat"><div class="stat-num">300</div><div class="stat-label">Total Marks</div></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SECTION A: MCQs
+  ══════════════════════════════════════ -->
+  <div class="section-wrap" id="mcq-section">
+    <div class="section-header">
+      <div class="section-num">A</div>
+      <div class="section-meta">
+        <div class="section-type">Section A</div>
+        <div class="section-title">Multiple Choice Questions</div>
+        <div class="section-info">50 Questions · 1 mark each · Select the best answer · Instant feedback provided</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="questions-list" id="mcq-list"></div>
+
+  <!-- ══════════════════════════════════════
+       SECTION B: SAQs
+  ══════════════════════════════════════ -->
+  <div class="section-wrap" id="saq-section">
+    <hr class="divider">
+    <div class="section-header">
+      <div class="section-num">B</div>
+      <div class="section-meta">
+        <div class="section-type">Section B</div>
+        <div class="section-title">Short Answer Questions</div>
+        <div class="section-info">30 Questions · 5 marks each · Click "Show Answer" to reveal model answer</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="questions-list" id="saq-list"></div>
+
+  <!-- ══════════════════════════════════════
+       SECTION C: CASE STUDIES
+  ══════════════════════════════════════ -->
+  <div class="section-wrap" id="case-section">
+    <hr class="divider">
+    <div class="section-header">
+      <div class="section-num">C</div>
+      <div class="section-meta">
+        <div class="section-type">Section C</div>
+        <div class="section-title">Long Answer — Case Studies</div>
+        <div class="section-info">5 Cases · 20 marks each · Multiple sub-questions per case</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="questions-list pb" id="case-list"></div>
+</div>
+
+<!-- SCORE BAR -->
+<div class="score-bar" id="score-bar">
+  <div>
+    <div class="score-bar-info">MCQ Score</div>
+    <div class="score-bar-num" id="bar-score">0 / 50</div>
+  </div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)" id="bar-pct">0%</div>
+  <button class="reset-btn" onclick="resetMCQ()">↺ Reset MCQs</button>
+</div>
+
+<script>
+// ════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════
+
+const mcqs = [
+  // ENTOMOLOGY BASICS (1-10)
+  {q:"What is the primary application of forensic entomology?",opts:["Identifying plant species at crime scenes","Using insects to assist in legal investigations","Studying insect behaviour in laboratories","Classifying beetle families"],ans:1,exp:"Forensic entomology is defined as the application of insects and arthropods to legal matters, particularly criminal investigations."},
+  {q:"Who is credited with the earliest recorded use of insects to solve a crime?",opts:["Dr. Bergeret d'Arbois","J.P. Megnin","Sung T'zu","Robert Ernest House"],ans:2,exp:"Sung T'zu (1235 AD), a Chinese mandarin of the Yuan Dynasty, made the first recorded observations of the usefulness of insects in solving crimes in his work 'Washing Away of Wrongs.'"},
+  {q:"In the Western world, forensic entomology is considered to have originated in which year?",opts:["1235","1922","1855","1894"],ans:2,exp:"Dr. Bergeret d'Arbois used entomological knowledge in 1855 to help the Paris police solve the murder of a child — the first Western forensic entomology case."},
+  {q:"Which publication by J.P. Megnin (1894) was a landmark in forensic entomology?",opts:["Washing Away of Wrongs","La Faune des Cadavres","The Entomology of Death","Forensic Arthropodology"],ans:1,exp:"Megnin's 'La Faune des Cadavres' (1894) was the first systematic monograph on the identification of blowflies and their forensic use."},
+  {q:"Blowflies can detect the odour of a decaying corpse from up to:",opts:["1 km","5 km","10 km","20 km"],ans:3,exp:"Blowflies (Calliphoridae) can detect faint traces of decay odour from up to 20 km away, making them among the earliest arrivals at a corpse."},
+  {q:"Which insect family is most important for Post-Mortem Interval (PMI) estimation?",opts:["Silphidae (Carrion Beetles)","Calliphoridae (Blowflies)","Dermestidae (Hide Beetles)","Trogidae (Carcass Beetles)"],ans:1,exp:"Calliphoridae (blowflies) are vital for PMI determination because they arrive within minutes of death and begin oviposition immediately."},
+  {q:"Approximately how many eggs does a single female blowfly deposit on a corpse?",opts:["50","100","250","500"],ans:2,exp:"Each female blowfly deposits approximately 250 eggs in natural body openings and open wounds."},
+  {q:"Sung T'zu's observation about maggots appearing at which body location (before the nine orifices) was indicative of injury?",opts:["Chest only","Temples, hairline, rib cage, or belly","Hands and feet","Eyes and ears only"],ans:1,exp:"Sung T'zu noted that maggots appearing at the temples, hairline, rib cage, or belly before the nine natural orifices indicated those parts had been injured."},
+  {q:"The cheese skipper (Family Piophilidae) is attracted to corpses during which process?",opts:["Early putrefaction","Autolysis","Butyric fermentation (late decomposition)","Fresh stage bloating"],ans:2,exp:"Cheese skippers are attracted by the 'cheesy' odour produced during butyric fermentation in the later stages of decomposition."},
+  {q:"Cheese skippers have been found in corpses buried as deep as:",opts:["0.5 m","1 m","2 m","3 m"],ans:3,exp:"Piophilidae (cheese skippers) have been found in coffins buried up to 3 m deep and in corpses up to 10 years old."},
+
+  // INSECT SUCCESSION & STAGES (11-20)
+  {q:"Which stage of decomposition is characterised by gases produced by anaerobic bacteria inflating the abdomen?",opts:["Fresh Stage","Bloated Stage","Decay Stage","Dry Stage"],ans:1,exp:"The Bloated Stage (Days 2–6) begins when putrefaction starts and anaerobic bacteria produce gases that inflate the abdomen."},
+  {q:"During which stage of decomposition does the abdominal wall break and the carcass deflate?",opts:["Fresh Stage","Bloated Stage","Decay Stage","Post-Decay Stage"],ans:2,exp:"The Decay Stage (Days 5–11) is characterised by the abdominal wall breaking, allowing gases to escape and the carcass to deflate."},
+  {q:"Hide beetles (Dermestidae) are most active at which stage of decomposition?",opts:["Fresh","Bloated","Decay","Dry/Post-decay when body has dried out"],ans:3,exp:"Dermestidae (hide beetles) are late-arriving specialist scavengers that feed on dried skin and tendons as the body dries out, making them dominant in the post-decay/dry stage."},
+  {q:"Which family of beetles is considered LAST to inhabit a carcass?",opts:["Histeridae","Staphylinidae","Trogidae (Carcass Beetles)","Silphidae"],ans:2,exp:"Trogidae (Carcass Beetles) are among the last beetles to inhabit a carcass. They have very thick exoskeletons and feed on dried skin and ligaments."},
+  {q:"Hister beetles (Histeridae) display which distinctive behavioural pattern?",opts:["Arrive at fresh corpses and feed on flesh","Are only active during daytime","Hide under corpse by day; enter maggot-infested areas at night to prey on maggots","Burrow under soil and never contact the corpse directly"],ans:2,exp:"Hister beetles are nocturnal hunters that hide under the corpse during daylight and only become active at night to enter maggot-infested areas and devour blowfly larvae and pupae."},
+  {q:"'Smooth maggots' are produced by which category of flies?",opts:["Secondary predatory flies","Pioneer flies that are purely corpse feeders","Flesh flies (Sarcophagidae)","Cheese skippers (Piophilidae)"],ans:1,exp:"Smooth maggots belong to pioneer flies that are purely corpse feeders. They arrive first. 'Hairy' maggots are from secondary flies that are both corpse feeders and active predators."},
+  {q:"Masses of 3rd instar blowfly maggots can raise local temperature by more than:",opts:["2°C","5°C","10°C","20°C"],ans:2,exp:"Masses of 3rd instar maggots can raise the temperature around them by more than 10°C through their metabolic activity. This must be accounted for in PMI calculations."},
+  {q:"At which instar stage do blowfly maggots typically move away from the body to pupate?",opts:["1st instar","2nd instar","3rd instar","4th instar"],ans:2,exp:"After the 3rd instar stage, maggots migrate away from the body and metamorphose into adult flies (pupation occurs in soil)."},
+  {q:"The Silphidae (Carrion Beetles) adults CANNOT survive on carrion alone — they also require:",opts:["Fruit juices","Access to maggots","Plant sap","Fungal material"],ans:1,exp:"Even though Silphid adults have been recorded feeding on carrion, they cannot survive on it alone and die if they do not have access to maggots."},
+  {q:"Which beetle family larvae are notable for pupating inside empty fly pupal cases sealed with silk?",opts:["Histeridae","Trogidae","Cleridae (Ham Beetles)","Dermestidae"],ans:2,exp:"Ham Beetles (Cleridae) larvae feed on dried fat and pupate inside the empty pupal cases of flies, after sealing the opening with silk."},
+
+  // PMI & TEMPERATURE (21-30)
+  {q:"What does PMI stand for in forensic entomology?",opts:["Primary Maggot Index","Post-Mortem Interval","Putrefaction Measurement Index","Peri-Mortem Insect count"],ans:1,exp:"PMI stands for Post-Mortem Interval — the elapsed time from death to the discovery of a cadaver."},
+  {q:"Which formula is used to calculate Degree-Day accumulation with a base threshold of 10°C?",opts:["(Max + Min) / 2","(Max − 10) + (Min − 10) / 2","Max × Min / 10","(Max − Min) / 2 − 10"],ans:1,exp:"The correct formula is: DD = [(Daily Max − 10) + (Daily Min − 10)] / 2. If max or min is below the threshold, zero is entered."},
+  {q:"What is the lower developmental temperature threshold for Phaenicia sericata?",opts:["0°C","6°C","10°C","15°C"],ans:2,exp:"Phaenicia (Lucilia) sericata has a lower developmental threshold of 10°C — development essentially ceases below this temperature."},
+  {q:"Which of the following species has a lower developmental threshold of 6°C?",opts:["Phaenicia sericata","Phormia regina","Calliphora vomitoria","None of the above"],ans:2,exp:"Both Calliphora vomitoria and Cynomyopsis cadaverina have lower developmental thresholds of 6°C, making them able to develop at cooler temperatures than other blowfly species."},
+  {q:"The Isomegalen Diagram in forensic entomology is used to:",opts:["Map insect distribution geographically","Determine maggot age from size and temperature data","Calculate total insect biomass on a corpse","Identify beetle species from morphology"],ans:1,exp:"The Isomegalen Diagram shows maggot length plotted against time/temperature, allowing the investigator to estimate maggot age from measured size and known temperature records."},
+  {q:"In controlled rearing for PMI, the investigator must collect which specimens as a priority?",opts:["The most abundant insects present","The smallest maggots (youngest)","The LARGEST maggots on the cadaver","Pupal cases only"],ans:2,exp:"It is critical to collect the LARGEST maggots on the cadaver — they represent the oldest specimens and give the maximum PMI estimate."},
+  {q:"What is a 'window of insect opportunity' in PMI analysis?",opts:["The time period when flies are most active (mid-day)","A period when the body was accessible to insects (e.g., window open)","The optimal temperature range for blowfly development","The time between egg-laying and hatching"],ans:1,exp:"A 'window of insect opportunity' refers to a period when the body was accessible to insects — e.g., a building window was open, or a body was moved outdoors. This affects when colonisation began."},
+  {q:"ADD stands for:",opts:["Annual Death Degree","Accumulated Degree Days","Average Developmental Duration","Adjusted Decomposition Data"],ans:1,exp:"ADD = Accumulated Degree Days — the sum of degree-days above the lower developmental threshold accumulated from egg-laying to the time of collection."},
+  {q:"In the controlled rearing method, after rearing collected maggots to adulthood, you determine:",opts:["Total ADD required from egg to adult","ADD remaining after collection, then subtract from total to find unknown ADD","The exact number of eggs laid","The ambient temperature at time of death"],ans:1,exp:"You determine the ADD required to complete development AFTER collection (the known portion), then subtract this from the total ADD required for the species to find the unknown ADD accumulated since oviposition."},
+  {q:"Why must forensic entomologists account for maggot mass temperatures separately from ambient temperature?",opts:["Maggot masses are always cooler than ambient","Maggot metabolic activity can raise local temperature >10°C, accelerating development","Maggots require cool temperatures to develop","Ambient temperature is always more reliable"],ans:1,exp:"Maggot masses generate significant metabolic heat, raising local temperature by more than 10°C. Using ambient temperature alone would lead to an underestimate of development rate and overestimate of PMI."},
+
+  // CAUSES & MANNER OF DEATH (31-40)
+  {q:"According to the Harvard Criteria, a flat EEG must be combined with how many other criteria to declare death?",opts:["1","2","3 (total of 4 criteria required)","EEG alone is sufficient"],ans:2,exp:"The Harvard Criteria require ALL FOUR criteria: total unawareness of stimuli, no movement/breathing for ≥1 hour, no reflexes, AND flat EEG."},
+  {q:"The 'tripod of life' refers to which three systems whose irreversible cessation defines death?",opts:["Digestive, muscular, endocrine","Nervous, circulatory, and respiratory","Renal, hepatic, and cardiac","Immune, lymphatic, and vascular"],ans:1,exp:"Death is defined as the permanent and irreversible cessation of the nervous, circulatory, and respiratory systems — termed the 'tripod of life.'"},
+  {q:"The Winslow's Test for confirming death involves:",opts:["Placing a feather at the nostrils","A water bowl placed on the chest to observe light reflection for movement","Applying heat to test for blister formation","Injecting fluorescein subcutaneously"],ans:1,exp:"Winslow's Test places a water bowl on the chest and observes the light reflection for any respiratory movement."},
+  {q:"The earliest and surest sign of death is:",opts:["Rigor mortis","Livor mortis","Segmentation/trucking of blood in retinal vessels (viewed by ophthalmoscope)","Absence of heartbeat for 5 minutes"],ans:2,exp:"The earliest and surest sign of death is segmentation/trucking of blood columns in the retinal blood vessels, observed by ophthalmoscopy."},
+  {q:"In a death certificate, the 'proximate' (underlying) cause of death is listed in:",opts:["Part II","Part I, line A (most recent)","Part I, line D (oldest/initiating condition)","A separate supplementary form"],ans:2,exp:"The proximate (underlying) COD — what started the entire chain of events — is listed in Part I, line D (oldest condition). This is what initiated the uninterrupted chain leading to death."},
+  {q:"The Manner of Death (MOD) takes precedence in this order (highest first):",opts:["Natural > Accident > Suicide > Homicide","Homicide > Suicide > Accident > Natural","Accident > Homicide > Natural > Suicide","Suicide > Homicide > Accident > Natural"],ans:1,exp:"When multiple CODs have different MODs, the priority is: Homicide overrides all, then Suicide overrides Accident and Natural, then Accident overrides Natural."},
+  {q:"Chronic alcoholism death is classified as which Manner of Death?",opts:["Accidental","Homicide","Natural","Undetermined"],ans:2,exp:"Chronic alcoholism death is classified as Natural because chronic alcoholism is recognised as a disease itself and the external influence (ethanol) has its effects over an extended period (years to decades)."},
+  {q:"The 'but for' rule in determining COD means:",opts:["If there is doubt, the COD is undetermined","'But for' the original event, the person would not have died at that time","COD cannot be the cause unless the person was previously healthy","Forensic pathologists should always assume natural causes first"],ans:1,exp:"The 'but for' rule asks: 'But for the original event (e.g., gunshot wound), would this person have died at this time?' If the answer is no, that event is the underlying COD."},
+  {q:"An armed robber fires a 'warning shot' that ricochets and kills a bystander. The MOD is:",opts:["Accidental — the robber didn't intend to kill","Natural","Undetermined","Homicide — the killing of one person by another, intent is NOT required"],ans:3,exp:"Homicide does NOT require evidence that the individual intended to kill. The fact that one human killed another — regardless of intent — makes it homicide."},
+  {q:"A person with severe heart disease dies of a fatal arrhythmia triggered by the stress of being robbed. MOD is:",opts:["Natural (underlying heart disease)","Accidental","Homicide by heart attack","Undetermined"],ans:2,exp:"This is 'homicide by heart attack.' When a criminal act triggers a mechanism of death related to underlying disease in a victim, the death is appropriately ruled homicide."},
+
+  // NARCOANALYSIS (41-50)
+  {q:"The term 'narcoanalysis' derives from the Greek word 'narkc' meaning:",opts:["Sleep","Truth","Anaesthesia / torpor","Memory"],ans:2,exp:"'Narkc' is Greek for anaesthesia or torpor. The term narcoanalysis was coined by Horseley."},
+  {q:"Who is called the 'Father of Truth Serum'?",opts:["Horseley","Sung T'zu","Dr. Robert Ernest House","J.P. Megnin"],ans:2,exp:"Dr. Robert Ernest House, a Texas obstetrician, is called the 'Father of Truth Serum' for pioneering the use of scopolamine in criminal interrogation."},
+  {q:"Narcoanalysis was first used in the United States for criminal investigation in:",opts:["1900","1915","1922","1935"],ans:2,exp:"Narcoanalysis was first used in the United States in criminal investigation in 1922."},
+  {q:"Which drug was used in the 1920s as the original 'truth serum'?",opts:["Sodium thiopental","Sodium amobarbital","Scopolamine","Ketamine"],ans:2,exp:"Scopolamine was the first drug used as a 'truth serum' in psychotherapeutic and early criminal interrogation contexts in the 1920s."},
+  {q:"The standard dose of sodium thiopental (Pentothal) used in narcoanalysis is:",opts:["50–100 mg","150–350 mg","400–600 mg","700–900 mg"],ans:1,exp:"The standard dose is 150–350 mg, administered IV at a rate of less than 1 cc/min. In organic brain disease, the dose is reduced to 75 mg."},
+  {q:"Which of the following is a CONTRAINDICATION to narcoanalysis?",opts:["History of porphyria","Mild anxiety","Age over 40","History of fractures"],ans:0,exp:"Porphyria is a well-known contraindication because barbiturates (used in narcoanalysis) are classic triggers of acute porphyric attacks, which can be life-threatening."},
+  {q:"The semi-narcotic state in narcoanalysis is characterised by all of the following EXCEPT:",opts:["Flushed appearance","Slurred speech","Nystagmus","Full consciousness and alertness"],ans:3,exp:"The semi-narcotic state is characterised by flushing, slowing and slurred speech, and nystagmus (involuntary eye movement). Full consciousness is NOT a feature — the subject is semi-conscious."},
+  {q:"Which professional conducts the actual interrogation interview during narcoanalysis?",opts:["The physician","The anaesthetist","The forensic psychologist","The videographer"],ans:2,exp:"The forensic psychologist formulates and conducts the interview questions during the semi-narcotic state. The anaesthetist maintains the narcotic state while the physician provides overall medical supervision."},
+  {q:"Legally, narcoanalysis results:",opts:["Are fully admissible as direct evidence","Are admissible only if the subject consented","Are NOT admissible as evidence even if done with consent","Can be used to convict but not acquit"],ans:2,exp:"Results of narcoanalysis, polygraph tests, and brain-mapping are NOT admissible as evidence in court even if conducted with the subject's consent. Their use is considered unconstitutional."},
+  {q:"The key constitutional protection that makes compulsory narcoanalysis illegal is:",opts:["Right to liberty","Right against self-incrimination","Right to privacy only","Right to legal representation"],ans:1,exp:"The right against self-incrimination prevents a suspect from being compelled to disclose facts from memory that could implicate them in a crime. Narcoanalysis compels mental testimony, violating this right."}
+];
+
+const saqs = [
+  // ENTOMOLOGY (1-10)
+  {n:1,q:"Define forensic entomology and describe its major applications in criminal investigation.",marks:"5 marks",a:`<ol><li><strong>Definition:</strong> Forensic entomology is the application of the study of insects and other arthropods to legal matters, particularly criminal investigations.</li><li><strong>Medicocriminal application:</strong> Most important branch — use of arthropods in violent crimes (murder, suicide, rape, physical abuse, contraband trafficking).</li><li><strong>Death Investigation:</strong> Establishing the post-mortem interval (PMI) — time from death to discovery; determines movement of corpse, manner and cause of death.</li><li><strong>Suspect Association:</strong> Insect evidence can associate suspects with a death scene through entomological transfer.</li><li><strong>Toxicology:</strong> Detection of drugs and toxins in insect larvae that fed on the corpse — especially useful when body fluids are degraded.</li></ol>`},
+  {n:2,q:"Describe the five stages of decomposition and the insect groups associated with each stage.",marks:"5 marks",a:`<ol><li><strong>Fresh (Days 1–2):</strong> Onset of autolysis; blowflies (Calliphoridae) arrive within minutes and lay ~250 eggs; house flies present.</li><li><strong>Bloated (Days 2–6):</strong> Anaerobic bacteria produce gases inflating the abdomen; 1st–2nd instar maggots; flesh flies; Hister beetles arrive.</li><li><strong>Decay (Days 5–11):</strong> Abdominal wall ruptures; maximum mass loss; 3rd instar maggots, Rove beetles, Sap beetles; greatest insect diversity.</li><li><strong>Post-Decay (Days 10–25):</strong> Skin, cartilage, bones remain; Cheese skippers, Carrion beetles, Ham beetles dominant.</li><li><strong>Dry/Skeletal (Days 25+):</strong> Bones and hair; Dermestids (Hide beetles), Scarab beetles, Carcass beetles (Trogidae) — the last arrivals.</li></ol>`},
+  {n:3,q:"Explain the ecological concept of succession as it applies to a cadaver, and why this makes PMI estimation possible.",marks:"5 marks",a:`<ol><li><strong>Concept of succession:</strong> A cadaver is a rich but ephemeral resource. Different organisms exploit it at different stages of decomposition.</li><li><strong>Predictable sequence:</strong> Because different insect groups are adapted to specific decompositional stages, the sequence of colonisation is fairly predictable regardless of geographic location (with adjustments for local fauna).</li><li><strong>Why PMI is possible:</strong> Since colonisation timing is predictable, the presence and developmental stage of specific insects indicates how long decomposition has been underway.</li><li><strong>Three premises:</strong> (1) Flies oviposit as soon as they find the body; (2) succession is predictable; (3) insect development is predictable and temperature-dependent.</li><li><strong>Limitation:</strong> Succession can be disrupted by burial, submersion, or indoor containment — these 'windows of opportunity' must be identified and incorporated.</li></ol>`},
+  {n:4,q:"Describe the complete life cycle of the black blowfly on a cadaver, from egg to adult.",marks:"5 marks",a:`<ol><li><strong>Egg stage:</strong> Adult female arrives within minutes of death; deposits ~250 eggs in natural openings and wounds; eggs hatch within 24 hours.</li><li><strong>1st instar:</strong> Hatch into 1st stage maggots; begin feeding on soft tissues; moult after feeding.</li><li><strong>2nd instar:</strong> Moult into 2nd stage maggots; feed for several hours; moult again.</li><li><strong>3rd instar:</strong> Largest and most voracious stage; masses generate heat (>10°C above ambient); after feeding, maggots migrate away from body.</li><li><strong>Pupation and adult emergence:</strong> 3rd instar maggots burrow into soil and pupate; adult flies emerge; cycle repeats. Total time is temperature-dependent and species-specific.</li></ol>`},
+  {n:5,q:"Explain the concept of Accumulated Degree Days (ADD) and how it is used in PMI estimation.",marks:"5 marks",a:`<ol><li><strong>Concept:</strong> Simple elapsed time is insufficient because insect development rate varies with temperature. ADD measures the total heat energy available for development above the lower developmental threshold.</li><li><strong>Formula:</strong> ADD per day = [(Daily Max − threshold) + (Daily Min − threshold)] / 2. If max or min < threshold, enter zero.</li><li><strong>Lower threshold:</strong> Each species has a lower developmental temperature below which development ceases (e.g., 10°C for <em>Phaenicia sericata</em>; 6°C for <em>Calliphora vomitoria</em>).</li><li><strong>Application:</strong> By summing daily ADD values and comparing to known total ADD for a species, the age of the oldest insects indicates time since oviposition (approximately time of death).</li><li><strong>Critical correction:</strong> Maggot masses can raise local temperature >10°C above ambient — use measured maggot mass temperature, not ambient temperature, for accuracy.</li></ol>`},
+  {n:6,q:"Compare the Isomegalen Diagram method and the Controlled Rearing method of PMI determination.",marks:"5 marks",a:`<ol><li><strong>Isomegalen Diagram:</strong> A graph of maggot body length (mm) vs. time at given temperatures. Investigator measures the largest maggots, identifies species, and reads estimated age from the diagram using known temperature records. Quick, field-applicable.</li><li><strong>Controlled Rearing:</strong> Live specimens collected at scene are reared in the lab under constant temperature until adults emerge. The ADD needed to complete development after collection is measured. This known portion is subtracted from the total ADD for the species to find the unknown amount accumulated in the field.</li><li><strong>Key difference:</strong> Isomegalen is direct reading from a graph; controlled rearing measures actual remaining development experimentally.</li><li><strong>Accuracy:</strong> Controlled rearing is generally more precise. Isomegalen diagrams are better for quick estimates.</li><li><strong>Situation dictates choice:</strong> Availability of lab facilities, condition of specimens, and complexity of the case determine which method is appropriate.</li></ol>`},
+  {n:7,q:"Describe the four steps of the crime scene protocol for insect evidence collection and PMI estimation.",marks:"5 marks",a:`<ol><li><strong>Step 1 — Collect specimens:</strong> Always collect the LARGEST maggots (oldest) even if few. Preserve some immediately in 70–80% ethanol; rear others alive to adulthood for species confirmation. Collect representative samples of all other insects.</li><li><strong>Step 2 — Temperature history:</strong> Obtain air temperature records (airport readings). Place micro data-loggers at the scene for microclimate data. Identify any 'windows of insect opportunity' that may have limited or facilitated access.</li><li><strong>Step 3 — Estimate oviposition time:</strong> Given the species present and their developmental stage, calculate how long they took to reach that stage at the recorded temperatures using ADD/ADH calculations.</li><li><strong>Step 4 — Corroborating evidence:</strong> Look for other insect evidence (puparia, shed skins, beetle presence, succession stage) that corroborates or challenges the PMI estimate. Note any factors that may have altered normal succession (burial, indoor containment, wrapping).</li></ol>`},
+  {n:8,q:"Distinguish between smooth maggots and hairy maggots and explain their significance in death investigation.",marks:"5 marks",a:`<ol><li><strong>Smooth maggots:</strong> Produced by pioneer flies (Calliphoridae primarily). Purely corpse feeders. Arrive first at the cadaver. Their presence indicates early-stage colonisation.</li><li><strong>Hairy maggots:</strong> Produced by secondary fly species. Feed on both corpses AND other maggots (active predators). Their arrival is necessarily LATER than smooth maggots because they need existing maggots as prey.</li><li><strong>Significance for PMI:</strong> The presence of hairy maggots alone (without smooth maggots) may indicate some time has already elapsed — their presence cannot be used as earliest arrival time.</li><li><strong>Ecological role:</strong> Hairy maggots help regulate maggot mass size by preying on smooth maggots; this affects heat generation by the mass.</li><li><strong>Identification:</strong> Species identification (to confirm smooth vs. hairy status) requires rearing to adulthood — hence the importance of rearing samples alongside preserved samples.</li></ol>`},
+  {n:9,q:"What is the forensic significance of Cheese Skippers (Piophilidae) and Dermestid beetles in death investigation?",marks:"5 marks",a:`<ol><li><strong>Cheese Skippers (Piophilidae) — late decomposition indicator:</strong> Arrive during butyric fermentation (late decay/post-decay). Their presence indicates the body has been decomposing for a significant period.</li><li><strong>Unique forensic value of Piophilidae:</strong> Found in coffins buried up to 3 m deep and in corpses up to 10 years old — they can provide evidence in cases of burial and exhumation.</li><li><strong>Dermestidae (Hide Beetles) — very late indicator:</strong> Arrive when the body is largely desiccated; feed on dried skin and tendons. Their presence or larval casts indicate an advanced stage of decomposition.</li><li><strong>Succession value:</strong> Both families act as 'indicator species' — their presence confirms that specific decompositional conditions have been reached, helping bracket the PMI from the later end.</li><li><strong>Combined use:</strong> Using early colonisers (blowflies) AND late-stage colonisers (Piophilidae, Dermestidae) together provides a more complete PMI bracket.</li></ol>`},
+  {n:10,q:"Explain how insect larvae can be used to detect drugs and toxins in a decomposed body.",marks:"5 marks",a:`<ol><li><strong>Principle:</strong> Insect larvae (particularly blowfly maggots) feed on body tissues and incorporate the chemical contents into their own bodies through bio-accumulation.</li><li><strong>When useful:</strong> Particularly valuable when conventional toxicology is impossible — body fluids are absent, organs are decomposed, and vitreous humour or bone marrow may be inadequate.</li><li><strong>Method:</strong> Larvae are collected, preserved, and submitted for toxicological analysis. Both drug parent compounds and metabolites can be detected in larval tissue.</li><li><strong>Limitations:</strong> Drug concentrations in larvae may differ from original body concentrations due to metabolism by the insect and dilution effects; reference standards for insect-based toxicology are still being developed.</li><li><strong>Examples detected:</strong> Cocaine, heroin, methamphetamine, ethanol, and various prescription drugs have been successfully detected in maggot tissue from decomposed human remains.</li></ol>`},
+
+  // DEATH CLASSIFICATION (11-20)
+  {n:11,q:"Define cause of death (COD) and explain the structure of a death certificate (Part I and Part II).",marks:"5 marks",a:`<ol><li><strong>COD Definition:</strong> The disease(s) or injury(ies), or combination thereof, that initiates an uninterrupted chain of events leading to the cessation of life.</li><li><strong>Part I structure:</strong> A chain from most recent (immediate cause, Line A) back to the oldest initiating condition (underlying/proximate COD, Line D). Each line is connected by 'due to, or as a consequence of.'</li><li><strong>Proximate COD:</strong> Line D is the 'underlying' COD — what started the entire chain. This is the most important entry for legal and epidemiological purposes.</li><li><strong>Part II:</strong> Lists other significant conditions that contributed to death but are NOT part of the chain in Part I (e.g., a concurrent but unrelated disease that weakened the patient).</li><li><strong>Example:</strong> Line A: Sepsis → Line B: Urinary tract infection → Line C: Paraplegia → Line D: Gunshot wound of back (underlying COD). Part II: Hypertension (contributing).</li></ol>`},
+  {n:12,q:"Describe the five manners of death and give one example of each.",marks:"5 marks",a:`<ol><li><strong>Natural:</strong> Solely from natural disease. Example: Death from pneumonia in an elderly person with no external factors.</li><li><strong>Accident:</strong> Unforeseen event with an external factor. Example: Death in a motor vehicle collision; or recreational drug overdose (most jurisdictions).</li><li><strong>Suicide:</strong> Intentional self-harm with intent to end one's life. Example: Person arranges carbon monoxide in a closed car with no evidence of foul play.</li><li><strong>Homicide:</strong> Killing of one human by another (not necessarily criminal). Example: Warning shot ricochet that kills a bystander; or arson causing a death.</li><li><strong>Undetermined:</strong> Insufficient evidence to classify into any of the above four. Example: A body found with both natural disease and possible trauma, where neither can be definitively ruled as cause.</li></ol>`},
+  {n:13,q:"Explain the mode of death and distinguish it from cause of death and manner of death.",marks:"5 marks",a:`<ol><li><strong>Mode of Death:</strong> Refers to the SYSTEM whose failure initiates the dying process — specifically which of the three vital systems failed first.</li><li><strong>Three modes:</strong> Coma (failure of the nervous system); Syncope (failure of the circulatory system); Asphyxia (failure of the respiratory system).</li><li><strong>Cause of Death:</strong> The disease or injury that initiated the chain of events. Example: Myocardial infarction.</li><li><strong>Manner of Death:</strong> The circumstances — natural, accident, suicide, homicide, or undetermined.</li><li><strong>Example distinguishing all three:</strong> A person shot (Manner = Homicide) → bullet damages the aorta → exsanguination (Mechanism) → cardiac arrest (Mode = Syncope) → Death. COD: Gunshot wound of the chest.</li></ol>`},
+  {n:14,q:"Describe the Harvard Criteria for the determination of brain death.",marks:"5 marks",a:`<ol><li><strong>Background:</strong> The Harvard Criteria, published in JAMA, established four criteria that must ALL be met to declare brain death as the standard of death.</li><li><strong>Criterion 1:</strong> Total unawareness of externally applied stimuli — no response to any stimulus whatsoever.</li><li><strong>Criterion 2:</strong> No movements or breathing during a continuous observation period of at least ONE HOUR by physicians.</li><li><strong>Criterion 3:</strong> No reflexes — no blinking, no eye movement, no stretch-of-tendon reflexes.</li><li><strong>Criterion 4:</strong> Flat electroencephalogram (EEG) — confirming absence of brain electrical activity. Important caveat: severe hypothermia and paralysing drugs can mimic brain death and must be excluded.</li></ol>`},
+  {n:15,q:"Explain the priority rule for manner of death when multiple causes with different manners are present.",marks:"5 marks",a:`<ol><li><strong>General rule:</strong> When more than one COD is present, each with a different MOD, the non-natural MOD takes precedence over natural.</li><li><strong>Full hierarchy:</strong> Homicide overrides ALL other manners. Suicide overrides Accident and Natural. Accident overrides Natural.</li><li><strong>Natural requires 100%:</strong> If there is even a 1% non-natural component, the death cannot be classified as natural.</li><li><strong>Practical example:</strong> A suicidal person who was also run over by a car — the lacerated heart (homicidal) overrides the suicide attempt. MOD = Homicide.</li><li><strong>Therapeutic complication:</strong> Falls in the category after accident — a death from a medical/surgical complication during treatment is generally accidental unless negligence rises to homicidal level.</li></ol>`},
+  {n:16,q:"Discuss the major cardiovascular causes of sudden unexpected natural death.",marks:"5 marks",a:`<ol><li><strong>Prevalence:</strong> Cardiovascular causes account for 40–50% of all sudden unexpected natural deaths, making it the most common category.</li><li><strong>Coronary artery disease:</strong> Atherosclerosis, coronary thrombosis, coronary haemorrhage causing lumen occlusion, coronary embolism — leading to myocardial ischaemia or infarction.</li><li><strong>Myocardial disease:</strong> Cardiomyopathy, fatty degeneration of the heart, acute myocarditis, rupture of a fresh myocardial infarction.</li><li><strong>Structural/valvular:</strong> Valvular lesions (aortic stenosis/regurgitation, mitral stenosis, ruptured chordae), ball-valve thrombosis, spontaneous aortic rupture, aneurysm rupture.</li><li><strong>Conduction system:</strong> Lesions of the conducting system (fibrosis, necrosis) causing fatal arrhythmia even without gross coronary disease — particularly important in young athletes.</li></ol>`},
+  {n:17,q:"Under what circumstances should an autopsy be mandatory in cases of sudden death?",marks:"5 marks",a:`<ol><li><strong>General rule:</strong> In cases of sudden unexpected death, it is usually NOT possible to certify the cause of death from external examination alone.</li><li><strong>Mandatory circumstances:</strong> Any death where foul play cannot be excluded; all sudden deaths in previously healthy individuals; deaths where the deceased had not been seen by a doctor within 14 days; deaths in custody or police involvement.</li><li><strong>Medicolegal significance:</strong> A doctor who issues a death certificate in a sudden death without autopsy risks being accused as an accessory to a crime and obstructing justice if foul play is later discovered.</li><li><strong>Occult causes:</strong> Certain causes of sudden death may be completely invisible externally — electrocution with household current, unsuspected drug overdose/poisoning, concealed internal trauma.</li><li><strong>Legal requirement:</strong> Most jurisdictions require coroner/medical examiner involvement in sudden, unexpected, or unwitnessed deaths precisely to ensure autopsy is performed when indicated.</li></ol>`},
+  {n:18,q:"Explain the medico-legal significance of the 'but for' rule in determining cause of death.",marks:"5 marks",a:`<ol><li><strong>Definition:</strong> The 'but for' rule asks: 'But for the original event/injury, would this person have died at the time that they did?' If the answer is 'no,' that event is the underlying COD.</li><li><strong>Application to remote injuries:</strong> Allows COD determination even when death occurs years after the original injury. The chain of causation must be uninterrupted.</li><li><strong>Classic example:</strong> Gunshot wound → paraplegia → recurrent UTIs → sepsis → death 17 years later. 'But for the gunshot wound, this person would not have died at this time.' → COD = gunshot wound; MOD = homicide.</li><li><strong>Breaking the chain:</strong> If an intervening cause that is unrelated to the original injury is sufficient to explain death, the chain is broken and the original injury is not the COD.</li><li><strong>Example of broken chain:</strong> Same paraplegic person dies of sepsis from endocarditis due to IV drug use — the drug use is an independent sufficient cause; original injury is no longer the COD.</li></ol>`},
+  {n:19,q:"Describe the requirements for a doctor to legally issue a death certificate.",marks:"5 marks",a:`<ol><li><strong>Personal inspection:</strong> The doctor must personally inspect the dead body — cannot rely on third-party description.</li><li><strong>Full satisfaction:</strong> Must be fully satisfied that death has occurred (not merely apparent death or a condition mimicking death).</li><li><strong>Knowledge of COD:</strong> Must be certain of the cause of death and able to certify it accurately.</li><li><strong>Absence of suspicion:</strong> Must be free from even the least suspicion of foul play. If any suspicion exists, the case must be referred to the appropriate authority (coroner/medical examiner).</li><li><strong>Recent examination:</strong> Must have examined the person as a living patient within 14 days before death, AND must be a registered qualified medical practitioner.</li></ol>`},
+  {n:20,q:"Discuss the challenges in determining manner of death in cases of recreational drug abuse fatality.",marks:"5 marks",a:`<ol><li><strong>The problem:</strong> Death certificates only offer 5 MOD options. Recreational drug death does not fit neatly into any single category.</li><li><strong>Not natural:</strong> Acute toxic drug effects killing a person is not a natural disease process.</li><li><strong>Not homicide:</strong> Self-administration distinguishes it from homicide (unless someone else administered the drug without consent).</li><li><strong>Suicide vs. Accident:</strong> Suicide requires intent to die. Recreational drug users intend to get high, not to die — most jurisdictions rule accidental. However, Russian roulette analogy: if the activity near-certainly causes death, some argue suicidal intent can be inferred.</li><li><strong>Key distinctions:</strong> ACUTE toxic effects of recreational drugs = Accidental. CHRONIC long-term effects of drug abuse = Natural. 'Unclassified' is available in some jurisdictions for drug deaths specifically.</li></ol>`},
+
+  // NARCOANALYSIS (21-30)
+  {n:21,q:"Explain the principle underlying narcoanalysis as a forensic interrogation technique.",marks:"5 marks",a:`<ol><li><strong>Basis of lying:</strong> A person can normally lie because imagination allows fabrication of false narratives above and beyond what is actually known.</li><li><strong>Drug action:</strong> The narcotic drug (barbiturate) depresses higher cortical functions, including the imagination and conscious volitional control, rendering the subject semi-conscious.</li><li><strong>Result:</strong> In the semi-conscious state, it becomes difficult to fabricate complex false answers — responses tend to be restricted to facts already stored in memory.</li><li><strong>Theory of Dr. House:</strong> In the drug-induced state, the individual replies with 'childlike simplicity and honesty, without evasiveness, guile, deceit, or fraud, as the answer stored in memory.'</li><li><strong>Critical limitation:</strong> This principle is NOT absolutely reliable — some subjects make entirely false statements; chronic liars may still deceive; the dose-response varies with willpower, mental attitude, and physique.</li></ol>`},
+  {n:22,q:"Describe in detail the procedure of narcoanalysis including all five stages.",marks:"5 marks",a:`<ol><li><strong>Stage 1 — Pre-Test Interview:</strong> Subject is fully explained the entire procedure. Informed consent is obtained. Medical history and contraindication screening are completed.</li><li><strong>Stage 2 — Pre-Narcotic State:</strong> Anaesthetist begins slow IV infusion of 5% sodium amobarbital or sodium thiopental at <1 cc/min. The pre-narcotic state is maintained and the subject's consciousness level is monitored.</li><li><strong>Stage 3 — Semi-Narcotic Interrogation:</strong> Once the semi-narcotic state is established (flushed appearance, slurred speech, nystagmus), the forensic psychologist conducts the interview. The entire session is videographed.</li><li><strong>Stage 4 — Recovery:</strong> Drug infusion stopped; subject allowed to sleep naturally and wake independently. Anaesthetist checks the subject on waking; coffee/tea offered.</li><li><strong>Stage 5 — Post-Test Interview:</strong> Subject's memory is checked. Subject is informed of what they said during the interview.</li></ol>`},
+  {n:23,q:"List and explain the contraindications to narcoanalysis.",marks:"5 marks",a:`<ol><li><strong>Airway disease (including URI):</strong> Barbiturates depress respiratory drive; any existing airway compromise risks respiratory failure and hypoxia.</li><li><strong>Severe renal or hepatic disease:</strong> Both organs are critical for drug metabolism and excretion. Impairment leads to drug accumulation, prolonged sedation, and toxicity.</li><li><strong>History of porphyria:</strong> Barbiturates are classic triggers of acute porphyric attacks (acute intermittent porphyria), which can cause severe neurological crises, potentially fatal.</li><li><strong>Hypotension:</strong> Barbiturates cause vasodilation and myocardial depression; pre-existing hypotension risks circulatory collapse under narcoanalysis.</li><li><strong>Barbiturate dependence and Psychosis:</strong> Dependent subjects have altered tolerance; psychotic subjects (e.g., Rudolf Hess historical case) produce unreliable, bizarre responses and may suffer psychological harm.</li></ol>`},
+  {n:24,q:"Discuss the arguments FOR the use of narcoanalysis in criminal investigations.",marks:"5 marks",a:`<ol><li><strong>Theoretical reliability:</strong> Dr. Robert Ernest House argued that the drug-induced state produces childlike honesty without evasiveness, guile, or fraud — answers reflect actual memory.</li><li><strong>Societal duty:</strong> Every person has a legal and moral obligation to provide information about offences to authorities. Narcoanalysis may enable this when voluntary disclosure fails.</li><li><strong>Protecting the innocent:</strong> Proponents argue the right against self-incrimination was designed to protect the innocent from false coerced confessions, not to shield the guilty from all investigative methods.</li><li><strong>Investigative leads:</strong> Even if results are inadmissible as direct evidence, information obtained can direct investigators toward physical evidence, witnesses, or other leads that ARE admissible.</li><li><strong>Constitutional framing argument:</strong> Some argue that framers of bills of rights intended societal rights to override individual rights in extreme circumstances involving serious crime.</li></ol>`},
+  {n:25,q:"Discuss the arguments AGAINST the use of narcoanalysis in criminal investigations.",marks:"5 marks",a:`<ol><li><strong>Not 100% accurate:</strong> Certain subjects have made entirely false statements under narcoanalysis — it does not reliably compel truth.</li><li><strong>Cannot detect all lies:</strong> Often unsuccessful in eliciting truth; should not be used to compare against pre-drug police statements, as contamination and bias can affect interpretation.</li><li><strong>Individual variability:</strong> The effective dose varies with willpower, mental attitude, and physique — no universal dosing standard exists, making results unpredictable.</li><li><strong>Malingerers:</strong> Evasive and chronically untruthful persons are not reliably affected — the technique fails against trained deceivers.</li><li><strong>Confabulation risk:</strong> The semi-conscious state can produce confabulation (unconscious fabrication to fill memory gaps) — subjects may sincerely report false 'memories' they believe to be true, corrupting the investigation.</li></ol>`},
+  {n:26,q:"What is the legal position of narcoanalysis evidence in court? Explain the constitutional basis.",marks:"5 marks",a:`<ol><li><strong>Inadmissibility:</strong> Results of narcoanalysis, polygraph tests, and brain-mapping are NOT admissible as direct evidence in court — even if conducted with the subject's full and voluntary consent.</li><li><strong>Investigative use only:</strong> If the subject consents, information obtained CAN be used for further investigation (probe) — to find physical evidence or leads, but not as standalone evidence.</li><li><strong>Cannot be compelled:</strong> A suspect cannot be compelled (forced) to undergo narcoanalysis. Forcing a subject violates constitutional rights.</li><li><strong>Constitutional basis — self-incrimination:</strong> The right against self-incrimination (equivalent to 5th Amendment principles) protects any person from being compelled to produce testimonial evidence against themselves. Narcoanalysis extracts mental testimony.</li><li><strong>Constitutionality:</strong> Use of narcoanalysis without genuine free consent is considered illegal and unconstitutional — it violates bodily integrity and the right against self-incrimination simultaneously.</li></ol>`},
+  {n:27,q:"Name and describe the team of professionals required to conduct a narcoanalysis session.",marks:"5 marks",a:`<ol><li><strong>Physician:</strong> Provides overall medical supervision; responsible for the safety of the procedure; available to manage any adverse medical events.</li><li><strong>Anaesthetist:</strong> Induces and maintains the narcotic state by titrating the IV drug infusion; monitors vital signs (BP, oxygen saturation, respiratory rate) throughout; adjusts the depth of sedation to maintain the semi-narcotic state.</li><li><strong>Forensic Psychologist:</strong> The key interviewer; pre-formulates questions based on the case investigation; conducts the actual interrogation during the semi-narcotic state; analyses responses.</li><li><strong>Videographer:</strong> Records the entire session in full — video and audio documentation is essential for legal purposes, transparency, and subsequent analysis.</li><li><strong>Supporting Nursing Staff:</strong> Assist with patient positioning, IV access establishment, monitoring, and recovery care; ensure patient comfort and safety throughout.</li></ol>`},
+  {n:28,q:"Distinguish between narcoanalysis, polygraph testing, and brain-mapping as forensic investigation tools.",marks:"5 marks",a:`<ol><li><strong>Narcoanalysis:</strong> Chemical method — barbiturate drug reduces conscious control; subject's verbal responses are recorded in a semi-narcotic state. Indirect evidence of truth-telling via reduced capacity to fabricate.</li><li><strong>Polygraph (lie detector):</strong> Physiological method — records involuntary physiological responses (BP, pulse, respiration, galvanic skin response) to questions. Based on the premise that deception triggers stress responses detectable physiologically.</li><li><strong>Brain-mapping (BEOS/P300 EEG):</strong> Neurophysiological method — measures brain electrical responses (event-related potentials, especially P300 wave) to relevant stimuli. Tests whether the brain 'recognises' specific information (experiential knowledge vs. ignorance).</li><li><strong>Shared legal status:</strong> All three — narcoanalysis, polygraph, and brain-mapping — cannot be done without consent and results are inadmissible as direct court evidence in most jurisdictions.</li><li><strong>Reliability comparison:</strong> All three have significant scientific criticisms; none is considered definitive. Brain-mapping (P300) is considered the most scientifically grounded of the three.</li></ol>`},
+  {n:29,q:"What are the drugs used in narcoanalysis? Describe their pharmacological class and dosing.",marks:"5 marks",a:`<ol><li><strong>Drug 1: 5% Amytal (Sodium Amobarbital):</strong> Intermediate-acting barbiturate. CNS depressant; enhances GABA-A receptor activity; produces dose-dependent CNS depression from sedation to anaesthesia.</li><li><strong>Drug 2: 5% Pentothal (Sodium Thiopental):</strong> Ultra-short-acting barbiturate. More potent; faster onset; widely used historically in anaesthesia induction. Same mechanism (GABA-A potentiation).</li><li><strong>Infusion rate:</strong> Less than 1 cc/min via slow intravenous infusion — this slow rate allows precise titration to the semi-narcotic state without overshooting to full anaesthesia.</li><li><strong>Standard dose:</strong> 150–350 mg total for most subjects.</li><li><strong>Modified dosing:</strong> Reduced to 75 mg in subjects with organic brain disease — impaired CNS already present, making normal doses potentially dangerous.</li></ol>`},
+  {n:30,q:"What was the historical evolution of truth serums, and what ethical issues does narcoanalysis raise?",marks:"5 marks",a:`<ol><li><strong>Historical evolution:</strong> Scopolamine (1920s) → Sodium amobarbital (1930s–1940s, WWII intelligence use) → Sodium thiopental (most common modern agent). First criminal use was in the USA in 1922.</li><li><strong>WWII context:</strong> Intelligence agencies used barbiturates ('narconarcosis') extensively in interrogations, fuelling post-war ethical scrutiny.</li><li><strong>Ethical issue 1 — Bodily integrity:</strong> Injecting a substance into a person against their will violates the fundamental right to bodily integrity and autonomy.</li><li><strong>Ethical issue 2 — Self-incrimination:</strong> Compelling mental disclosure violates the right against self-incrimination recognised in virtually all democratic legal systems.</li><li><strong>Ethical issue 3 — Reliability:</strong> Since the method is scientifically unreliable (false confessions and false denials both occur), using it risks wrongful conviction of innocent persons or wrongful acquittal of the guilty — both miscarriages of justice.</li></ol>`}
+];
+
+const cases = [
+  {
+    id:1,
+    title:"The Body in the Field",
+    scenario:`A 34-year-old male is found dead in an open field in Nairobi on a Tuesday morning. The body is moderately decomposed. The abdomen is distended and there is evidence of skin slippage. The investigator notes large numbers of 3rd-instar blowfly maggots and several rove beetles. The daily maximum temperatures over the past 10 days have averaged 28°C and daily minimums 16°C. The species present is <strong>Phaenicia sericata</strong> (lower threshold 10°C, total ADD required 173–242).`,
+    qs:[
+      {q:"What stage of decomposition is this body in, and what features support your classification?",marks:"[4 marks]",a:`<ol><li><strong>Stage: Bloated/Decay transition</strong> (approximately Day 3–8).</li><li><strong>Distended abdomen:</strong> Classic feature of the Bloated Stage — anaerobic bacteria producing gases that inflate the abdominal cavity.</li><li><strong>Skin slippage:</strong> Occurs as putrefaction progresses into the decay phase; indicates the bloated stage is well advanced or transitioning to decay.</li><li><strong>3rd instar maggots:</strong> Consistent with Decay Stage — the most voracious maggot stage; large masses present by Days 5–11.</li></ol>`},
+      {q:"Calculate the ADD accumulated per day and estimate the minimum number of days since death using the ADD data provided.",marks:"[6 marks]",a:`<ol><li><strong>Daily ADD calculation:</strong> ADD/day = [(28−10) + (16−10)] / 2 = [18 + 6] / 2 = 24/2 = <strong>12 ADD per day</strong>.</li><li><strong>Minimum PMI (using lower ADD bound = 173):</strong> 173 ÷ 12 = <strong>~14.4 days</strong>.</li><li><strong>Maximum PMI (using upper ADD bound = 242):</strong> 242 ÷ 12 = <strong>~20.2 days</strong>.</li><li><strong>Estimated PMI: approximately 14–20 days</strong> before discovery.</li><li><strong>Caveat:</strong> 3rd instar maggots at scene → they haven't completed development → the actual PMI is within this range, not the full total. Controlled rearing of collected maggots is needed to determine remaining ADD.</li><li><strong>Correction needed:</strong> Maggot mass temperature should be measured — it may be >10°C above ambient, meaning actual development was faster than calculated, and true PMI may be shorter.</li></ol>`},
+      {q:"What is the forensic significance of the rove beetles (Staphylinidae) found at the scene?",marks:"[4 marks]",a:`<ol><li><strong>Successional indicator:</strong> Rove beetles are early-to-mid successional visitors; their presence is consistent with the Decay Stage and confirms sufficient time has elapsed for secondary colonisers to arrive.</li><li><strong>Predatory role:</strong> They are there preying on maggots and fly eggs/larvae — their presence confirms an established maggot population already exists.</li><li><strong>PMI corroboration:</strong> Their presence corroborates that decomposition has been underway for several days to over a week.</li><li><strong>Collection note:</strong> Rove beetles and their larvae should be collected alongside fly specimens to provide a fuller successional picture for the entomological report.</li></ol>`},
+      {q:"What are the two methods for PMI determination using the insect evidence collected, and which would you recommend here?",marks:"[6 marks]",a:`<ol><li><strong>Method 1 — Isomegalen Diagram:</strong> Measure the largest maggots (mm), use known temperatures, and read off estimated age from the diagram. Quick; suitable for field estimates.</li><li><strong>Method 2 — Controlled Rearing:</strong> Collect live maggots; rear to adult emergence under controlled constant temperature in the lab; measure the ADD required to complete development after collection; subtract from total species ADD to find unknown field ADD.</li><li><strong>Recommendation: Controlled Rearing</strong> — because (a) we have live 3rd instar maggots available to rear; (b) the case is a suspected criminal homicide requiring precise evidence; (c) controlled rearing provides verified species identification and more defensible PMI data for court; (d) the scenario involves a body with maggot masses that likely altered local temperature.</li><li><strong>Both methods should ideally be used:</strong> The isomegalen estimate provides an immediate field estimate; controlled rearing provides the precise PMI for the forensic report.</li></ol>`}
+    ]
+  },
+  {
+    id:2,
+    title:"Apartment Death — Manner Classification",
+    scenario:`A 52-year-old man with a known history of ischaemic heart disease is found dead in his apartment. The apartment shows signs of a recent break-in and struggle. There is bruising on his arms and a mild laceration on his scalp. His medical records show severe triple-vessel coronary artery disease. The forensic pathologist finds acute myocardial infarction on autopsy, with no evidence that the laceration was severe enough to cause death by itself. Toxicology is negative. Witnesses report a burglar was confronted by the deceased.`,
+    qs:[
+      {q:"Identify the cause of death, immediate mechanism, and the underlying cause of death in this case.",marks:"[6 marks]",a:`<ol><li><strong>Immediate mechanism:</strong> Ventricular fibrillation (fatal cardiac arrhythmia) / acute myocardial infarction — cardiac arrest.</li><li><strong>Underlying COD:</strong> Stress of criminal confrontation triggering acute MI in a person with severe pre-existing ischaemic heart disease (triple-vessel coronary artery disease).</li><li><strong>Death certificate (Part I):</strong> A: Ventricular fibrillation → B: Acute myocardial infarction → C: Ischaemic heart disease (triple-vessel) → D: Stress-induced acute coronary event during criminal confrontation.</li><li><strong>Part II:</strong> Scalp laceration and bruising (minor trauma from struggle; not independently fatal).</li><li><strong>Key principle:</strong> The coronary disease provided susceptibility, but the criminal act provided the trigger — the 'but for' rule applies: but for the confrontation with the burglar, the person would not have had an MI at that time.</li></ol>`},
+      {q:"What is the manner of death in this case and why? Apply the relevant legal principles.",marks:"[6 marks]",a:`<ol><li><strong>Manner of Death: HOMICIDE.</strong></li><li><strong>Principle — 'Homicide by heart attack':</strong> When a victim with severe underlying natural disease (especially heart disease with susceptibility to fatal arrhythmia) is subjected to a criminal act, and the stress of that act induces the mechanism of death, the death is appropriately ruled homicide.</li><li><strong>Intent not required:</strong> The burglar did not intend to cause the heart attack — but intent is NOT required for a homicide ruling. The burglar's criminal act directly caused the stress that triggered the death.</li><li><strong>Priority rule:</strong> Homicide overrides natural. Even though natural disease (ischaemic heart disease) provided the substrate, the criminal act was the precipitating cause.</li><li><strong>Contrast with pure natural death:</strong> If the same person had a spontaneous MI while watching television with no criminal act involved, the MOD would be natural. The criminal context is the differentiating factor.</li></ol>`},
+      {q:"What should the forensic pathologist have done differently if this death had been reported as a natural sudden cardiac death?",marks:"[4 marks]",a:`<ol><li><strong>Mandatory autopsy:</strong> Any sudden unexpected death in a person not known to be in immediate danger of dying, or any death with suspicious circumstances (signs of struggle, break-in), must have a full autopsy.</li><li><strong>Scene investigation:</strong> Forensic pathologist should attend or receive a full scene report — the signs of struggle (break-in, bruising, laceration) would immediately indicate the circumstances are not purely natural.</li><li><strong>Consequence of error:</strong> A doctor who issues a natural death certificate in such a case risks being accused as an accessory to covering up a crime and obstructing justice.</li><li><strong>Death referral:</strong> The case must be referred to the coroner/medical examiner immediately upon noting any suspicious features — certification of natural death without investigation in this scenario would be unlawful.</li></ol>`},
+      {q:"Explain the concept of 'sudden cardiac death' (SCD) and its forensic implications.",marks:"[4 marks]",a:`<ol><li><strong>SCD definition:</strong> Natural death due to cardiac causes, heralded by abrupt loss of consciousness within 1 hour of the onset of acute symptoms. For unwitnessed deaths, the time window can be expanded to 24 hours after the victim was last seen alive and stable.</li><li><strong>Prevalence:</strong> Cardiovascular causes account for 40–50% of all sudden unexpected natural deaths — the largest single category.</li><li><strong>Forensic implication 1:</strong> In witnessed SCD, the 1-hour rule makes certification relatively straightforward. In unwitnessed cases, the broader 24-hour window creates a larger PMI uncertainty requiring full investigation.</li><li><strong>Forensic implication 2:</strong> SCD can be induced or precipitated by criminal acts (as in this case). The forensic pathologist must always assess whether any external stressor, criminal act, or injury precipitated the cardiac event.</li></ol>`}
+    ]
+  },
+  {
+    id:3,
+    title:"Suspicious Death — Manner Disputed",
+    scenario:`A 28-year-old female is found hanging in her bedroom. A stepladder is nearby, a rope is tied to the ceiling rafter, and a loop is around her neck. Her partner reports she had been 'depressed lately' but was 'getting better.' No suicide note is found. The partner is a beneficiary of her life insurance. The door was locked from the inside but the bedroom window was open. Toxicology shows a therapeutic level of antidepressants in her blood.`,
+    qs:[
+      {q:"What are the possible manners of death in this case and what factors support each?",marks:"[6 marks]",a:`<ol><li><strong>Suicide (most likely initial impression):</strong> Setup (stepladder, rope, rafter, loop) is consistent with deliberate arrangement. Depression history supports suicidal state of mind. Door locked from inside. No evidence of a second person at scene.</li><li><strong>Homicide (must be excluded):</strong> Open window provides possible alternative access/exit. Partner is a financial beneficiary — motive exists. 'Getting better' could indicate she was unlikely to suicide at this time. No suicide note (though not required — only 25–33% leave notes).</li><li><strong>Accident (less likely but considered):</strong> Autoerotic asphyxiation is a possibility in hanging scenarios — requires investigation of sexual context at scene.</li><li><strong>Undetermined:</strong> If investigation cannot conclusively rule in suicide or homicide, 'undetermined' is an honest answer that preserves legal options for re-examination later.</li></ol>`},
+      {q:"The critical principle here is that the hanging appears to be suicide. What must the forensic pathologist do before ruling this a suicide?",marks:"[4 marks]",a:`<ol><li><strong>Thorough death investigation mandatory:</strong> Even in seemingly obvious cases, it cannot be overemphasised that a very thorough death investigation must take place. Appearance alone is insufficient.</li><li><strong>Scene investigation:</strong> Full scene examination including fingerprints on the rope and ladder, partner's alibi, timeline reconstruction, phone/digital evidence.</li><li><strong>Post-mortem examination:</strong> Look for signs of assault or restraint BEFORE hanging — petechiae distribution, ligature marks inconsistent with suicide hanging, defensive injuries, toxicology for sedating agents not in the therapeutic record.</li><li><strong>Social history:</strong> Interview multiple witnesses, review mental health records fully, assess whether 'getting better' narrative is consistent with someone who would suicide at this time.</li></ol>`},
+      {q:"A suicide note is not found. Does this mean the death CANNOT be ruled suicide? Justify your answer.",marks:"[4 marks]",a:`<ol><li><strong>No — absence of a note does NOT preclude a suicide ruling.</strong></li><li><strong>Prevalence of notes:</strong> Only one-quarter to one-third of suicide victims leave suicide notes. The majority do not. A note is therefore not required to make the ruling.</li><li><strong>Evidence beyond notes:</strong> The method of suicide, the scene findings, the overall death investigation, mental health history, recent behaviour, and witness accounts together provide ample evidence of suicidal intent in most cases.</li><li><strong>Standard of proof:</strong> The forensic pathologist applies the balance of evidence across the entire investigation. If all evidence supports suicide and no credible alternative explanation exists, suicide is the appropriate ruling — note or no note.</li></ol>`},
+      {q:"How would a finding of homicide in this case change the manner of death classification, even if the underlying mechanism is hanging-related asphyxia?",marks:"[6 marks]",a:`<ol><li><strong>Mechanism vs. Manner are separate:</strong> The mechanism of death (asphyxia from hanging) describes HOW physiologically she died — this does not determine the manner.</li><li><strong>Manner determined by circumstances:</strong> If investigation reveals the partner staged the hanging after killing her by another method (e.g., strangulation first, then staged hanging), the manner is Homicide regardless of the final asphyxial mechanism.</li><li><strong>Priority rule applies:</strong> Homicide overrides all other MOD classifications. Even if suicide would otherwise be a reasonable ruling, confirmed evidence of homicide eliminates that possibility.</li><li><strong>Death certificate impact:</strong> The COD on the certificate changes from 'asphyxia due to hanging (suicide)' to 'asphyxia due to ligature compression of neck (homicide)' or whatever the actual homicidal mechanism was.</li><li><strong>Criminal implications:</strong> A homicide ruling opens criminal prosecution. Evidence standards become exacting — the forensic pathologist's opinion and evidence will be challenged in court, making thoroughness of investigation critical.</li></ol>`}
+    ]
+  },
+  {
+    id:4,
+    title:"The Narcoanalysis Request",
+    scenario:`A 40-year-old suspect is detained in connection with the murder of his business partner. Police have circumstantial evidence but no confession. The suspect refuses to cooperate during interrogation. The investigating officer requests that the suspect be subjected to narcoanalysis using sodium thiopental. The suspect has a history of asthma and recent upper respiratory infection (URI). The suspect's lawyer objects strongly. The suspect then 'volunteers' to undergo narcoanalysis after 48 hours of interrogation without sleep.`,
+    qs:[
+      {q:"Is this suspect medically eligible for narcoanalysis? Apply the contraindications.",marks:"[4 marks]",a:`<ol><li><strong>Medical eligibility: NO — this suspect has TWO clear contraindications.</strong></li><li><strong>Contraindication 1 — Airway disease (URI):</strong> The suspect has a recent upper respiratory infection. Sodium thiopental (a barbiturate) depresses respiratory drive. In the presence of a URI with airway compromise, narcoanalysis carries significant risk of respiratory depression, bronchospasm, and hypoxia — potentially life-threatening.</li><li><strong>Contraindication 2 — History of asthma:</strong> Asthma is an obstructive airway disease. Barbiturate-induced respiratory depression in an asthmatic could precipitate a severe bronchospasm or status asthmaticus.</li><li><strong>Medical opinion:</strong> The physician and anaesthetist have an independent duty of care to the subject. Even if police insist, the medical team must refuse to proceed while contraindications are present.</li></ol>`},
+      {q:"Is the 'voluntary' consent obtained here legally and ethically valid? Explain fully.",marks:"[6 marks]",a:`<ol><li><strong>Consent is NOT valid — it is coerced consent.</strong></li><li><strong>48 hours sleep deprivation:</strong> Severe sleep deprivation impairs higher cognitive function, judgement, and decision-making. A consent obtained after 48 hours without sleep cannot be considered a free, voluntary, and informed consent — the subject is in a mentally compromised state.</li><li><strong>Standard for valid consent:</strong> Informed consent requires (a) full information about the procedure; (b) decision-making capacity; (c) freedom from coercion or undue influence. All three are compromised here.</li><li><strong>Duress:</strong> 48 hours of interrogation constitutes duress. Any 'agreement' under duress is not legally valid consent.</li><li><strong>Constitutional protection:</strong> Even genuine consent does not make narcoanalysis results admissible in court. Consent only permits use of information for further investigation — it does not validate the results as direct evidence.</li></ol>`},
+      {q:"Even if the narcoanalysis was conducted legally and the suspect confessed, how could this information be used?",marks:"[4 marks]",a:`<ol><li><strong>Direct evidence: NOT admissible.</strong> Results of narcoanalysis are not admissible as evidence in court even with genuine consent. The confession itself cannot be tendered as proof of guilt.</li><li><strong>Investigative leads — permissible use:</strong> If during narcoanalysis the suspect reveals the location of the murder weapon, the body, or names an unknown witness, police can independently investigate those leads.</li><li><strong>Derivative evidence:</strong> Physical evidence found AS A RESULT of information from narcoanalysis (e.g., a weapon found based on the location revealed) may be independently admissible if it can be shown to exist independently of the narcoanalysis.</li><li><strong>Limitation:</strong> Even derivative use is legally contested in many jurisdictions — the 'fruit of the poisonous tree' doctrine may exclude all evidence obtained because of an unconstitutional interrogation method.</li></ol>`},
+      {q:"Discuss the constitutional rights of the suspect that protect against compulsory narcoanalysis.",marks:"[6 marks]",a:`<ol><li><strong>Right against self-incrimination:</strong> The foundational protection — no person shall be compelled to be a witness against themselves. Narcoanalysis extracts mental testimony by chemical compulsion, directly violating this right.</li><li><strong>Right to bodily integrity:</strong> Every person has the right to control what is done to their body. Injecting a narcotic agent against a person's will (or under coerced 'consent') violates bodily integrity.</li><li><strong>Right to legal counsel:</strong> The suspect's lawyer's objection is legally significant. A suspect has the right to counsel during interrogation. Proceeding with narcoanalysis over counsel's objection violates this right.</li><li><strong>Right to dignity:</strong> International human rights law protects detainees from procedures that are degrading or that violate personal dignity — being rendered semi-unconscious and involuntarily interrogated constitutes a dignity violation.</li><li><strong>Conclusion:</strong> Compulsory narcoanalysis is unconstitutional. Even consensual narcoanalysis produces inadmissible results. The legal system permits its use only as a consensual investigative tool for generating leads — never as coercive interrogation.</li></ol>`}
+    ]
+  },
+  {
+    id:5,
+    title:"The Delayed Death",
+    scenario:`In 2005, a 19-year-old male was stabbed in the back during an assault, sustaining a T6 spinal cord injury resulting in complete paraplegia. He survived the initial injury and lived for 18 years with paraplegia. In 2023, at age 37, he develops urosepsis (sepsis secondary to a urinary tract infection — a well-known complication of spinal cord injury and neurogenic bladder) and dies despite treatment. The original attacker was convicted of grievous bodily harm (GBH) in 2005. The deceased's family now demands a murder charge.`,
+    qs:[
+      {q:"What is the cause of death? Construct the full death certificate (Part I chain and Part II).",marks:"[5 marks]",a:`<ol><li><strong>Part I — COD Chain:</strong></li><li>A. Sepsis (urosepsis)</li><li>B. Due to: Recurrent urinary tract infection (UTI)</li><li>C. Due to: Neurogenic bladder / chronic bladder dysfunction</li><li>D. Due to: Paraplegia resulting from T6 spinal cord injury due to stab wound of the back (2005) — <strong>underlying/proximate COD</strong>.</li><li><strong>Part II:</strong> Chronic paraplegia (contributing to complications); Spinal cord injury sequelae.</li></ol>`},
+      {q:"Apply the 'but for' rule to determine whether the 2005 stab wound is still the underlying cause of death in 2023.",marks:"[5 marks]",a:`<ol><li><strong>'But for' question:</strong> But for the stab wound of 2005 — would this person have died of urosepsis in 2023?</li><li><strong>Answer: NO.</strong> The stab wound caused the T6 spinal cord injury → permanent paraplegia → neurogenic bladder → recurrent UTIs → urosepsis. Each step in the chain follows directly and inevitably from the previous.</li><li><strong>Uninterrupted chain:</strong> There is no sufficiently independent intervening cause that 'breaks the chain' between the 2005 stab wound and the 2023 death. The UTIs were a well-known, documented complication of the spinal injury.</li><li><strong>Conclusion:</strong> The 2005 stab wound IS the underlying COD even 18 years later. This is consistent with legal principle — deaths ruled as homicides many years after the event are legitimate in law and medicine when the chain is unbroken.</li><li><strong>'But for' statement:</strong> "But for the stab wound of the back sustained in 2005, this person would not have died of urosepsis in 2023."</li></ol>`},
+      {q:"What is the manner of death? Has the original GBH conviction changed to a homicide (murder) case?",marks:"[5 marks]",a:`<ol><li><strong>Manner of Death: HOMICIDE.</strong> The killing of one human being by another — it does not require direct intent to kill, only that the chain from the criminal act to death is unbroken.</li><li><strong>MOD principle:</strong> When a person was directly injured by another and subsequently dies as a result of that injury — even decades later — the MOD ruling should reflect the circumstances of the original injury.</li><li><strong>Homicide classification is appropriate:</strong> The attacker's stabbing action initiated the unbroken chain culminating in death. The MOD on the death certificate should be Homicide.</li><li><strong>Murder charge consideration:</strong> Whether a murder charge can be brought depends on jurisdiction. In many legal systems, if the death results from the original criminal act (and is not too remote), the original attacker can be charged with homicide/murder. The GBH conviction would need to be superseded by a murder charge in a new proceeding.</li><li><strong>Legal note:</strong> Some jurisdictions have a 'year and a day rule' (now often extended or abolished) limiting homicide charges to deaths within a fixed period of the assault. In modern law, this rule is largely abandoned for exactly such delayed-death scenarios.</li></ol>`},
+      {q:"Construct a scenario in which the chain would be BROKEN and the attacker would NOT be responsible for the 2023 death.",marks:"[5 marks]",a:`<ol><li><strong>Independent sufficient cause:</strong> If the paraplegic man had developed sepsis from bacterial endocarditis caused by his own voluntary intravenous drug use (not related to the paraplegia) and died from that — the IV drug use is an independent sufficient cause for the death, breaking the chain.</li><li><strong>Unrelated injury:</strong> If he was involved in a separate road traffic accident in 2022 that caused severe abdominal injuries, leading to peritonitis and sepsis — an entirely unrelated external trauma breaks the chain.</li><li><strong>New criminal act:</strong> If someone poisoned him in 2023 and the poisoning caused multi-organ failure and death (regardless of his underlying paraplegia) — a new criminal act with its own independent fatal mechanism breaks the original chain.</li><li><strong>General principle:</strong> The intervening cause must be: (a) independent of the original injury; (b) sufficient on its own to explain death; and (c) genuinely breaks the causal connection rather than merely complicating the picture.</li><li><strong>Medical note:</strong> Mere coincidence of another natural disease (e.g., he also had hypertension) does NOT break the chain if the direct chain from stab wound to death is still uninterrupted and the other disease was merely a background risk factor.</li></ol>`}
+    ]
+  }
+];
+
+// ════════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════════
+
+let mcqScore = 0;
+let mcqAnswered = 0;
+
+function renderMCQs() {
+  const list = document.getElementById('mcq-list');
+  mcqs.forEach((q, i) => {
+    const num = i + 1;
+    const div = document.createElement('div');
+    div.className = 'mcq';
+    div.id = `mcq-${num}`;
+    const optLetters = ['A','B','C','D'];
+    let optsHTML = q.opts.map((o,oi) =>
+      `<div class="opt" onclick="selectOpt(this,${i},${oi})" data-oi="${oi}">
+        <span class="opt-letter">${optLetters[oi]}</span><span>${o}</span>
+       </div>`
+    ).join('');
+    div.innerHTML = `
+      <div class="mcq-head">
+        <span class="mcq-num">Q${num}</span>
+        <div class="mcq-q">${q.q}</div>
+      </div>
+      <div class="mcq-opts">${optsHTML}</div>
+      <div class="mcq-feedback" id="fb-${i}"></div>`;
+    list.appendChild(div);
+  });
+}
+
+function selectOpt(el, qi, oi) {
+  const mcqEl = el.closest('.mcq');
+  if (mcqEl.classList.contains('answered-correct') || mcqEl.classList.contains('answered-wrong')) return;
+  const opts = el.closest('.mcq-opts').querySelectorAll('.opt');
+  const fb = document.getElementById(`fb-${qi}`);
+  const correct = mcqs[qi].ans;
+
+  opts.forEach(o => o.classList.add('locked'));
+
+  if (oi === correct) {
+    el.classList.add('correct');
+    mcqEl.classList.add('answered-correct');
+    fb.className = 'mcq-feedback show correct';
+    fb.innerHTML = `<strong>✓ Correct!</strong> ${mcqs[qi].exp}`;
+    mcqScore++;
+    updateScore();
+    markSBDone(`mcq-${qi+1}`);
+  } else {
+    el.classList.add('wrong');
+    opts[correct].classList.add('reveal-correct');
+    mcqEl.classList.add('answered-wrong');
+    fb.className = 'mcq-feedback show wrong';
+    fb.innerHTML = `<strong>✗ Incorrect.</strong> The correct answer is <strong>${['A','B','C','D'][correct]}. ${mcqs[qi].opts[correct]}</strong>. ${mcqs[qi].exp}`;
+    markSBDone(`mcq-${qi+1}`);
+  }
+  mcqAnswered++;
+  updateScore();
+}
+
+function updateScore() {
+  const pct = mcqAnswered > 0 ? Math.round((mcqScore/mcqAnswered)*100) : 0;
+  const txt = `MCQ Score: ${mcqScore} / ${mcqAnswered}`;
+  document.getElementById('score-pill').textContent = txt;
+  document.getElementById('bar-score').textContent = `${mcqScore} / 50`;
+  document.getElementById('bar-pct').textContent = `${Math.round((mcqScore/50)*100)}% total`;
+}
+
+function resetMCQ() {
+  if (!confirm('Reset all MCQ answers?')) return;
+  mcqScore = 0; mcqAnswered = 0;
+  document.getElementById('mcq-list').innerHTML = '';
+  renderMCQs();
+  updateScore();
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('done'));
+}
+
+function renderSAQs() {
+  const list = document.getElementById('saq-list');
+  saqs.forEach((q) => {
+    const div = document.createElement('div');
+    div.className = 'saq';
+    div.id = `saq-${q.n}`;
+    div.innerHTML = `
+      <div class="saq-head">
+        <span class="saq-num">SAQ${q.n}</span>
+        <div class="saq-q">
+          <div class="qtxt">${q.q}</div>
+          <div class="qmarks">${q.marks}</div>
+        </div>
+        <button class="saq-toggle" onclick="toggleSAQ(this,'sa-${q.n}')">Show Answer</button>
+      </div>
+      <div class="saq-answer" id="sa-${q.n}">
+        <div class="ans-label">Model Answer</div>
+        <div class="ans-body">${q.a}</div>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+function toggleSAQ(btn, id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+  btn.textContent = el.classList.contains('open') ? 'Hide Answer' : 'Show Answer';
+}
+
+function renderCases() {
+  const list = document.getElementById('case-list');
+  cases.forEach((c) => {
+    const div = document.createElement('div');
+    div.className = 'case';
+    div.id = `case-${c.id}`;
+    let qsHTML = c.qs.map((cq, ci) => `
+      <div class="cq">
+        <div class="cq-num">Question ${c.id}.${ci+1}</div>
+        <div class="cq-q">${cq.q}</div>
+        <div class="cq-marks">${cq.marks}</div>
+        <button class="case-toggle" onclick="toggleCase(this,'ca-${c.id}-${ci}')">Show Model Answer</button>
+        <div class="case-answer" id="ca-${c.id}-${ci}">${cq.a}</div>
+      </div>`).join('<hr class="divider">');
+    div.innerHTML = `
+      <div class="case-head">
+        <div class="case-label">Case Study ${c.id}</div>
+        <div class="case-title">${c.title}</div>
+        <div class="case-marks">20 marks total</div>
+      </div>
+      <div class="case-scenario">${c.scenario}</div>
+      <div class="case-questions">${qsHTML}</div>`;
+    list.appendChild(div);
+  });
+}
+
+function toggleCase(btn, id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+  btn.textContent = el.classList.contains('open') ? 'Hide Answer' : 'Show Model Answer';
+}
+
+function markSBDone(id) {
+  const item = document.querySelector(`.sb-item[href="#${id}"]`);
+  if (item) item.classList.add('done');
+}
+
+// ════════════════════════════════════════════
+// SIDEBAR & THEME
+// ════════════════════════════════════════════
+let sidebarOpen = true;
+function toggleSidebar() {
+  sidebarOpen = !sidebarOpen;
+  document.getElementById('sidebar').classList.toggle('collapsed', !sidebarOpen);
+  document.getElementById('main').classList.toggle('expanded', !sidebarOpen);
+  document.getElementById('score-bar').classList.toggle('expanded', !sidebarOpen);
+  document.getElementById('toggle-btn').textContent = sidebarOpen ? '✕' : '☰';
+}
+function toggleTheme() {
+  const html = document.documentElement;
+  const btn = document.getElementById('theme-btn');
+  if (html.getAttribute('data-theme') === 'dark') {
+    html.setAttribute('data-theme','light');
+    btn.textContent = '🌙 Dark';
+  } else {
+    html.setAttribute('data-theme','dark');
+    btn.textContent = '☀ Light';
+  }
+}
+
+// ACTIVE NAV
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      document.querySelectorAll('.sb-item').forEach(i => {
+        i.classList.remove('active');
+        if (i.getAttribute('href') === '#' + id) i.classList.add('active');
+      });
+    }
+  });
+}, {rootMargin:'-15% 0px -70% 0px'});
+
+// INIT
+renderMCQs();
+renderSAQs();
+renderCases();
+updateScore();
+
+document.querySelectorAll('[id^="mcq-"],[id^="saq-"],[id^="case-"]').forEach(el => {
+  if (el.id) observer.observe(el);
+});
+</script>
+</body>
+</html>

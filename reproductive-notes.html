@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forensic Medicine — Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root[data-theme="dark"] {
+    --bg: #0d0f14;
+    --bg2: #13161e;
+    --bg3: #1a1e2a;
+    --border: #2a2f3f;
+    --accent: #e8a44a;
+    --accent2: #5b8ef0;
+    --accent3: #7ecba1;
+    --accent4: #e06e8c;
+    --text: #d8dce8;
+    --text-dim: #7a8099;
+    --text-bright: #f0f2f8;
+    --tag-bg: #1e2435;
+    --card: #161a25;
+    --card-hover: #1c2030;
+    --num: #e8a44a;
+    --shadow: 0 4px 24px rgba(0,0,0,0.5);
+  }
+  :root[data-theme="light"] {
+    --bg: #f5f3ee;
+    --bg2: #eeebe4;
+    --bg3: #e8e4db;
+    --border: #d0cab8;
+    --accent: #b85c1a;
+    --accent2: #2952a3;
+    --accent3: #2a7a52;
+    --accent4: #a02050;
+    --text: #2a2520;
+    --text-dim: #7a6e60;
+    --text-bright: #111008;
+    --tag-bg: #e0dbd0;
+    --card: #ece9e1;
+    --card-hover: #e4e0d6;
+    --num: #b85c1a;
+    --shadow: 0 4px 24px rgba(0,0,0,0.12);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Lora', Georgia, serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+    backdrop-filter: blur(12px);
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .logo span { color: var(--text-dim); font-weight: 400; }
+  .header-right { display: flex; align-items: center; gap: 1rem; }
+  .theme-toggle {
+    background: var(--bg3); border: 1px solid var(--border);
+    color: var(--text); cursor: pointer;
+    padding: 0.35rem 0.9rem; border-radius: 20px;
+    font-family: 'DM Mono', monospace; font-size: 0.75rem;
+    transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 4rem 2rem 3rem;
+    max-width: 900px; margin: 0 auto;
+    text-align: center;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); border: 1px solid var(--accent);
+    padding: 0.3rem 0.8rem; border-radius: 4px; margin-bottom: 1.5rem;
+    opacity: 0.85;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: var(--text-bright); line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .hero h1 em { color: var(--accent); font-style: normal; }
+  .hero p {
+    color: var(--text-dim); font-size: 1rem; max-width: 580px; margin: 0 auto 2rem;
+  }
+
+  /* ── TOC ── */
+  .toc-wrapper {
+    max-width: 900px; margin: 0 auto 3rem;
+    padding: 0 2rem;
+  }
+  .toc {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+  }
+  .toc-title {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1rem;
+  }
+  .toc-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 0.4rem;
+  }
+  .toc-item {
+    display: flex; align-items: baseline; gap: 0.6rem;
+    font-family: 'DM Mono', monospace; font-size: 0.8rem;
+    color: var(--text); text-decoration: none;
+    padding: 0.4rem 0.6rem; border-radius: 6px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .toc-item:hover { background: var(--border); color: var(--accent); }
+  .toc-num {
+    color: var(--accent2); font-size: 0.7rem; min-width: 2rem;
+    font-weight: 500;
+  }
+
+  /* ── MAIN ── */
+  main { max-width: 900px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+  /* ── PART DIVIDER ── */
+  .part-divider {
+    display: flex; align-items: center; gap: 1rem;
+    margin: 3.5rem 0 2rem;
+  }
+  .part-line { flex: 1; height: 1px; background: var(--border); }
+  .part-label {
+    font-family: 'Syne', sans-serif; font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-dim); white-space: nowrap;
+  }
+
+  /* ── SECTION ── */
+  .study-section {
+    margin-bottom: 2.5rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--card);
+    transition: box-shadow 0.2s;
+  }
+  .study-section:hover { box-shadow: var(--shadow); }
+
+  .section-header {
+    display: flex; align-items: flex-start; gap: 1.2rem;
+    padding: 1.4rem 1.8rem;
+    cursor: pointer; user-select: none;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .section-header:hover { background: var(--card-hover); }
+
+  .section-num {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 1.1rem; color: var(--num);
+    min-width: 2.5rem; line-height: 1.4;
+  }
+  .section-title-wrap { flex: 1; }
+  .section-title {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 1rem; color: var(--text-bright); line-height: 1.3;
+    margin-bottom: 0.25rem;
+  }
+  .section-sub {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: var(--text-dim); letter-spacing: 0.05em;
+  }
+  .chevron {
+    color: var(--text-dim); font-size: 0.85rem;
+    transition: transform 0.25s; margin-top: 3px;
+    flex-shrink: 0;
+  }
+  .study-section.open .chevron { transform: rotate(180deg); }
+
+  .section-body {
+    padding: 1.6rem 1.8rem 1.8rem;
+    display: none;
+  }
+  .study-section.open .section-body { display: block; }
+
+  /* ── CONTENT ELEMENTS ── */
+  .sub-heading {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent2); margin: 1.6rem 0 0.7rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .sub-heading:first-child { margin-top: 0; }
+
+  .num-list {
+    counter-reset: num-list;
+    list-style: none; padding: 0;
+  }
+  .num-list li {
+    counter-increment: num-list;
+    display: flex; gap: 0.8rem;
+    margin-bottom: 0.55rem; font-size: 0.92rem;
+    align-items: flex-start;
+  }
+  .num-list li::before {
+    content: counter(num-list, decimal-leading-zero);
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: var(--accent); min-width: 2rem; margin-top: 3px;
+    font-weight: 500;
+  }
+
+  .alpha-list {
+    list-style: none; padding: 0; counter-reset: alpha-list;
+  }
+  .alpha-list li {
+    counter-increment: alpha-list;
+    display: flex; gap: 0.8rem;
+    margin-bottom: 0.5rem; font-size: 0.91rem;
+    align-items: flex-start;
+  }
+  .alpha-list li::before {
+    content: counter(alpha-list, lower-alpha) ".";
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: var(--accent2); min-width: 1.5rem; margin-top: 3px;
+  }
+
+  .bullet-list {
+    list-style: none; padding: 0;
+  }
+  .bullet-list li {
+    display: flex; gap: 0.75rem;
+    margin-bottom: 0.5rem; font-size: 0.91rem;
+    align-items: flex-start;
+  }
+  .bullet-list li::before {
+    content: "◆"; font-size: 0.45rem; color: var(--accent3);
+    min-width: 1rem; margin-top: 7px; flex-shrink: 0;
+  }
+
+  p.para { font-size: 0.92rem; margin-bottom: 0.9rem; }
+  p.para:last-child { margin-bottom: 0; }
+
+  /* ── CALLOUT / NOTE ── */
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: var(--bg3); padding: 0.9rem 1.2rem;
+    border-radius: 0 8px 8px 0; margin: 1rem 0;
+    font-size: 0.88rem;
+  }
+  .callout.blue { border-left-color: var(--accent2); }
+  .callout.green { border-left-color: var(--accent3); }
+  .callout.red { border-left-color: var(--accent4); }
+  .callout-label {
+    font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.4rem; font-weight: 500;
+  }
+  .callout.blue .callout-label { color: var(--accent2); }
+  .callout.green .callout-label { color: var(--accent3); }
+  .callout.red .callout-label { color: var(--accent4); }
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x: auto; margin: 1rem 0; }
+  table {
+    width: 100%; border-collapse: collapse; font-size: 0.85rem;
+  }
+  th {
+    background: var(--bg3); font-family: 'Syne', sans-serif;
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--accent);
+    padding: 0.7rem 1rem; text-align: left;
+    border-bottom: 2px solid var(--border);
+  }
+  td {
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top; color: var(--text);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg3); }
+
+  /* ── FORMULA BOX ── */
+  .formula {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1rem 1.4rem; margin: 1rem 0;
+    font-family: 'DM Mono', monospace; font-size: 0.88rem;
+    color: var(--accent3); text-align: center;
+  }
+  .formula-label {
+    font-size: 0.68rem; color: var(--text-dim); letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 0.4rem;
+  }
+
+  /* ── TAG PILLS ── */
+  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.8rem 0 0.4rem; }
+  .tag {
+    background: var(--tag-bg); border: 1px solid var(--border);
+    border-radius: 20px; padding: 0.2rem 0.65rem;
+    font-family: 'DM Mono', monospace; font-size: 0.7rem;
+    color: var(--text-dim);
+  }
+
+  /* ── GRID 2-COL ── */
+  .two-col {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin: 1rem 0;
+  }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+  .mini-card {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1rem 1.2rem;
+  }
+  .mini-card-title {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.78rem;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--accent3); margin-bottom: 0.6rem;
+  }
+
+  /* ── SEARCH BAR ── */
+  .search-wrap { padding: 0 2rem; max-width: 900px; margin: 0 auto 1.5rem; }
+  .search-input {
+    width: 100%;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.7rem 1rem;
+    font-family: 'DM Mono', monospace; font-size: 0.85rem;
+    color: var(--text); outline: none; transition: border 0.2s;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-dim); }
+
+  /* ── BACK TO TOP ── */
+  .back-top {
+    position: fixed; bottom: 2rem; right: 2rem;
+    background: var(--accent); color: var(--bg);
+    border: none; cursor: pointer; width: 40px; height: 40px;
+    border-radius: 50%; font-size: 1.1rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3); transition: transform 0.2s;
+    z-index: 99;
+  }
+  .back-top:hover { transform: translateY(-3px); }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2rem; font-family: 'DM Mono', monospace;
+    font-size: 0.72rem; color: var(--text-dim);
+    border-top: 1px solid var(--border);
+  }
+
+  .highlight { color: var(--accent); font-style: italic; }
+  strong { color: var(--text-bright); font-weight: 600; }
+  hr.divider { border: none; border-top: 1px solid var(--border); margin: 1.2rem 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Forensic Medicine <span>/ Study Guide</span></div>
+  <div class="header-right">
+    <button class="theme-toggle" onclick="toggleTheme()">☀ Light</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Exam Preparation</div>
+  <h1>Forensic Medicine<br><em>Complete Study Guide</em></h1>
+  <p>Trace Evidence · Sexual Offences · Pregnancy, Abortion & Infanticide — all organized for rapid review.</p>
+</div>
+
+<!-- SEARCH -->
+<div class="search-wrap">
+  <input class="search-input" type="text" placeholder="🔍  Search topics, tests, terms..." id="searchInput" oninput="filterSections()">
+</div>
+
+<!-- TOC -->
+<div class="toc-wrapper">
+  <div class="toc">
+    <div class="toc-title">📋 Contents</div>
+    <div class="toc-grid">
+      <a class="toc-item" href="#s1"><span class="toc-num">1.0</span> Biological Evidence — Blood</a>
+      <a class="toc-item" href="#s2"><span class="toc-num">2.0</span> Blood Spatter Analysis</a>
+      <a class="toc-item" href="#s3"><span class="toc-num">3.0</span> Saliva Evidence</a>
+      <a class="toc-item" href="#s4"><span class="toc-num">4.0</span> Semen Evidence</a>
+      <a class="toc-item" href="#s5"><span class="toc-num">5.0</span> Vaginal Fluid Evidence</a>
+      <a class="toc-item" href="#s6"><span class="toc-num">6.0</span> Hair Evidence</a>
+      <a class="toc-item" href="#s7"><span class="toc-num">7.0</span> Sexual Offences — Overview</a>
+      <a class="toc-item" href="#s8"><span class="toc-num">8.0</span> Rape — Examination & Law</a>
+      <a class="toc-item" href="#s9"><span class="toc-num">9.0</span> Unnatural Sex Offences</a>
+      <a class="toc-item" href="#s10"><span class="toc-num">10.0</span> Sexual Deviations & Paraphilias</a>
+      <a class="toc-item" href="#s11"><span class="toc-num">11.0</span> Pregnancy</a>
+      <a class="toc-item" href="#s12"><span class="toc-num">12.0</span> Delivery & Related Topics</a>
+      <a class="toc-item" href="#s13"><span class="toc-num">13.0</span> Abortion</a>
+      <a class="toc-item" href="#s14"><span class="toc-num">14.0</span> Infanticide & Neonatal Death</a>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- ══════════════════════════════════════
+       PART A — TRACE EVIDENCE
+  ══════════════════════════════════════ -->
+  <div class="part-divider">
+    <div class="part-line"></div>
+    <div class="part-label">Part A — Trace Evidence</div>
+    <div class="part-line"></div>
+  </div>
+
+  <!-- 1. BLOOD -->
+  <div class="study-section open" id="s1">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">1.0</div>
+      <div class="section-title-wrap">
+        <div class="section-title">Biological Evidence — Blood</div>
+        <div class="section-sub">Detection · Presumptive Tests · Confirmatory Tests · Sample Collection</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-heading">1.1 Detection Methods</div>
+      <ul class="num-list">
+        <li><strong>White light / low-power microscope</strong> — standard examination; inadequate on dark backgrounds.</li>
+        <li><strong>Alternate Light Source (Polilight)</strong> — blood absorbs at 415 nm; useful on dark fabrics.</li>
+        <li><strong>Infrared (IR) illumination</strong> — wavelength 800–1000 nm; needs IR-sensitive camera + software.</li>
+        <li><strong>Luminol</strong> — chemiluminescence on oxidation by Hb; detects latent stains on large surfaces; NOT ideal as first choice (see limitations).</li>
+        <li><strong>Fluorescein</strong> — fluoresces at 425–485 nm (blue light); observe in dark with yellow-filter goggles.</li>
+      </ul>
+
+      <div class="callout red">
+        <div class="callout-label">⚠ Luminol — Use as Last Resort</div>
+        <ul class="bullet-list">
+          <li>Only a <strong>presumptive</strong> test; stain too dilute for confirmatory testing if only luminol-visible.</li>
+          <li>False positives: copper ions, iron compounds, cobalt, potassium permanganate, bleach, ferricyanide, plant peroxidases.</li>
+          <li>Destroys several genetic markers.</li>
+          <li>Water-based — smears bloody impressions; further dilutes stains.</li>
+          <li>Must be used in total darkness.</li>
+        </ul>
+      </div>
+
+      <div class="sub-heading">1.2 Presumptive Blood Tests</div>
+      <ul class="num-list">
+        <li><strong>Kastle–Meyer (Phenolphthalein) Test</strong> — based on peroxidase activity of Hb; colorless phenolphthalein → bright pink. Steps: swab stain → ethanol → KM solution → H₂O₂. Immediate pink = positive. Sensitivity: 1:10 dilution. False positives: cauliflower/broccoli peroxidases. Does <em>not</em> differentiate species.</li>
+        <li><strong>Benzidine, Tetramethylbenzidine (TMB), Leucomalachite Green, Ortho-toluidine</strong> — catalytic peroxidase tests. Note: benzidine and ortho-toluidine are <strong>carcinogens</strong>.</li>
+        <li><strong>Fluorescein test</strong> — Hb oxidizes fluorescein in H₂O₂; viewed under blue light (425–485 nm) in darkness.</li>
+      </ul>
+
+      <div class="sub-heading">1.3 Confirmatory Blood Tests</div>
+      <ul class="num-list">
+        <li><strong>Takayama (Hemochromogen) Test</strong> — specific for Hb; forms pink needle/rhomboid crystals of pyridine ferroprotoporphyrin. NaOH releases heme; glucose reduces iron; pyridine combines with it. Warm slide → view microscopically. Positive = crystals present. Note: absence of crystals does NOT confirm absence of blood.</li>
+        <li><strong>RSID™-Blood Strip Test</strong> — uses two monoclonal antibodies in lateral flow format to detect <strong>human glycophorin A</strong> (specific to RBCs). RSID Reader uses CCD imaging for pixel density analysis → positive/negative result. Calibrated from 800+ samples.</li>
+        <li><strong>ABAcard® HemaTrace®</strong> — detects human Hb via antigen-antibody reaction. Two pink lines (T + C) = positive; one pink line (C only) = negative; no C line = invalid. False positives with <strong>ferret blood</strong>.</li>
+        <li><strong>Hexagon OBTI, Heme-Select</strong> — immunological; confirm human Hb. May cross-react with primate blood.</li>
+      </ul>
+
+      <div class="callout blue">
+        <div class="callout-label">ABAcard® Procedure Summary</div>
+        Cut ~3 mm² sample → add 300 µL extraction buffer → vortex → incubate 1–5 min → add 150 µL to well "S" → read at 10 minutes.
+      </div>
+
+      <div class="sub-heading">1.4 Individualization After Confirmation</div>
+      <ul class="bullet-list">
+        <li><strong>DNA profiling</strong> — current gold standard for source identification.</li>
+        <li><strong>ABO typing / Hematrace cards</strong> — species of origin.</li>
+        <li><strong>Ouchterlony</strong> — older immunodiffusion test for species origin.</li>
+      </ul>
+
+      <div class="sub-heading">1.5 Reference Blood Sample Collection (Vacutainers)</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Tube Color</th><th>Additive</th><th>Best Use</th></tr>
+          <tr><td>🟡 Yellow</td><td>Acid Citrate + Dextrose</td><td>Conventional serology + DNA (preferred)</td></tr>
+          <tr><td>🟣 Purple</td><td>EDTA</td><td>DNA; may inhibit some serological tests</td></tr>
+          <tr><td>🔴 Red</td><td>None</td><td>Conventional serology; less ideal for DNA</td></tr>
+          <tr><td>⬜ Gray</td><td>Sodium Fluoride (± EDTA)</td><td>Toxicology only; not serology/DNA</td></tr>
+        </table>
+      </div>
+      <div class="callout green">
+        <div class="callout-label">Autopsy Tip</div>
+        Collect one of each vacutainer type to ensure all forensic tests can be performed. Store refrigerated at ~4°C (do NOT freeze).
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 2. BLOOD SPATTER -->
+  <div class="study-section" id="s2">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">2.0</div>
+      <div class="section-title-wrap">
+        <div class="section-title">Blood Spatter Analysis (BSA)</div>
+        <div class="section-sub">Types · Velocity · Angle of Impact · Point of Origin · Height Calculation</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-heading">2.1 Overview</div>
+      <p class="para">BSA (Blood Stain Pattern Analysis) determines: number of blows, victim/attacker position, weapon type, distance from origin, direction of movement, and type of force. All BSA findings are <strong>circumstantial evidence</strong>. Key figure: <strong>Paul Kirk (1902–1970)</strong>, UC Berkeley; instrumental in Sam Sheppard case.</p>
+
+      <div class="sub-heading">2.2 Three Main Categories of Bloodstains</div>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mini-card-title">1. Passive</div>
+          <ul class="bullet-list">
+            <li>Gravity acting alone: drops, flows, pools.</li>
+            <li>Open wound dripping while victim moves.</li>
+            <li>Size ≥ 4 mm diameter (low force).</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <div class="mini-card-title">2. Transfer</div>
+          <ul class="bullet-list">
+            <li>Wet bloody surface contacts secondary surface.</li>
+            <li><strong>Swipe</strong>: wet blood transferred to clean surface.</li>
+            <li><strong>Wipe</strong>: object moves through wet bloodstain.</li>
+            <li>Examples: bloody shoe prints, body drag marks.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mini-card" style="margin: 0.8rem 0;">
+        <div class="mini-card-title">3. Projected (Impact)</div>
+        <ul class="bullet-list">
+          <li><strong>Arterial Spurt/Gush</strong>: blood under pressure from breached artery.</li>
+          <li><strong>Cast-off</strong>: blood thrown from a moving blood-bearing object.</li>
+          <li><strong>Impact Spatter</strong>: blood source receives blow; random dispersion; size depends on force.</li>
+          <li><strong>Backspatter</strong>: blood directed back toward energy source (e.g., gunshot entrance wound).</li>
+        </ul>
+      </div>
+
+      <div class="sub-heading">2.3 Velocity Classification</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Type</th><th>Speed</th><th>Diameter</th><th>Typical Cause</th></tr>
+          <tr><td>Low Velocity (Passive)</td><td>≤ 5 ft/sec</td><td>≥ 4 mm</td><td>Gravity, dripping wound</td></tr>
+          <tr><td>Medium Velocity</td><td>5–25 ft/sec</td><td>2–4 mm</td><td>Blunt force, stabbing</td></tr>
+          <tr><td>High Velocity</td><td>&gt; 25 ft/sec (often ~100)</td><td>&lt; 2 mm ("mist")</td><td>Gunshot, explosion, collision</td></tr>
+        </table>
+      </div>
+      <div class="callout">
+        <div class="callout-label">Important Note on "Velocity"</div>
+        In BSA, "velocity" describes the <strong>force applied to blood</strong>, NOT the speed of the blood itself. Terminal velocity of a free-falling blood drop ≈ 25.1 ft/sec.
+      </div>
+
+      <div class="sub-heading">2.4 Factors Affecting Blood Drop Shape</div>
+      <ul class="num-list">
+        <li><strong>Surface texture</strong>: smooth → smooth edges; rough → scalloping/spines and satellite droplets.</li>
+        <li><strong>Height</strong>: shape unchanged if angle same; diameter and number of satellites increase with height.</li>
+        <li><strong>Velocity</strong>: higher force → smaller diameter.</li>
+        <li><strong>Angle of impact</strong>: 90° = circular; decreasing angle → increasingly elliptical/elongated; tail appears at ~30°.</li>
+      </ul>
+
+      <div class="sub-heading">2.5 Angle of Impact Calculation</div>
+      <div class="formula">
+        <div class="formula-label">Angle of Impact</div>
+        sin⁻¹ (Width ÷ Length) = Angle in degrees
+      </div>
+      <p class="para"><strong>Rule:</strong> Do NOT measure the tail. Examples:</p>
+      <ul class="bullet-list">
+        <li>W = 9 mm, L = 18 mm → sin⁻¹(0.5) = <strong>30°</strong></li>
+        <li>W = 1.73 cm, L = 2 cm → sin⁻¹(0.865) ≈ <strong>60°</strong></li>
+      </ul>
+
+      <div class="sub-heading">2.6 Area of Convergence (Point of Origin)</div>
+      <p class="para">Draw lines through the long axis of multiple bloodstains — they converge at the <strong>2D area of origin</strong> (where the blow occurred). Use strings at crime scene for measurement.</p>
+
+      <div class="sub-heading">2.7 Height / Point of Origin (3D)</div>
+      <div class="formula">
+        <div class="formula-label">Height Formula</div>
+        tan(Angle of Impact) = Height ÷ Distance from convergence<br>
+        → Height = Distance × tan(Angle)
+      </div>
+      <p class="para">Example: angle 27°, distance 5.75 ft → Height = 5.75 × tan(27°) = 5.75 × 0.5095 ≈ <strong>3.3 ft</strong></p>
+      <ul class="bullet-list">
+        <li>Distance 10 ft, angle 70° → Height = 10 × tan(70°) = <strong>27.5 ft</strong></li>
+        <li>Distance 15 ft, angle 80° → Height = 15 × tan(80°) = <strong>85.1 ft</strong></li>
+        <li>Distance 10 ft, angle 75° → Height = 10 × tan(75°) = <strong>37.3 ft</strong></li>
+      </ul>
+
+      <div class="sub-heading">2.8 Key BSA Rules for Exams</div>
+      <ul class="num-list">
+        <li>A few bloodstains do NOT make a pattern — draw conclusions with reservations.</li>
+        <li>It is OK to admit insufficient evidence; no opinion &gt; incorrect opinion.</li>
+        <li>Preponderance &lt; 1 mm → high velocity (gunshot).</li>
+        <li>Preponderance ≥ 1 mm → medium velocity (beating/stabbing).</li>
+        <li>Blood projected upward to ceiling → usually gunshot with upward trajectory → often suicide.</li>
+        <li>Ceiling spatter → almost always gunshot; upward trajectory → more often suicide than homicide.</li>
+      </ul>
+
+    </div>
+  </div>
+
+  <!-- 3. SALIVA -->
+  <div class="study-section" id="s3">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">3.0</div>
+      <div class="section-title-wrap">
+        <div class="section-title">Saliva Evidence</div>
+        <div class="section-sub">Detection · Amylase · Components</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-heading">3.1 Key Points</div>
+      <ul class="num-list">
+        <li>Saliva <strong>cannot be rigorously identified</strong> in dried stains/swabs.</li>
+        <li>Classical marker = <strong>amylase</strong> enzyme (catalyzes starch hydrolysis via starch-iodine reaction: iodine turns deep blue with intact starch; not with hydrolyzed starch).</li>
+        <li>Amylase also found in: pancreatic juice, fecal material (limits specificity).</li>
+      </ul>
+
+      <div class="sub-heading">3.2 Composition of Saliva</div>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mini-card-title">Inorganic</div>
+          <ul class="bullet-list">
+            <li>Na⁺, K⁺, Cl⁻, Ca²⁺, HCO₃⁻, Mg²⁺, NH₃</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <div class="mini-card-title">Organic</div>
+          <ul class="bullet-list">
+            <li>Urea, uric acid, creatinine (body secretion products)</li>
+            <li>Putrescine, cadaverine, lipids (putrefaction products)</li>
+            <li>400+ proteins: amylase, histatins, cystatins, lactoferrins, lysozymes, mucins, PRPs, albumin, sIgA, transferrin</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sub-heading">3.3 Evidence Components</div>
+      <ul class="bullet-list">
+        <li>Enzymes: amylase</li>
+        <li>Genes: STATHERIN, HISTATIN 3</li>
+        <li>Immunoglobulins</li>
+        <li>Epithelial cells — provide <strong>DNA + mRNA</strong></li>
+        <li>DNA cytosine methylation profiling</li>
+        <li>RSID™-Saliva strip (detects α-amylase in lateral flow format)</li>
+      </ul>
+
+    </div>
+  </div>
+
+  <!-- 4. SEMEN -->
+  <div class="study-section" id="s4">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">4.0</div>
+      <div class="section-title-wrap">
+        <div class="section-title">Semen Evidence</div>
+        <div class="section-sub">Composition · Presumptive & Confirmatory Tests · Sperm Survival</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-heading">4.1 Composition of Seminal Fluid</div>
+      <ul class="bullet-list">
+        <li>Seminal vesicle: 60% | Prostate: 30% | Epididymis + Bulbourethral glands: 10%</li>
+        <li>Physical: greyish-yellow, thick, jelly-like, characteristic odor. Quantity: 2–5 mL. Sperms: 60–150 million (90% motile). pH: 7.4</li>
+        <li>Vasectomized/oligospermic/aspermiac males still produce detectable seminal fluid.</li>
+      </ul>
+
+      <div class="sub-heading">4.2 Presumptive Tests for Semen</div>
+      <ul class="num-list">
+        <li><strong>Visual Examination</strong>: dried semen = off-white to faint yellow; map-like outline; stiffens fabric.</li>
+        <li><strong>UV / Alternate Light (Wood's Lamp / Crime Scope)</strong>: semen fluoresces blue-yellow due to Flavin and Choline-conjugated proteins. Highly presumptive — many substances fluoresce similarly.</li>
+        <li><strong>Acid Phosphatase (AP) Test (Brentamine Spot)</strong>: prostate secretes AP at 500–1000× other body fluids. AP + Alpha-Naphthyl acid phosphate + Brentamine Fast Blue → dark purple (within 60 sec). Positive up to 36 hours. Remains presumptive (vaginal secretions also contain AP).</li>
+        <li><strong>Barbario's Test</strong>: picric acid + stain → yellow needle/rhombic crystals of spermine picrate. Depends on prostatic secretions. Screening test.</li>
+        <li><strong>Creatine Phosphokinase (CPK)</strong>: sperm contain high CPK (normal 385–1400 units/mL). &gt;400 units = diagnostic. More stable than AP.</li>
+        <li><strong>Chemical/Fluorescent Test</strong>: stain + 10% HCl → glass slide → fluorescence solution (KI, iodine, water) → rhombic crystals of choline iodide.</li>
+      </ul>
+
+      <div class="sub-heading">4.3 Confirmatory Tests for Semen</div>
+      <ul class="num-list">
+        <li><strong>Christmas Tree Stain</strong> (most reliable): Picroindigocarmine (green-blue neck/tail) + Nuclear Fast Red (red head, pink acrosomal cap). Tails deteriorate first. At least <strong>one unbroken sperm</strong> = proof of semen.</li>
+        <li><strong>RSID™-Semen Strip Test</strong>: detects <strong>semenogelin</strong> (seminal vesicle-specific antigen). Unique to semen — no cross-reactivity with other bodily fluids or animal semen. Works even on degraded samples.</li>
+        <li><strong>PSA / P30 / ABAcard Test</strong>: detects Prostate-Specific Antigen. Note: also found in small amounts in female urine, breast milk, sweat, some female periurethral gland secretions. Use with caution without sperm confirmation.</li>
+        <li><strong>Immunological</strong>: FISH (fluorescent in-situ hybridization) — detects male epithelial cells in vagina up to 1 week post-coitus.</li>
+      </ul>
+
+      <div class="sub-heading">4.4 Sperm Motility & Survival Timeline</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Condition</th><th>Duration</th></tr>
+          <tr><td>Full motility (room temp)</td><td>3 hours</td></tr>
+          <tr><td>50% motility</td><td>8 hours</td></tr>
+          <tr><td>10% motility</td><td>24 hours</td></tr>
+          <tr><td>Complete sperm in vagina</td><td>26 hours</td></tr>
+          <tr><td>AP activity (post-coital swab)</td><td>Markedly decreases after 24h; disappears after 48h</td></tr>
+        </table>
+      </div>
+      <p class="para">Sperms better preserved <strong>outside</strong> the body (clothing) than in the vagina (subject to phagocytosis, lysis, agglutination, degeneration). Human sperm: 50–55 µm long; head 5 µm; short tapering tail.</p>
+
+    </div>
+  </div>
+
+  <!-- 5. VAGINAL FLUID -->
+  <div class="study-section" id="s5">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">5.0</div>
+      <div class="section-title-wrap">
+        <div class="section-title">Vaginal Fluid Evidence</div>
+        <div class="section-sub">Detection · PAS Stain · Limitations</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <ul class="num-list">
+        <li>Vaginal secretions = mixture of fluid through vaginal walls + cervical mucus + residual urine.</li>
+        <li>Composition changes throughout the menstrual cycle — making identification difficult.</li>
+        <li><strong>Periodic Acid Schiff (PAS) Reagent</strong>: most common method — detects <strong>glycogenated epithelial cells</strong> stained <strong>magenta</strong>. Principle: periodic acid oxidizes glycol groups → dialdehydes → react with Schiff's reagent → magenta complex. Intensity ∝ cell concentration.</li>
+        <li><strong>Limitation</strong>: post-menopausal or pre-pubescent females lack glycogenated cells → test useless.</li>
+        <li>Older methods: vaginal peptidase, lactate dehydrogenase isoenzymes — not widely used.</li>
+        <li>Research into RNA profiling / bacterial profiling — no reliable method yet.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 6. HAIR -->
+  <div class="study-section" id="s6">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">6.0</div>
+      <div class="section-title-wrap">
+        <div class="section-title">Hair Evidence</div>
+        <div class="section-sub">Structure · Life Cycle · Racial Differences · DNA Analysis · Animal vs Human</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-heading">6.1 Structure</div>
+      <ul class="num-list">
+        <li><strong>Cuticle</strong>: transparent outermost overlapping scales; points proximal → distal; human scales are flattened and narrow (<em>imbricate</em>).</li>
+        <li><strong>Cortex</strong>: thickest layer; contains melanin pigment granules (denser near cuticle).</li>
+        <li><strong>Medulla</strong>: central canal; not always present. Types: continuous, intermittent, fragmented. Key for species ID.</li>
+      </ul>
+
+      <div class="sub-heading">6.2 Life Cycle</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Stage</th><th>% of Hair</th><th>Duration</th><th>Key Feature</th></tr>
+          <tr><td>Anagen</td><td>80–90%</td><td>~1000 days</td><td>Active growth; best nuclear DNA</td></tr>
+          <tr><td>Catagen</td><td>2%</td><td>Short</td><td>Transitional</td></tr>
+          <tr><td>Telogen</td><td>10–18%</td><td>Dormant</td><td>Shed hairs; may lack nuclear DNA → use mtDNA</td></tr>
+        </table>
+      </div>
+
+      <div class="sub-heading">6.3 Human vs Animal Hair</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Feature</th><th>Human</th><th>Animal</th></tr>
+          <tr><td>Pigment density</td><td>Denser near cuticle</td><td>Denser near medulla</td></tr>
+          <tr><td>Medulla width</td><td>&lt; ⅓ of hair diameter</td><td>&gt; ½ of hair diameter</td></tr>
+          <tr><td>Cuticle scales</td><td>Imbricate (flat, narrow)</td><td>Spinous (cats, seals) or Coronal (rodents, bats)</td></tr>
+          <tr><td>Banded color</td><td>Absent (one color along length)</td><td>Possible (banded patterns)</td></tr>
+          <tr><td>Ovoid bodies</td><td>Rare</td><td>Common (dense pigment masses)</td></tr>
+        </table>
+      </div>
+      <p class="para"><strong>Medullary Index</strong> = diameter of medulla ÷ total hair diameter. Humans &lt; 0.33; animals &gt; 0.50.</p>
+
+      <div class="sub-heading">6.4 Racial Differences (Head Hair)</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Group</th><th>Shape</th><th>Cross-section</th><th>Medulla</th><th>Pigment</th></tr>
+          <tr><td>Caucasoid (European)</td><td>Straight to wavy; fine to medium</td><td>Round to oval</td><td>Variable</td><td>Fine to medium, evenly distributed</td></tr>
+          <tr><td>Mongoloid (Asian)</td><td>Straight, coarse</td><td>Circular (widest diameter)</td><td>Continuous, wide; thick cuticle</td><td>Large, patchy groups; sometimes reddish appearance</td></tr>
+          <tr><td>Negroid (African)</td><td>Curly/kinky/coiled</td><td>Flattened (variable apparent diameter; buckling)</td><td>Variable</td><td>Largest granules; clumped; may be opaque</td></tr>
+        </table>
+      </div>
+
+      <div class="sub-heading">6.5 Treated Hair</div>
+      <ul class="bullet-list">
+        <li><strong>Bleaching</strong>: disturbs cuticle scales, removes pigment → brittle, yellowish; sharp demarcation from natural (vs sun-bleached = gradual).</li>
+        <li><strong>Timing last coloring</strong>: hair grows ~1.3 cm/month. Measure naturally colored section ÷ 1.3 = months since last coloring.</li>
+        <li><strong>Dyeing</strong>: colors both cuticle and cortex.</li>
+      </ul>
+
+      <div class="sub-heading">6.6 DNA from Hair</div>
+      <ul class="num-list">
+        <li><strong>Nuclear DNA (nDNA)</strong>: from anagen root; highest discrimination power; from both parents. Preferred when available.</li>
+        <li><strong>Mitochondrial DNA (mtDNA)</strong>: from hair shaft and all roots; inherited from <strong>mother only</strong>; many copies per cell; useful when nDNA unavailable. Limitation: same mtDNA within maternal lineage.</li>
+        <li>Microscopy comparison should ALWAYS precede DNA analysis (DNA is destructive).</li>
+        <li>Telogen hairs without follicular tissue → often insufficient for nDNA → use mtDNA.</li>
+        <li>Postmortem root band = dark band near root in decomposing remains.</li>
+      </ul>
+
+      <div class="sub-heading">6.7 Testing Hair for Substances</div>
+      <ul class="bullet-list">
+        <li><strong>Neutron Activation Analysis (NAA)</strong>: identifies up to 14 elements in 2 cm of hair; probability of two people matching 9 elements ≈ 1 in a million. Detects: antimony, argon, bromine, copper, gold, Mn, Ag, Na, Zn.</li>
+        <li>Chemical dissolution for drugs/toxins/heavy metals (arsenic, lead) — timeline possible (1.3 cm/month).</li>
+      </ul>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PART B — SEXUAL OFFENCES
+  ══════════════════════════════════════ -->
+  <div class="part-divider">
+    <div class="part-line"></div>
+    <div class="part-label">Part B — Sexual Offences</div>
+    <div class="part-line"></div>
+  </div>
+
+  <!-- 7. SEXUAL OFFENCES OVERVIEW -->
+  <div class="study-section" id="s7">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">7.0</div>
+      <div class="section-title-wrap">
+        <div class="section-title">Sexual Offences — Overview & Classification</div>
+        <div class="section-sub">Definitions · Natural vs Unnatural · Legal Context</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="sub-heading">7.1 Definitions</div>
+      <ul class="num-list">
+        <li><strong>Sexual offense</strong>: any sexual act against another without consent, including when unable to consent.</li>
+        <li><strong>Non-forcible sex offense</strong>: unlawful, non-forcible sexual intercourse (incest, statutory rape).</li>
+        <li><strong>Natural offense</strong>: vaginal penetration by penis.</li>
+        <li><strong>Unnatural offense</strong>: sexual intercourse not involving vaginal penetration by penis; no procreation potential.</li>
+        <li><strong>Sexual perversion</strong>: sexual excitement/orgasm associated with unusual, abnormal, or deviant acts or imagery.</li>
+        <li><strong>Sexual harassment</strong>: physical contact/advances; unwelcome sexual overtures; verbal or physical sexual harassment. Punishable by imprisonment.</li>
+      </ul>
+      <div class="sub-heading">7.2 Classification</div>
+      <ul class="bullet-list">
+        <li><strong>Natural offenses</strong>: Rape, Statutory rape, Incest, Adultery, Defilement</li>
+        <li><strong>Unnatural offenses</strong>: Sodomy, Tribadism/Lesbianism, Bestiality, Buccal/Oral Coitus</li>
+        <li><strong>Other</strong>: Indecent assault, Sexual harassment, Paraphilias/Deviations</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 8. RAPE -->
+  <div class="study-section" id="s8">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">8.0</div>
+      <div class="section-title-wrap">
+        <div class="section-title">Rape — Examination, Evidence & Law</div>
+        <div class="section-sub">Definition · Victim Exam · Accused Exam · Incest · Adultery · Kenyan Law</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-heading">8.1 Definition of Rape</div>
+      <p class="para">Unlawful sexual intercourse by a man with a woman. Constituted by:</p>
+      <ul class="alpha-list">
+        <li>Penile penetration of vagina, mouth, urethra, or anus.</li>
+        <li>Insertion of object/body part into vagina, mouth, urethra, or anus.</li>
+        <li>Manipulation of body causing penetration.</li>
+      </ul>
+      <p class="para"><strong>Circumstances:</strong> against will, without consent, consent by fear/fraud/intoxication/unsound mind, statutory rape (under 18), inability to communicate consent.</p>
+      <div class="callout red">
+        <div class="callout-label">Key Legal Quote</div>
+        "A charge of rape is easy to make, hard to prove, harder still to disprove."
+      </div>
+
+      <div class="sub-heading">8.2 Kenyan Law — Sexual Offences Act 2006</div>
+      <ul class="num-list">
+        <li>Rape = intentional, unlawful penetration with genital organs without consent or by force/threat. Sentence: minimum <strong>10 years</strong>, may be enhanced to <strong>life imprisonment</strong>.</li>
+        <li>Attempted rape: minimum <strong>5 years</strong>, up to life.</li>
+        <li>Gang rape: minimum <strong>15 years</strong>, up to life.</li>
+      </ul>
+
+      <div class="sub-heading">8.3 Objectives of Medical Examination</div>
+      <ul class="bullet-list">
+        <li>Evidence of recent sexual intercourse.</li>
+        <li>Injuries suggesting violent struggle.</li>
+        <li>Age of victim (if needed).</li>
+        <li>Whether victim was intoxicated or drugged.</li>
+      </ul>
+      <div class="callout blue">
+        <div class="callout-label">Important</div>
+        <strong>Rape is a legal Dx, NOT a medical Dx.</strong> Medical opinion states only whether there is "evidence of sexual intercourse" — never use the word "rape" in a medical report.
+      </div>
+
+      <div class="sub-heading">8.4 Precautions</div>
+      <ul class="num-list">
+        <li>Authorization: written order from police/court required.</li>
+        <li>Identification: by relatives, police, ID marks.</li>
+        <li>Female nurse present throughout.</li>
+        <li>No delay — examine as early as possible.</li>
+      </ul>
+
+      <div class="sub-heading">8.5 Examination of Victim — Sequence</div>
+      <ul class="num-list">
+        <li><strong>Preliminary data</strong>: reference letter, name/age/address, brought by/identified by.</li>
+        <li><strong>Consent</strong>: age &gt;12 yrs → witnessed, written, informed consent required.</li>
+        <li><strong>History</strong>: menstrual history, marital status, obstetric history, venereal diseases, resistance offered, bath/washing done.</li>
+        <li><strong>Clothes examination</strong>: confirm unchanged; remove on white paper; check for tears, missing buttons, stains (mud, grass, blood, semen). Seal, label, send for chemical analysis.</li>
+        <li><strong>General examination</strong>: general build, gait, mental condition (intoxicated/drugged), age findings, nail damage, stains, injuries.</li>
+        <li><strong>Injuries</strong>: petechiae (face/conjunctiva), injuries around mouth/neck, wrists, arms, thighs, legs, buttocks, back, breasts, bite marks.</li>
+        <li><strong>Genital examination</strong>: vulva, labia majora/minora, hymen, vagina, perineum — document injuries, tenderness, inflammation, presence/absence of semen.</li>
+      </ul>
+
+      <div class="sub-heading">8.6 Specimens from Victim</div>
+      <ul class="num-list">
+        <li>Clothes (if stained) — air dry, send intact.</li>
+        <li>Blood: plain (grouping) + anticoagulated (alcohol/drugs).</li>
+        <li>Urine: drugs screening.</li>
+        <li>Nail scrapings: blood/skin of accused (DNA).</li>
+        <li>Body stains: dry → scrape into envelope; moist → swab in distilled water.</li>
+        <li>Pubic hair: comb for foreign hairs; cut 20 pubic hairs for comparison.</li>
+        <li>Vaginal swabs: (a) introitus/perineum swab, (b) low vaginal swab, (c) high vaginal swab, (d) cervical mucus swab (if &gt;24h after alleged rape).</li>
+        <li>Colposcopy: detect injuries.</li>
+        <li>Toluidine blue: stains injured areas.</li>
+        <li>UV light: seminal stains.</li>
+      </ul>
+
+      <div class="sub-heading">8.7 Examination of Accused</div>
+      <ul class="num-list">
+        <li>Consent: if refused, reasonable force may be used.</li>
+        <li>Clothes and undergarments, foreign hairs/fibers, fingernail scrapings, scalp hair, bite mark swabs, pubic hair comb + clippings, urethral swabs, glans swabs.</li>
+        <li>Blood: serology, drugs/intoxicants, DNA profiling, STDs, seminal fluid.</li>
+        <li>Genital exam: development, anomalies (rule out impotency), injuries (abrasions, frenulum tears).</li>
+        <li>Vaginal secretions on glans: moist filter paper + Lugol's iodine (blue = glycogen from vaginal cells); or Papanicolaou stain for vaginal epithelial cells.</li>
+        <li>Smegma assessment: cheesy sebaceous secretion on corona glandis — comment on presence/absence.</li>
+      </ul>
+
+      <div class="sub-heading">8.8 Complications of Rape</div>
+      <ul class="bullet-list">
+        <li>Haemorrhage and shock</li>
+        <li>Death (assault, suffocation, strangulation, intoxicants, suicide)</li>
+        <li>Mental agony; <strong>Rape Trauma Syndrome</strong></li>
+        <li>STIs/STDs</li>
+        <li>Pregnancy</li>
+      </ul>
+
+      <hr class="divider">
+      <div class="sub-heading">8.9 Incest</div>
+      <p class="para">Sexual intercourse between persons within prohibited degrees of relationship (daughter, granddaughter, sister, stepsister, aunt, etc.). Types: Consanguinal, Affinial, Quasi-relative. Electra complex (father-daughter), Oedipus complex (mother-son), Pharaonic (brother-sister).</p>
+      <p class="para"><strong>Kenyan Law</strong>: Minimum 10 years; life imprisonment if victim is under 18. Consent is immaterial.</p>
+      <p class="para"><strong>Circumstances</strong>: family disorganization, low socioeconomic status, overcrowding, lack of parental supervision, alcohol, cerebral disease.</p>
+
+      <hr class="divider">
+      <div class="sub-heading">8.10 Adultery</div>
+      <p class="para">Voluntary sexual intercourse between a married person and someone other than their spouse. Not a crime in Kenya but grounds for divorce (Marriage Act 2013).</p>
+
+    </div>
+  </div>
+
+  <!-- 9. UNNATURAL OFFENCES -->
+  <div class="study-section" id="s9">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">9.0</div>
+      <div class="section-title-wrap">
+        <div class="section-title">Unnatural Sex Offences</div>
+        <div class="section-sub">Sodomy · Lesbianism · Bestiality · Buccal Coitus</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-heading">9.1 Sodomy (Buggery / Greek Love)</div>
+      <p class="para">Anal intercourse between two males (homosexual) or male and female (heterosexual). <em>Pederasty</em> = with a boy (catamite); <em>Gerontophilia</em> = with an adult passive agent.</p>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mini-card-title">Non-habituated Passive Agent</div>
+          <ul class="bullet-list">
+            <li>Pain and tenderness</li>
+            <li>Lubricant/foreign pubic hair in/around anus</li>
+            <li>Perianal abrasions and bruising</li>
+            <li>Anal lacerations (triangular, based at external sphincter)</li>
+            <li>Fresh/dried semen around anus</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <div class="mini-card-title">Habitual Passive Agent</div>
+          <ul class="bullet-list">
+            <li>No blood/pain typically</li>
+            <li>Perianal hair often shaved</li>
+            <li>Perianal skin thickened/keratinized</li>
+            <li>Lateral traction test positive</li>
+            <li>Funnel-shaped depression toward anus</li>
+            <li>Anus: dilated, patulous, loss of rugosity; fissures/sinuses</li>
+            <li>Rectum: mucosal prolapse; STD evidence</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout red">
+        <div class="callout-label">Only Proof of Sodomy</div>
+        The presence of <strong>semen in the anus</strong>. All other signs may disappear within 1–2 days.
+      </div>
+      <p class="para"><strong>Kenyan Law (Cap 165)</strong>: Gross indecency between males = 5 years. With consent → both punishable. Without consent → only active agent. Not legalized in Kenya. Ground for divorce under Marriage Act.</p>
+      <p class="para"><strong>Samples</strong>: swab from perianal region, swab from anal canal, foreign pubic hair, undergarments.</p>
+
+      <div class="sub-heading">9.2 Lesbianism / Tribadism</div>
+      <p class="para">Female homosexuality; gratification of sexual desire between women; clitoris is the primary organ. Tribadism = form of mental aberration; seen in women with repulsion toward men or nymphomania.</p>
+      <p class="para"><strong>Kenyan Law (Cap 162)</strong>: Carnal knowledge against order of nature = 14 years; 21 years if without consent or consent obtained by force/threats.</p>
+
+      <div class="sub-heading">9.3 Bestiality / Zoophilia</div>
+      <p class="para">Sexual intercourse with animals (vaginal, anal, or oral). Sheep used by males; dogs/cats by females. True coitus uncommon — usually oral manipulation by animal.</p>
+      <p class="para"><strong>Evidence in accused</strong>: dung/blood stains on clothes, body injuries, penile injury, fecal matter/vaginal secretion/animal hair on penis, transmitted infections.</p>
+      <p class="para"><strong>Evidence in animal</strong>: genital injuries, <strong>presence of human spermatozoa</strong> (sure evidence).</p>
+      <p class="para"><strong>Kenyan Law (Cap 162)</strong>: 14 years (same section as unnatural carnal knowledge). Also: cruelty to animals under Cap 360 (fine ≤ 3,000 KES or ≤ 6 months or both).</p>
+
+      <div class="sub-heading">9.4 Buccal / Oral Coitus (Sin of Gomorrah)</div>
+      <p class="para"><em>Fellatio</em> = oral stimulation of penis. <em>Cunnilingus</em> = oral stimulation of female genitalia. Now considered normal sexual foreplay.</p>
+      <ul class="num-list">
+        <li><strong>Active partner findings</strong>: abrasions; amylase detected on penile swabs.</li>
+        <li><strong>Passive partner findings</strong>: spermatozoa in oral cavity.</li>
+        <li><strong>Victim evidence</strong>: buccal swabs within 8 hours of oro-penile contact reveal seminal traces (unless teeth cleaned or hot drinks consumed).</li>
+        <li><strong>Deaths</strong>: aspiration of semen; impaction of penis in oropharynx.</li>
+        <li><strong>Dx</strong>: semen in respiratory tract/stomach.</li>
+      </ul>
+      <p class="para"><strong>Kenyan Law</strong>: No specific law outlawing consensual oral coitus; becomes criminal if without consent or by force/threats. If non-consensual and repetitive → ground for divorce.</p>
+
+    </div>
+  </div>
+
+  <!-- 10. PARAPHILIAS -->
+  <div class="study-section" id="s10">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">10.0</div>
+      <div class="section-title-wrap">
+        <div class="section-title">Sexual Deviations & Paraphilias</div>
+        <div class="section-sub">All major types, definitions & medicolegal notes</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="callout blue">
+        <div class="callout-label">Definition</div>
+        <strong>Paraphilia</strong>: sexual arousal to objects/situations not part of normative arousal patterns; intense, recurrent urges for ≥ 6 months involving nonhuman objects, pain/suffering, or non-consenting persons.
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>#</th><th>Paraphilia</th><th>Definition</th><th>Key Notes</th></tr>
+          <tr><td>1</td><td><strong>Sadism</strong></td><td>Sexual gratification from inflicting pain (beating, biting, burning, ill-treating). Named after Marquis de Sade (1740–1814).</td><td>More common in males. Extreme form = lust murder.</td></tr>
+          <tr><td>2</td><td><strong>Masochism</strong> (Passive Algolagnia)</td><td>Sexual gratification only when receiving painful stimuli from partner.</td><td>Reverse of sadism; more common in males.</td></tr>
+          <tr><td>3</td><td><strong>Lust Murder</strong></td><td>Homicide with mutilation of sexual organs for gratification; torturing partner; full gratification at death. May involve necrophilia, necrophagia/anthropophagy.</td><td>Extreme sadism; organized murderers may stalk victims for weeks/months.</td></tr>
+          <tr><td>4</td><td><strong>Transvestic Fetishism (Eonism)</strong></td><td>Recurrent sexual urges/fantasies involving cross-dressing. Sexual gratification from wearing opposite-sex clothing. Term coined by Magnus Hirschfeld. "Eonism" from Chevalier d'Eon de Beaumont.</td><td>Usually males; different from transsexualism.</td></tr>
+          <tr><td>5</td><td><strong>Exhibitionism</strong></td><td>Intentional exposure of genitalia in public for sexual pleasure. Called "flashers" (males). Narcissism may contribute.</td><td>Usually males; psychopathic or compulsive neurosis.</td></tr>
+          <tr><td>6</td><td><strong>Voyeurism / Scoptophilia</strong></td><td>Observing unsuspecting people undress, naked, or having intercourse for arousal. "Peeping Toms" (French: voir = to see).</td><td>Usually males; may accompany exhibitionism or masturbation; linked to childhood exposure to parental intercourse.</td></tr>
+          <tr><td>7</td><td><strong>Fetishism</strong></td><td>Fixation on inanimate object/non-sexual body part for gratification. Coined by Alfred Binet. Common objects: undergarments, stockings, panties.</td><td>Usually males; may steal fetish objects compulsively.</td></tr>
+          <tr><td>8</td><td><strong>Frotteurism / Toucherism</strong></td><td>Sexual arousal by rubbing genitals against non-consenting person in public. Common in crowded places. Known as "chikan" in Japan.</td><td>Usually males; toucherism = fondling/groping component.</td></tr>
+          <tr><td>9</td><td><strong>Pedophilia</strong></td><td>Sexual fantasies/behaviors with prepubescent child (≤13 yrs) by person ≥16 and at least 5 yrs older. Activities: looking, fondling, oral-genital contact, penetration.</td><td>One of few psychiatric diagnoses where symptom = criminal act. Sexual contact with person ≤18 is illegal.</td></tr>
+          <tr><td>10</td><td><strong>Masturbation (Onanism)</strong></td><td>Deliberate self-stimulation for sexual arousal. Offense when practiced openly (telephone booths, buses, toilets).</td><td>Common in both sexes; various methods described.</td></tr>
+          <tr><td>11</td><td><strong>Uranism</strong></td><td>Sexual gratification by fingering, fondling, or licking (homosexuality in males).</td><td>—</td></tr>
+          <tr><td>12</td><td><strong>Urolagnia (Urophilia / Undinism)</strong></td><td>Sexual gratification from sight/odor of urine or urination ("golden showers").</td><td>New Zealand: publishing urolagnia content punishable by up to 10 years.</td></tr>
+          <tr><td>13</td><td><strong>Coprophilia</strong></td><td>Morbid attraction/sexual gratification from feces. Eating feces = coprophagia.</td><td>—</td></tr>
+          <tr><td>14</td><td><strong>Indecent Assault</strong></td><td>Any unwanted sexual touching/behavior without consent to outrage modesty. Includes forcing pornography viewing, disrobing, fondling, forceful kissing.</td><td>Male doctors risk allegations during examination — always have female nurse present.</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PART C — PREGNANCY, ABORTION, INFANTICIDE
+  ══════════════════════════════════════ -->
+  <div class="part-divider">
+    <div class="part-line"></div>
+    <div class="part-label">Part C — Pregnancy, Abortion & Infanticide</div>
+    <div class="part-line"></div>
+  </div>
+
+  <!-- 11. PREGNANCY -->
+  <div class="study-section" id="s11">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">11.0</div>
+      <div class="section-title-wrap">
+        <div class="section-title">Pregnancy</div>
+        <div class="section-sub">Signs · Duration · Tests · Medicolegal Importance · Special Pregnancies</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-heading">11.1 Key Definitions & Duration</div>
+      <ul class="bullet-list">
+        <li><strong>Pregnancy</strong>: implantation of fertilized ovum in uterine endometrium.</li>
+        <li>Average: 280 days | Maximum: 354 days | Minimum: 180 days</li>
+        <li>Zygote → Embryo (after implantation to 8th week) → Fetus (after 8th week)</li>
+        <li><strong>Viable age</strong>: capability to sustain life independently. Average = 210 days (7 months); Earliest = 180 days (6 months).</li>
+      </ul>
+
+      <div class="sub-heading">11.2 Signs of Pregnancy</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Category</th><th>Signs</th></tr>
+          <tr><td><strong>Presumptive</strong></td><td>Amenorrhoea, morning sickness, breast changes, Jacquemier's sign (vaginal color → violet-blue, 4th wk), skin pigmentation, sympathetic disturbances, urinary frequency, constipation, linea nigra, striae, altered food cravings, quickening (multip: 16–18 wk; primip: 18–20 wk)</td></tr>
+          <tr><td><strong>Probable</strong></td><td>Progressive abdominal enlargement, uterine height, Hegar's sign (cervical softening, 7–10 wk), Palmer's sign (intermittent uterine contractions, 4–8 wk), Goodell's sign (extreme cervix softening + blue, ~4 mo), uterine souffle (end of 4th month), ballottement, pregnancy test</td></tr>
+          <tr><td><strong>Positive/Certain</strong></td><td>Fetal movement (after 20 wk), fetal heart sounds (18–20 wk, 120–160 bpm), palpation of fetal parts, USG (6th wk), radiology (after 3rd month), MRI</td></tr>
+        </table>
+      </div>
+      <p class="para"><strong>Braxton Hicks</strong>: intermittent painless contractions lasting ~1 min, relaxation 2–3 min. Probable sign.</p>
+      <p class="para"><strong>Chadwick's/Jacquemier's sign</strong>: vaginal mucosa turns pink → violet/blue due to venous obstruction.</p>
+
+      <div class="sub-heading">11.3 Pregnancy Tests</div>
+      <ul class="num-list">
+        <li><strong>Biological</strong>: Aschheim-Zondek test, Frank test, Friedman test, Hogben/Xenopus test, Galli-Mainini (male frog test)</li>
+        <li><strong>Immunological/Serological</strong>: agglutination-inhibition, haemagglutination-inhibition, RIA, ELISA</li>
+        <li><strong>Imaging</strong>: USG, radiology, MRI</li>
+      </ul>
+
+      <div class="sub-heading">11.4 Medicolegal Importance of Pregnancy</div>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mini-card-title">Criminal Cases</div>
+          <ul class="num-list">
+            <li>Execution of death sentence (suspended in advanced pregnancy)</li>
+            <li>Court procedures suspended</li>
+            <li>Pregnancy as result of rape</li>
+            <li>Pregnancy in unmarried ≤16 or married ≤15 → evidence of rape</li>
+            <li>Breach of promise of marriage suit</li>
+            <li>False blame/blackmailing</li>
+            <li>Adultery charge</li>
+            <li>Concealment of pregnancy, birth, infanticide</li>
+            <li>Criminal abortion</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <div class="mini-card-title">Civil Cases</div>
+          <ul class="num-list">
+            <li>Nullity of marriage</li>
+            <li>Pregnancy and divorce</li>
+            <li>Inheritance of property</li>
+            <li>False pregnancy claim for alimony</li>
+            <li>Compensation — accidental death of husband</li>
+            <li>Illegitimacy & posthumous baby</li>
+            <li>Leave facility</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sub-heading">11.5 Special/Unusual Pregnancies</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Type</th><th>Definition</th><th>Key Distinction</th></tr>
+          <tr><td>Pseudocyesis</td><td>False/phantom pregnancy — all signs without actual pregnancy. Psychic/hormonal disorder. Found in childless women, near-menopausal, pelvic tumours.</td><td>Signs present; no fetus</td></tr>
+          <tr><td>Superfecundation</td><td>Two ova from same cycle fertilized by sperm from two separate acts of coitus (possibly different fathers).</td><td>Same cycle; more common</td></tr>
+          <tr><td>Superfoetation</td><td>Second ovum fertilized while already pregnant (requires continued cycle or two uteri); fetal ages differ by ≥1 cycle.</td><td>Different cycles; extremely rare</td></tr>
+          <tr><td>Fetus Papyraseous/Compressus</td><td>In twin pregnancy, one fetus dies, gets compressed and flattened.</td><td>Dead twin compressed by living twin</td></tr>
+          <tr><td>Posthumous child</td><td>Child born after father's death; conceived by that father.</td><td>Issues: legitimacy, paternity, inheritance</td></tr>
+        </table>
+      </div>
+
+      <div class="sub-heading">11.6 Premature vs Post-mature Baby</div>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mini-card-title">Premature (&lt;265 days)</div>
+          <ul class="bullet-list">
+            <li>Smaller size, lower birth weight (&lt;2.5 kg)</li>
+            <li>Undescended testes, eyes more closed</li>
+            <li>Less developed nails</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <div class="mini-card-title">Post-mature (&gt;295 days)</div>
+          <ul class="bullet-list">
+            <li>Oversize (&gt;20 inches), over-weight</li>
+            <li>Hair &gt;7 inches; nails beyond fingers</li>
+            <li>Radiology: ossification in upper tibia and cuboid bone</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 12. DELIVERY -->
+  <div class="study-section" id="s12">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">12.0</div>
+      <div class="section-title-wrap">
+        <div class="section-title">Delivery & Related Topics</div>
+        <div class="section-sub">Signs of Recent/Remote Delivery · Nulliparous vs Parous Uterus · Suppositious Child</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-heading">12.1 Signs of Recent Delivery (Living)</div>
+      <ul class="num-list">
+        <li>General: pale, exhausted, ill-looking.</li>
+        <li>Breasts: full, enlarged, tender, knotty; colostrum/milk present; dark areola, enlarged nipple.</li>
+        <li>Abdomen: pendulous, wrinkled, striae gravidarum.</li>
+        <li>Uterus: contracted, hard muscular tumour feel.</li>
+        <li>Vagina: smooth, relaxed, capacious; may have recent tears (heals by day 7); rugae reappear by week 3.</li>
+        <li>Labia: tender, swollen, bruised/lacerated.</li>
+        <li>Cervix: soft, dilated; internal os begins closing within 24h.</li>
+        <li>Lochia: Lochia rubra (4–5 days) → Lochia serosa (4–5 days) → Lochia alba (up to 2–3 weeks).</li>
+        <li>Perineum: sometimes lacerated.</li>
+        <li>Intermittent uterine contractions.</li>
+      </ul>
+
+      <div class="sub-heading">12.2 Signs of Remote Delivery</div>
+      <ul class="num-list">
+        <li>Abdomen: white/multiple scars on lateral aspects.</li>
+        <li>Breasts: lax, soft, pendulous; enlarged nipples, darkened areola.</li>
+        <li>Vulva: partially open (labia don't fully close).</li>
+        <li>Cervix: irregular scars; external os irregular/fissured.</li>
+        <li>Uterus (PM): larger (10×6×2.5 cm), heavier (80–100 g); concave inner walls; wider cavity; placental attachment scar; transverse slit external os.</li>
+      </ul>
+
+      <div class="sub-heading">12.3 Nulliparous vs Parous Uterus</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Feature</th><th>Nulliparous</th><th>Parous</th></tr>
+          <tr><td>Size</td><td>7×5×2 cm</td><td>10×6×2.5 cm</td></tr>
+          <tr><td>Weight</td><td>40 g</td><td>80–100 g</td></tr>
+          <tr><td>Body:Cervix ratio</td><td>Equal length</td><td>Body ≈ twice cervix length</td></tr>
+          <tr><td>Fundus</td><td>Less convex; in line with broad ligament</td><td>More convex; above broad ligament line</td></tr>
+          <tr><td>Cavity</td><td>Triangular; convex inner walls</td><td>Spacious; concave inner walls</td></tr>
+          <tr><td>External os</td><td>Small, round, dimple-like</td><td>Transverse slit</td></tr>
+          <tr><td>Internal os</td><td>Circular, well-defined</td><td>Ill-defined; margins wrinkled</td></tr>
+          <tr><td>Placental scar</td><td>Absent</td><td>Present</td></tr>
+        </table>
+      </div>
+
+      <div class="sub-heading">12.4 Suppositious Child</div>
+      <p class="para">A child belonging to another person, presented by a woman as her own. Motives: inheritance of property, blackmailing, higher compensation for widow.</p>
+
+      <div class="sub-heading">12.5 Medicolegal Importance of Delivery</div>
+      <ul class="bullet-list">
+        <li>Abortion, Infanticide, Concealment of birth</li>
+        <li>Suppositious child, Blackmailing</li>
+        <li>Contested legitimacy, Nullity/Divorce, Chastity, Defamation</li>
+        <li>Inheritance, Death sentence execution suspension</li>
+        <li>Delivery &lt;16 years = evidence of rape</li>
+        <li>Homicide/suicide, Leave after delivery</li>
+      </ul>
+
+    </div>
+  </div>
+
+  <!-- 13. ABORTION -->
+  <div class="study-section" id="s13">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">13.0</div>
+      <div class="section-title-wrap">
+        <div class="section-title">Abortion</div>
+        <div class="section-sub">Types · Methods · Complications · MTP Indications · Medicolegal</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-heading">13.1 Definition & Types</div>
+      <p class="para">Premature expulsion of fetus from uterus at any stage before full term. Spontaneous (natural/accidental) occurs mostly at 2nd–3rd month (~15–20% of pregnancies).</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Type</th><th>Description</th></tr>
+          <tr><td>Natural (Spontaneous)</td><td>Chromosomal defects, developmental defects, Rh incompatibility, uterine anomalies, hormonal deficiency, trauma, syphilis, DM, HTN, etc.</td></tr>
+          <tr><td>Legal (Therapeutic / MTP)</td><td>With proper indication under law</td></tr>
+          <tr><td>Criminal</td><td>Induced illegally without lawful indication</td></tr>
+        </table>
+      </div>
+
+      <div class="sub-heading">13.2 MTP (Medical Termination of Pregnancy) — Indications</div>
+      <ul class="alpha-list">
+        <li><strong>Medical</strong>: active TB, chronic nephritis, CCF, malignant HTN, severe thyroid disorder with cardiac issues, uncontrolled DM, ulcerative colitis, multiple sclerosis, chorea.</li>
+        <li><strong>Surgical</strong>: malignancy (breast, cervix, ovary), chronic pyloric stenosis.</li>
+        <li><strong>Obstetric</strong>: toxemia, threatened abortion with severe hemorrhage, repeated C/S, uterine fibroids, irreducible prolapse.</li>
+        <li><strong>Psychiatric</strong>: schizophrenia, severe depression.</li>
+        <li><strong>Fetal conditions</strong>: ectopic pregnancy, dead fetus, hydatidiform mole, placental detachment/disease, acute hydramnios, gross malformation.</li>
+        <li><strong>Humanitarian</strong>: pregnancy as result of rape.</li>
+        <li><strong>Social</strong>: widow, contraceptive failure.</li>
+      </ul>
+
+      <div class="sub-heading">13.3 Methods of Therapeutic Abortion</div>
+      <ul class="num-list">
+        <li>Dilatation & Curettage (D&C) — early pregnancy under GA</li>
+        <li>Dilatation & Oxytocin infusion</li>
+        <li>Low rupture of membranes</li>
+        <li>Utus paste (contains mercury)</li>
+        <li>Vacuum aspiration</li>
+        <li>Amniotic replacement with hypertonic glucose/saline</li>
+        <li>Prostaglandin preparations (local/oral/IV)</li>
+        <li>Laparotomy</li>
+      </ul>
+
+      <div class="sub-heading">13.4 Methods of Criminal Abortion</div>
+      <ul class="alpha-list">
+        <li><strong>Abortifacient drugs</strong>: Ecbolics (ergots, quinine, strychnine), Emmenagogues (oestrogen, borax), Purgatives (castor oil, senna), Irritants (cantharides, oil of turpentine).</li>
+        <li><strong>General violence</strong>: severe abdominal pressure/blows/kicks, heavy exercise (jumping, jolting, riding), cupping, very hot/cold hip bath.</li>
+        <li><strong>Local violence</strong>: hot/cold vaginal douches, objects introduced into uterine cavity, insertion of foreign bodies into uterus, syringe aspiration, utus paste.</li>
+      </ul>
+
+      <div class="sub-heading">13.5 Complications of Criminal Abortion</div>
+      <ul class="alpha-list">
+        <li><strong>Local injuries</strong>: excoriation, lacerations/perforations (vagina, cervix, uterine wall).</li>
+        <li><strong>Immediate</strong>: shock & hemorrhage, air embolism, reflex vagal inhibition.</li>
+        <li><strong>Delayed</strong>: sepsis/septicaemia/pyaemia, toxaemia, peritonitis, tetanus.</li>
+        <li><strong>Remote</strong>: jaundice, renal failure, bacterial endocarditis, pneumonia, DIC, DVT → pulmonary embolism.</li>
+        <li><strong>Drug effects</strong>: poisonous effects of abortifacients.</li>
+      </ul>
+
+      <div class="sub-heading">13.6 Natural vs Criminal Abortion — Comparison</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Feature</th><th>Natural Abortion</th><th>Criminal Abortion</th></tr>
+          <tr><td>Cause</td><td>Natural</td><td>Induced</td></tr>
+          <tr><td>Infection</td><td>Rare</td><td>Frequent</td></tr>
+          <tr><td>Abdominal marks of violence</td><td>Absent</td><td>May be present</td></tr>
+          <tr><td>Genital injuries</td><td>Absent</td><td>Present</td></tr>
+          <tr><td>Toxic drug effects</td><td>Absent</td><td>Present in vagina, cervix, GIT, uterus</td></tr>
+          <tr><td>Foreign bodies</td><td>Absent</td><td>May be present</td></tr>
+          <tr><td>Fetal wounds</td><td>Absent</td><td>May be present</td></tr>
+        </table>
+      </div>
+
+      <div class="sub-heading">13.7 Feticide & Stillbirth</div>
+      <ul class="bullet-list">
+        <li><strong>Feticide</strong>: destruction of fetus before birth by unlawful means.</li>
+        <li><strong>Stillbirth</strong>: fetus &gt;28 weeks gestational age that did not breathe or show any sign of life after complete birth. Death occurs during labour. Causes: complicated labour, flooding lungs with liquor amnii, bronchial desquamation. MLI: question of feticide, abortion, infanticide.</li>
+        <li><strong>Live birth</strong>: takes a breath or shows any sign of life after birth.</li>
+        <li><strong>Dead birth</strong>: died in utero before birth; may show rigor mortis, maceration, or mummification at birth.</li>
+      </ul>
+
+    </div>
+  </div>
+
+  <!-- 14. INFANTICIDE & NEONATAL -->
+  <div class="study-section" id="s14">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">14.0</div>
+      <div class="section-title-wrap">
+        <div class="section-title">Infanticide & Neonatal Death</div>
+        <div class="section-sub">Infanticide · Signs of Live Birth · Hydrostatic Test · SIDS · Battered Baby · Munchausen by Proxy</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-heading">14.1 Infanticide</div>
+      <p class="para"><strong>Definition</strong>: Killing of a newly born baby within <strong>15 days</strong> of birth.</p>
+      <p class="para"><strong>Motives</strong>: illegitimate child (widows, unmarried girls, wives with absent husbands), inheritance, poverty, family disharmony, dowry system, family pride, custom.</p>
+      <p class="para"><strong>Modes</strong>: Commission (mechanical violence: suffocation, strangulation, drowning, head fracture; poisoning) OR Omission (failure to ligate cord, provide nutrition, protect from extremes of weather).</p>
+
+      <div class="sub-heading">14.2 Causes of Infant Death</div>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mini-card-title">Natural</div>
+          <ul class="bullet-list">
+            <li>Prematurity, asphyxia, congenital malformation</li>
+            <li>Haemolytic disease (Rh incompatibility)</li>
+            <li>Neonatal infection, SIDS</li>
+            <li>Early placental separation, pre-eclampsia</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <div class="mini-card-title">Unnatural</div>
+          <ul class="bullet-list">
+            <li>During birth: prolonged labour, cord prolapse/knot, injuries, maternal death</li>
+            <li>After birth: suffocation, precipitate labour</li>
+            <li>Criminal: infanticide</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sub-heading">14.3 Signs of Live Birth (at Autopsy)</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Feature</th><th>Live Born</th><th>Still Born</th></tr>
+          <tr><td>Chest shape</td><td>Arched/drum shaped; circumference &gt; abdomen; wider intercostal spaces</td><td>Flat; circumference &lt; abdomen; narrow intercostal spaces</td></tr>
+          <tr><td>Diaphragm level</td><td>6th–7th rib</td><td>4th–5th rib</td></tr>
+          <tr><td>Lung position</td><td>Fill thoracic cavity; overlap heart and thymus</td><td>Behind heart and thymus; pleura wrinkled/loose</td></tr>
+          <tr><td>Lung volume/color</td><td>Voluminous; mottled pink; rounded edges</td><td>Small; uniform dark blue-red; sharp edges</td></tr>
+          <tr><td>Lung consistency</td><td>Spongy, elastic, crepitant</td><td>Dense, firm, liver-like, non-crepitant</td></tr>
+          <tr><td>Lung appearance</td><td>Marbled (expanded air vesicles visible)</td><td>Smooth; not marbled</td></tr>
+          <tr><td>Cutting lung</td><td>Exudes frothy blood</td><td>Little blood, no froth</td></tr>
+          <tr><td>Hydrostatic test</td><td>Positive (floats)</td><td>Negative (sinks)</td></tr>
+          <tr><td>Static test (lung:body weight)</td><td>1:35</td><td>1:70</td></tr>
+          <tr><td>Stomach-bowel test</td><td>Positive</td><td>Negative</td></tr>
+        </table>
+      </div>
+
+      <div class="sub-heading">14.4 Hydrostatic Test</div>
+      <p class="para">Based on decreased specific gravity of lungs after air distension during breathing. Undistended lungs = heavier than water (sink); distended = lighter than water (float). Positive = respiration occurred after birth.</p>
+      <div class="callout red">
+        <div class="callout-label">Fallacies of Hydrostatic Test</div>
+        Emphysema from putrefactive gases, artificial respiration, consolidation, edema, congenital tumour, asphyxia neonatorum, partial breathing, stillbirth with decomposition.
+      </div>
+
+      <div class="sub-heading">14.5 Precipitate Labour</div>
+      <p class="para">Sudden, rapid delivery especially in multipara women with roomy pelvis without mother's knowledge. Types: True and Pseudo/False. MLI: infanticide, injury to fetus.</p>
+      <p class="para">Complications: suffocation (fall into lavatory pan), head injury/skull fracture, hemorrhage (torn cord end), drowning.</p>
+
+      <div class="sub-heading">14.6 Viable Age Features (7th Month)</div>
+      <ul class="bullet-list">
+        <li>Length: 13–16 inches | Weight: 2–4 lbs</li>
+        <li>Skin: raw-looking with thick vernix caseosa</li>
+        <li>Eyelids: non-adherent; eyelashes present; membrana pupillaris avascular (atrophying)</li>
+        <li>Nails: well-developed but don't reach finger tips</li>
+        <li>Caecum in right iliac fossa; meconium through large bowel</li>
+        <li>Testes may be at internal inguinal ring</li>
+        <li>Cerebral convolutions forming</li>
+        <li>Ossification centers: talus, 2nd & 3rd segments of sternum</li>
+      </ul>
+
+      <div class="sub-heading">14.7 SIDS (Cot/Crib Death)</div>
+      <p class="para">Sudden infant death unexpected by history; thorough autopsy fails to reveal adequate cause of death.</p>
+      <ul class="bullet-list">
+        <li>Age: 2 weeks – 2 years; peak 2nd–3rd month</li>
+        <li>Slight male preponderance</li>
+        <li>More common in winter; low socioeconomic conditions; single/young/poor parents</li>
+        <li>Suspected factors: hypersensitivity to cow's milk, infection, prematurity</li>
+      </ul>
+
+      <div class="sub-heading">14.8 Battered Baby Syndrome (Caffey Syndrome)</div>
+      <p class="para">Multiple injuries not accidental in nature; inflicted by parents/foster parents.</p>
+      <ul class="bullet-list">
+        <li>Age: &lt;1 year; male preponderance; eldest or youngest; unwanted/illegitimate child</li>
+        <li>Parents: younger, isolated, low education/economic status, family disharmony, criminal record, unemployed</li>
+        <li>Precipitants: crying, refusal to be quiet, soiling</li>
+        <li>Injuries: soft tissue injuries, abrasions/bruises/lacerations of different ages; head/neck/face injuries</li>
+        <li>History: discrepancies; delay in seeking medical attention</li>
+      </ul>
+
+      <div class="sub-heading">14.9 Munchausen Syndrome by Proxy (MBPS)</div>
+      <p class="para">Rare form of child abuse — exaggeration or fabrication of illness by a primary caregiver (usually mother); child brought repeatedly for induced/alleged symptoms. Frequency: weeks to 21 years of age.</p>
+      <div class="callout">
+        <div class="callout-label">Diagnostic Criteria</div>
+        <ul class="bullet-list">
+          <li>Illness produced, alleged, or both by a parent.</li>
+          <li>Repeated medical care → multiple procedures.</li>
+          <li>Parental denial of cause of symptoms.</li>
+          <li>Symptoms resolve when child separated from parent.</li>
+        </ul>
+      </div>
+      <p class="para"><strong>Methods</strong>: adding blood to urine, closing child's nose and mouth, using pillow/towel to obstruct airway, giving insulin, inducing vomiting/diarrhea.</p>
+      <p class="para"><strong>Motive</strong>: need for attention/sympathy from medical professionals; satisfaction from deceiving authority figures.</p>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Forensic Medicine Study Guide · All three topic areas compiled for exam preparation
+</footer>
+
+<button class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+
+<script>
+  function toggleTheme() {
+    const root = document.documentElement;
+    const btn = document.querySelector('.theme-toggle');
+    if (root.getAttribute('data-theme') === 'dark') {
+      root.setAttribute('data-theme', 'light');
+      btn.textContent = '☾ Dark';
+    } else {
+      root.setAttribute('data-theme', 'dark');
+      btn.textContent = '☀ Light';
+    }
+  }
+
+  function toggleSection(header) {
+    const section = header.closest('.study-section');
+    section.classList.toggle('open');
+  }
+
+  function filterSections() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const sections = document.querySelectorAll('.study-section');
+    sections.forEach(sec => {
+      const text = sec.textContent.toLowerCase();
+      if (!q || text.includes(q)) {
+        sec.style.display = '';
+        if (q) sec.classList.add('open');
+      } else {
+        sec.style.display = 'none';
+      }
+    });
+    // show/hide part dividers
+    document.querySelectorAll('.part-divider').forEach(d => {
+      d.style.display = q ? 'none' : '';
+    });
+  }
+
+  // Open first section by default — already done via class
+</script>
+</body>
+</html>

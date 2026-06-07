@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forensic DNA — Practice Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Literata:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0f14;
+    --bg2: #13141b;
+    --bg3: #1a1c27;
+    --sidebar-bg: #111219;
+    --border: #252736;
+    --accent: #5d6bff;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --danger: #f87171;
+    --warn: #fbbf24;
+    --text: #e2e4f0;
+    --text-muted: #7c7f9e;
+    --text-dim: #4a4d6a;
+    --heading: #f0f2ff;
+    --card: #161824;
+    --card-border: #252848;
+    --highlight: #5d6bff22;
+    --correct-bg: #34d39918;
+    --correct-border: #34d39966;
+    --wrong-bg: #f8717118;
+    --wrong-border: #f8717166;
+    --shadow: 0 4px 32px #00000066;
+  }
+  .light {
+    --bg: #f4f5fb;
+    --bg2: #edeef7;
+    --bg3: #e4e5f0;
+    --sidebar-bg: #ebebf5;
+    --border: #d0d1e6;
+    --accent: #4355e8;
+    --accent2: #7c3aed;
+    --accent3: #059669;
+    --danger: #dc2626;
+    --warn: #d97706;
+    --text: #1a1b2e;
+    --text-muted: #555770;
+    --text-dim: #9899b3;
+    --heading: #0d0e20;
+    --card: #ffffff;
+    --card-border: #c9cae5;
+    --highlight: #4355e814;
+    --correct-bg: #d1fae5;
+    --correct-border: #6ee7b7;
+    --wrong-bg: #fee2e2;
+    --wrong-border: #fca5a5;
+    --shadow: 0 4px 24px #0000001a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Literata', Georgia, serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* TOPBAR */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; height: 56px;
+    background: var(--sidebar-bg);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; padding: 0 24px; gap: 16px; z-index: 300;
+  }
+  .topbar-logo {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px;
+    color: var(--heading); display: flex; align-items: center; gap: 10px;
+  }
+  .dna-icon {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px;
+  }
+  .topbar-sub {
+    font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding-left: 12px; margin-left: 4px; border-left: 1px solid var(--border);
+  }
+  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .theme-btn {
+    background: var(--bg3); border: 1px solid var(--border); border-radius: 20px;
+    cursor: pointer; padding: 5px 14px;
+    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.06em; transition: all 0.2s;
+  }
+  .theme-btn:hover { border-color: var(--accent); color: var(--text); }
+  .score-pill {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    background: var(--highlight); border: 1px solid var(--accent);
+    color: var(--accent); border-radius: 20px; padding: 4px 14px;
+    letter-spacing: 0.06em;
+  }
+
+  /* LAYOUT */
+  .layout { display: flex; margin-top: 56px; min-height: calc(100vh - 56px); }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 260px; min-width: 260px;
+    background: var(--sidebar-bg); border-right: 1px solid var(--border);
+    position: fixed; top: 56px; left: 0; bottom: 0;
+    overflow-y: auto; padding: 16px 0 40px; z-index: 200;
+  }
+  .sidebar::-webkit-scrollbar { width: 3px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .sb-label {
+    font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim);
+    padding: 14px 18px 5px;
+  }
+  .sb-link {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 18px; cursor: pointer;
+    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted);
+    border-left: 2px solid transparent; transition: all 0.15s; text-decoration: none;
+  }
+  .sb-link:hover { color: var(--text); background: var(--highlight); border-left-color: var(--accent2); }
+  .sb-link.answered { color: var(--accent3); }
+  .sb-link.answered .sb-dot { background: var(--accent3); }
+  .sb-link.wrong-ans { color: var(--danger); }
+  .sb-link.wrong-ans .sb-dot { background: var(--danger); }
+  .sb-link.active { color: var(--accent); background: var(--highlight); border-left-color: var(--accent); }
+  .sb-num { font-size: 10px; color: var(--text-dim); min-width: 22px; font-weight: 500; }
+  .sb-link.answered .sb-num { color: var(--accent3); }
+  .sb-link.wrong-ans .sb-num { color: var(--danger); }
+  .sb-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); margin-left: auto; flex-shrink: 0; }
+  .sb-divider { height: 1px; background: var(--border); margin: 8px 18px; }
+
+  /* MAIN */
+  .main { margin-left: 260px; flex: 1; padding: 40px 52px 80px; max-width: calc(100% - 260px); }
+
+  /* PAGE HEADER */
+  .page-header { margin-bottom: 44px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+  .page-tag {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); background: var(--highlight);
+    border: 1px solid var(--accent); border-radius: 4px; padding: 3px 10px;
+    display: inline-block; margin-bottom: 14px;
+  }
+  .page-title { font-family: 'Syne', sans-serif; font-size: 34px; font-weight: 800; color: var(--heading); letter-spacing: -1px; margin-bottom: 10px; }
+  .page-desc { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 580px; font-weight: 300; }
+
+  /* SECTION HEADER */
+  .section-head {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 28px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
+    scroll-margin-top: 76px;
+  }
+  .section-num-big { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--accent); opacity: 0.7; }
+  .section-title-big { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: var(--heading); }
+  .section-badge {
+    margin-left: auto; font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--text-muted); background: var(--bg3);
+    border: 1px solid var(--border); border-radius: 12px; padding: 3px 10px;
+  }
+
+  /* MCQ CARD */
+  .q-block {
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 12px; padding: 24px 28px; margin-bottom: 20px;
+    transition: border-color 0.2s; scroll-margin-top: 76px;
+  }
+  .q-block:hover { border-color: var(--accent2); }
+  .q-block.correct { border-color: var(--correct-border) !important; background: var(--correct-bg); }
+  .q-block.incorrect { border-color: var(--wrong-border) !important; background: var(--wrong-bg); }
+
+  .q-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 18px; }
+  .q-num {
+    font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500;
+    color: var(--accent); background: var(--highlight);
+    border: 1px solid var(--accent); border-radius: 5px;
+    padding: 3px 9px; white-space: nowrap; margin-top: 2px;
+  }
+  .q-text { font-size: 14.5px; line-height: 1.75; color: var(--heading); font-weight: 400; }
+
+  /* OPTIONS */
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+  .option {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 11px 16px; border-radius: 8px; cursor: pointer;
+    border: 1px solid var(--border); background: var(--bg2);
+    transition: all 0.15s; font-size: 13.5px; line-height: 1.5;
+    font-family: 'Literata', serif; font-weight: 300;
+  }
+  .option:hover:not(.disabled) { border-color: var(--accent2); background: var(--highlight); }
+  .option.selected { border-color: var(--accent); background: var(--highlight); }
+  .option.opt-correct { border-color: var(--accent3) !important; background: var(--correct-bg) !important; color: var(--accent3); }
+  .option.opt-wrong { border-color: var(--danger) !important; background: var(--wrong-bg) !important; color: var(--danger); }
+  .option.show-correct { border-color: var(--accent3) !important; background: var(--correct-bg) !important; opacity: 0.7; }
+  .option.disabled { cursor: default; }
+  .opt-letter {
+    font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500;
+    min-width: 22px; padding-top: 1px;
+  }
+  .opt-icon { margin-left: auto; font-size: 15px; padding-top: 1px; }
+
+  /* FEEDBACK */
+  .feedback {
+    display: none; padding: 12px 16px; border-radius: 8px;
+    font-size: 13px; line-height: 1.6; font-family: 'Literata', serif; font-weight: 300;
+  }
+  .feedback.show { display: block; }
+  .feedback.fb-correct { background: var(--correct-bg); border: 1px solid var(--correct-border); color: var(--accent3); }
+  .feedback.fb-wrong { background: var(--wrong-bg); border: 1px solid var(--wrong-border); color: var(--danger); }
+  .feedback strong { font-weight: 600; }
+
+  /* SHORT ANSWER */
+  .sa-block {
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 12px; padding: 24px 28px; margin-bottom: 20px;
+    scroll-margin-top: 76px;
+  }
+  .sa-marks {
+    font-family: 'DM Mono', monospace; font-size: 10px; color: var(--warn);
+    background: #fbbf2418; border: 1px solid #fbbf2444;
+    border-radius: 4px; padding: 2px 8px; margin-left: auto;
+  }
+  .sa-textarea {
+    width: 100%; min-height: 120px; padding: 14px 16px;
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text);
+    font-family: 'Literata', serif; font-size: 13.5px; line-height: 1.7;
+    resize: vertical; transition: border-color 0.2s; outline: none; margin-top: 16px;
+  }
+  .sa-textarea:focus { border-color: var(--accent); }
+  .sa-textarea.submitted { border-color: var(--accent3); background: var(--correct-bg); }
+
+  .btn-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .btn {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.06em;
+    padding: 8px 18px; border-radius: 8px; cursor: pointer;
+    border: 1px solid var(--accent); background: var(--highlight);
+    color: var(--accent); transition: all 0.2s;
+  }
+  .btn:hover { background: var(--accent); color: #fff; }
+  .btn.btn-reveal { border-color: var(--accent2); background: transparent; color: var(--accent2); }
+  .btn.btn-reveal:hover { background: var(--accent2); color: #fff; }
+  .btn.btn-check { border-color: var(--accent3); background: transparent; color: var(--accent3); }
+  .btn.btn-check:hover { background: var(--accent3); color: #fff; }
+
+  .model-answer {
+    display: none; margin-top: 14px; padding: 16px 18px;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 8px; font-size: 13.5px; line-height: 1.85;
+    color: var(--text); font-weight: 300;
+  }
+  .model-answer.show { display: block; }
+  .model-answer h4 {
+    font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700;
+    color: var(--accent3); letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .model-answer p { margin-bottom: 8px; font-size: 13px; }
+  .model-answer p:last-child { margin-bottom: 0; }
+  .model-answer ul { margin: 8px 0 8px 18px; }
+  .model-answer ul li { font-size: 13px; margin-bottom: 5px; line-height: 1.6; }
+
+  .self-check { margin-top: 10px; }
+  .self-check p { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+  .self-btns { display: flex; gap: 8px; }
+  .self-btn {
+    font-family: 'DM Mono', monospace; font-size: 11px; padding: 6px 16px;
+    border-radius: 6px; cursor: pointer; transition: all 0.2s;
+  }
+  .self-btn.correct-self { border: 1px solid var(--accent3); color: var(--accent3); background: transparent; }
+  .self-btn.correct-self:hover { background: var(--accent3); color: #fff; }
+  .self-btn.wrong-self { border: 1px solid var(--danger); color: var(--danger); background: transparent; }
+  .self-btn.wrong-self:hover { background: var(--danger); color: #fff; }
+
+  /* PROGRESS / SCORE PANEL */
+  .score-panel {
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 12px; padding: 20px 24px; margin-bottom: 36px;
+  }
+  .score-row { display: flex; gap: 20px; flex-wrap: wrap; }
+  .score-item { flex: 1; min-width: 100px; }
+  .score-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px; }
+  .score-value { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; color: var(--heading); }
+  .score-value.green { color: var(--accent3); }
+  .score-value.red { color: var(--danger); }
+  .score-value.blue { color: var(--accent); }
+
+  .progress-bar-wrap { height: 4px; background: var(--border); border-radius: 4px; margin-top: 16px; overflow: hidden; }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 4px; transition: width 0.4s; width: 0%; }
+
+  .reset-btn {
+    margin-top: 14px; font-family: 'DM Mono', monospace; font-size: 11px;
+    padding: 7px 18px; border-radius: 8px; cursor: pointer;
+    border: 1px solid var(--border); background: var(--bg3);
+    color: var(--text-muted); transition: all 0.2s; display: inline-block;
+  }
+  .reset-btn:hover { border-color: var(--danger); color: var(--danger); }
+
+  /* SECTION SPACING */
+  .content-section { margin-bottom: 60px; }
+
+  @media (max-width: 780px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; max-width: 100%; padding: 24px 16px 60px; }
+  }
+</style>
+</head>
+<body id="body">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="dna-icon">🧬</div>
+    Forensic DNA Quiz
+  </div>
+  <div class="topbar-sub">Practice Exam</div>
+  <div class="topbar-right">
+    <span class="score-pill" id="topScore">Score: 0 / 40</span>
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">☀ Light</button>
+  </div>
+</div>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sb-label">MCQs (1 mark each)</div>
+  <div id="sb-mcq-links"></div>
+  <div class="sb-divider"></div>
+  <div class="sb-label">Short Answer (3–5 marks)</div>
+  <div id="sb-sa-links"></div>
+  <div class="sb-divider"></div>
+  <a class="sb-link" onclick="document.getElementById('score-section').scrollIntoView({behavior:'smooth'})">
+    <span class="sb-num">★</span> Score Summary
+  </a>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <div class="page-header">
+    <div class="page-tag">Forensic Medicine · Unit V</div>
+    <h1 class="page-title">Practice Exam</h1>
+    <p class="page-desc">30 multiple-choice questions + 10 short-answer questions. MCQs are auto-graded. For short answers, compare against the model answer and self-mark.</p>
+  </div>
+
+  <!-- SCORE PANEL -->
+  <div class="score-panel" id="score-section">
+    <div class="score-row">
+      <div class="score-item">
+        <div class="score-label">MCQ Answered</div>
+        <div class="score-value blue" id="sc-answered">0 / 30</div>
+      </div>
+      <div class="score-item">
+        <div class="score-label">Correct</div>
+        <div class="score-value green" id="sc-correct">0</div>
+      </div>
+      <div class="score-item">
+        <div class="score-label">Incorrect</div>
+        <div class="score-value red" id="sc-wrong">0</div>
+      </div>
+      <div class="score-item">
+        <div class="score-label">SA Checked</div>
+        <div class="score-value blue" id="sc-sa">0 / 10</div>
+      </div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    <button class="reset-btn" onclick="resetAll()">↺ Reset All Answers</button>
+  </div>
+
+  <!-- ===================== MCQ SECTION ===================== -->
+  <div class="content-section" id="mcq-section">
+    <div class="section-head" id="mcq-head">
+      <span class="section-num-big">PART A</span>
+      <h2 class="section-title-big">Multiple Choice Questions</h2>
+      <span class="section-badge">30 × 1 mark</span>
+    </div>
+    <div id="mcq-container"></div>
+  </div>
+
+  <!-- ===================== SHORT ANSWER SECTION ===================== -->
+  <div class="content-section" id="sa-section">
+    <div class="section-head" id="sa-head">
+      <span class="section-num-big">PART B</span>
+      <h2 class="section-title-big">Short Answer Questions</h2>
+      <span class="section-badge">10 × 3–5 marks</span>
+    </div>
+    <div id="sa-container"></div>
+  </div>
+
+</main>
+</div>
+
+<script>
+// ==================== DATA ====================
+const mcqs = [
+  {
+    q: "DNA fingerprinting was first developed by:",
+    opts: ["Francis Crick", "Sir Alec Jeffreys", "Kary Mullis", "James Watson"],
+    ans: 1,
+    exp: "Sir Alec Jeffreys developed DNA fingerprinting in 1984 at the University of Leicester while studying inherited variation in seal myoglobin genes."
+  },
+  {
+    q: "The percentage of DNA that differs between any two unrelated humans and is exploited in DNA fingerprinting is approximately:",
+    opts: ["0.01%", "0.1%", "1%", "10%"],
+    ans: 1,
+    exp: "Human genomes are ~99.9% identical. It is the 0.1% variation — found predominantly in non-coding intron regions — that forensic science exploits."
+  },
+  {
+    q: "Which part of the cell contains Short Tandem Repeats (STRs) used in standard forensic profiling?",
+    opts: ["Mitochondria", "Cell nucleus", "Ribosome", "Endoplasmic reticulum"],
+    ans: 1,
+    exp: "STRs used in standard forensic profiling are located on the 23 pairs of chromosomes found in the cell nucleus (nuclear DNA)."
+  },
+  {
+    q: "STR stands for:",
+    opts: ["Sequence Tandem Region", "Short Tandem Repeat", "Single Tandem Repeat", "Structural Tandem Region"],
+    ans: 1,
+    exp: "STR = Short Tandem Repeat. These are 1–6 base pair repeating sequences whose repeat number varies between individuals, forming the basis of modern forensic DNA profiling."
+  },
+  {
+    q: "In the UK (England, Wales & N. Ireland), how many STR loci are currently analysed in standard DNA profiling?",
+    opts: ["6", "10", "16", "23"],
+    ans: 2,
+    exp: "Since 2014, the UK DNA-17 multiplex systems (ESI17, NGM SElect, ESS Plex SE) analyse 16 STR loci plus a gender marker. Scotland uses 23 loci (GlobalFiler)."
+  },
+  {
+    q: "Which enzyme is fundamental to the PCR (Polymerase Chain Reaction) process?",
+    opts: ["Restriction endonuclease", "RNA polymerase", "Taq polymerase", "Ligase"],
+    ans: 2,
+    exp: "Taq polymerase (isolated from Thermus aquaticus) is heat-stable and synthesizes new DNA strands during the extension phase of each PCR cycle at ~72°C."
+  },
+  {
+    q: "What technique separates DNA fragments by size using an electric current?",
+    opts: ["PCR", "Southern blotting", "Gel electrophoresis", "Hybridisation"],
+    ans: 2,
+    exp: "Gel electrophoresis applies an electric current across an agarose gel. DNA is negatively charged and migrates toward the positive electrode; smaller fragments move faster, separating by size."
+  },
+  {
+    q: "Mitochondrial DNA (mtDNA) is inherited:",
+    opts: ["From the father only", "From the mother only", "Equally from both parents", "Randomly from either parent"],
+    ans: 1,
+    exp: "mtDNA is exclusively maternally inherited. All of a mother's children share the same mtDNA, identical to all their relatives in the same maternal line."
+  },
+  {
+    q: "Y chromosome STR analysis is especially useful in:",
+    opts: ["Identifying the age of a DNA sample", "Detecting male DNA in a predominantly female mixture", "Tracing maternal lineage", "Identifying degraded plant DNA"],
+    ans: 1,
+    exp: "Y-STR analysis detects male-specific DNA even when it is swamped by female DNA — most critically in sexual assault cases where the female victim's DNA dominates."
+  },
+  {
+    q: "The match probability in the UK is capped at:",
+    opts: ["1 in 1 million", "1 in 100 million", "1 in 1 billion", "1 in 1 trillion"],
+    ans: 2,
+    exp: "The UK caps the match probability at 1 in 1 billion (and likelihood ratios at 1 billion), even if the actual calculation yields a smaller value, because assumptions become impossible to verify beyond this figure."
+  },
+  {
+    q: "The Likelihood Ratio (LR) in DNA evidence is defined as:",
+    opts: [
+      "Probability of the DNA profile divided by the population size",
+      "Probability of evidence under prosecution hypothesis ÷ probability under defence hypothesis",
+      "Match probability × population frequency",
+      "Number of matching loci ÷ total loci tested"
+    ],
+    ans: 1,
+    exp: "LR = P(evidence | prosecution hypothesis) / P(evidence | defence hypothesis). It quantifies how much more likely the evidence is under one proposition versus another."
+  },
+  {
+    q: "The UK National DNA Database (NDNAD) was established in:",
+    opts: ["1984", "1990", "1995", "2000"],
+    ans: 2,
+    exp: "The UK NDNAD was established in April 1995, managed by the Home Office. It is searched against two datasets: offender profiles and crime-scene profiles."
+  },
+  {
+    q: "The CODIS database in the USA originally required how many core STR loci?",
+    opts: ["6", "13", "16", "20"],
+    ans: 1,
+    exp: "CODIS was established in 1990 using 13 core STR loci. The number was expanded to 20 core loci in January 2017 to increase discriminating power."
+  },
+  {
+    q: "RFLP (Restriction Fragment Length Polymorphism) uses which type of enzyme to cut DNA?",
+    opts: ["Ligase", "Restriction endonuclease", "Taq polymerase", "DNA helicase"],
+    ans: 1,
+    exp: "Restriction endonucleases (molecular scissors) cut DNA at specific recognition sequences. Because sequences vary between individuals, they cut at different positions, producing fragments of different lengths (RFLPs)."
+  },
+  {
+    q: "Which DNA regions are primarily targeted in forensic fingerprinting and why?",
+    opts: [
+      "Exons, because they code for proteins and are highly conserved",
+      "Introns, because they are non-coding and highly polymorphic",
+      "Promoter regions, because they control gene expression",
+      "Telomeres, because they are at chromosome ends"
+    ],
+    ans: 1,
+    exp: "Introns (non-coding regions) contain highly variable repetitive sequences (STRs, VNTRs) that differ greatly between individuals. Exons are conserved and have poor discriminating power."
+  },
+  {
+    q: "In PCR thermal cycling, what occurs during the denaturation step?",
+    opts: [
+      "Primers bind to the template DNA",
+      "New complementary strands are synthesized",
+      "High temperature (94°C) separates double-stranded DNA into single strands",
+      "The gel separates fragments by size"
+    ],
+    ans: 2,
+    exp: "At ~94°C, hydrogen bonds between complementary base pairs break, denaturing double-stranded DNA into two single-stranded templates ready for primer annealing."
+  },
+  {
+    q: "An allele in STR analysis refers to:",
+    opts: [
+      "A complete DNA profile",
+      "A version of a locus characterized by a specific number of tandem repeats",
+      "The total number of STR loci tested",
+      "The match probability calculation"
+    ],
+    ans: 1,
+    exp: "An allele is one version of an STR locus defined by a specific number of repeat units. Each individual carries two alleles at each locus — one inherited from each parent."
+  },
+  {
+    q: "Which statement about mtDNA profiling is CORRECT?",
+    opts: [
+      "It is more discriminating than autosomal STR profiling",
+      "It can distinguish between maternal relatives",
+      "It is useful for samples like hair shafts without roots where nuclear DNA is absent",
+      "It is inherited from both parents equally"
+    ],
+    ans: 2,
+    exp: "mtDNA is present in hundreds to thousands of copies per cell, making it ideal for old, degraded samples or hair shafts without roots. However, it is LESS discriminating than STR profiling since all maternal relatives share the same mtDNA."
+  },
+  {
+    q: "Secondary DNA transfer means:",
+    opts: [
+      "DNA transferred directly from a person to an object",
+      "DNA transferred from person A to person B, who then deposits it on an object",
+      "Contamination of a sample in the laboratory",
+      "DNA transferred via airborne particles over a long distance"
+    ],
+    ans: 1,
+    exp: "Secondary transfer = Person A → Person B → Object. Person A's DNA can be found on an object they never directly touched, which must always be considered when interpreting forensic DNA evidence."
+  },
+  {
+    q: "The 'ski slope' pattern on an electropherogram indicates:",
+    opts: [
+      "A mixed DNA profile from multiple contributors",
+      "PCR contamination with foreign DNA",
+      "Degraded DNA where larger fragments are absent or weak",
+      "A homozygous genotype at all loci"
+    ],
+    ans: 2,
+    exp: "The ski slope pattern arises in degraded DNA samples: larger DNA fragments break down first, so the taller peaks are at smaller fragment sizes and progressively decrease toward larger sizes."
+  },
+  {
+    q: "Which of the following is NOT a recognised artefact in STR electropherograms?",
+    opts: ["Stutter peaks", "Pull-up (bleed-through)", "Homozygous dropout", "−A peaks"],
+    ans: 2,
+    exp: "Recognised artefacts include stutter (polymerase slippage), pull-up (cross-channel fluorescence), and −A peaks (incomplete A addition). 'Homozygous dropout' is not a standard artefact — allele drop-out refers to a true allele failing to amplify."
+  },
+  {
+    q: "The 'prosecutor's fallacy' in DNA evidence involves:",
+    opts: [
+      "Ignoring the DNA evidence entirely",
+      "Incorrectly equating the match probability with the probability of the suspect's innocence",
+      "Arguing that multiple people share the same profile",
+      "Claiming DNA transfer is impossible"
+    ],
+    ans: 1,
+    exp: "The prosecutor's fallacy is treating the match probability (e.g., 1 in 3 million) as meaning the suspect has a 1 in 3 million chance of being innocent — which ignores all other case evidence and the nature of probability."
+  },
+  {
+    q: "For known reference samples (suspect/victim), which specimen is most commonly collected?",
+    opts: ["Blood via venepuncture", "Urine sample", "Buccal (mouth) swab", "Hair with root"],
+    ans: 2,
+    exp: "Buccal swabs (scraping cells from the inner cheek lining) are the standard non-invasive method for collecting reference DNA from known individuals. They are then typically frozen for storage."
+  },
+  {
+    q: "How many base pairs does the human mitochondrial genome contain?",
+    opts: ["3,200,000,000", "16,569", "6,500,000", "100,000"],
+    ans: 1,
+    exp: "The human mitochondrial genome consists of approximately 16,569 base pairs arranged in a circle — tiny compared to the ~3.2 billion base pairs in nuclear DNA."
+  },
+  {
+    q: "Stutter peaks in an STR profile are typically:",
+    opts: [
+      "One repeat unit LARGER than the true allele and >50% its height",
+      "One repeat unit SMALLER than the true allele and <15% its height",
+      "Equal height to the true allele at a different locus",
+      "Caused by RNA contamination during PCR"
+    ],
+    ans: 1,
+    exp: "Stutter peaks are caused by polymerase slippage during PCR amplification, generating a minor peak typically one repeat unit smaller than the true allele and usually less than 15% of its height."
+  },
+  {
+    q: "In gel electrophoresis, smaller DNA fragments migrate:",
+    opts: [
+      "Slower toward the negative electrode",
+      "Faster toward the positive electrode",
+      "At the same rate regardless of size",
+      "Toward the cathode and away from the anode"
+    ],
+    ans: 1,
+    exp: "DNA is negatively charged (phosphate backbone) and migrates toward the positive electrode. Smaller fragments experience less resistance from the gel matrix and therefore move faster."
+  },
+  {
+    q: "Southern blotting is named after:",
+    opts: ["A geographical direction", "Edwin Southern, its inventor", "The southern hemisphere where it was developed", "Sir Alec Jeffreys' laboratory location"],
+    ans: 1,
+    exp: "Southern blotting is named after Edwin Southern who invented the technique. Northern blotting (for RNA) and Western blotting (for proteins) were humorously named by analogy."
+  },
+  {
+    q: "Which international quality standard is required for forensic DNA analysis laboratories in the UK?",
+    opts: ["ISO 9001", "ISO 17025", "ISO 14001", "ISO 22000"],
+    ans: 1,
+    exp: "ISO 17025 is the international standard for testing and calibration laboratories. UK forensic DNA labs must be accredited to this standard, verified independently by UKAS (UK Accreditation Service)."
+  },
+  {
+    q: "The principle of EXCLUSION in forensic DNA analysis means:",
+    opts: [
+      "A suspect can only be excluded after 20+ loci are compared",
+      "A single mismatch at any STR locus excludes a suspect as the source",
+      "Only the prosecution can exclude a suspect",
+      "Exclusion requires a match probability below 1 in 1 million"
+    ],
+    ans: 1,
+    exp: "If even one STR locus shows a mismatch between the crime-scene DNA and the suspect's profile, the suspect is definitively excluded as the source of that DNA — regardless of how many other loci match."
+  },
+  {
+    q: "Identical twins present a limitation to DNA fingerprinting because:",
+    opts: [
+      "Their DNA profiles cannot be generated",
+      "They share essentially the same DNA profile (except rare somatic mutations)",
+      "Their mtDNA comes from different maternal lineages",
+      "STR loci are monomorphic in twins"
+    ],
+    ans: 1,
+    exp: "Monozygotic (identical) twins develop from the same fertilised egg and share nearly identical DNA. Standard STR profiling cannot distinguish between them, representing the primary limitation of DNA identification. About 1 in 1,000 people has an identical twin."
+  }
+];
+
+const saqs = [
+  {
+    q: "Describe the PCR (Polymerase Chain Reaction) process as used in forensic DNA analysis. Why is it essential for forensic work?",
+    marks: 4,
+    model: [
+      "<strong>PCR</strong> (developed by Kary Mullis, Nobel Prize 1993) is an in vitro method that exponentially amplifies a specific target DNA sequence from a tiny starting amount.",
+      "<strong>Three cyclical steps:</strong> (1) <em>Denaturation</em> (~94°C): heat separates the double-stranded DNA into two single-stranded templates. (2) <em>Annealing</em> (~60°C): short DNA primers complementary to the flanking regions of the target STR bind to the templates. (3) <em>Extension</em> (~72°C): Taq polymerase synthesises a new complementary strand by adding dNTPs to the primer's 3' end.",
+      "<strong>Exponential amplification:</strong> Each cycle doubles the number of copies. After 28 cycles, 2²⁸ ≈ 268 million copies are produced.",
+      "<strong>Forensic importance:</strong> Crime-scene samples often contain only nanogram or picogram quantities of DNA — far too little for direct detection. PCR makes even trace amounts analysable. Additionally, forensic labs use <em>multiplex PCR</em> kits that amplify all required STR loci simultaneously in one reaction using fluorescently labelled primers.",
+      "<strong>Limitations:</strong> PCR's extreme sensitivity also amplifies contaminating DNA; strict protocols and negative controls are essential."
+    ]
+  },
+  {
+    q: "Distinguish between the match probability and the likelihood ratio (LR) in forensic DNA interpretation. What is the UK cap for each, and why does this cap exist?",
+    marks: 4,
+    model: [
+      "<strong>Match Probability:</strong> The probability that a randomly chosen unrelated person would have the same DNA profile as the crime-scene sample. It answers: 'How rare is this profile in the population?' Example: 1 in 3 million means approximately 20 people in the UK share the same profile.",
+      "<strong>Likelihood Ratio (LR):</strong> LR = P(evidence | prosecution hypothesis) ÷ P(evidence | defence hypothesis). It directly compares two competing explanations for the DNA evidence. In simple single-source cases, LR = 1 / match probability. In complex mixture cases, different propositions (e.g., suspect vs. suspect's brother as contributor) are evaluated separately.",
+      "<strong>LR is preferred</strong> because it accounts for alternative explanations and can incorporate artefacts, mixtures, and degradation.",
+      "<strong>UK cap:</strong> Both match probability (minimum 1 in 1 billion) and LR (maximum 1 billion) are capped. Reasons: (1) Statistical assumptions underpinning calculations cannot be verified reliably beyond this magnitude; (2) Numbers in the trillions are psychologically incomprehensible to jurors and risk undue weight being placed on DNA evidence alone.",
+      "<strong>Prosecutor's fallacy:</strong> Equating match probability with probability of innocence is incorrect — guilt depends on all case evidence, not DNA alone."
+    ]
+  },
+  {
+    q: "Explain the significance of STR (Short Tandem Repeat) analysis in forensic science. Why are multiple loci analysed?",
+    marks: 4,
+    model: [
+      "<strong>STRs</strong> are regions of 1–6 base pair sequences repeated in tandem, located in non-coding intron regions. The number of repeats at each locus varies between individuals (polymorphism), creating multiple alleles in the population.",
+      "<strong>Each individual has two alleles per locus</strong> (one from each parent), which may be the same (homozygous) or different (heterozygous). Allele frequency data from population databases is used to calculate how common each allele is.",
+      "<strong>Why multiple loci:</strong> If only one STR were tested, many unrelated people would share the same alleles by chance. Analysing multiple independent loci multiplies probabilities: if each locus has 1 in 20 chance of matching, 16 independent loci yield ~1 in 20¹⁶ — essentially negligible.",
+      "<strong>UK progression:</strong> 6 loci (1995) → 10 loci (1999) → 16 loci (2014, England/Wales/NI) → 23 loci (Scotland). USA currently uses 20 CODIS core loci.",
+      "<strong>Advantages over RFLP:</strong> STR analysis requires much less DNA, works on degraded samples, is faster, and is fully automatable via multiplex PCR and capillary electrophoresis."
+    ]
+  },
+  {
+    q: "Compare and contrast nuclear DNA (STR profiling), Y chromosome DNA, and mitochondrial DNA (mtDNA) analysis in forensic casework. When would each be used?",
+    marks: 5,
+    model: [
+      "<strong>Nuclear DNA (STR profiling):</strong> Located in cell nucleus; 2 copies per cell; 3.2 billion bp; half inherited from each parent. Highly discriminating — profiles unique to individuals (except identical twins). Used as the primary forensic identification method. Requires reasonable DNA quantity and quality.",
+      "<strong>Y-chromosome (Y-STR) analysis:</strong> Only in males; 1 copy per cell. Inherited intact from father to all sons — all paternal-line relatives share the same Y-STR haplotype. <em>Use:</em> Detecting male contributor in female-dominated mixtures (sexual assault); identifying paternal lineage. <em>Limitation:</em> Cannot distinguish between paternal relatives.",
+      "<strong>Mitochondrial DNA (mtDNA):</strong> Located in mitochondria (cytoplasm); 16,569 bp circular genome; hundreds–thousands of copies per cell. Maternally inherited — all maternal-line relatives share identical mtDNA. <em>Use:</em> Hair shafts without roots; old/degraded remains; ancient samples; tracing maternal lineage in missing persons. <em>Limitation:</em> Far less discriminating than STR profiling — all maternal relatives share the same profile.",
+      "<strong>Key comparison:</strong> Discriminating power: STR > Y-STR/mtDNA. Sensitivity (works with less/degraded DNA): mtDNA > STR. NDNAD stores only autosomal STR profiles — Y-STR and mtDNA are not on the database."
+    ]
+  },
+  {
+    q: "What is DNA contamination in forensic science? Describe at least four ways it can occur and how it is controlled.",
+    marks: 4,
+    model: [
+      "<strong>Definition:</strong> Contamination = introduction of extraneous DNA (or DNA-containing biological material) to a sample after a trained official has control of the crime scene.",
+      "<strong>Why critical:</strong> PCR is extraordinarily sensitive — a single foreign DNA molecule can amplify and produce a false profile or obscure the true one.",
+      "<strong>Sources of contamination:</strong> (1) Crime scene examiner failing to change gloves between exhibits. (2) Talking or sneezing without a properly fitted face mask at the scene. (3) Laboratory analyst inadvertently adding their own DNA. (4) Suspect transported in same vehicle as complainant before sampling. (5) Multiple suspects processed in the same facility or by the same medical practitioner. (6) Using swabs, reagents, or kits not certified as DNA-free (ISO 18385:2016).",
+      "<strong>Control measures:</strong> Full personal protective equipment; strict chain of custody; tamper-evident packaging; negative controls in every PCR run; elimination databases (DNA profiles of all staff, police, and consumable manufacturers); ISO 17025 laboratory accreditation; UKAS external auditing; quarterly quality checks.",
+      "<strong>Detection:</strong> 'Near-miss' searches on NDNAD flag profiles differing by only one allele. Contamination events are investigated case-by-case using all available continuity records."
+    ]
+  },
+  {
+    q: "Explain the concept of DNA transfer (primary, secondary, and tertiary) and discuss why it is important to consider when evaluating DNA evidence.",
+    marks: 4,
+    model: [
+      "<strong>Primary transfer:</strong> Person A directly contacts an object and deposits DNA on it. The most straightforward and expected scenario in forensic cases.",
+      "<strong>Secondary transfer:</strong> Person A touches Person B, who then touches Object 1. Person A's DNA can be found on Object 1 even though A never directly touched it. This is a scientifically demonstrated phenomenon and must be considered in all cases.",
+      "<strong>Tertiary transfer:</strong> Person A → Object 1 → Person B → Object 2. A's DNA appears on Object 2 through two intermediate steps. Lower probability but experimentally demonstrated, especially if transfers occur rapidly after each other.",
+      "<strong>Importance in evidence evaluation:</strong> Finding a person's DNA at a crime scene does NOT automatically mean they were there during the crime. A DNA match is not evidence of guilt — it requires consideration of: (i) whether direct contact is the most probable explanation; (ii) alternative secondary/tertiary transfer routes; (iii) whether the DNA's presence can be explained by legitimate prior contact; (iv) the body fluid of origin if determinable.",
+      "<strong>Key limitations:</strong> It is impossible to determine WHEN DNA was deposited; DNA can persist for many months. Scientists rank scenarios by relative probability rather than asserting one absolute explanation."
+    ]
+  },
+  {
+    q: "Describe the six steps involved in classical DNA fingerprinting using the RFLP method. What are its main limitations compared to PCR-based STR analysis?",
+    marks: 3,
+    model: [
+      "<strong>Six steps of RFLP/Southern blot fingerprinting:</strong>",
+      "(1) <em>DNA extraction</em> from cells of the biological sample. (2) <em>Restriction enzyme digestion</em>: endonucleases cut DNA at specific recognition sequences, generating fragments of different lengths (RFLPs) depending on individual sequence variation. (3) <em>Gel electrophoresis</em>: fragments separated by size; smaller fragments migrate further. (4) <em>Southern blotting</em>: fragments transferred (blotted) from gel to nylon membrane; denatured to single strands; fixed by heat or UV. (5) <em>Hybridization with radioactive probe</em>: labelled single-stranded DNA probe (complementary to VNTR sequences) binds to matching fragments. (6) <em>Autoradiography</em>: X-ray film placed against membrane; radioactive probe decay produces dark bands = DNA fingerprint.",
+      "<strong>Limitations of RFLP vs. PCR-STR:</strong> (i) Requires large amounts of high-quality DNA (at least 1 mL fresh blood ideally) — fails with degraded or trace samples. (ii) Warm, moist conditions rapidly degrade DNA, making RFLP unsuitable. (iii) Much slower and more labour-intensive. (iv) Cannot be automated to the same extent. (v) PCR-STR can work from just a few cells (picogram quantities), is faster, and can simultaneously analyse 16–23 loci in one multiplex reaction."
+    ]
+  },
+  {
+    q: "What is the National DNA Database (NDNAD)? What types of profiles does it hold, and what are its limitations?",
+    marks: 3,
+    model: [
+      "<strong>NDNAD</strong> was established in April 1995 and is managed by the UK Home Office on behalf of UK police forces. It was the first national DNA database in the world.",
+      "<strong>Contents — two searchable datasets:</strong> (1) DNA profiles from individuals convicted, or in some cases arrested, for a recordable offence. (2) DNA profiles recovered from crime-related evidence (crime-scene profiles). These two sets are searched against each other to generate investigative leads.",
+      "<strong>Separate databases (NOT part of NDNAD):</strong> Elimination databases for lab staff, police, crime-scene examiners, consumable manufacturers; volunteer and missing-person profiles.",
+      "<strong>Limitations:</strong> (i) Holds only autosomal STR profiles — Y-STR and mtDNA sequences are NOT stored or searched. (ii) Coverage is not universal — only individuals who have been arrested or convicted for recordable offences appear. (iii) Database profiles have evolved across generations (SGM → SGM Plus → DNA-17), requiring occasional upgrading. (iv) A hit provides an investigative lead, not proof of guilt — other evidence must corroborate the DNA match."
+    ]
+  },
+  {
+    q: "Describe the key factors that affect the amount of 'touch DNA' transferred from a person to a surface. Why is touch DNA evidence particularly complex to interpret?",
+    marks: 3,
+    model: [
+      "<strong>Touch DNA</strong> refers to DNA deposited on surfaces through skin contact rather than from a specific body fluid like blood or semen.",
+      "<strong>Factors affecting transfer amount:</strong> (1) Individual variation — some people are 'good shedders' who deposit large amounts of DNA; others are not. (2) Time since last hand-washing — more cells accumulate on unwashed hands. (3) Intensity of contact — a firm, prolonged grip deposits more DNA than a brief touch. (4) Surface characteristics — rough, absorbent surfaces retain more DNA than smooth, non-absorbent ones. (5) Whether surfaces are wet or dry.",
+      "<strong>Why complex to interpret:</strong> (i) It is impossible to determine WHEN the DNA was deposited — DNA can persist for months. (ii) Secondary and tertiary transfer can deposit Person A's DNA on surfaces A never touched. (iii) Not all touches result in detectable DNA transfer. (iv) The absence of a person's DNA on an object does not mean they did not touch it. (v) Touch DNA profiles are typically low-template and more prone to artefacts, stochastic variation, and drop-out."
+    ]
+  },
+  {
+    q: "What are the future developments in forensic DNA analysis? Discuss at least three emerging technologies and their potential forensic applications.",
+    marks: 3,
+    model: [
+      "<strong>1. Next Generation Sequencing (NGS):</strong> Rather than measuring STR allele length only, NGS sequences the exact base composition within each allele. This reveals multiple 'sequence variants' of the same length allele — e.g., a D12S391 allele of length '21' has at least 10 different sequence variants with different population frequencies. This significantly increases discriminating power, especially for closely related individuals.",
+      "<strong>2. Rapid DNA Systems:</strong> Fully automated, closed systems that generate a complete STR profile in 90–100 minutes from a buccal swab. Already used at police booking stations for arrestee enrollment. Being explored for field deployment at mass disaster scenes, border crossings, and crime scenes, reducing the time from sample to database comparison.",
+      "<strong>3. Phenotype & Ancestry Prediction (SNP analysis):</strong> Single nucleotide polymorphism (SNP) panels can predict physical appearance traits (skin colour, hair colour, eye colour) and biogeographical ancestry from DNA alone. Currently used for investigative intelligence only (not court evidence). Forensic genetic genealogy extends this by searching open genealogy databases (e.g., GEDmatch) with high-density SNP profiles to identify relatives of unknown contributors, then using traditional detective work to narrow suspects.",
+      "<strong>4. Improved body fluid identification:</strong> More accurate molecular tests to definitively identify the source body fluid (blood, semen, saliva) rather than current presumptive tests — enabling stronger inference about the mechanism of DNA deposition."
+    ]
+  }
+];
+
+// ==================== RENDER ====================
+let mcqState = new Array(30).fill(null); // null, 'correct', 'wrong'
+let saState = new Array(10).fill(false);
+
+function renderMCQs() {
+  const container = document.getElementById('mcq-container');
+  const sbLinks = document.getElementById('sb-mcq-links');
+  container.innerHTML = '';
+  sbLinks.innerHTML = '';
+
+  mcqs.forEach((q, i) => {
+    // sidebar link
+    const sl = document.createElement('a');
+    sl.className = 'sb-link';
+    sl.id = `sb-mcq-${i}`;
+    sl.innerHTML = `<span class="sb-num">Q${i+1}</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;">${q.q.substring(0,38)}...</span><span class="sb-dot"></span>`;
+    sl.onclick = () => document.getElementById(`mcq-${i}`).scrollIntoView({behavior:'smooth'});
+    sbLinks.appendChild(sl);
+
+    // card
+    const card = document.createElement('div');
+    card.className = 'q-block';
+    card.id = `mcq-${i}`;
+
+    const opts = q.opts.map((o, oi) => `
+      <div class="option" id="opt-${i}-${oi}" onclick="selectOpt(${i}, ${oi})">
+        <span class="opt-letter">${String.fromCharCode(65+oi)}.</span>
+        <span>${o}</span>
+        <span class="opt-icon" id="icon-${i}-${oi}"></span>
+      </div>
+    `).join('');
+
+    card.innerHTML = `
+      <div class="q-header">
+        <span class="q-num">Q${i+1}</span>
+        <span class="q-text">${q.q}</span>
+      </div>
+      <div class="options" id="opts-${i}">${opts}</div>
+      <div class="feedback" id="fb-${i}"></div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function renderSAQs() {
+  const container = document.getElementById('sa-container');
+  const sbLinks = document.getElementById('sb-sa-links');
+  container.innerHTML = '';
+  sbLinks.innerHTML = '';
+
+  saqs.forEach((q, i) => {
+    const sl = document.createElement('a');
+    sl.className = 'sb-link';
+    sl.id = `sb-sa-${i}`;
+    sl.innerHTML = `<span class="sb-num">SA${i+1}</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;">${q.q.substring(0,36)}...</span><span class="sb-dot"></span>`;
+    sl.onclick = () => document.getElementById(`sa-${i}`).scrollIntoView({behavior:'smooth'});
+    sbLinks.appendChild(sl);
+
+    const block = document.createElement('div');
+    block.className = 'sa-block';
+    block.id = `sa-${i}`;
+
+    const modelHTML = q.model.map(p => `<p>${p}</p>`).join('');
+
+    block.innerHTML = `
+      <div class="q-header">
+        <span class="q-num">SA${i+1}</span>
+        <span class="q-text">${q.q}</span>
+        <span class="sa-marks">${q.marks} marks</span>
+      </div>
+      <textarea class="sa-textarea" id="sa-text-${i}" placeholder="Write your answer here…"></textarea>
+      <div class="btn-row">
+        <button class="btn btn-reveal" onclick="toggleModel(${i})">📖 Show Model Answer</button>
+        <button class="btn btn-check" onclick="markSelf(${i}, true)">✓ I Got It</button>
+        <button class="btn" style="border-color:var(--danger);color:var(--danger);" onclick="markSelf(${i}, false)">✗ Needs Work</button>
+      </div>
+      <div class="model-answer" id="model-${i}">
+        <h4>Model Answer (${q.marks} marks)</h4>
+        ${modelHTML}
+      </div>
+      <div id="sa-fb-${i}" style="margin-top:10px;font-family:'DM Mono',monospace;font-size:11px;display:none;"></div>
+    `;
+    container.appendChild(block);
+  });
+}
+
+// ==================== INTERACTIONS ====================
+function selectOpt(qi, oi) {
+  if (mcqState[qi] !== null) return; // already answered
+
+  const isCorrect = oi === mcqs[qi].ans;
+  mcqState[qi] = isCorrect ? 'correct' : 'wrong';
+
+  // Disable all options
+  mcqs[qi].opts.forEach((_, optIdx) => {
+    const el = document.getElementById(`opt-${qi}-${optIdx}`);
+    el.classList.add('disabled');
+    if (optIdx === mcqs[qi].ans) {
+      el.classList.add(isCorrect && optIdx === oi ? 'opt-correct' : 'show-correct');
+      document.getElementById(`icon-${qi}-${optIdx}`).textContent = '✓';
+    }
+    if (!isCorrect && optIdx === oi) {
+      el.classList.add('opt-wrong');
+      document.getElementById(`icon-${qi}-${optIdx}`).textContent = '✗';
+    }
+  });
+  if (isCorrect) {
+    document.getElementById(`opt-${qi}-${oi}`).classList.add('opt-correct');
+  }
+
+  // Card highlight
+  const card = document.getElementById(`mcq-${qi}`);
+  card.classList.add(isCorrect ? 'correct' : 'incorrect');
+
+  // Feedback
+  const fb = document.getElementById(`fb-${qi}`);
+  fb.className = `feedback show ${isCorrect ? 'fb-correct' : 'fb-wrong'}`;
+  fb.innerHTML = `<strong>${isCorrect ? '✓ Correct!' : '✗ Incorrect.'}</strong> ${mcqs[qi].exp}`;
+
+  // Sidebar update
+  const sl = document.getElementById(`sb-mcq-${qi}`);
+  sl.classList.add(isCorrect ? 'answered' : 'wrong-ans');
+
+  updateScore();
+}
+
+function toggleModel(i) {
+  const m = document.getElementById(`model-${i}`);
+  m.classList.toggle('show');
+}
+
+function markSelf(i, correct) {
+  saState[i] = true;
+  const ta = document.getElementById(`sa-text-${i}`);
+  ta.classList.add('submitted');
+
+  const fb = document.getElementById(`sa-fb-${i}`);
+  fb.style.display = 'block';
+  if (correct) {
+    fb.style.color = 'var(--accent3)';
+    fb.textContent = '✓ Marked as understood.';
+  } else {
+    fb.style.color = 'var(--danger)';
+    fb.textContent = '✗ Marked for review. Re-read the model answer.';
+  }
+
+  const sl = document.getElementById(`sb-sa-${i}`);
+  sl.classList.add(correct ? 'answered' : 'wrong-ans');
+
+  // Show model answer automatically
+  document.getElementById(`model-${i}`).classList.add('show');
+
+  updateScore();
+}
+
+function updateScore() {
+  const correct = mcqState.filter(s => s === 'correct').length;
+  const wrong = mcqState.filter(s => s === 'wrong').length;
+  const answered = correct + wrong;
+  const saAnswered = saState.filter(Boolean).length;
+
+  document.getElementById('sc-answered').textContent = `${answered} / 30`;
+  document.getElementById('sc-correct').textContent = correct;
+  document.getElementById('sc-wrong').textContent = wrong;
+  document.getElementById('sc-sa').textContent = `${saAnswered} / 10`;
+  document.getElementById('topScore').textContent = `Score: ${correct} / 30 MCQ`;
+
+  const pct = (answered / 30) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+function resetAll() {
+  if (!confirm('Reset all answers?')) return;
+  mcqState = new Array(30).fill(null);
+  saState = new Array(10).fill(false);
+  renderMCQs();
+  renderSAQs();
+  updateScore();
+}
+
+function toggleTheme() {
+  const body = document.getElementById('body');
+  const btn = document.getElementById('themeBtn');
+  body.classList.toggle('light');
+  btn.textContent = body.classList.contains('light') ? '🌙 Dark' : '☀ Light';
+}
+
+// ==================== INIT ====================
+renderMCQs();
+renderSAQs();
+</script>
+</body>
+</html>

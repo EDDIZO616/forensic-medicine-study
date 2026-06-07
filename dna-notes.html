@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forensic DNA Analysis — Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Literata:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0f14;
+    --bg2: #13141b;
+    --bg3: #1a1c27;
+    --sidebar-bg: #111219;
+    --border: #252736;
+    --accent: #5d6bff;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --text: #e2e4f0;
+    --text-muted: #7c7f9e;
+    --text-dim: #4a4d6a;
+    --tag-bg: #1e2035;
+    --tag-text: #8b96ff;
+    --heading: #f0f2ff;
+    --card: #161824;
+    --card-border: #252848;
+    --highlight: #5d6bff22;
+    --number: #5d6bff;
+    --link: #818cf8;
+    --shadow: 0 4px 32px #00000066;
+  }
+  .light {
+    --bg: #f4f5fb;
+    --bg2: #edeef7;
+    --bg3: #e4e5f0;
+    --sidebar-bg: #ebebf5;
+    --border: #d0d1e6;
+    --accent: #4355e8;
+    --accent2: #7c3aed;
+    --accent3: #059669;
+    --text: #1a1b2e;
+    --text-muted: #555770;
+    --text-dim: #9899b3;
+    --tag-bg: #e0e2f7;
+    --tag-text: #3949ab;
+    --heading: #0d0e20;
+    --card: #ffffff;
+    --card-border: #c9cae5;
+    --highlight: #4355e814;
+    --number: #3f4fcb;
+    --link: #3949ab;
+    --shadow: 0 4px 24px #0000001a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Literata', Georgia, serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* TOP NAV */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 58px;
+    background: var(--sidebar-bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    z-index: 200;
+    gap: 16px;
+  }
+  .topbar-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: -0.5px;
+    color: var(--heading);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .topbar-logo .dna-icon {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .topbar-subtitle {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-left: 4px;
+    padding-left: 12px;
+    border-left: 1px solid var(--border);
+  }
+  .topbar-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .theme-toggle {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--accent); color: var(--text); }
+
+  /* LAYOUT */
+  .layout {
+    display: flex;
+    margin-top: 58px;
+    min-height: calc(100vh - 58px);
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 58px;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    padding: 20px 0 40px;
+    z-index: 100;
+    transition: background 0.3s;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .sidebar-section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 16px 20px 6px;
+  }
+
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+    line-height: 1.3;
+  }
+  .sidebar-link:hover {
+    color: var(--text);
+    background: var(--highlight);
+    border-left-color: var(--accent2);
+  }
+  .sidebar-link.active {
+    color: var(--accent);
+    background: var(--highlight);
+    border-left-color: var(--accent);
+    font-weight: 600;
+  }
+  .sidebar-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    min-width: 18px;
+  }
+  .sidebar-link.active .sidebar-num { color: var(--accent); }
+
+  .sidebar-sub {
+    padding-left: 48px;
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .sidebar-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 10px 20px;
+  }
+
+  /* MAIN CONTENT */
+  .main {
+    margin-left: 280px;
+    flex: 1;
+    padding: 48px 56px 80px;
+    max-width: calc(100% - 280px);
+  }
+
+  /* PAGE HEADER */
+  .page-header {
+    margin-bottom: 52px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .page-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--highlight);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    padding: 3px 10px;
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+  .page-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    color: var(--heading);
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .page-desc {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 620px;
+    font-weight: 300;
+  }
+
+  /* CONTENT SECTIONS */
+  .content-section {
+    margin-bottom: 64px;
+    scroll-margin-top: 80px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--number);
+    opacity: 0.5;
+    min-width: 36px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--heading);
+    letter-spacing: -0.5px;
+  }
+
+  .subsection {
+    margin-bottom: 36px;
+    scroll-margin-top: 80px;
+  }
+  .subsection-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .subsection-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    background: var(--highlight);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+  .subsection-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--heading);
+  }
+
+  p {
+    font-size: 14.5px;
+    line-height: 1.85;
+    color: var(--text);
+    margin-bottom: 14px;
+    font-weight: 300;
+  }
+
+  /* CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 20px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .card:hover {
+    border-color: var(--accent2);
+    box-shadow: var(--shadow);
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent2);
+    margin-bottom: 8px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .card p {
+    font-size: 13px;
+    margin-bottom: 0;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* KEY TERM */
+  .key-term {
+    background: var(--highlight);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 16px 0;
+  }
+  .key-term strong {
+    font-family: 'Syne', sans-serif;
+    color: var(--accent);
+    font-size: 13px;
+  }
+  .key-term p {
+    margin-bottom: 0;
+    margin-top: 4px;
+    font-size: 13.5px;
+  }
+
+  /* NUMBERED LIST */
+  .num-list {
+    list-style: none;
+    margin: 16px 0;
+  }
+  .num-list li {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text);
+    font-weight: 300;
+  }
+  .num-list li .li-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    background: var(--highlight);
+    border-radius: 4px;
+    padding: 1px 7px;
+    height: fit-content;
+    margin-top: 4px;
+    min-width: 28px;
+    text-align: center;
+  }
+
+  /* TABLE */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+  }
+  .data-table th {
+    background: var(--bg3);
+    color: var(--accent);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 2px solid var(--accent);
+    border-top: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Literata', serif;
+    font-size: 13px;
+    line-height: 1.5;
+    vertical-align: top;
+  }
+  .data-table tr:hover td { background: var(--highlight); }
+  .data-table td:first-child {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--accent2);
+  }
+
+  /* INFO BOX */
+  .info-box {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .info-box-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-box-title::before {
+    content: '';
+    display: block;
+    width: 6px; height: 6px;
+    background: var(--accent3);
+    border-radius: 50%;
+  }
+  .info-box p { font-size: 13.5px; margin-bottom: 8px; }
+  .info-box p:last-child { margin-bottom: 0; }
+
+  /* ALERT BOX */
+  .alert-box {
+    background: #5d6bff11;
+    border: 1px solid #5d6bff44;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+  }
+  .alert-box p { font-size: 13.5px; margin-bottom: 0; }
+  .alert-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  /* PROCESS STEPS */
+  .steps {
+    margin: 20px 0;
+    position: relative;
+  }
+  .step {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 0;
+    position: relative;
+  }
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 18px;
+    top: 36px;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .step-num {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: 1px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 500;
+    z-index: 1;
+  }
+  .step-content {
+    padding-bottom: 24px;
+    flex: 1;
+  }
+  .step-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--heading);
+    margin-bottom: 4px;
+    padding-top: 6px;
+  }
+  .step-content p { font-size: 13px; margin-bottom: 0; }
+
+  /* COMPARISON */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .compare-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .compare-card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .compare-row {
+    font-size: 12.5px;
+    margin-bottom: 6px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    font-family: 'Literata', serif;
+  }
+  .compare-row strong { color: var(--text); font-weight: 500; }
+
+  /* FORMULA/CODE BLOCK */
+  .mono-block {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--accent2);
+    line-height: 1.7;
+  }
+
+  /* GLOSSARY */
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .gloss-item {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .gloss-term {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent2);
+    margin-bottom: 4px;
+  }
+  .gloss-def {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.55;
+    font-weight: 300;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .sidebar { width: 240px; min-width: 240px; }
+    .main { margin-left: 240px; max-width: calc(100% - 240px); padding: 32px 28px 60px; }
+    .compare-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 680px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; max-width: 100%; padding: 24px 18px 60px; }
+  }
+
+  /* SCROLL BEHAVIOR */
+  html { scroll-behavior: smooth; }
+
+  /* HIGHLIGHT TEXT */
+  mark {
+    background: var(--highlight);
+    color: var(--accent2);
+    padding: 1px 4px;
+    border-radius: 3px;
+  }
+</style>
+</head>
+<body class="dark" id="body">
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="dna-icon">🧬</div>
+    Forensic Medicine
+  </div>
+  <div class="topbar-subtitle">DNA Analysis — Complete Study Guide</div>
+  <div class="topbar-right">
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">☀ Light Mode</button>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-section-label">Introduction</div>
+    <a class="sidebar-link active" onclick="scrollTo('s0')">
+      <span class="sidebar-num">01</span> What is DNA Fingerprinting?
+    </a>
+    <a class="sidebar-link" onclick="scrollTo('s0b')">
+      <span class="sidebar-num">02</span> History & Origins
+    </a>
+
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-label">DNA Biology</div>
+    <a class="sidebar-link" onclick="scrollTo('s1')">
+      <span class="sidebar-num">03</span> DNA Structure & Inheritance
+    </a>
+    <a class="sidebar-link" onclick="scrollTo('s1b')">
+      <span class="sidebar-num">04</span> Nuclear vs. Mitochondrial DNA
+    </a>
+    <a class="sidebar-link" onclick="scrollTo('s1c')">
+      <span class="sidebar-num">05</span> Coding vs. Non-Coding DNA
+    </a>
+
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-label">Typing Methods</div>
+    <a class="sidebar-link" onclick="scrollTo('s2')">
+      <span class="sidebar-num">06</span> STR Analysis
+    </a>
+    <a class="sidebar-link" onclick="scrollTo('s2b')">
+      <span class="sidebar-num">07</span> Y Chromosome (Y-STR)
+    </a>
+    <a class="sidebar-link" onclick="scrollTo('s2c')">
+      <span class="sidebar-num">08</span> Mitochondrial DNA (mtDNA)
+    </a>
+    <a class="sidebar-link" onclick="scrollTo('s2d')">
+      <span class="sidebar-num">09</span> RFLP Method
+    </a>
+    <a class="sidebar-link" onclick="scrollTo('s2e')">
+      <span class="sidebar-num">10</span> VNTR / Minisatellites
+    </a>
+
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-label">Laboratory Process</div>
+    <a class="sidebar-link" onclick="scrollTo('s3')">
+      <span class="sidebar-num">11</span> Sample Collection
+    </a>
+    <a class="sidebar-link" onclick="scrollTo('s3b')">
+      <span class="sidebar-num">12</span> PCR Amplification
+    </a>
+    <a class="sidebar-link" onclick="scrollTo('s3c')">
+      <span class="sidebar-num">13</span> Electrophoresis & Detection
+    </a>
+    <a class="sidebar-link" onclick="scrollTo('s3d')">
+      <span class="sidebar-num">14</span> DNA Profile Generation
+    </a>
+    <a class="sidebar-link" onclick="scrollTo('s3e')">
+      <span class="sidebar-num">15</span> Southern Blotting
+    </a>
+
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-label">Interpretation</div>
+    <a class="sidebar-link" onclick="scrollTo('s4')">
+      <span class="sidebar-num">16</span> Match Probability & LR
+    </a>
+    <a class="sidebar-link" onclick="scrollTo('s4b')">
+      <span class="sidebar-num">17</span> Mixed & Complex Profiles
+    </a>
+    <a class="sidebar-link" onclick="scrollTo('s4c')">
+      <span class="sidebar-num">18</span> Contamination
+    </a>
+    <a class="sidebar-link" onclick="scrollTo('s4d')">
+      <span class="sidebar-num">19</span> DNA Transfer
+    </a>
+    <a class="sidebar-link" onclick="scrollTo('s4e')">
+      <span class="sidebar-num">20</span> Error Rates
+    </a>
+
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-label">Databases & Applications</div>
+    <a class="sidebar-link" onclick="scrollTo('s5')">
+      <span class="sidebar-num">21</span> CODIS & NDNAD Databases
+    </a>
+    <a class="sidebar-link" onclick="scrollTo('s5b')">
+      <span class="sidebar-num">22</span> Applications
+    </a>
+    <a class="sidebar-link" onclick="scrollTo('s5c')">
+      <span class="sidebar-num">23</span> Future Advancements
+    </a>
+
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-label">Reference</div>
+    <a class="sidebar-link" onclick="scrollTo('s6')">
+      <span class="sidebar-num">24</span> Key Glossary
+    </a>
+    <a class="sidebar-link" onclick="scrollTo('s7')">
+      <span class="sidebar-num">25</span> Case Examples
+    </a>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div class="page-tag">Forensic Medicine · Unit V</div>
+      <h1 class="page-title">Forensic DNA Analysis</h1>
+      <p class="page-desc">A complete, organized study guide covering DNA fingerprinting, typing methods, laboratory procedures, statistical interpretation, and forensic applications — compiled from all lecture sources.</p>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 1. WHAT IS DNA FINGERPRINTING -->
+    <!-- =============================== -->
+    <div class="content-section" id="s0">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <h2 class="section-title">What is DNA Fingerprinting?</h2>
+      </div>
+
+      <p>DNA fingerprinting (also called <mark>genetic fingerprinting</mark> or <mark>DNA profiling</mark>) is a technique that identifies individuals on the basis of their unique DNA sequence patterns. The human genome is made up of approximately 3 billion nucleotides, 99.9% identical between any two people. Forensic science exploits the <strong>0.1% variation</strong> to distinguish individuals with extremely high certainty.</p>
+
+      <div class="key-term">
+        <strong>Core Principle</strong>
+        <p>Every person's DNA is unique (except identical twins). DNA from any cell in the body — blood, semen, saliva, hair root, skin — carries the same unique genetic code and can be used for comparison.</p>
+      </div>
+
+      <p>DNA fingerprinting focuses specifically on <mark>non-coding intron regions</mark> containing highly polymorphic repetitive sequences. Because exons are conserved (they code for proteins), introns show far greater variability and serve as ideal forensic markers.</p>
+
+      <div class="info-box">
+        <div class="info-box-title">The Four Fundamental Forensic Questions</div>
+        <ol class="num-list">
+          <li><span class="li-num">01</span> Whose DNA is it?</li>
+          <li><span class="li-num">02</span> From what body fluid did it originate?</li>
+          <li><span class="li-num">03</span> How did it get there?</li>
+          <li><span class="li-num">04</span> Have the results been reported in a fair and balanced way?</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 2. HISTORY -->
+    <!-- =============================== -->
+    <div class="content-section" id="s0b">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <h2 class="section-title">History & Origins</h2>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1984</div>
+          <div class="step-content">
+            <div class="step-title">Sir Alec Jeffreys — First DNA Fingerprint</div>
+            <p>Developed the technique at the University of Leicester while studying inherited variation. He began by examining myoglobin gene sequences in seals, identified a repeating "stutter" sequence (minisatellite), and realized similar sequences in humans could distinguish individuals. First DNA fingerprints were produced using a probe that bound to multiple minisatellite regions.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">1983</div>
+          <div class="step-content">
+            <div class="step-title">First Criminal Case</div>
+            <p>DNA fingerprinting was first applied to criminal casework in the investigation of the 1983 and 1986 rapes and murders of Lynda Mann and Dawn Ashworth in the UK.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">1987</div>
+          <div class="step-content">
+            <div class="step-title">First Exoneration & Conviction</div>
+            <p>Richard Buckland was exonerated through DNA analysis (the first DNA-based exoneration). Colin Pitchfork was subsequently convicted — the first conviction using DNA evidence.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">1990</div>
+          <div class="step-content">
+            <div class="step-title">FBI establishes CODIS</div>
+            <p>The FBI selected 13 independently assorting STR markers to form the core of the Combined DNA Index System (CODIS). Expanded to 20 core loci in 2017.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">1995</div>
+          <div class="step-content">
+            <div class="step-title">UK National DNA Database (NDNAD)</div>
+            <p>Established in April 1995, managed by the Home Office on behalf of UK police forces. Designed to maximise investigative use and identify repeat offenders.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 3. DNA STRUCTURE -->
+    <!-- =============================== -->
+    <div class="content-section" id="s1">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <h2 class="section-title">DNA Structure & Inheritance</h2>
+      </div>
+
+      <p>DNA (deoxyribonucleic acid) is the genetic blueprint of all living organisms. It consists of four chemical bases — <mark>A (adenine), T (thymine), C (cytosine), G (guanine)</mark> — attached to a sugar backbone. Two strands pair up (A–T, G–C) and twist into the famous <strong>double helix</strong> structure.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-title">Genome Size</div>
+          <p>Each human cell contains approximately <strong>6.5 billion base pairs</strong>. The full genome is 3 metres long and packaged into <strong>23 pairs of chromosomes</strong>.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Inheritance</div>
+          <p><strong>Half</strong> of a child's DNA comes from the mother, half from the father. Full siblings share on average <strong>50%</strong> of their DNA. Identical twins share nearly 100%.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Mutations</div>
+          <p>Each individual acquires approximately <strong>30–100 new mutations</strong> relative to their parents' genomes. This constant influx makes any two genomes essentially unique.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Exception</div>
+          <p>Identical (monozygotic) twins have essentially identical DNA, with only very rare new somatic mutations distinguishing them. This is the one true limitation of DNA identification.</p>
+        </div>
+      </div>
+
+      <div class="key-term">
+        <strong>Locus (pl. Loci)</strong>
+        <p>A specific, unique site along the DNA of a chromosome characterized by a defined sequence of bases. Forensic analysis targets multiple loci simultaneously to build a DNA profile.</p>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 4. NUCLEAR vs MITOCHONDRIAL -->
+    <!-- =============================== -->
+    <div class="content-section" id="s1b">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <h2 class="section-title">Nuclear vs. Mitochondrial DNA</h2>
+      </div>
+
+      <div class="compare-grid">
+        <div class="compare-card">
+          <div class="compare-card-title">Nuclear DNA (nDNA)</div>
+          <div class="compare-row"><strong>Location:</strong> Cell nucleus</div>
+          <div class="compare-row"><strong>Size:</strong> ~3.2 billion base pairs</div>
+          <div class="compare-row"><strong>Copies/cell:</strong> 2 (diploid)</div>
+          <div class="compare-row"><strong>Inheritance:</strong> Half from each parent</div>
+          <div class="compare-row"><strong>Use:</strong> Primary forensic typing (STR)</div>
+          <div class="compare-row"><strong>Uniqueness:</strong> Individual-specific</div>
+        </div>
+        <div class="compare-card">
+          <div class="compare-card-title">Mitochondrial DNA (mtDNA)</div>
+          <div class="compare-row"><strong>Location:</strong> Mitochondria (cytoplasm)</div>
+          <div class="compare-row"><strong>Size:</strong> ~16,569 base pairs (circular)</div>
+          <div class="compare-row"><strong>Copies/cell:</strong> Hundreds to thousands</div>
+          <div class="compare-row"><strong>Inheritance:</strong> Maternal lineage only</div>
+          <div class="compare-row"><strong>Use:</strong> Old/degraded samples, hair shafts</div>
+          <div class="compare-row"><strong>Uniqueness:</strong> Shared by all maternal relatives</div>
+        </div>
+        <div class="compare-card">
+          <div class="compare-card-title">Y Chromosome DNA</div>
+          <div class="compare-row"><strong>Location:</strong> Cell nucleus (Y chr.)</div>
+          <div class="compare-row"><strong>Copies/cell:</strong> 1 (males only)</div>
+          <div class="compare-row"><strong>Inheritance:</strong> Paternal lineage only</div>
+          <div class="compare-row"><strong>Use:</strong> Male contributor in mixtures</div>
+          <div class="compare-row"><strong>Uniqueness:</strong> Shared by paternal relatives</div>
+          <div class="compare-row"><strong>Note:</strong> Rare mutations differ between relatives</div>
+        </div>
+      </div>
+
+      <div class="alert-box">
+        <div class="alert-label">⚠ Important Note</div>
+        <p>Both Y-STR and mtDNA analyses are less discriminating than autosomal STR profiling because they are shared among all relatives in the respective lineage. Far more individuals may share the same profile compared to STR profiling.</p>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 5. CODING vs NON-CODING -->
+    <!-- =============================== -->
+    <div class="content-section" id="s1c">
+      <div class="section-header">
+        <span class="section-num">05</span>
+        <h2 class="section-title">Coding vs. Non-Coding DNA</h2>
+      </div>
+
+      <p>The human genome contains both <strong>exons</strong> (coding sequences that produce proteins) and <strong>introns</strong> (non-coding sequences between genes). Forensic DNA fingerprinting targets non-coding regions because:</p>
+
+      <ol class="num-list">
+        <li><span class="li-num">1</span> <strong>Exons</strong> are highly conserved across individuals (they encode proteins necessary for life) → low variability → poor discriminating power.</li>
+        <li><span class="li-num">2</span> <strong>Introns</strong> contain highly polymorphic repetitive sequences (STRs, VNTRs) that differ greatly between individuals → high variability → strong discriminating power.</li>
+        <li><span class="li-num">3</span> Non-coding STRs carry little information about ancestry, disease predisposition, or phenotypic traits → important for privacy and ethical reasons.</li>
+      </ol>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 6. STR ANALYSIS -->
+    <!-- =============================== -->
+    <div class="content-section" id="s2">
+      <div class="section-header">
+        <span class="section-num">06</span>
+        <h2 class="section-title">Short Tandem Repeat (STR) Analysis</h2>
+      </div>
+
+      <p>STR analysis is the <mark>primary method of modern forensic DNA typing</mark>. STRs are regions in the genome where a short sequence of 1–6 base pairs is repeated multiple times in tandem. The number of repeats varies between individuals, creating a highly polymorphic marker.</p>
+
+      <div class="key-term">
+        <strong>Allele</strong>
+        <p>Each version of an STR locus with a specific number of repeats. For example, allele "13" at a given locus means 13 repeating units of the 4-base sequence. An individual carries two alleles per locus (one from each parent), which may be the same (homozygous) or different (heterozygous).</p>
+      </div>
+
+      <div class="mono-block">
+        Example: GATA repeat at a single locus<br>
+        Person 1: [GATA]×8  → Allele 8<br>
+        Person 2: [GATA]×9  → Allele 9<br>
+        Person 3: [GATA]×10 → Allele 10
+      </div>
+
+      <div class="subsection" id="s2a_multi">
+        <div class="subsection-header">
+          <span class="subsection-num">6.1</span>
+          <div class="subsection-title">Why Multiple Loci Are Required</div>
+        </div>
+        <p>If only one STR locus were tested, many unrelated people would share the same alleles by chance. Analysing multiple independent loci multiplies the rarity of the combined profile exponentially — making the probability of a random match essentially negligible.</p>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Period</th>
+              <th>STR Loci Analysed</th>
+              <th>System / Kit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1995–1999</td>
+              <td>6 loci</td>
+              <td>SGM (Second Generation Multiplex)</td>
+            </tr>
+            <tr>
+              <td>1999–2014</td>
+              <td>10 loci</td>
+              <td>AmpFlSTR® SGM Plus®</td>
+            </tr>
+            <tr>
+              <td>2014–present (E&W, NI)</td>
+              <td>16 loci</td>
+              <td>DNA-17 multiplexes (ESI17, NGM SElect, ESS Plex SE)</td>
+            </tr>
+            <tr>
+              <td>2014–present (Scotland)</td>
+              <td>23 loci</td>
+              <td>AmpFlSTR® GlobalFiler™</td>
+            </tr>
+            <tr>
+              <td>USA (current)</td>
+              <td>20 core loci</td>
+              <td>CODIS (PowerPlex Fusion 6C, GlobalFiler)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">6.2</span>
+          <div class="subsection-title">CODIS Criteria (USA)</div>
+        </div>
+        <ol class="num-list">
+          <li><span class="li-num">1</span> Known chromosome location; must assort independently of all other CODIS markers.</li>
+          <li><span class="li-num">2</span> Must have multiple alleles in all examined populations.</li>
+          <li><span class="li-num">3</span> Alleles must be consistently, reliably, and accurately amplified by PCR.</li>
+          <li><span class="li-num">4</span> PCR products must distinguish alleles clearly enough for automated analysis.</li>
+        </ol>
+        <p style="margin-top:10px;">CODIS STR markers use the naming convention <mark>D#S###</mark> — "D" = DNA, the number = chromosome, "S" = single repetitive sequence (found once in genome). Example: <strong>D7S820</strong> is on chromosome 7 and contains 5–16 GATA repeats.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">6.3</span>
+          <div class="subsection-title">Allele Frequencies & Match Probability</div>
+        </div>
+        <p>Population databases record how often each allele appears in a given population. The frequency of a specific allele at one locus provides a probability. Multiplying frequencies across all tested loci gives the <mark>Random Match Probability (RMP)</mark> — the chance that a randomly chosen, unrelated person shares the same full DNA profile. With modern 16–20 locus panels, RMP values routinely reach <strong>1 in 10³⁰ or smaller</strong>.</p>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 7. Y CHROMOSOME -->
+    <!-- =============================== -->
+    <div class="content-section" id="s2b">
+      <div class="section-header">
+        <span class="section-num">07</span>
+        <h2 class="section-title">Y Chromosome STR Analysis (Y-STR)</h2>
+      </div>
+
+      <p>Y-STR analysis examines STR loci located only on the male-specific Y chromosome. Because the Y chromosome is transmitted from father to son with little change, all males sharing a direct male ancestor carry essentially the same Y-STR haplotype (differing only through rare mutations).</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-title">Primary Use</div>
+          <p>Detecting male contributor DNA in samples containing predominantly female DNA — most critically in <strong>sexual assault cases</strong> where male DNA is swamped by the female victim's DNA.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Limitation</div>
+          <p>Cannot distinguish between paternal male relatives (brothers, father, sons, cousins through paternal line) — they all carry the same Y-STR haplotype.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Inheritance</div>
+          <p>Passed intact from father to all sons. All males in a patrilineal lineage share the same Y-STR profile (with rare mutation exceptions).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 8. MITOCHONDRIAL DNA -->
+    <!-- =============================== -->
+    <div class="content-section" id="s2c">
+      <div class="section-header">
+        <span class="section-num">08</span>
+        <h2 class="section-title">Mitochondrial DNA (mtDNA) Analysis</h2>
+      </div>
+
+      <p>mtDNA analysis is used when nuclear DNA is unavailable, degraded, or in extremely small amounts. Because there are <strong>hundreds to thousands of copies of mtDNA per cell</strong> (compared to just 2 of nuclear DNA), it is far more likely to survive in old or damaged samples.</p>
+
+      <div class="info-box">
+        <div class="info-box-title">When mtDNA Is Most Useful</div>
+        <ol class="num-list">
+          <li><span class="li-num">1</span> Hair shafts without roots (nuclear DNA absent).</li>
+          <li><span class="li-num">2</span> Old skeletal remains (bones and teeth).</li>
+          <li><span class="li-num">3</span> Samples where nuclear DNA has severely degraded.</li>
+          <li><span class="li-num">4</span> Tracing maternal lineage in missing persons or mass disaster identification.</li>
+        </ol>
+      </div>
+
+      <p>mtDNA changes only ~2–4% every million years through random mutation, allowing maternal lineage tracing across many generations. Forensic scientists analyse the <mark>HV1 and HV2 hypervariable regions</mark> of the mitochondrial genome, comparing single nucleotide differences between samples and a reference.</p>
+
+      <div class="mono-block">
+        Example of mtDNA difference between two unrelated individuals:<br>
+        Person 1: ACCGGTTGCAAG<br>
+        Person 2: AGCGGTACCAAG<br>
+        <span style="color:var(--accent3);">(underlined positions indicate differences)</span>
+      </div>
+
+      <p>All of a mother's children, and all their maternal-line relatives, share the same mtDNA profile. This significantly limits discriminating power compared to autosomal STR profiling.</p>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 9. RFLP -->
+    <!-- =============================== -->
+    <div class="content-section" id="s2d">
+      <div class="section-header">
+        <span class="section-num">09</span>
+        <h2 class="section-title">Restriction Fragment Length Polymorphism (RFLP)</h2>
+      </div>
+
+      <p>RFLP was the <mark>first DNA fingerprinting method</mark> developed by Jeffreys. It uses restriction enzymes (molecular scissors) to cut DNA at specific recognition sequences. Because DNA sequences vary between individuals, enzymes cut at different locations, producing fragments of different lengths — the RFLPs.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Cut DNA with restriction endonucleases</div>
+            <p>Restriction enzymes recognize specific 4–8 base sequences and cut there. Polymorphisms in these sites mean cutting patterns differ between individuals.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Gel electrophoresis</div>
+            <p>Fragments are separated by size through an agarose gel under an electric current. DNA's negative charge causes it to migrate toward the positive electrode; smaller fragments move faster.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Southern Blotting</div>
+            <p>Separated fragments are transferred from gel to nylon membrane. Single stranded DNA is fixed to the membrane by heat or UV light.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">Hybridization with radioactive probe</div>
+            <p>Radioactively labelled single-stranded DNA probes complementary to VNTR sequences are added and bind to matching fragments.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <div class="step-title">Autoradiography / X-ray film</div>
+            <p>Radioactive probe decays and emits light, creating dark bands on X-ray film. The unique banding pattern is the DNA fingerprint.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert-box">
+        <div class="alert-label">⚠ Limitation</div>
+        <p>RFLP requires large amounts of high-quality DNA and is sensitive to degradation. Warm, moist conditions rapidly degrade DNA and render it unsuitable for RFLP. This is why PCR-based STR methods have largely replaced it in modern forensics.</p>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 10. VNTR / MINISATELLITES -->
+    <!-- =============================== -->
+    <div class="content-section" id="s2e">
+      <div class="section-header">
+        <span class="section-num">10</span>
+        <h2 class="section-title">VNTRs and Minisatellites</h2>
+      </div>
+
+      <p><strong>Variable Number Tandem Repeats (VNTRs)</strong> are repetitive sequences scattered throughout the non-coding regions of the genome where the repeat unit is typically 10–60 base pairs. They are also called <mark>minisatellites</mark> in the original Jeffreys system.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-title">VNTRs</div>
+          <p>Repeat units of <strong>1–100 bp</strong>, repeated many times. Everyone inherits VNTRs from both parents but has a unique combination due to crossing over during meiosis.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Minisatellites</div>
+          <p>Short repetitive sequences of <strong>10–60 bp</strong>, occurring at 1,000+ locations throughout the genome. Highly variable between individuals. Used in original Jeffreys DNA fingerprinting.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">STRs (Microsatellites)</div>
+          <p>Smaller repeat units of <strong>1–6 bp</strong>, dispersed through chromosomes. Now the standard in forensic science because they can be amplified by PCR even from tiny/degraded samples.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 11. SAMPLE COLLECTION -->
+    <!-- =============================== -->
+    <div class="content-section" id="s3">
+      <div class="section-header">
+        <span class="section-num">11</span>
+        <h2 class="section-title">Sample Collection & Preservation</h2>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">11.1</span>
+          <div class="subsection-title">Sources of DNA Evidence</div>
+        </div>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-title">Body Fluids</div>
+            <p>Blood, semen, saliva (from cigarette, drink can), vaginal fluid, urine.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Cellular Material</div>
+            <p>Hair roots, skin cells (touch DNA), buccal cells, bone fragments, teeth.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Known Samples</div>
+            <p>Buccal (mouth) swabs from suspects, victims, family members — scraping inside cheek.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">11.2</span>
+          <div class="subsection-title">Collection Methods</div>
+        </div>
+        <ol class="num-list">
+          <li><span class="li-num">1</span> <strong>Swabbing:</strong> Moistened sterile DNA-free swab rubbed over hard surfaces (knives, windows). Often double-swab technique.</li>
+          <li><span class="li-num">2</span> <strong>Cutting:</strong> Stained fabric sections cut out for analysis.</li>
+          <li><span class="li-num">3</span> <strong>Tape lifts:</strong> Surface material collected from clothing collars and similar surfaces.</li>
+          <li><span class="li-num">4</span> <strong>Intimate samples:</strong> Taken by medical practitioners in sexual assault cases (vaginal, anal swabs).</li>
+          <li><span class="li-num">5</span> <strong>Targeted sampling:</strong> Scientist predicts contact areas based on case circumstances (e.g., grip area of a knife handle, knot of a ligature).</li>
+        </ol>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">11.3</span>
+          <div class="subsection-title">Preservation</div>
+        </div>
+        <p>Most biological evidence is best preserved <strong>dry and/or frozen</strong>. These conditions reduce DNA degradation and prevent mould/bacteria growth. Samples are packaged in tamper-evident bags, transported to the forensic laboratory, inspected and signed for on arrival, then generally frozen. Extracted and purified DNA is stored in sealed tubes at <strong>4°C (refrigerator)</strong> or <strong>−20°C (freezer)</strong>.</p>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 12. PCR AMPLIFICATION -->
+    <!-- =============================== -->
+    <div class="content-section" id="s3b">
+      <div class="section-header">
+        <span class="section-num">12</span>
+        <h2 class="section-title">PCR Amplification</h2>
+      </div>
+
+      <p>The <mark>Polymerase Chain Reaction (PCR)</mark> is the cornerstone of modern DNA fingerprinting. Developed by Kary Mullis (Nobel Prize, Chemistry 1993), PCR copies a specific target DNA sequence millions of times, making even trace amounts detectable.</p>
+
+      <div class="info-box">
+        <div class="info-box-title">Why PCR Is Essential</div>
+        <p>Forensic samples often contain only nanogram or picogram quantities of DNA — far too little to detect directly. PCR amplifies the target region exponentially so it can be analysed. In 28 cycles, PCR produces over <strong>268 million copies</strong> of the target sequence.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">12.1</span>
+          <div class="subsection-title">PCR Mechanism — Three Steps Per Cycle</div>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">94°C</div>
+            <div class="step-content">
+              <div class="step-title">Denaturation</div>
+              <p>High temperature breaks hydrogen bonds between complementary bases, separating the double-stranded DNA into two single strands (templates).</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">60°C</div>
+            <div class="step-content">
+              <div class="step-title">Annealing</div>
+              <p>Temperature drops; short DNA primers (complementary to flanking sequences of the target STR) bind (anneal) to their complementary positions on the template strands. This defines the exact region to be copied.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">72°C</div>
+            <div class="step-content">
+              <div class="step-title">Extension</div>
+              <p>Taq polymerase enzyme synthesizes a new complementary strand, adding dNTPs (nucleotides) to the 3' end of the primer. The cycle repeats, doubling copies each time.</p>
+            </div>
+          </div>
+        </div>
+        <div class="mono-block">
+          Exponential amplification: 2ᴺ copies after N cycles<br>
+          28 cycles → 2²⁸ = 268,435,456 copies<br>
+          Target input: ≥500 pg DNA is ideal (~80 cells); ≥100 pg minimum
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">12.2</span>
+          <div class="subsection-title">Multiplex PCR Kits</div>
+        </div>
+        <p>Modern forensic labs use <strong>commercial multiplex PCR kits</strong> that simultaneously amplify all required STR loci in a single reaction. Each primer pair carries a fluorescent dye (different colours for loci of similar sizes) allowing automated detection. Examples: PowerPlex® Fusion 6C (Promega), GlobalFiler™ (Thermo Fisher), Investigator ESS (QIAGEN).</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">12.3</span>
+          <div class="subsection-title">DNA Quantitation (Before PCR)</div>
+        </div>
+        <p>Before PCR, labs use <mark>quantitative real-time PCR (qPCR)</mark> to measure how much DNA was recovered. This determines: whether there's enough for one or multiple tests; whether to concentrate the sample further; the ratio of human to male DNA; extent of degradation; and degree of PCR inhibition (substances in the sample that block PCR).</p>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 13. ELECTROPHORESIS & DETECTION -->
+    <!-- =============================== -->
+    <div class="content-section" id="s3c">
+      <div class="section-header">
+        <span class="section-num">13</span>
+        <h2 class="section-title">Electrophoresis & Detection</h2>
+      </div>
+
+      <p>After PCR, fluorescently labelled amplified STR fragments are separated by size using <mark>capillary electrophoresis (CE)</mark>. DNA fragments migrate through a polymer-filled capillary under an electric field — smaller fragments move faster. A laser excites the fluorescent dyes and detectors record the signal.</p>
+
+      <div class="key-term">
+        <strong>Electropherogram</strong>
+        <p>The graphical output of capillary electrophoresis. The horizontal axis shows fragment size (base pairs); the vertical axis shows fluorescence intensity (amount of DNA). Peaks represent alleles at each STR locus. This is the primary document analysed by the forensic scientist.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">13.1</span>
+          <div class="subsection-title">Reading the Electropherogram</div>
+        </div>
+        <ol class="num-list">
+          <li><span class="li-num">1</span> <strong>Gender marker (amelogenin):</strong> Males show two different-sized peaks (X and Y); females show one (X only).</li>
+          <li><span class="li-num">2</span> <strong>Single-source sample:</strong> 1–2 peaks per locus. If homozygous (same allele from both parents), one peak of approximately double height.</li>
+          <li><span class="li-num">3</span> <strong>Mixed sample:</strong> 3–4 or more peaks per locus indicate multiple contributors.</li>
+          <li><span class="li-num">4</span> <strong>Peak height:</strong> Approximates DNA quantity at that allele. Used to assess mixture ratios and major/minor contributors.</li>
+        </ol>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">13.2</span>
+          <div class="subsection-title">Common Artefacts to Recognise</div>
+        </div>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-title">Stutter</div>
+            <p>Small peaks typically one repeat unit smaller than the true allele, caused by polymerase slippage during PCR. Usually &lt;15% of the true allele peak height.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Pull-up (Bleed-through)</div>
+            <p>A strong signal in one colour channel causes artefact peaks at the same size position in an adjacent colour channel.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">−A peaks</div>
+            <p>When the polymerase fails to add a single A base to the end of each fragment, a "shoulder" one base smaller than the main peak appears.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Ski Slope Pattern</div>
+            <p>In degraded DNA, larger fragments give disproportionately low or absent peaks. Smaller fragments amplify normally. This characteristic pattern indicates degradation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 14. DNA PROFILE GENERATION -->
+    <!-- =============================== -->
+    <div class="content-section" id="s3d">
+      <div class="section-header">
+        <span class="section-num">14</span>
+        <h2 class="section-title">DNA Profile Generation — Full Workflow</h2>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Laboratory Examination</div>
+            <p>Examine submitted item visually and with chemical tests or alternative light sources to detect and locate body fluids.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Sample Recovery</div>
+            <p>Collect biological material by swabbing, cutting, or tape lift. For sexual assault cases, differential extraction separates sperm DNA from other cellular DNA.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">DNA Extraction & Purification</div>
+            <p>Cells are lysed, proteins degraded, and DNA recovered using magnetic beads/silica columns or organic separation. DNA is stored in sealed tubes.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">DNA Quantitation (qPCR)</div>
+            <p>Measure the amount and quality of recovered DNA. Determines optimal PCR input and whether low-template protocols are needed.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <div class="step-title">PCR Amplification</div>
+            <p>Multiplex PCR amplifies all required STR loci simultaneously using commercially validated kits with fluorescently labelled primers.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <div class="step-title">Capillary Electrophoresis & Detection</div>
+            <p>Amplified fragments are separated by size. Laser excites dyes; detector records fluorescence to generate the electropherogram. ~1 hour.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">7</div>
+          <div class="step-content">
+            <div class="step-title">Data Interpretation & Genotyping</div>
+            <p>Scientist analyses the electropherogram, assigns allele designations to each peak at each locus, distinguishes true alleles from artefacts, and generates the numerical DNA profile.</p>
+          </div>
+        </div>
+      </div>
+
+      <p>The DNA profile is expressed as a string of numbers — the count of STR repeats on each allele at each tested locus (e.g., for 16 loci this produces 32 numeric values plus a sex designation). This is what gets compared and stored in databases.</p>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 15. SOUTHERN BLOTTING -->
+    <!-- =============================== -->
+    <div class="content-section" id="s3e">
+      <div class="section-header">
+        <span class="section-num">15</span>
+        <h2 class="section-title">Southern Blotting</h2>
+      </div>
+
+      <p>Southern blotting is the classical technique used in the original RFLP-based DNA fingerprinting. After gel electrophoresis separates DNA fragments by size, the fragments are transferred ("blotted") onto a nylon membrane for hybridization analysis.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Transfer to Nylon</div>
+            <p>Separated DNA fragments are drawn from the agarose gel onto a nylon membrane using capillary action or electric current.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Denaturation & Fixation</div>
+            <p>Chemical treatment breaks hydrogen bonds, separating DNA strands. Single-stranded DNA is cross-linked to the nylon by heat or UV light.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Hybridization with Radioactive Probe</div>
+            <p>Single-stranded radioactively labelled probe DNA (complementary to VNTR sequences) is applied. It binds specifically to matching fragments.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">Autoradiography</div>
+            <p>X-ray film is placed against the membrane. Radioactive decay exposes the film, producing dark bands at positions where probe hybridised. The banding pattern = DNA fingerprint.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 16. MATCH PROBABILITY & LR -->
+    <!-- =============================== -->
+    <div class="content-section" id="s4">
+      <div class="section-header">
+        <span class="section-num">16</span>
+        <h2 class="section-title">Match Probability & Likelihood Ratio</h2>
+      </div>
+
+      <p>When a DNA profile from a crime scene matches a suspect, there are three possible explanations:</p>
+      <ol class="num-list">
+        <li><span class="li-num">1</span>The suspect is the true source of the crime scene material.</li>
+        <li><span class="li-num">2</span>A second unrelated person with an identical DNA profile is the source.</li>
+        <li><span class="li-num">3</span>The match is a false positive due to contamination, sample switch, or error.</li>
+      </ol>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">16.1</span>
+          <div class="subsection-title">Match Probability</div>
+        </div>
+        <div class="key-term">
+          <strong>Match Probability</strong>
+          <p>The probability that a randomly chosen, unrelated individual would have the same DNA profile as observed at the crime scene. In the UK, the minimum reported value is <mark>1 in 1 billion</mark> (capped) even if the actual calculation yields values like 1 in 1 trillion.</p>
+        </div>
+        <p>The cap exists because: (1) statistical assumptions become difficult to verify at smaller probabilities; and (2) numbers beyond 1 in a billion are practically incomprehensible to a jury. About 1 in 1,000 individuals has an identical twin — this provides a practical upper limit to discriminating power.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">16.2</span>
+          <div class="subsection-title">Likelihood Ratio (LR)</div>
+        </div>
+        <div class="key-term">
+          <strong>Likelihood Ratio</strong>
+          <p>The probability of the observed evidence <em>under the prosecution hypothesis</em> divided by the probability under the <em>defence hypothesis</em>. LR = P(Evidence | Prosecution) / P(Evidence | Defence). In simple cases, LR = 1 / Match Probability. In complex cases multiple competing hypotheses are evaluated. UK cap: <strong>1 billion</strong>.</p>
+        </div>
+        <p>The LR is the internationally preferred method for expressing weight of DNA evidence. A higher LR means the evidence is more consistent with the prosecution's proposition than the defence's.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">16.3</span>
+          <div class="subsection-title">Logical Fallacies to Avoid</div>
+        </div>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-title">Prosecutor's Fallacy</div>
+            <p>Incorrectly equating the match probability with the probability of innocence. A 1 in 3 million match probability does NOT mean a 1 in 3 million chance the suspect is innocent. Guilt depends on all evidence, not just the DNA match.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Defence Lawyer's Fallacy</div>
+            <p>Arguing that because ~20 people in the UK might share the same 1-in-3-million profile, there's a 1 in 20 chance the suspect is guilty. This ignores all other evidence that identified the suspect.</p>
+          </div>
+        </div>
+        <div class="alert-box">
+          <div class="alert-label">⚠ Key Point for Exams</div>
+          <p>A DNA match alone should NEVER be used to imply a suspect's involvement in a crime. DNA evidence must always be evaluated in the full context of the case, including other non-DNA evidence and credible alternative explanations for the DNA's presence.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 17. MIXED & COMPLEX PROFILES -->
+    <!-- =============================== -->
+    <div class="content-section" id="s4b">
+      <div class="section-header">
+        <span class="section-num">17</span>
+        <h2 class="section-title">Mixed & Complex DNA Profiles</h2>
+      </div>
+
+      <p>A complex DNA profile involves one or more of:</p>
+      <ol class="num-list">
+        <li><span class="li-num">1</span><strong>Low template:</strong> Less than optimal DNA quantity (typically &lt;100 pg or ~16 cells).</li>
+        <li><span class="li-num">2</span><strong>Mixture:</strong> DNA from multiple contributors present simultaneously.</li>
+        <li><span class="li-num">3</span><strong>Degradation:</strong> DNA broken into short fragments; larger STRs give disproportionately weak or absent peaks.</li>
+        <li><span class="li-num">4</span><strong>Inhibition:</strong> Chemical substances in the sample interfering with PCR efficiency.</li>
+      </ol>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">17.1</span>
+          <div class="subsection-title">Interpretation Software — Three Types</div>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>How It Works</th>
+              <th>Best For</th>
+              <th>Examples</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Binary</td>
+              <td>Scientist manually assigns peaks as allele/artefact. No peak height consideration.</td>
+              <td>Simple mixtures (2–3 contributors), no low-template issues.</td>
+              <td>Lab-developed spreadsheets</td>
+            </tr>
+            <tr>
+              <td>Discrete Variables</td>
+              <td>Manual peak assignment; software accounts for low-template effects but not peak heights.</td>
+              <td>Up to 4 contributors; some low-template issues.</td>
+              <td>LRmix Studio, Resolve, LikeLTD 4+, LabRetriever</td>
+            </tr>
+            <tr>
+              <td>Continuous Variables</td>
+              <td>Software considers ALL peak information including heights, stutter, degradation, and low-template effects using probabilistic modelling.</td>
+              <td>Complex mixtures; 3+ contributors; degraded/low-template samples.</td>
+              <td>STRmix, TrueAllele, LiRA-HT, DNA View Mixture Solution</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="alert-box">
+          <div class="alert-label">⚠ Critical Point</div>
+          <p>Different software programs using different statistical models on the same DNA data can produce different LR values. Reproducibility is expected within each software type, but results can differ more markedly across types. When DNA profiles are complete, most programs will calculate LR > 1 billion (all capped the same). Differences mainly appear with incomplete or low-level profiles.</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">17.2</span>
+          <div class="subsection-title">Low Template DNA</div>
+        </div>
+        <p>When input DNA is below optimal, stochastic effects dominate:</p>
+        <ol class="num-list">
+          <li><span class="li-num">1</span><strong>Allele drop-out:</strong> One allele at a locus fails to amplify above the detection threshold, appearing absent.</li>
+          <li><span class="li-num">2</span><strong>Allele drop-in:</strong> Sporadic non-reproducible peaks appear (often from trace contamination).</li>
+          <li><span class="li-num">3</span><strong>Stochastic variation:</strong> Peak heights vary unpredictably between replicates.</li>
+        </ol>
+        <p>Testing replicate samples (2–3 runs) assesses reproducibility. If replicate peak patterns are consistent → sufficient DNA for standard interpretation. If replicates show very different patterns with missing peaks → special validated methods required, or profile must be rejected.</p>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 18. CONTAMINATION -->
+    <!-- =============================== -->
+    <div class="content-section" id="s4c">
+      <div class="section-header">
+        <span class="section-num">18</span>
+        <h2 class="section-title">Contamination Control</h2>
+      </div>
+
+      <div class="key-term">
+        <strong>Definition</strong>
+        <p>Contamination = introduction of extraneous DNA (or biological material containing DNA) to a sample after a trained official has control of the crime scene.</p>
+      </div>
+
+      <p>Because PCR is extraordinarily sensitive, even single molecules of foreign DNA can amplify and confound results. Contamination can occur at every stage — crime scene, transportation, laboratory processing.</p>
+
+      <div class="info-box">
+        <div class="info-box-title">Common Contamination Routes</div>
+        <ol class="num-list">
+          <li><span class="li-num">1</span>Crime-scene examiner not changing gloves between exhibits.</li>
+          <li><span class="li-num">2</span>Talking/sneezing without a properly fitted face mask at crime scene.</li>
+          <li><span class="li-num">3</span>Analyst inadvertently adding their own DNA in the lab.</li>
+          <li><span class="li-num">4</span>Suspect transported in same vehicle as complainant before sampling.</li>
+          <li><span class="li-num">5</span>Multiple suspects processed together (should be separate facilities, different medical practitioners).</li>
+          <li><span class="li-num">6</span>DNA-contaminated swabs, reagents, or consumables used.</li>
+        </ol>
+      </div>
+
+      <p>All forensic labs maintain <strong>elimination databases</strong> — DNA profiles of all lab staff, crime scene staff, police officers, and consumable manufacturers — so any contamination can be identified and distinguished from case evidence. Labs must comply with <mark>ISO 17025</mark> international quality standards, independently verified by UKAS (UK Accreditation Service).</p>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 19. DNA TRANSFER -->
+    <!-- =============================== -->
+    <div class="content-section" id="s4d">
+      <div class="section-header">
+        <span class="section-num">19</span>
+        <h2 class="section-title">DNA Transfer & Persistence</h2>
+      </div>
+
+      <p>Understanding transfer is crucial because finding someone's DNA at a crime scene does not automatically mean they were there during the crime. Transfer requires three things: <mark>source</mark>, <mark>opportunity</mark>, and <mark>mechanism</mark>.</p>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">19.1</span>
+          <div class="subsection-title">Types of Transfer</div>
+        </div>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-title">Primary Transfer</div>
+            <p>Person A directly contacts an object → deposits DNA on it. Most straightforward and common scenario.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Secondary Transfer</div>
+            <p>Person A touches Person B, who then touches the object. A's DNA may be found on the object even though A never touched it directly.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Tertiary Transfer</div>
+            <p>Person A touches Object 1 → Person B touches Object 1 → Person B touches Object 2. A's DNA may appear on Object 2. Low probability but demonstrated experimentally.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">19.2</span>
+          <div class="subsection-title">Factors Affecting Touch DNA Transfer</div>
+        </div>
+        <ol class="num-list">
+          <li><span class="li-num">1</span>Person-to-person variability (some individuals are "good shedders," others are not).</li>
+          <li><span class="li-num">2</span>Time elapsed and activities since last hand-washing.</li>
+          <li><span class="li-num">3</span>Intensity of contact (brief touch vs. firm grip).</li>
+          <li><span class="li-num">4</span>Surface characteristics — wet/dry, rough/smooth, absorbent/non-absorbent.</li>
+        </ol>
+      </div>
+
+      <div class="info-box">
+        <div class="info-box-title">Key Scientific Principles (Published Research)</div>
+        <ol class="num-list">
+          <li><span class="li-num">1</span>It is NOT possible to determine when DNA was deposited.</li>
+          <li><span class="li-num">2</span>DNA can persist for many months depending on environmental conditions.</li>
+          <li><span class="li-num">3</span>Secondary (and tertiary) transfer can occur — a person's DNA may be on objects they never touched.</li>
+          <li><span class="li-num">4</span>Secondary/tertiary transfer without the transferring person's own DNA has been demonstrated only when transfers occur immediately after each other.</li>
+          <li><span class="li-num">5</span>Each successive transfer involves DNA loss, but profile quality cannot rule out a specific transfer type.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 20. ERROR RATES -->
+    <!-- =============================== -->
+    <div class="content-section" id="s4e">
+      <div class="section-header">
+        <span class="section-num">20</span>
+        <h2 class="section-title">Error Rates in DNA Analysis</h2>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Source of Error</th>
+            <th>Frequency (proportion of samples)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Police handling of suspect sample/records</td>
+            <td>&lt; 1 in 2,000</td>
+          </tr>
+          <tr>
+            <td>Police handling of crime sample/records</td>
+            <td>&lt; 1 in 50,000</td>
+          </tr>
+          <tr>
+            <td>Forensic lab handling of suspect sample</td>
+            <td>&lt; 1 in 10,000</td>
+          </tr>
+          <tr>
+            <td>Forensic lab handling of crime sample</td>
+            <td>&lt; 1 in 5,000</td>
+          </tr>
+          <tr>
+            <td>Lab error in known sample interpretation*</td>
+            <td>&lt; 1 in 10,000</td>
+          </tr>
+          <tr>
+            <td>Lab error in mixed profile interpretation*</td>
+            <td>&lt; 1 in 500</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:12.5px; color:var(--text-muted);">*Each error relates to a single part of the DNA profile only (one of ~34 values in a full profile). For cases going to court, additional quality checks by a second scientist further reduce effective error rates below these submission figures.</p>
+
+      <p>Quality is maintained through quarterly checks, "near-miss" scanning of the national database (flagging profiles differing by just one allele), and mandatory dual-scientist review for court cases.</p>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 21. DATABASES -->
+    <!-- =============================== -->
+    <div class="content-section" id="s5">
+      <div class="section-header">
+        <span class="section-num">21</span>
+        <h2 class="section-title">CODIS & National DNA Databases</h2>
+      </div>
+
+      <div class="compare-grid" style="grid-template-columns: repeat(2, 1fr);">
+        <div class="compare-card">
+          <div class="compare-card-title">UK — NDNAD</div>
+          <div class="compare-row"><strong>Established:</strong> April 1995</div>
+          <div class="compare-row"><strong>Managed by:</strong> Home Office (on behalf of UK police)</div>
+          <div class="compare-row"><strong>Contents:</strong> Offender profiles (convicted + some arrested) and crime-scene profiles</div>
+          <div class="compare-row"><strong>Does NOT hold:</strong> Y-STR or mtDNA data</div>
+          <div class="compare-row"><strong>Separate databases:</strong> Elimination (staff), volunteers, missing persons</div>
+          <div class="compare-row"><strong>Purpose:</strong> Investigative leads; linking serial crimes; identifying repeat offenders</div>
+        </div>
+        <div class="compare-card">
+          <div class="compare-card-title">USA — CODIS / NDIS</div>
+          <div class="compare-row"><strong>Established:</strong> 1990 (13 loci); expanded to 20 loci 2017</div>
+          <div class="compare-row"><strong>Managed by:</strong> FBI</div>
+          <div class="compare-row"><strong>Contents (April 2021):</strong> 14.5M offender + 4.3M arrestee + 1.1M forensic profiles</div>
+          <div class="compare-row"><strong>System:</strong> CODIS (Combined DNA Index System); NDIS (National DNA Index System)</div>
+          <div class="compare-row"><strong>Naming convention:</strong> D#S### for autosomal STRs</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 22. APPLICATIONS -->
+    <!-- =============================== -->
+    <div class="content-section" id="s5b">
+      <div class="section-header">
+        <span class="section-num">22</span>
+        <h2 class="section-title">Applications of DNA Fingerprinting</h2>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-title">Criminal Investigations</div>
+          <p>Identifying suspects; exonerating the innocent; linking serial crimes; cold case resolution.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Paternity / Kinship Testing</div>
+          <p>Determining biological parentage; immigration disputes; inheritance cases; identifying family members in mass disasters.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Sexual Assault Cases</div>
+          <p>Identifying assailants from biological evidence; Y-STR to detect male DNA in predominantly female samples.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Missing Persons / Disaster Victims</div>
+          <p>Identifying human remains using nuclear STR or mtDNA compared to reference samples from maternal/paternal relatives.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Exoneration (Post-conviction)</div>
+          <p>Re-examining old evidence with modern sensitive methods to exonerate wrongly convicted individuals.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Non-Human Applications</div>
+          <p>Plant identification; livestock pedigree authentication; animal species identification; tumour cell analysis; cell line quality control.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Bone Marrow Transplants</div>
+          <p>Cell chimaerism studies — tracking donor vs. recipient cells after transplantation.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Forensic Genetic Genealogy</div>
+          <p>High-density SNP typing of cold-case DNA → search open genealogy databases → family tree detective work → narrow to candidate suspect → STR confirmation. Example: GEDmatch (now Verogen).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 23. FUTURE ADVANCEMENTS -->
+    <!-- =============================== -->
+    <div class="content-section" id="s5c">
+      <div class="section-header">
+        <span class="section-num">23</span>
+        <h2 class="section-title">Future Advancements in Forensic DNA</h2>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-title">Rapid DNA Systems</div>
+          <p>Closed, integrated systems generating a full STR profile in 90–100 minutes. Used at police booking stations for arrestee enrollment. Being explored for field use in mass disasters and border crossings.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Next Generation Sequencing (NGS)</div>
+          <p>Sequences the exact base composition of STR alleles (not just length). This reveals multiple "flavors" of the same length allele — increasing discriminating power significantly. One STR length allele can have 10+ different sequence variants with different population frequencies.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Phenotype Prediction</div>
+          <p>SNP markers that predict physical traits (skin, hair, and eye colour) from DNA for investigative intelligence. Not yet used as courtroom evidence — currently investigative use only.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Ancestry Estimation</div>
+          <p>Biogeographical ancestry prediction from SNP panels. Provides investigative leads about geographic origins of an unidentified contributor.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Improved Body Fluid Tests</div>
+          <p>More accurate chemical/molecular tests for determining the body fluid of origin (blood, semen, saliva, etc.) — enabling scientists to be more definitive about sample type.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Whole Genome Sequencing</div>
+          <p>Becoming faster and cheaper. Use of different genome regions for human identification in criminal justice not yet fully explored but emerging.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 24. GLOSSARY -->
+    <!-- =============================== -->
+    <div class="content-section" id="s6">
+      <div class="section-header">
+        <span class="section-num">24</span>
+        <h2 class="section-title">Key Glossary</h2>
+      </div>
+
+      <div class="glossary-grid">
+        <div class="gloss-item">
+          <div class="gloss-term">Allele</div>
+          <div class="gloss-def">One of two or more versions of a genetic sequence at a specific locus. Characterised by a specific number of STR repeats.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Allele Drop-Out</div>
+          <div class="gloss-def">Failure of a detectable allele to produce a signal above threshold, usually due to low template DNA. The allele appears absent in the profile.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Allele Drop-In</div>
+          <div class="gloss-def">Sporadic allele peaks not reproducible across replicates, often from trace contamination. Explained as low-level extraneous DNA.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Amelogenin</div>
+          <div class="gloss-def">Sex-determining marker present in all forensic STR kits. Males show two different-sized peaks (X and Y); females show one (X only).</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Capillary Electrophoresis</div>
+          <div class="gloss-def">Method of separating fluorescently labelled PCR products by size through a polymer-filled capillary. The standard detection platform in modern forensic labs.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Degraded DNA</div>
+          <div class="gloss-def">DNA that has broken into short fragments due to aging, heat, moisture, or UV exposure. Larger STR alleles give weak or absent peaks ("ski slope").</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Electropherogram</div>
+          <div class="gloss-def">Graphical output of CE analysis. Horizontal = fragment size (base pairs); vertical = fluorescence intensity. Peaks represent alleles at each locus.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Genotype</div>
+          <div class="gloss-def">The genetic make-up at one or more loci. At each STR locus, consists of two alleles (one from each parent) — the genotype.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Haplotype</div>
+          <div class="gloss-def">A group of genes or DNA sequences inherited together from one parent. Y-STR profiles and mtDNA sequences are haplotypes.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Likelihood Ratio (LR)</div>
+          <div class="gloss-def">Probability of evidence under prosecution hypothesis divided by probability under defence hypothesis. Expresses weight of DNA evidence. UK cap: 1 billion.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Locus (Loci)</div>
+          <div class="gloss-def">A unique physical location of a DNA sequence on a chromosome. Multiple loci are analysed to build a DNA profile.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Match Probability</div>
+          <div class="gloss-def">The probability that a randomly chosen unrelated person shares the same DNA profile as the crime-scene sample. UK minimum reported: 1 in 1 billion.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Minisatellite</div>
+          <div class="gloss-def">Repetitive DNA sequences of 10–60 bp occurring at 1,000+ locations. Used in original Jeffreys RFLP-based fingerprinting.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Multiplex PCR</div>
+          <div class="gloss-def">Co-amplification of multiple STR loci simultaneously in a single PCR reaction using multiple primer pairs, each labelled with fluorescent dyes.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">PCR (Polymerase Chain Reaction)</div>
+          <div class="gloss-def">In vitro process that exponentially copies a target DNA region through repeated temperature cycling. Produces billions of copies from a few starting molecules.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Pull-Up (Bleed-Through)</div>
+          <div class="gloss-def">Artefact where strong fluorescent signal in one colour produces false peaks in an adjacent colour channel at the same size position.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">RFLP</div>
+          <div class="gloss-def">Restriction Fragment Length Polymorphism. Differences in DNA fragment sizes produced by restriction enzyme digestion due to sequence variation between individuals.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">STR (Short Tandem Repeat)</div>
+          <div class="gloss-def">Regions of 1–6 bp repeated sequences in tandem. Number of repeats varies between individuals. Primary target of modern forensic DNA profiling.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Stutter</div>
+          <div class="gloss-def">Artefact peak one repeat unit smaller than the true allele, caused by polymerase slippage during PCR. Usually &lt;15% of true allele peak height.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Touch DNA</div>
+          <div class="gloss-def">DNA transferred to or from surfaces via skin contact rather than from a specific body fluid. Amount varies by individual and contact type.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">VNTR</div>
+          <div class="gloss-def">Variable Number Tandem Repeat. Larger repeat units (1–100 bp) than STRs. Used in original RFLP fingerprinting; microsatellites/STRs have largely replaced them.</div>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Validation</div>
+          <div class="gloss-def">The process of providing objective evidence that a method, process, or device is fit for its specific intended purpose. Required by the Forensic Science Regulator for all methods used in casework.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============================== -->
+    <!-- 25. CASE EXAMPLES -->
+    <!-- =============================== -->
+    <div class="content-section" id="s7">
+      <div class="section-header">
+        <span class="section-num">25</span>
+        <h2 class="section-title">Forensic Case Examples</h2>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">Case 1</span>
+          <div class="subsection-title">Blood on Suspect's Clothing (Body Fluid Attribution)</div>
+        </div>
+        <p>A complainant was stabbed and a DNA profile was obtained from a large, heavy stain on the suspect's clothing. A presumptive blood test gave a very strong positive result. The mixed DNA profile showed the <strong>major contributor matched the complainant</strong> and the minor contributor matched the suspect (as the habitual wearer). <em>Conclusion:</em> Reasonable to attribute the major DNA component to the blood staining and the minor component to the wearer's own skin cells.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">Case 2</span>
+          <div class="subsection-title">Rape Investigation — Sperm Fraction Evidence</div>
+        </div>
+        <p>Suspect denied intercourse but claimed to have masturbated two hours prior and only touched the complainant externally. A high vaginal swab revealed significant sperm heads visually. After differential extraction (separating sperm from other cells), the sperm fraction DNA <strong>matched the suspect</strong>. The non-sperm fraction matched the complainant. <em>Conclusion:</em> The findings are highly improbable if the suspect merely touched the external genitalia after masturbating, and far more probable if full intercourse with ejaculation occurred.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">Case 3</span>
+          <div class="subsection-title">Knife in Stabbing — Transfer Assessment</div>
+        </div>
+        <p>A cleaned knife (no visible blood) was swabbed separately on blade and handle. Blade: weak profile matching complainant. Handle: weak mixed profile with suspect as major contributor. <em>Key evaluation:</em> The complainant's DNA on the blade does not automatically indicate use in the stabbing — it could be from previous handling (e.g., kitchen knife from complainant's own home). Context of where the knife was found is critical to interpretation.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">Case 4</span>
+          <div class="subsection-title">Firearm Found at Suspect's Lock-Up — Transfer vs. Direct Contact</div>
+        </div>
+        <p>Illegal firearm found wrapped in a plastic bag. Trigger swab: low-template profile matching the defendant (no other contributor). Handle/barrel: no profile. Suspect claimed DNA transferred from the bag (which he admitted was his) to the gun. <em>Evaluation:</em> Direct transfer to the trigger is the simplest scenario. The bag-to-gun transfer requires the correct bag area to align with the trigger, passing through the trigger guard — additional steps each requiring specific conditions. Scientist concluded findings more probable if the prosecution scenario (direct contact) is true.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-header">
+          <span class="subsection-num">Paternity Example</span>
+          <div class="subsection-title">Determining Biological Father</div>
+        </div>
+        <p>DNA from mother, child, and two alleged fathers is cut with a restriction enzyme and run on a gel. The child's DNA must be a combination of one allele from the mother and one from the father. If the child shares alleles with Man A that Man B cannot contribute, then Man B is excluded as the father and Man A is identified as the biological father. One mismatch at any locus = complete exclusion.</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // Theme toggle
+  function toggleTheme() {
+    const body = document.getElementById('body');
+    const btn = document.getElementById('themeBtn');
+    if (body.classList.contains('light')) {
+      body.classList.remove('light');
+      btn.textContent = '☀ Light Mode';
+    } else {
+      body.classList.add('light');
+      btn.textContent = '🌙 Dark Mode';
+    }
+  }
+
+  // Smooth scroll to section
+  function scrollTo(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    // Update active link
+    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+  }
+
+  // Active link on scroll
+  const sections = document.querySelectorAll('.content-section');
+  const links = document.querySelectorAll('.sidebar-link');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        links.forEach(l => l.classList.remove('active'));
+        // find link that scrolls to this id
+        links.forEach(l => {
+          const onclick = l.getAttribute('onclick');
+          if (onclick && onclick.includes(id)) {
+            l.classList.add('active');
+          }
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forensic Medicine — Study Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #171b26;
+    --bg3: #1e2334;
+    --card: #1a1f2e;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #e8eaf0;
+    --muted: #8b93a8;
+    --accent: #c8a96e;
+    --accent2: #7eb8d4;
+    --accent3: #7ecba0;
+    --accent4: #d47e8f;
+    --accent5: #a07ed4;
+    --red: #e05c5c;
+    --tag-bg: rgba(200,169,110,0.12);
+    --tag-text: #c8a96e;
+    --num: #c8a96e;
+    --shadow: 0 2px 16px rgba(0,0,0,0.4);
+  }
+  [data-theme="light"] {
+    --bg: #f0ede6;
+    --bg2: #e8e4da;
+    --bg3: #ddd9cf;
+    --card: #faf8f4;
+    --border: rgba(0,0,0,0.09);
+    --border2: rgba(0,0,0,0.15);
+    --text: #1c1e26;
+    --muted: #5a5e6b;
+    --accent: #8b6914;
+    --accent2: #1a6b8a;
+    --accent3: #1a7a4a;
+    --accent4: #8a1a40;
+    --accent5: #5a1a8a;
+    --red: #c0392b;
+    --tag-bg: rgba(139,105,20,0.10);
+    --tag-text: #8b6914;
+    --num: #8b6914;
+    --shadow: 0 2px 16px rgba(0,0,0,0.10);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
+    line-height: 1.7;
+  }
+
+  /* THEME TOGGLE */
+  .theme-toggle {
+    position: fixed;
+    top: 1.2rem;
+    right: 1.5rem;
+    z-index: 999;
+    background: var(--card);
+    border: 1px solid var(--border2);
+    border-radius: 2rem;
+    padding: 0.3rem 0.9rem;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+    box-shadow: var(--shadow);
+    letter-spacing: 0.05em;
+  }
+  .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+  .toggle-dot {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    transition: all 0.3s;
+  }
+
+  /* SIDEBAR NAV */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 240px;
+    height: 100vh;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 1.5rem 0 2rem;
+    transition: background 0.3s;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+  .sidebar-logo {
+    padding: 0 1.5rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1rem;
+  }
+  .sidebar-logo .logo-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .sidebar-logo h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .nav-module-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 0.8rem 1.5rem 0.3rem;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 1.5rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 400;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+  }
+  .nav-link:hover { color: var(--text); background: var(--bg3); }
+  .nav-link.active { color: var(--accent); border-left-color: var(--accent); background: var(--tag-bg); }
+  .nav-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    opacity: 0.7;
+    min-width: 1.4rem;
+  }
+  .nav-divider { height: 1px; background: var(--border); margin: 0.8rem 1.5rem; }
+
+  /* MAIN CONTENT */
+  .main {
+    margin-left: 240px;
+    padding: 3rem 3.5rem 5rem;
+    max-width: 960px;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 3rem 0 2.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 3rem;
+  }
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+  }
+  .hero h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.8rem;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 0.8rem;
+  }
+  .hero-sub {
+    font-size: 0.95rem;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.8;
+  }
+  .module-badges {
+    display: flex;
+    gap: 0.7rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 2rem;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    border: 1px solid rgba(200,169,110,0.2);
+    letter-spacing: 0.05em;
+  }
+
+  /* MODULE HEADER */
+  .module-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .module-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3.5rem;
+    color: var(--accent);
+    opacity: 0.25;
+    line-height: 1;
+  }
+  .module-info .m-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .module-info h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.7rem;
+    color: var(--text);
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 3.5rem;
+    scroll-margin-top: 2rem;
+  }
+  .section-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    margin-bottom: 1.2rem;
+  }
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--num);
+    min-width: 2rem;
+    letter-spacing: 0.05em;
+  }
+  .section-heading h4 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.01em;
+  }
+
+  /* DEFINITION CARDS */
+  .def-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  .def-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.1rem;
+    transition: border-color 0.2s;
+  }
+  .def-card:hover { border-color: var(--border2); }
+  .def-card .def-term {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+  }
+  .def-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 1.5rem; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: var(--border2);
+  }
+  .tl-item {
+    position: relative;
+    margin-bottom: 1.1rem;
+    padding-left: 1.2rem;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -1.5rem;
+    top: 0.45rem;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .tl-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.15rem;
+  }
+  .tl-person {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.15rem;
+  }
+  .tl-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  /* STEP LIST */
+  .step-list { list-style: none; }
+  .step-list li {
+    display: flex;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .step-list li:last-child { border-bottom: none; }
+  .step-n {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    min-width: 1.4rem;
+    padding-top: 0.15rem;
+  }
+  .step-content strong { font-size: 0.88rem; font-weight: 600; color: var(--text); display: block; margin-bottom: 0.15rem; }
+  .step-content span { font-size: 0.82rem; color: var(--muted); }
+
+  /* DISCIPLINE CARDS */
+  .discipline-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.7rem;
+  }
+  .disc-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.1rem;
+    transition: all 0.2s;
+    cursor: default;
+  }
+  .disc-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .disc-icon {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .disc-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.2rem;
+  }
+  .disc-name {
+    font-size: 0.87rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+  .disc-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+
+  /* CASE STUDY */
+  .case-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent4);
+    border-radius: 8px;
+    padding: 1.2rem 1.4rem;
+  }
+  .case-box .case-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent4);
+    margin-bottom: 0.5rem;
+  }
+  .case-box h5 { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.8rem; }
+  .case-facts { list-style: none; }
+  .case-facts li {
+    font-size: 0.82rem;
+    color: var(--muted);
+    padding: 0.3rem 0;
+    border-bottom: 1px solid var(--border);
+    padding-left: 0.8rem;
+    position: relative;
+  }
+  .case-facts li::before { content: '—'; position: absolute; left: 0; color: var(--accent4); font-size: 0.75rem; }
+  .case-facts li:last-child { border-bottom: none; }
+
+  /* TABLE */
+  .fm-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    margin-bottom: 0.5rem;
+  }
+  .fm-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-align: left;
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid var(--border2);
+    font-weight: 500;
+  }
+  .fm-table td {
+    padding: 0.55rem 0.8rem;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .fm-table tr:last-child td { border-bottom: none; }
+  .fm-table td:first-child { color: var(--text); font-weight: 500; }
+  .fm-table tr:hover td { background: var(--bg3); }
+
+  /* LOCARD BOX */
+  .locard-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .locard-principle {
+    background: var(--bg3);
+    border-radius: 6px;
+    padding: 0.9rem 1rem;
+    text-align: center;
+  }
+  .locard-principle .lp-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.3rem;
+  }
+  .locard-principle p { font-size: 0.85rem; color: var(--text); font-weight: 500; }
+
+  /* CLASSIFICATION */
+  .class-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+  }
+  .class-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.1rem;
+  }
+  .class-card .cc-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .cc-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .class-card ul { list-style: none; }
+  .class-card ul li { font-size: 0.8rem; color: var(--muted); padding: 0.2rem 0; padding-left: 0.8rem; position: relative; }
+  .class-card ul li::before { content: '·'; position: absolute; left: 0; color: var(--accent); }
+
+  /* PHASE STEPS */
+  .phase-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.6rem;
+  }
+  .phase-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.9rem;
+    text-align: center;
+  }
+  .phase-n {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--accent);
+    opacity: 0.4;
+    margin-bottom: 0.3rem;
+  }
+  .phase-name { font-size: 0.8rem; font-weight: 600; color: var(--text); margin-bottom: 0.4rem; }
+  .phase-desc { font-size: 0.72rem; color: var(--muted); line-height: 1.5; }
+
+  /* EVIDENCE GRID */
+  .evidence-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 0.8rem;
+  }
+  .ev-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.1rem 1.2rem;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .ev-card:hover { border-color: var(--border2); }
+  .ev-card .ev-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.8rem;
+  }
+  .ev-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .ev-card .ev-title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .ev-card .ev-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--accent);
+    margin-left: auto;
+  }
+  .ev-card ul { list-style: none; }
+  .ev-card ul li {
+    font-size: 0.78rem;
+    color: var(--muted);
+    padding: 0.22rem 0;
+    border-bottom: 1px solid var(--border);
+    padding-left: 0.7rem;
+    position: relative;
+    line-height: 1.5;
+  }
+  .ev-card ul li::before { content: '·'; position: absolute; left: 0; color: var(--accent); }
+  .ev-card ul li:last-child { border-bottom: none; }
+
+  /* INFO BLOCK */
+  .info-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.1rem 1.3rem;
+    margin-bottom: 0.8rem;
+  }
+  .info-block .ib-title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .ib-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .info-block ul { list-style: none; }
+  .info-block ul li {
+    font-size: 0.82rem;
+    color: var(--muted);
+    padding: 0.25rem 0;
+    border-bottom: 1px solid var(--border);
+    padding-left: 0.8rem;
+    position: relative;
+    line-height: 1.55;
+  }
+  .info-block ul li::before { content: '—'; position: absolute; left: 0; color: var(--muted); font-size: 0.7rem; top: 0.35rem; }
+  .info-block ul li:last-child { border-bottom: none; }
+  .info-block p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+  /* CUSTODY BOX */
+  .custody-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+  }
+
+  /* QUOTE / HIGHLIGHT */
+  .highlight-box {
+    background: var(--tag-bg);
+    border: 1px solid rgba(200,169,110,0.2);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    margin: 0.8rem 0;
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-style: italic;
+    font-family: 'DM Serif Display', serif;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  /* SEPARATOR */
+  .module-sep {
+    height: 1px;
+    background: var(--border);
+    margin: 3.5rem 0;
+  }
+
+  /* SPECIAL NOTE */
+  .note {
+    background: var(--bg3);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 6px 6px 0;
+    padding: 0.7rem 1rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.6rem;
+    line-height: 1.6;
+  }
+  .note strong { color: var(--accent2); }
+
+  /* RESPONSIVE */
+  @media (max-width: 860px) {
+    .sidebar { width: 200px; }
+    .main { margin-left: 200px; padding: 2rem 1.5rem 4rem; }
+    .phase-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 1.5rem 1rem 4rem; }
+    .class-grid, .custody-grid { grid-template-columns: 1fr; }
+    .locard-box { grid-template-columns: 1fr; }
+    .phase-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body data-theme="dark">
+
+<button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+  <span class="toggle-dot" id="toggle-icon">☀</span>
+  <span id="toggle-label">LIGHT</span>
+</button>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" aria-label="Study navigation">
+  <div class="sidebar-logo">
+    <div class="logo-tag">Study Notes</div>
+    <h1>Forensic Medicine</h1>
+  </div>
+
+  <div class="nav-module-label">Module 1</div>
+  <a class="nav-link" href="#m1-definitions"><span class="nav-num">1.1</span> Definitions</a>
+  <a class="nav-link" href="#m1-history"><span class="nav-num">1.2</span> History &amp; Timeline</a>
+  <a class="nav-link" href="#m1-scientific"><span class="nav-num">1.3</span> Scientific Method</a>
+  <a class="nav-link" href="#m1-disciplines"><span class="nav-num">1.4</span> Disciplines</a>
+  <a class="nav-link" href="#m1-casestudy"><span class="nav-num">1.5</span> Case Study</a>
+
+  <div class="nav-divider"></div>
+
+  <div class="nav-module-label">Module 2</div>
+  <a class="nav-link" href="#m2-locard"><span class="nav-num">2.1</span> Locard's Principle</a>
+  <a class="nav-link" href="#m2-classification"><span class="nav-num">2.2</span> Classification</a>
+  <a class="nav-link" href="#m2-collection"><span class="nav-num">2.3</span> Collection Methods</a>
+  <a class="nav-link" href="#m2-phases"><span class="nav-num">2.4</span> Collection Phases</a>
+  <a class="nav-link" href="#m2-packaging"><span class="nav-num">2.5</span> Packaging &amp; Labelling</a>
+  <a class="nav-link" href="#m2-custody"><span class="nav-num">2.6</span> Chain of Custody</a>
+  <a class="nav-link" href="#m2-blood"><span class="nav-num">2.7</span> Blood</a>
+  <a class="nav-link" href="#m2-hair"><span class="nav-num">2.8</span> Hair</a>
+  <a class="nav-link" href="#m2-other"><span class="nav-num">2.9</span> Other Evidence</a>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Maseno University · Medical Laboratory Science</div>
+    <h2>Forensic<br>Medicine</h2>
+    <p class="hero-sub">Organized study notes covering Introduction to Forensic Medicine and Trace Evidence. Two modules, no repetition.</p>
+    <div class="module-badges">
+      <span class="badge">MODULE 1 — Intro to Forensic Medicine</span>
+      <span class="badge">MODULE 2 — Trace Evidence</span>
+    </div>
+  </div>
+
+  <!-- ======== MODULE 1 ======== -->
+  <div class="module-header">
+    <div class="module-num">01</div>
+    <div class="module-info">
+      <div class="m-tag">Module One</div>
+      <h3>Introduction to Forensic Medicine</h3>
+    </div>
+  </div>
+
+  <!-- 1.1 DEFINITIONS -->
+  <div class="section" id="m1-definitions">
+    <div class="section-heading">
+      <span class="section-num">1.1</span>
+      <h4>Definitions &amp; Terminology</h4>
+    </div>
+    <div class="def-grid">
+      <div class="def-card">
+        <div class="def-term">Forensic Medicine</div>
+        <p>Application of medical knowledge for the purposes of law and administration of justice. Also called Legal Medicine or State Medicine.</p>
+      </div>
+      <div class="def-card">
+        <div class="def-term">Forensic Science</div>
+        <p>Application of science to criminal and civil laws enforced by police agencies — suitable for courts and the purpose of law.</p>
+      </div>
+      <div class="def-card">
+        <div class="def-term">Medical Jurisprudence</div>
+        <p>Deals with legal aspects of medical practice and knowledge. Brings doctors into contact with law.</p>
+      </div>
+      <div class="def-card">
+        <div class="def-term">State Medicine</div>
+        <p>Application of medical knowledge in disease prevention. Defines a doctor's duty regarding births, deaths, notifiable diseases, and food poisoning.</p>
+      </div>
+      <div class="def-card">
+        <div class="def-term">Etymology: "Forensic"</div>
+        <p>From Latin <em>forensis</em> — meaning "forum" or "of the court of law." The forum was where civil and legal matters were discussed.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1.2 HISTORY -->
+  <div class="section" id="m1-history">
+    <div class="section-heading">
+      <span class="section-num">1.2</span>
+      <h4>History &amp; Key Milestones</h4>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-year">3rd Century — China</div>
+        <div class="tl-person">Unknown Coroner</div>
+        <div class="tl-desc">First forensic case: wife poisoned husband and burned body. Coroner confirmed death by simulating crime with live and dead pigs. Chinese were also first to recognize potential in fingerprints.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">44 BC</div>
+        <div class="tl-person">Antistius — First Autopsy</div>
+        <div class="tl-desc">Roman physician who performed the first known autopsy. Reported 23 knife wounds on Julius Caesar; identified the fatal stroke between the 1st and 2nd ribs.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">AD 1247</div>
+        <div class="tl-person">Sung Tzu — First Forensic Murder Case</div>
+        <div class="tl-desc">Solved a murder case using forensics. Found victim was killed with a sickle — had farmers stand in sun; flies were drawn to blood residue on the guilty sickle. Origin of forensic entomology.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1547</div>
+        <div class="tl-person">Ambroise Paré — First Forensic Pathologist</div>
+        <div class="tl-desc">French military surgeon who studied effects of violent trauma on vital organs. Wrote <em>Reports in Court</em>, first manual on writing legal medical reports.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1658</div>
+        <div class="tl-person">Thomas Browne</div>
+        <div class="tl-desc">Identified adipocere — the waxy result of decay of fatty tissue. One of the first steps toward recognizing processes of decomposition.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1784</div>
+        <div class="tl-person">John Toms — First Ballistic Conviction</div>
+        <div class="tl-desc">First individual convicted of murder using ballistic evidence. Pistol paper recovered from the victim was matched to newspaper found in Toms' pocket.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1814</div>
+        <div class="tl-person">Mathieu Orfila — Father of Modern Toxicology</div>
+        <div class="tl-desc">Identified arsenic as a poison; developed techniques to detect it. Also developed tests for blood presence in forensic contexts. First forensic toxicologist.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1839</div>
+        <div class="tl-person">James Marsh — Scottish Chemist</div>
+        <div class="tl-desc">First to introduce chemical evidence of arsenic in a body during a court trial.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1822–1911</div>
+        <div class="tl-person">Francis Galton — Father of Fingerprinting</div>
+        <div class="tl-desc">Developed fingerprinting as a method to uniquely identify individuals.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1858–1946</div>
+        <div class="tl-person">Albert Osborn — Father of Document Examination</div>
+        <div class="tl-desc">His work led to acceptance of documents as scientific evidence by courts.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1880s</div>
+        <div class="tl-person">L. Atcherley — First Forensic Psychologist</div>
+        <div class="tl-desc">Coined the term "Modus Operandi" (mode of operation) — used to identify distinctive criminal signatures.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1882</div>
+        <div class="tl-person">Alphonse Bertillon — Father of Anthropometry</div>
+        <div class="tl-desc">Police officer who measured criminals for accurate identification. Developed anthropometry — an identification system based on metric measurements. No longer in use.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1887–1954</div>
+        <div class="tl-person">Leone Lattes — Father of Bloodstain Identification</div>
+        <div class="tl-desc">Developed a procedure for determining blood type (A, B, AB, or O) from dried blood stains.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1890</div>
+        <div class="tl-person">Edward Henry</div>
+        <div class="tl-desc">Developed the first fingerprint classification system, sorting prints by physiological characteristics. Used until the 1990s.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">Early 1900s</div>
+        <div class="tl-person">Karl Landsteiner &amp; Leone Lattes</div>
+        <div class="tl-desc">Identified human ABO blood groups. First time blood could be used to include or exclude individuals as suspects.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1929</div>
+        <div class="tl-person">Calvin Goddard — First Ballistic Crime Solution</div>
+        <div class="tl-desc">Mobsters dressed as police executed seven men in Chicago. Goddard's analysis showed bullets did not come from police-issued firearms, leading to arrests.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1930s</div>
+        <div class="tl-person">J. Edgar Hoover — Father of the FBI</div>
+        <div class="tl-desc">Organized a national forensic laboratory to offer services to all US law enforcement. Directorship spanned 48 years and 8 presidential administrations.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1.3 SCIENTIFIC METHOD -->
+  <div class="section" id="m1-scientific">
+    <div class="section-heading">
+      <span class="section-num">1.3</span>
+      <h4>The Scientific Method in Forensics</h4>
+    </div>
+    <ul class="step-list">
+      <li>
+        <span class="step-n">01</span>
+        <div class="step-content">
+          <strong>Identify the Problem</strong>
+          <span>Crime is discovered; police arrive at the scene.</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-n">02</span>
+        <div class="step-content">
+          <strong>Background Research</strong>
+          <span>Observe and collect physical evidence found at the crime scene. Done by police and investigators.</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-n">03</span>
+        <div class="step-content">
+          <strong>Construct Hypothesis</strong>
+          <span>Police attempt to answer: what happened, how did it happen, and when? The crime-scene investigator does not form a hypothesis — sends evidence to the lab instead.</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-n">04</span>
+        <div class="step-content">
+          <strong>Establish Procedures</strong>
+          <span>Send physical evidence to the lab for testing. E.g. hair is tested for color, texture, shape.</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-n">05</span>
+        <div class="step-content">
+          <strong>Analyze Results</strong>
+          <span>E.g. toxicology report shows no drug use + no follicular tag means hair will likely not be linked to anyone. Tests help reduce the number of potential suspects.</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-n">06</span>
+        <div class="step-content">
+          <strong>Draw Conclusion</strong>
+          <span>After all evidence is processed, a conclusion is drawn. If a suspect can be linked to the crime, the suspect is apprehended.</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 1.4 DISCIPLINES -->
+  <div class="section" id="m1-disciplines">
+    <div class="section-heading">
+      <span class="section-num">1.4</span>
+      <h4>Disciplines of Forensic Science</h4>
+    </div>
+    <div class="discipline-grid">
+      <div class="disc-card">
+        <div class="disc-num">01</div>
+        <div class="disc-name">Forensic Pathology</div>
+        <div class="disc-desc">Autopsy-based investigation of sudden, unexpected, or violent deaths. Autopsy takes place in pathology department; police may attend to gather evidence.</div>
+      </div>
+      <div class="disc-card">
+        <div class="disc-num">02</div>
+        <div class="disc-name">Forensic Anthropology</div>
+        <div class="disc-desc">Examination of skeletal remains. Answers questions on species, gender, age, race, stature, nutritional status, disease, and skeletal trauma.</div>
+      </div>
+      <div class="disc-card">
+        <div class="disc-num">03</div>
+        <div class="disc-name">Forensic Odontology</div>
+        <div class="disc-desc">Dental identification of human remains and evaluation of bite-marks. Most used for badly burned or decomposed bodies.</div>
+      </div>
+      <div class="disc-card">
+        <div class="disc-num">04</div>
+        <div class="disc-name">Forensic Entomology</div>
+        <div class="disc-desc">Studies insect succession patterns in decomposing bodies. Larvae analysis allows scientific estimation of time of death and sometimes location of death.</div>
+      </div>
+      <div class="disc-card">
+        <div class="disc-num">05</div>
+        <div class="disc-name">Forensic Toxicology</div>
+        <div class="disc-desc">Identification and quantification of drugs and poisons in body tissues. Requires both a qualitative screening test and a confirmatory quantitative test for forensic validity.</div>
+      </div>
+      <div class="disc-card">
+        <div class="disc-num">06</div>
+        <div class="disc-name">Forensic Psychiatry</div>
+        <div class="disc-desc">Evaluates mental state of criminals. Forms psychiatric profiles of murder suspects. "Psychological autopsy" used for determining state of mind of suicide victims.</div>
+      </div>
+      <div class="disc-card">
+        <div class="disc-num">07</div>
+        <div class="disc-name">Computer Forensics</div>
+        <div class="disc-desc">Investigates digital and electronic crimes — identity theft, credit card fraud, child pornography. May analyze a deceased person's computer to determine method of suicide.</div>
+      </div>
+      <div class="disc-card">
+        <div class="disc-num">08</div>
+        <div class="disc-name">Forensic Artistry</div>
+        <div class="disc-desc">Draws or sculpts images of suspects or victims based on witness accounts. Facial reconstruction over skulls; computer aging of missing persons.</div>
+      </div>
+      <div class="disc-card">
+        <div class="disc-num">09</div>
+        <div class="disc-name">Forensic Engineering</div>
+        <div class="disc-desc">Examines collapsed structures, vehicle collisions, engine defects, electrocutions. Called upon when a specific death relates to engineering failures.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1.5 CASE STUDY -->
+  <div class="section" id="m1-casestudy">
+    <div class="section-heading">
+      <span class="section-num">1.5</span>
+      <h4>Case Study — The Menendez Brothers (1989)</h4>
+    </div>
+    <div class="case-box">
+      <div class="case-tag">Real-World Application · Multiple Forensic Disciplines</div>
+      <h5>Menendez Brothers v. State of California</h5>
+      <ul class="case-facts">
+        <li>August 20, 1989: Parents Jose and Kitty Menendez found shot dead. No forced entry, nothing stolen — suggested victims knew their attackers.</li>
+        <li>No gunshot residue tests administered at scene. Brothers not initially considered suspects.</li>
+        <li>By year end, brothers spent over $1 million of $2 million inheritance — drew police suspicion.</li>
+        <li>Investigators searched firearms records and found two shotguns sold on August 18, 1989 — signature on purchase did not match the named buyer.</li>
+        <li>Court ordered handwriting samples from both brothers. Erik refused — key investigative detail.</li>
+        <li>Forensic evidence used: ballistics, handwriting analysis, financial records, firearms registration.</li>
+        <li>March 1990: brothers arrested. First trial (1993) resulted in mistrial.</li>
+        <li>Second trial (1995): convicted of first-degree murder and conspiracy. Sentenced April 17, 1996 to life without parole.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="module-sep"></div>
+
+  <!-- ======== MODULE 2 ======== -->
+  <div class="module-header">
+    <div class="module-num">02</div>
+    <div class="module-info">
+      <div class="m-tag">Module Two</div>
+      <h3>Trace Evidence</h3>
+    </div>
+  </div>
+
+  <!-- 2.1 LOCARD -->
+  <div class="section" id="m2-locard">
+    <div class="section-heading">
+      <span class="section-num">2.1</span>
+      <h4>Definition &amp; Locard's Exchange Principle</h4>
+    </div>
+    <div class="highlight-box">
+      "Trace evidence encompasses virtually anything that can be touched, broken, pulverized, transferred, shed, and left behind during a crime — if a piece of it, no matter how small, can be found during the investigation."
+    </div>
+    <div class="locard-box">
+      <div class="locard-principle">
+        <div class="lp-num">PRINCIPLE 01</div>
+        <p>Every contact leaves a trace.</p>
+      </div>
+      <div class="locard-principle">
+        <div class="lp-num">PRINCIPLE 02</div>
+        <p>The exchange of traces is a two-way process. The more violent the contact, the more likely transfer will occur.</p>
+      </div>
+    </div>
+    <div class="note">
+      <strong>Sir Edmond Locard (1877–1966)</strong> — In sexual and physical assault, biological material transfers from assailant to victim, victim to assailant, and both to the scene.
+    </div>
+  </div>
+
+  <!-- 2.2 CLASSIFICATION -->
+  <div class="section" id="m2-classification">
+    <div class="section-heading">
+      <span class="section-num">2.2</span>
+      <h4>Classification of Trace Evidence</h4>
+    </div>
+    <div class="class-grid">
+      <div class="class-card">
+        <div class="cc-title"><span class="cc-dot" style="background:#e05c5c"></span> Biological Evidence</div>
+        <ul>
+          <li>Body fluids — blood, saliva, semen, sweat, vomit</li>
+          <li>Body tissues</li>
+          <li>Hair, nail clippings, bone, teeth</li>
+          <li>Stains (e.g. paint from body contact)</li>
+        </ul>
+      </div>
+      <div class="class-card">
+        <div class="cc-title"><span class="cc-dot" style="background:#7eb8d4"></span> Non-Biological Evidence</div>
+        <ul>
+          <li>Personal items — clothing, spectacles, purse, wristwatch</li>
+          <li>Environmental materials — carpet fibres, soil, vegetation</li>
+          <li>Crime objects — bullets, pellets, weapons, bottles, tablets</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.3 COLLECTION METHODS -->
+  <div class="section" id="m2-collection">
+    <div class="section-heading">
+      <span class="section-num">2.3</span>
+      <h4>General Collection Methods</h4>
+    </div>
+    <table class="fm-table">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>How It Works</th>
+          <th>Key Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Lifting</td>
+          <td>Adhesive tape rolled over surface; placed on clear plastic sheeting</td>
+          <td>Protects against contamination; allows easy viewing</td>
+        </tr>
+        <tr>
+          <td>Scraping</td>
+          <td>Spatula dislodges trace materials onto clean paper</td>
+          <td>Best conducted in controlled lab environment</td>
+        </tr>
+        <tr>
+          <td>Vacuum Sweeping</td>
+          <td>Vacuum with filter trap; filter preserved after use</td>
+          <td>Filters, traps, and parts must be changed between uses to avoid cross-contamination</td>
+        </tr>
+        <tr>
+          <td>Combing</td>
+          <td>Clean comb or brush through hair of individual</td>
+          <td>Comb and debris packaged together</td>
+        </tr>
+        <tr>
+          <td>Clipping</td>
+          <td>Nail clipping and scraping under fingernails</td>
+          <td>Right and left hands packaged separately</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="note">
+      The collector must know: <strong>what</strong> to collect (source), <strong>from where</strong> (site), <strong>how much</strong> (quantity), and <strong>how</strong> (procedure). Proper collection = proper material + proper site + proper quantity + proper method.
+    </div>
+  </div>
+
+  <!-- 2.4 PHASES -->
+  <div class="section" id="m2-phases">
+    <div class="section-heading">
+      <span class="section-num">2.4</span>
+      <h4>Collection Phases</h4>
+    </div>
+    <div class="phase-grid">
+      <div class="phase-card">
+        <div class="phase-n">01</div>
+        <div class="phase-name">Overview Phase</div>
+        <div class="phase-desc">Review case history, study documents, visit scene. Note body position, object locations, overall layout.</div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-n">02</div>
+        <div class="phase-name">Detailed Discovery</div>
+        <div class="phase-desc">Walk through area end-to-end twice. Move objects. Look under the body. Focus on areas of interest.</div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-n">03</div>
+        <div class="phase-name">Recovery Phase</div>
+        <div class="phase-desc">Collect each specimen. Identify and note its location. Photograph where possible.</div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-n">04</div>
+        <div class="phase-name">Review Phase</div>
+        <div class="phase-desc">Go through all prior phases. Ensure nothing is left — evidence not collected now is lost forever.</div>
+      </div>
+    </div>
+    <div class="note" style="margin-top:0.8rem">
+      <strong>Forms of specimens:</strong> Dry → scrape or wet-swab then air-dry &nbsp;|&nbsp; Wet → dry first then scrape or swab &nbsp;|&nbsp; Mixed → cut and separate the relevant portion
+    </div>
+  </div>
+
+  <!-- 2.5 PACKAGING -->
+  <div class="section" id="m2-packaging">
+    <div class="section-heading">
+      <span class="section-num">2.5</span>
+      <h4>Packaging, Preservation &amp; Labelling</h4>
+    </div>
+
+    <table class="fm-table" style="margin-bottom:1rem">
+      <thead>
+        <tr>
+          <th>Type of Analysis</th>
+          <th>Container</th>
+          <th>Lid</th>
+          <th>Preservative</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Chemical Analysis</td>
+          <td>Plastic wide-mouth jar</td>
+          <td>Plastic lid</td>
+          <td>Saturated saline</td>
+        </tr>
+        <tr>
+          <td>Histopathology</td>
+          <td>Glass (sized to organ)</td>
+          <td>Glass lid</td>
+          <td>10% formal saline or 95% alcohol</td>
+        </tr>
+        <tr>
+          <td>Serology</td>
+          <td>Sterilized glass test tube</td>
+          <td>Glass or rubber stopper</td>
+          <td>Anticoagulant — Ca. Oxalate or Heparin</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-block">
+      <div class="ib-title"><span class="ib-dot" style="background:var(--accent)"></span> Each container label must include:</div>
+      <ul>
+        <li>Jar number (1, 2, 3…)</li>
+        <li>Specimen name and site of collection</li>
+        <li>Preservative used</li>
+        <li>PMR / MLC number</li>
+        <li>Date and time of collection</li>
+        <li>Name of collector</li>
+        <li>Examination required</li>
+        <li>Doctor's name, signature, and official seal</li>
+      </ul>
+    </div>
+
+    <div class="info-block">
+      <div class="ib-title"><span class="ib-dot" style="background:var(--accent2)"></span> Forwarding letter must include:</div>
+      <ul>
+        <li>Copy of MLR / PMR</li>
+        <li>Copy of FIR (First Information Report)</li>
+        <li>Copy of inquest report</li>
+        <li>Specimen of the seal</li>
+        <li>Request letter with bio-data and specimen name</li>
+        <li>Examination required</li>
+      </ul>
+    </div>
+
+    <div class="note">
+      All containers must be sealed with wax to maintain integrity and a secret chain of custody. Specimens should be dispatched immediately after autopsy. Stored by lock and key in freezers if lab is closed.
+    </div>
+  </div>
+
+  <!-- 2.6 CHAIN OF CUSTODY -->
+  <div class="section" id="m2-custody">
+    <div class="section-heading">
+      <span class="section-num">2.6</span>
+      <h4>Chain of Custody</h4>
+    </div>
+    <div class="highlight-box">
+      "Any and all who handle the specimens at a particular instance should be able to certify the extent of handling."
+    </div>
+    <div class="custody-grid">
+      <div class="info-block">
+        <div class="ib-title"><span class="ib-dot" style="background:var(--accent3)"></span> What must be documented:</div>
+        <ul>
+          <li>What was collected</li>
+          <li>Why it was collected</li>
+          <li>To whom it was handed</li>
+          <li>When it was handed over</li>
+          <li>How long it remained in custody</li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <div class="ib-title"><span class="ib-dot" style="background:var(--accent5)"></span> Principles:</div>
+        <ul>
+          <li>Shorter chain = better</li>
+          <li>Fewer persons involved = surer</li>
+          <li>Every surrender must be on written receipt</li>
+          <li>Maintained until specimens are presented in court</li>
+          <li>Handling must be certified in writing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.7 BLOOD -->
+  <div class="section" id="m2-blood">
+    <div class="section-heading">
+      <span class="section-num">2.7</span>
+      <h4>Blood Evidence</h4>
+    </div>
+
+    <div class="info-block">
+      <div class="ib-title"><span class="ib-dot" style="background:var(--red)"></span> Liquid Blood Collection</div>
+      <ul>
+        <li>Collected from blood pools or clothing using gauze pad or sterile cotton</li>
+        <li>Must be refrigerated or frozen and delivered to lab as quickly as possible</li>
+        <li>Sample dried at room temperature first; after 48 hours the sample may be useless</li>
+        <li>If mailed: completely air-dry before packaging in brown paper bag or box</li>
+        <li>One item per container; never use plastic (moisture promotes microorganisms)</li>
+      </ul>
+    </div>
+
+    <div class="info-block">
+      <div class="ib-title"><span class="ib-dot" style="background:var(--accent4)"></span> Dried Bloodstain Collection</div>
+      <ul>
+        <li>Small object: send entire object to lab after packaging and labelling</li>
+        <li>Large transportable object: cover stain with paper, tape to object to avoid contamination</li>
+        <li>Non-transportable surface: cut out stained area (provide control sample separately) OR tape-lift using fingerprint tape, OR scrape flakes into paper packet</li>
+        <li>Clothing: air-dry entire article, package separately, send to lab</li>
+        <li>Hard surface dry stain: scrape off with scalpel, collect on glazed paper</li>
+        <li>Blood on plaster or wood: cut that portion or chip off plaster</li>
+        <li>Blood in soil: collect sufficient amount of surrounding soil</li>
+      </ul>
+    </div>
+
+    <table class="fm-table" style="margin-bottom:0.8rem">
+      <thead>
+        <tr><th>Special Case</th><th>Collection Instruction</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Disputed Paternity</td><td>Peripheral vein; anticoagulant only (no other preservative); collected in front of all contesting parties; cross-signed by opposing party</td></tr>
+        <tr><td>Poisoning</td><td>Collected directly from heart or large veins at autopsy</td></tr>
+        <tr><td>CO Poisoning</td><td>Layer of liquid paraffin placed over blood to prevent evaporation of CO</td></tr>
+        <tr><td>Alcohol Intoxication</td><td>Do NOT clean collection site with spirit — would contaminate the sample</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>Quantity:</strong> In living persons — 10–15 ml. At autopsy — 50–100 ml.
+    </div>
+  </div>
+
+  <!-- 2.8 HAIR -->
+  <div class="section" id="m2-hair">
+    <div class="section-heading">
+      <span class="section-num">2.8</span>
+      <h4>Hair Evidence</h4>
+    </div>
+
+    <div class="class-grid">
+      <div class="info-block">
+        <div class="ib-title"><span class="ib-dot" style="background:var(--accent)"></span> What hair can reveal:</div>
+        <ul>
+          <li>Racial background</li>
+          <li>Use of drugs, toxins, heavy metals</li>
+          <li>Nutritional deficiencies</li>
+          <li>DNA identification (if follicle is present)</li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <div class="ib-title"><span class="ib-dot" style="background:var(--accent2)"></span> Microscopic examination:</div>
+        <ul>
+          <li>Macroscopic: length, color, curliness</li>
+          <li>Magnification: 40–400×</li>
+          <li>Examines cuticle scale pattern</li>
+          <li>Cortex pigmentation and medulla pattern</li>
+          <li>Comparison microscope to match two samples simultaneously</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-block" style="margin-top:0.8rem">
+      <div class="ib-title"><span class="ib-dot" style="background:var(--accent3)"></span> Collection of questioned hair:</div>
+      <ul>
+        <li>Photograph hair in place before touching</li>
+        <li>Wear new, unused, clean latex or nitrile gloves</li>
+        <li>Use cleaned or disposable tweezers; take care not to crush or break the hair</li>
+        <li>Place on clean sheet of paper or Post-it note (adhesive holds lightly without damage)</li>
+        <li>Place in labeled envelope: case number, date, exhibit number, description, collector's name</li>
+        <li>Alternative: tape-lifting (wrap clear packing tape sticky-side-out over roll; roll over item; lay on clear plastic) or vacuuming with filter unit</li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <strong>Known hair exemplars (for comparison):</strong> Collect 25 pulled + 25 combed/naturally shed hairs from various areas of the head and/or pubic region. Head and pubic hairs are the only human hairs suitable for comparison; beard hairs may also be suitable.
+    </div>
+  </div>
+
+  <!-- 2.9 OTHER EVIDENCE -->
+  <div class="section" id="m2-other">
+    <div class="section-heading">
+      <span class="section-num">2.9</span>
+      <h4>Other Evidence Types</h4>
+    </div>
+
+    <div class="evidence-grid">
+
+      <div class="ev-card">
+        <div class="ev-header">
+          <span class="ev-dot" style="background:#7eb8d4"></span>
+          <span class="ev-title">Fibres</span>
+          <span class="ev-num">2.9.1</span>
+        </div>
+        <ul>
+          <li>Remove with forceps or gloved fingers</li>
+          <li>Place in paper evidence fold, glassine envelope, or on Post-it note adhesive edge</li>
+          <li>Do NOT crush or bend; do NOT use high-tack tape (no duct tape, packing tape, lint rollers, masking tape)</li>
+        </ul>
+      </div>
+
+      <div class="ev-card">
+        <div class="ev-header">
+          <span class="ev-dot" style="background:#a07ed4"></span>
+          <span class="ev-title">Semen</span>
+          <span class="ev-num">2.9.2</span>
+        </div>
+        <ul>
+          <li>Composition: 60% seminal vesicle, 30% prostate, 10% epididymis/bulbourethral</li>
+          <li>Average ejaculate: ~3.5 ml; 10–50 million sperm/ml</li>
+          <li>Coagulates immediately; liquefies after ~15 minutes</li>
+          <li>Oligospermia, aspermia, vasectomy — seminal fluid still forensically detectable</li>
+          <li>External: fabric stain — cut portion, shade-dry, preserve</li>
+          <li>Internal: 3 pre-hymenal swabs + 2 post-hymenal swabs; patient in lithotomy position</li>
+          <li>Slides: swab rubbed on middle third; two slides air-dried and face-to-face with matchstick spacers</li>
+          <li>Pipette method: instil 20 ml saline into vagina; aspirate with bulbed pipette</li>
+        </ul>
+      </div>
+
+      <div class="ev-card">
+        <div class="ev-header">
+          <span class="ev-dot" style="background:#c8a96e"></span>
+          <span class="ev-title">Saliva</span>
+          <span class="ev-num">2.9.3</span>
+        </div>
+        <ul>
+          <li>Classical marker: amylase enzyme (also in pancreatic juice — not fully specific)</li>
+          <li>~80% of people are secretors — secrete blood group substances in saliva, semen, tears, vaginal secretions</li>
+          <li>Found on cups, envelopes, bitten food, and bite marks on skin</li>
+          <li>True bites: dental impression for suspect ID; Love bites: suction hemorrhages (neck, breasts, medial thighs)</li>
+          <li>Single swab technique: classical method — wet cotton swab rolled over area</li>
+          <li>Double swab technique (preferred): wet swab rehydrates cells → dry swab absorbs them → yields more DNA</li>
+          <li>Control sample: rinse mouth with saline then water → chew paraffin → collect 50–60 ml</li>
+          <li>Preservation: heat bath 10 min (inactivate enzyme) → centrifuge 1500 RPM 3 min → preserve supernatant; no preservative added</li>
+        </ul>
+      </div>
+
+      <div class="ev-card">
+        <div class="ev-header">
+          <span class="ev-dot" style="background:#7ecba0"></span>
+          <span class="ev-title">Vomitus</span>
+          <span class="ev-num">2.9.4</span>
+        </div>
+        <ul>
+          <li>Medical term: emesis</li>
+          <li>Relevant in poisoning, drug abuse, hanging, sexual abuse</li>
+          <li>Tested for drugs or poisons if administered</li>
+          <li>Rarely found at crime scene; limited evidentiary value on its own</li>
+        </ul>
+      </div>
+
+      <div class="ev-card">
+        <div class="ev-header">
+          <span class="ev-dot" style="background:#d4a07e"></span>
+          <span class="ev-title">Sweat</span>
+          <span class="ev-num">2.9.5</span>
+        </div>
+        <ul>
+          <li>Collected over a minimum of one week</li>
+          <li>No preservative added</li>
+          <li>Used for workplace drug testing</li>
+          <li>Non-invasive but difficult to collect adequate volume</li>
+          <li>Useful for qualitative analysis only</li>
+        </ul>
+      </div>
+
+      <div class="ev-card">
+        <div class="ev-header">
+          <span class="ev-dot" style="background:#8ba07e"></span>
+          <span class="ev-title">Bone &amp; Teeth</span>
+          <span class="ev-num">2.9.6</span>
+        </div>
+        <ul>
+          <li>Wash and air-dry completely; roll in brown paper, seal in cotton cloth</li>
+          <li>30 g minimum in screw-cap plastic container; no formalin ever</li>
+          <li>Preference order: Femur → Tibia → Humerus → Molar teeth → Ribs</li>
+          <li>Send at least two intact bones</li>
+          <li>Completely burnt bone is NOT useful for DNA analysis</li>
+          <li>For identity of deceased: collect intact long bones or molar teeth in duplicate</li>
+        </ul>
+      </div>
+
+      <div class="ev-card">
+        <div class="ev-header">
+          <span class="ev-dot" style="background:#d4c07e"></span>
+          <span class="ev-title">Nails</span>
+          <span class="ev-num">2.9.7</span>
+        </div>
+        <ul>
+          <li>Grow at 1/3–1/10 the speed of hair; drug levels similar to hair</li>
+          <li>Detectable from 2 weeks post-ingestion; no timeframe determination possible</li>
+          <li>Used as a screening tool; hair used to narrow timeframe</li>
+          <li>Clip overhang as in normal grooming; also scrape under nails</li>
+          <li>Package separately into 4 self-sealing bags: left hand, right hand, left foot, right foot</li>
+          <li>Wipe scissors with alcohol wipe between each nail set</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="padding-top:2rem; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+    <div>
+      <div style="font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--accent); letter-spacing:0.1em; margin-bottom:0.2rem;">FORENSIC MEDICINE NOTES</div>
+      <div style="font-size:0.78rem; color:var(--muted);">Medical Laboratory Science · Maseno University</div>
+    </div>
+    <div style="font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--muted);">Module 1 &amp; 2 · No repeated concepts</div>
+  </div>
+
+</main>
+
+<script>
+function toggleTheme() {
+  const body = document.body;
+  const isLight = body.dataset.theme === 'light';
+  body.dataset.theme = isLight ? 'dark' : 'light';
+  document.getElementById('toggle-icon').textContent = isLight ? '☀' : '☾';
+  document.getElementById('toggle-label').textContent = isLight ? 'LIGHT' : 'DARK';
+}
+
+const navLinks = document.querySelectorAll('.nav-link');
+const sections = document.querySelectorAll('.section');
+
+function updateActive() {
+  let current = '';
+  sections.forEach(s => {
+    const rect = s.getBoundingClientRect();
+    if (rect.top <= 120) current = s.id;
+  });
+  navLinks.forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+  });
+}
+
+window.addEventListener('scroll', updateActive);
+updateActive();
+</script>
+</body>
+</html>

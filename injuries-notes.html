@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forensic Medicine — Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0f;
+    --bg2: #141418;
+    --bg3: #1c1c22;
+    --bg4: #242430;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #e8e6e0;
+    --text2: #9e9b94;
+    --text3: #6b6865;
+    --accent: #c8a96e;
+    --accent2: #e8c88e;
+    --accent-dim: rgba(200,169,110,0.12);
+    --red: #d96b6b;
+    --green: #6bba8a;
+    --blue: #6b9fd9;
+    --purple: #a87ed9;
+    --teal: #5bbdaa;
+    --orange: #d9916b;
+    --yellow: #d9c46b;
+    --red-bg: rgba(217,107,107,0.1);
+    --green-bg: rgba(107,186,138,0.1);
+    --blue-bg: rgba(107,159,217,0.1);
+    --purple-bg: rgba(168,126,217,0.1);
+    --teal-bg: rgba(91,189,170,0.1);
+    --orange-bg: rgba(217,145,107,0.1);
+  }
+  .light-mode {
+    --bg: #f5f3ee;
+    --bg2: #eeebe4;
+    --bg3: #e6e2d9;
+    --bg4: #ddd9ce;
+    --border: rgba(0,0,0,0.09);
+    --border2: rgba(0,0,0,0.15);
+    --text: #1a1916;
+    --text2: #5a5752;
+    --text3: #8a8783;
+    --accent: #8a6420;
+    --accent2: #6a4c10;
+    --accent-dim: rgba(138,100,32,0.1);
+    --red: #a83030;
+    --green: #2a7a4a;
+    --blue: #2050a0;
+    --purple: #6030a0;
+    --teal: #1a7060;
+    --orange: #904020;
+    --yellow: #806020;
+    --red-bg: rgba(168,48,48,0.08);
+    --green-bg: rgba(42,122,74,0.08);
+    --blue-bg: rgba(32,80,160,0.08);
+    --purple-bg: rgba(96,48,160,0.08);
+    --teal-bg: rgba(26,112,96,0.08);
+    --orange-bg: rgba(144,64,32,0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* TOP NAV */
+  .topnav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+  }
+  .topnav-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .topnav-right { display: flex; gap: 8px; align-items: center; }
+  .theme-btn {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* SIDEBAR */
+  .layout { display: flex; min-height: calc(100vh - 56px); }
+  .sidebar {
+    width: 260px; flex-shrink: 0;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: sticky; top: 56px;
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+    padding: 1.5rem 0;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  .sidebar-unit {
+    padding: 0.4rem 0;
+    margin-bottom: 0.5rem;
+  }
+  .sidebar-unit-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 0.3rem 1.5rem 0.5rem;
+  }
+  .sidebar-link {
+    display: block;
+    padding: 0.35rem 1.5rem;
+    font-size: 13px;
+    color: var(--text2);
+    text-decoration: none;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+    line-height: 1.4;
+  }
+  .sidebar-link:hover { color: var(--text); background: var(--accent-dim); border-left-color: var(--accent); }
+  .sidebar-link.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-dim); }
+  .sidebar-divider { height: 1px; background: var(--border); margin: 0.5rem 1.5rem; }
+
+  /* MAIN CONTENT */
+  .main { flex: 1; padding: 2.5rem 3rem; max-width: 900px; }
+
+  /* HERO */
+  .hero {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .hero h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.25;
+    margin-bottom: 0.75rem;
+  }
+  .hero p { color: var(--text2); font-size: 15px; max-width: 600px; }
+
+  /* UNIT HEADERS */
+  .unit-header {
+    display: flex; align-items: baseline; gap: 1rem;
+    margin-bottom: 2rem; padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .unit-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .unit-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  /* SECTION HEADERS (numbered) */
+  .sec {
+    margin-top: 2.5rem;
+    margin-bottom: 1.25rem;
+    padding-top: 0.5rem;
+  }
+  .sec-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .sec h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .sec h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  /* CALLOUT BOXES */
+  .box {
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: var(--bg2);
+  }
+  .box-def { border-left: 3px solid var(--blue); background: var(--blue-bg); }
+  .box-key { border-left: 3px solid var(--accent); background: var(--accent-dim); }
+  .box-warn { border-left: 3px solid var(--red); background: var(--red-bg); }
+  .box-tip { border-left: 3px solid var(--green); background: var(--green-bg); }
+  .box-mnemo { border-left: 3px solid var(--purple); background: var(--purple-bg); }
+  .box-compare { border-left: 3px solid var(--teal); background: var(--teal-bg); }
+  .box-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  .box-def .box-label { color: var(--blue); }
+  .box-key .box-label { color: var(--accent); }
+  .box-warn .box-label { color: var(--red); }
+  .box-tip .box-label { color: var(--green); }
+  .box-mnemo .box-label { color: var(--purple); }
+  .box-compare .box-label { color: var(--teal); }
+
+  /* LISTS */
+  ul.list, ol.list { padding-left: 1.4rem; }
+  ul.list li, ol.list li { margin-bottom: 0.35rem; color: var(--text); }
+  ul.list li::marker { color: var(--accent); }
+
+  /* TABLE */
+  .tbl-wrap { overflow-x: auto; margin: 1rem 0; border-radius: 6px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th {
+    background: var(--bg3);
+    color: var(--accent);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border2);
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--accent-dim); }
+
+  /* BADGE INLINE */
+  .badge {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-right: 4px;
+    font-weight: 500;
+  }
+  .badge-red { background: var(--red-bg); color: var(--red); }
+  .badge-green { background: var(--green-bg); color: var(--green); }
+  .badge-blue { background: var(--blue-bg); color: var(--blue); }
+  .badge-purple { background: var(--purple-bg); color: var(--purple); }
+  .badge-teal { background: var(--teal-bg); color: var(--teal); }
+  .badge-orange { background: var(--orange-bg); color: var(--orange); }
+  .badge-gold { background: var(--accent-dim); color: var(--accent); }
+
+  /* GRID CARDS */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 1rem 0; }
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.1rem;
+  }
+  .card-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+  .card-body { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  /* COMPARE COLS */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1rem 0; }
+  .compare-col {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+  }
+  .compare-col h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .compare-col.ante h4 { color: var(--green); }
+  .compare-col.post h4 { color: var(--red); }
+  .compare-col ul { padding-left: 1.2rem; font-size: 13px; color: var(--text2); }
+  .compare-col li { margin-bottom: 0.3rem; }
+
+  /* SPACER & DIVIDERS */
+  .unit-divider { height: 1px; background: var(--border); margin: 3rem 0; }
+  p { margin-bottom: 0.75rem; color: var(--text); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { padding: 1.5rem; }
+    .hero h1 { font-size: 1.6rem; }
+    .compare-grid { grid-template-columns: 1fr; }
+  }
+
+  .highlight { color: var(--accent2); font-weight: 500; }
+  .code { font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: var(--bg3); padding: 1px 6px; border-radius: 3px; color: var(--teal); }
+
+  /* Progress scroll indicator */
+  #progress { position: fixed; top: 56px; left: 0; height: 2px; background: var(--accent); z-index: 200; width: 0%; transition: width 0.1s; }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<nav class="topnav">
+  <span class="topnav-title">Forensic Medicine · Study Guide</span>
+  <div class="topnav-right">
+    <button class="theme-btn" onclick="toggleTheme()">☀ Light / ☾ Dark</button>
+  </div>
+</nav>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-unit">
+    <div class="sidebar-unit-label">Overview</div>
+    <a href="#intro" class="sidebar-link">Introduction</a>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-unit">
+    <div class="sidebar-unit-label">Unit 1 · Injuries & Wounds</div>
+    <a href="#u1-def" class="sidebar-link">1.1 Definitions</a>
+    <a href="#u1-class" class="sidebar-link">1.2 Classification</a>
+    <a href="#u1-abrasion" class="sidebar-link">1.3 Abrasions</a>
+    <a href="#u1-bruise" class="sidebar-link">1.4 Bruises / Contusions</a>
+    <a href="#u1-laceration" class="sidebar-link">1.5 Lacerations</a>
+    <a href="#u1-incision" class="sidebar-link">1.6 Incised Wounds</a>
+    <a href="#u1-stab" class="sidebar-link">1.7 Stab Wounds</a>
+    <a href="#u1-firearm" class="sidebar-link">1.8 Firearm Wounds</a>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-unit">
+    <div class="sidebar-unit-label">Unit 2 · Medico-Legal Autopsy</div>
+    <a href="#u2-def" class="sidebar-link">2.1 Definitions & Types</a>
+    <a href="#u2-purpose" class="sidebar-link">2.2 Objectives</a>
+    <a href="#u2-consent" class="sidebar-link">2.3 Consent & Authority</a>
+    <a href="#u2-procedure" class="sidebar-link">2.4 Procedure</a>
+    <a href="#u2-external" class="sidebar-link">2.5 External Examination</a>
+    <a href="#u2-internal" class="sidebar-link">2.6 Internal Examination</a>
+    <a href="#u2-report" class="sidebar-link">2.7 Report Writing</a>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-unit">
+    <div class="sidebar-unit-label">Unit 3 · PM Artefacts</div>
+    <a href="#u3-def" class="sidebar-link">3.1 Definition & Classification</a>
+    <a href="#u3-resus" class="sidebar-link">3.2 Resuscitation Artefacts</a>
+    <a href="#u3-embalm" class="sidebar-link">3.3 Embalming Artefacts</a>
+    <a href="#u3-exhume" class="sidebar-link">3.4 Exhumation Artefacts</a>
+    <a href="#u3-handling" class="sidebar-link">3.5 Handling Artefacts</a>
+    <a href="#u3-pm-changes" class="sidebar-link">3.6 PM Changes Artefacts</a>
+    <a href="#u3-decomp" class="sidebar-link">3.7 Decomposition</a>
+    <a href="#u3-animal" class="sidebar-link">3.8 Animal / Insect</a>
+    <a href="#u3-burns" class="sidebar-link">3.9 Burns Artefacts</a>
+    <a href="#u3-criminal" class="sidebar-link">3.10 Criminal & Special</a>
+    <a href="#u3-autopsy" class="sidebar-link">3.11 Autopsy Artefacts</a>
+    <a href="#u3-importance" class="sidebar-link">3.12 Medico-Legal Importance</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero" id="intro">
+    <div class="hero-tag">Forensic Medicine · Complete Study Notes</div>
+    <h1>Injuries, Autopsy &amp; Postmortem Artefacts</h1>
+    <p>All three lecture units consolidated into one structured reference. Use the sidebar to jump to any topic. Dark/light mode toggle in the top-right.</p>
+  </div>
+
+  <!-- ============================= UNIT 1 ============================= -->
+  <div class="unit-header" id="u1">
+    <span class="unit-num">Unit 01</span>
+    <h2 class="unit-title">Injuries &amp; Wounds</h2>
+  </div>
+
+  <!-- 1.1 DEFINITIONS -->
+  <div class="sec" id="u1-def">
+    <div class="sec-num">1.1</div>
+    <h2>Definitions</h2>
+  </div>
+
+  <div class="box box-def">
+    <div class="box-label">Definition — Wound</div>
+    <p>A <span class="highlight">disruption of the continuity of tissues</span> produced by external mechanical force. Legally, a wound requires breach of the <em>full thickness of the skin</em> (both epidermis and dermis), or a break of the inner lining of the lip. Bruises and abrasions are therefore NOT wounds by this definition. Neither are internal injuries such as fractures or contusions of the brain.</p>
+  </div>
+
+  <div class="box box-def">
+    <div class="box-label">Definition — Injury</div>
+    <p>Used synonymously with wound but is <span class="highlight">wider in scope</span> — includes damage from heat, cold, chemicals, electricity, and radiation. Defined as "a hurt or damage to the body."</p>
+  </div>
+
+  <div class="box box-def">
+    <div class="box-label">Definition — Lesion</div>
+    <p>Originally meant an injury; now broader — any area of injury, disease, or local degeneration causing a change in tissue function or structure (Latin: <em>laesio</em> = a hurt).</p>
+  </div>
+
+  <!-- 1.2 CLASSIFICATION -->
+  <div class="sec" id="u1-class">
+    <div class="sec-num">1.2</div>
+    <h2>Classification of Injuries</h2>
+  </div>
+
+  <h3>By Causative Factor</h3>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title" style="color:var(--blue)">1. Mechanical / Physical</div>
+      <div class="card-body">Abrasion, bruise, laceration, incised wound, stab wound, firearm wound, fracture/dislocation. <br><br>
+      <span class="badge badge-blue">Blunt force</span> → abrasion, contusion, laceration, fracture<br>
+      <span class="badge badge-blue">Sharp force</span> → incised & stab wounds</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--orange)">2. Thermal</div>
+      <div class="card-body">Heat: general (heat cramps, heat stroke) or local (burns, scalds).<br>Cold: general (hypothermia) or local (frostbite, trench foot).</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--red)">3. Chemical</div>
+      <div class="card-body">Irritation (weak acids/alkalis) or Corrosion (strong acids/alkalis).</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--purple)">4. Miscellaneous</div>
+      <div class="card-body">Electrical, Radiation (X-ray, UV, radioactive), Lightning, Blast injuries. (Categories 2–4 = non-kinetic injuries.)</div>
+    </div>
+  </div>
+
+  <h3>By Other Criteria</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Basis</th><th>Categories</th></tr>
+      <tr><td>Severity (Legal)</td><td>Simple · Grievous</td></tr>
+      <tr><td>Nature (Medico-legal)</td><td>Suicidal · Homicidal · Accidental · Defense wounds · Fabricated / self-inflicted</td></tr>
+      <tr><td>Time of infliction</td><td>Antemortem (recent / old) · Postmortem</td></tr>
+    </table>
+  </div>
+
+  <div class="box box-key">
+    <div class="box-label">Key Principle</div>
+    <p>For any given amount of force: <span class="highlight">the greater the area over which it is delivered, the less severe the wound</span> — this applies to both blunt and sharp trauma.</p>
+  </div>
+
+  <!-- 1.3 ABRASIONS -->
+  <div class="sec" id="u1-abrasion">
+    <div class="sec-num">1.3</div>
+    <h2>Abrasions</h2>
+  </div>
+
+  <div class="box box-def">
+    <div class="box-label">Definition</div>
+    <p>Injury involving only the <span class="highlight">outer layers of the skin</span> — does not penetrate the full thickness of the epidermis. Clinically minor but <span class="highlight">forensically valuable</span>: unlike a bruise, it always indicates the <em>precise point of impact</em>.</p>
+  </div>
+
+  <p><strong>Causative agents:</strong> Blow, fall, fingernail, thorn, tooth bite.</p>
+
+  <h3>Types of Abrasions</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>#</th><th>Type</th><th>Mechanism</th><th>Forensic Notes</th></tr>
+      <tr>
+        <td>i</td>
+        <td><strong>Scratch / Linear</strong></td>
+        <td>Sharp/pointed object moving across skin (fingernails, thorns, pins). Surface epidermis collects in front → clean start, tags at end.</td>
+        <td>Fingernail abrasions seen in throttling, sexual assault, child abuse.</td>
+      </tr>
+      <tr>
+        <td>ii</td>
+        <td><strong>Graze / Sliding</strong></td>
+        <td>Horizontal friction between skin and hard rough surface. Parallel longitudinal lines; epidermis heaped at opposite end shows direction of force.</td>
+        <td>Most common type. Glass, gravel, dirt may be embedded. Seen in RTAs.</td>
+      </tr>
+      <tr>
+        <td>iii</td>
+        <td><strong>Pressure / Crushing</strong></td>
+        <td>Direct impact or linear pressure of rough object; slight inward movement crushes superficial cuticle.</td>
+        <td>E.g., noose or ligature marks in hanging/strangulation.</td>
+      </tr>
+      <tr>
+        <td>iv</td>
+        <td><strong>Imprint / Patterned</strong></td>
+        <td>Force applied perpendicular to skin; cuticle crushed bearing the object's imprint. Slightly depressed. Becomes brownish and parchmentized on drying.</td>
+        <td>Radiator grill, tyre thread, teeth bite marks. UV light can reveal hidden patterns.</td>
+      </tr>
+    </table>
+  </div>
+
+  <h3>Circumstances of Abrasions</h3>
+  <ul class="list">
+    <li>Usually seen in accidents and assaults.</li>
+    <li>Abrasions on face/body of an assailant → evidence of struggle.</li>
+    <li>Heart attack collapse: abrasions on forehead/nose/cheek, but <span class="highlight">no injuries on upper limbs</span> (unconscious, cannot protect).</li>
+    <li>Conscious fall: abrasions on palmar surface of hands (person protects themselves).</li>
+    <li>Alcoholics: tend to fall backward → occiput injuries.</li>
+    <li>Hysterical women: may fabricate abrasions over accessible areas (front of forearm, face) to allege assault.</li>
+  </ul>
+
+  <!-- 1.4 BRUISES -->
+  <div class="sec" id="u1-bruise">
+    <div class="sec-num">1.4</div>
+    <h2>Bruises / Contusions</h2>
+  </div>
+
+  <div class="box box-def">
+    <div class="box-label">Definition</div>
+    <p>Haemorrhage into the skin, subcutaneous tissues, or deeper tissues due to rupture of small vessels from blunt force, resulting in a purplish mark on the skin. Blood infiltrates surrounding tissues under the pumping action of the heart. When blood <em>collects in a mass</em> beneath skin → <span class="highlight">haematoma</span>.</p>
+  </div>
+
+  <h3>Classification by Location</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title" style="color:var(--purple)">i. Intradermal</div>
+      <div class="card-body">In the immediate subepidermal layer. Made by impact with patterned object. Haemorrhage is sharply defined.</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--purple)">ii. Subcutaneous</div>
+      <div class="card-body">Situated in subcutaneous fatty layer. Edges blurred. Most common type from blunt object. Appears soon after as dark red swelling.</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--purple)">iii. Deep Bruise</div>
+      <div class="card-body">Deeper than subcutaneous tissue. Takes hours to 1–2 days to surface (delayed bruising). Re-examine at 24–48 h. Infrared photography may help.</div>
+    </div>
+  </div>
+
+  <h3>Dating / Age of Bruise</h3>
+  <div class="box box-warn">
+    <div class="box-label">Important Caveat</div>
+    <p>Reliable microscopic dating is NOT possible. Colour changes are NOT always reliable indicators of age. Only state whether the bruise is <span class="highlight">recent or old</span>.</p>
+  </div>
+
+  <p><strong>Healing process:</strong> Extravasation → inflammatory reaction → vasodilation → macrophages break down haemoglobin to <strong>biliverdin</strong> → enzyme biliverdin reductase converts to <strong>bilirubin</strong> (yellow). Iron released → combines with ferritin → <strong>haemosiderin</strong>. Colour change starts at the periphery and extends inwards.</p>
+
+  <p><strong>Methods used to date bruise:</strong> Histology (postmortem only) · Colour changes (visual) · Calorimetry · Spectrophotometry.</p>
+
+  <!-- 1.5 LACERATION -->
+  <div class="sec" id="u1-laceration">
+    <div class="sec-num">1.5</div>
+    <h2>Lacerations</h2>
+  </div>
+
+  <div class="box box-def">
+    <div class="box-label">Definition</div>
+    <p>Tearing or splitting of skin, mucous membranes, muscles, or internal organs caused by a <span class="highlight">shearing or crushing force</span> (blunt force applied to a broad area). Extensive bruising + laceration of deeper tissue = <em>crush injury</em>.</p>
+  </div>
+
+  <h3>Types</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Type</th><th>Mechanism</th><th>Sites / Notes</th></tr>
+      <tr><td><strong>Split</strong></td><td>Soft tissue sandwiched between hard underlying structure and force. E.g. scalp between skull and hard object.</td><td>Scalp, forehead, eyebrow, zygoma, iliac crest, perineum, shin</td></tr>
+      <tr><td><strong>Stretch</strong></td><td>Heavy forceful frictional impact — localised "pressure with pull." Flapping of skin indicates direction of force.</td><td>Run over by vehicle, kicking, compound fractures</td></tr>
+      <tr><td><strong>Avulsion / Grinding</strong></td><td>Shearing force at oblique/tangential angle tears off skin (flaying). Amputation and decapitation are extreme forms.</td><td>RTAs — rotating wheel tears skin off legs</td></tr>
+      <tr><td><strong>Tears</strong></td><td>Tearing from localised impact against hard, irregular objects.</td><td>Car door handle, broken glass</td></tr>
+      <tr><td><strong>Cut laceration</strong></td><td>Heavy sharp-edged weapon causing deep wide cut.</td><td>Deep tissue</td></tr>
+    </table>
+  </div>
+
+  <h3>Characteristics of Laceration</h3>
+  <ul class="list">
+    <li><strong>Margins:</strong> Ragged, irregular, uneven; "shallow tails"; tissue tags between edges.</li>
+    <li><strong>Site:</strong> Most common over bony prominences where skin is fixed and easily torn.</li>
+    <li><strong>Bruising and abrasion:</strong> Seen around margins.</li>
+    <li><strong>Depth:</strong> Shows bridges of irregularly torn fibrous tissue, blood vessels, nerves.</li>
+    <li><strong>Soiling:</strong> Mud, glass, paint, hair, fibres — great medico-legal importance.</li>
+    <li><strong>Hair bulbs:</strong> Crushed.</li>
+    <li><strong>Haemorrhage:</strong> Less than incised wounds (arteries crushed, retract, clot readily — except scalp where temporal arteries bleed freely as they cannot contract).</li>
+    <li><strong>Bevelling:</strong> Tangential blow → undermining on one side, abrasion + bevelling on other → indicates direction of blow.</li>
+    <li><strong>Healing:</strong> Produces permanent scar. Antemortem lacerations show bruising of margins, vital reaction, eversion, gaping.</li>
+  </ul>
+
+  <h3>Dating of Laceration</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Duration</th><th>Gross Findings</th></tr>
+      <tr><td>Fresh</td><td>Bleeding or fresh clot attached; margins red, swollen, tender</td></tr>
+      <tr><td>12–24 h</td><td>Margins swollen, red, covered by dried blood clots and lymph</td></tr>
+      <tr><td>3–5 days</td><td>Margins strongly adherent, covered by dried crust</td></tr>
+      <tr><td>6–7 days</td><td>Crust/scab falls off; soft reddish tender scar</td></tr>
+      <tr><td>Few weeks</td><td>Scar is whitish, firm, painless</td></tr>
+    </table>
+  </div>
+
+  <!-- 1.6 INCISIONS -->
+  <div class="sec" id="u1-incision">
+    <div class="sec-num">1.6</div>
+    <h2>Incised Wounds</h2>
+  </div>
+
+  <div class="box box-def">
+    <div class="box-label">Definition</div>
+    <p>Caused by <span class="highlight">sharp cutting instruments</span> (knives, razors, glass shards, sharp tin edges) in slashing movements. Criminal circumstances imply intent. Suicidal incised wounds are often multiple, parallel, tentative, superficial, on front of forearm/wrist or front/sides of neck.</p>
+  </div>
+
+  <h3>Characteristics</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Feature</th><th>Details</th></tr>
+      <tr><td>Margins</td><td>Clean cut, well-defined, usually everted (inverted only where thin muscle is adherent to skin, e.g. scrotum)</td></tr>
+      <tr><td>Width</td><td>Greater than edge of weapon — due to retraction of divided tissues</td></tr>
+      <tr><td>Length</td><td>Greater than width and depth; no relation to cutting edge; can extend any distance</td></tr>
+      <tr><td>Shape</td><td>Spindle-shaped (greater retraction at centre); gaping more if Langer's lines cut transversely</td></tr>
+      <tr><td>Depth</td><td>Usually deeper at commencement ("head of wound") — suicidal: may have hesitation cuts at beginning. Progressively shallow towards end ("tailing").</td></tr>
+      <tr><td>Haemorrhage</td><td>More — vessels cut cleanly and bleed freely</td></tr>
+      <tr><td>Bevelled cuts</td><td>Oblique blade entry → visible tissue at one margin, undermining at other. Near-horizontal → flap wound.</td></tr>
+    </table>
+  </div>
+
+  <!-- 1.7 STAB WOUNDS -->
+  <div class="sec" id="u1-stab">
+    <div class="sec-num">1.7</div>
+    <h2>Stab Wounds</h2>
+  </div>
+
+  <div class="box box-def">
+    <div class="box-label">Definition</div>
+    <p>Produced when force is delivered along the <span class="highlight">long axis of a narrow/pointed object</span> (knife, dagger, chisel, sword, sickle). Depth is <strong>greater than length and width</strong> — key distinguishing feature.</p>
+  </div>
+
+  <h3>Types</h3>
+  <div class="compare-grid">
+    <div class="compare-col ante">
+      <h4>Penetrating Wounds</h4>
+      <ul>
+        <li>Weapon enters body cavity or viscus</li>
+        <li>Does not exit</li>
+      </ul>
+    </div>
+    <div class="compare-col post">
+      <h4>Perforating (Through &amp; Through) Wounds</h4>
+      <ul>
+        <li>Weapon enters one side, exits other</li>
+        <li>Entry: larger, inverted edges</li>
+        <li>Exit: smaller, everted edges</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Characteristics</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Feature</th><th>Details</th></tr>
+      <tr><td>Margins</td><td>Clean, inverted; everted in fatty areas (abdomen, gluteal); no abrasion/bruise unless full penetration; may be abraded/ragged if cutting edge is blunt</td></tr>
+      <tr><td>Length</td><td>Slightly less than width of weapon (skin stretches)</td></tr>
+      <tr><td>Width</td><td>Gaping wounds brought together → estimate maximum possible knife width</td></tr>
+      <tr><td>Depth</td><td>Greater than external injury dimensions; usually ≤ blade length; may be greater on yielding surfaces (anterior abdominal wall)</td></tr>
+    </table>
+  </div>
+
+  <h3>Factors Affecting Depth</h3>
+  <ul class="list">
+    <li>Sharpness of tip, thickness of knife</li>
+    <li>Tissue/organ resistance</li>
+    <li>Clothing</li>
+    <li>Speed of thrust</li>
+    <li>Skin tension (stretched vs lax)</li>
+  </ul>
+
+  <h3>Context (Medicolegal)</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Suicidal</th><th>Homicidal</th><th>Accidental</th></tr>
+      <tr><td>Accessible body parts; direction upwards, backward, to the right; variable depth</td><td>Most stab wounds are homicidal — especially inaccessible areas</td><td>Rare</td></tr>
+    </table>
+  </div>
+
+  <h3>Complications</h3>
+  <ul class="list">
+    <li>Marked internal haemorrhage or visceral injury</li>
+    <li>Foreign material infection</li>
+    <li>Air embolism (neck stab → jugular vein → negative pressure sucks air)</li>
+    <li>Pneumothorax</li>
+    <li>Asphyxia (inhalation of blood)</li>
+  </ul>
+
+  <!-- 1.8 FIREARM WOUNDS -->
+  <div class="sec" id="u1-firearm">
+    <div class="sec-num">1.8</div>
+    <h2>Firearm Wounds (Ballistic Trauma / GSW)</h2>
+  </div>
+
+  <h3>Ballistics</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title" style="color:var(--blue)">Internal Ballistics</div>
+      <div class="card-body">Path of bullet inside the gun barrel (ignition → propellant combustion → barrel length). Longer barrels → higher velocity, more stability.</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--teal)">External Ballistics</div>
+      <div class="card-body">Bullet path from muzzle to target. Rifling → gyroscopic stability. Air drag decelerates; gravity causes bullet drop. Ricochet = deviation off intermediate object → deformity, loss of velocity &amp; stability.</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--orange)">Wound Ballistics</div>
+      <div class="card-body">Bullet path inside human body; energy transfer → tissue damage. KE = ½mv². Velocity more important than mass for wounding power. ~50 m/s to penetrate skin; ~65 m/s to fracture bone.</div>
+    </div>
+  </div>
+
+  <h3>Types of Bullet Injury</h3>
+  <ul class="list">
+    <li><strong>Surface wound:</strong> Entry and exit wounds — most informative. Exit wound may be absent if bullet lodges inside.</li>
+    <li><strong>Permanent cavity:</strong> Direct crushing of tissues by bullet track. Expanding (hollow point) bullets create larger cavity. Fragmented bullets → multiple cavities.</li>
+    <li><strong>Temporary cavity:</strong> Radial shock wave from kinetic energy transfer → damages tissue not directly crushed.</li>
+  </ul>
+
+  <h3>Shotgun Injury Classification by Range</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Type</th><th>Range</th><th>Characteristics</th><th>Mortality</th></tr>
+      <tr><td>Type I</td><td>&lt;5 m</td><td>Pellets strike as single mass; massive KE transfer; tissue avulsion</td><td>85–90%</td></tr>
+      <tr><td>Type II</td><td>5–12 m</td><td>Significant pellet dispersal &amp; energy loss; may penetrate deep fascia; fractures rare; ocular injuries; Lead pellet embolisation</td><td>15–20%</td></tr>
+      <tr><td>Type III</td><td>&gt;12 m</td><td>Usually only skin penetrated</td><td>0–5%</td></tr>
+    </table>
+  </div>
+
+  <h3>Entry Wound vs Exit Wound</h3>
+  <div class="compare-grid">
+    <div class="compare-col ante">
+      <h4>Entry Wound</h4>
+      <ul>
+        <li>Abrasion collar / contusion ring (always present)</li>
+        <li>Grease collar</li>
+        <li>Possible burning, singeing, blackening, tattooing (at close range)</li>
+        <li>Cherry red tissues (CO at contact range)</li>
+        <li>Wads in wound (shotgun)</li>
+        <li>Circular with abrasion rim (most common)</li>
+      </ul>
+    </div>
+    <div class="compare-col post">
+      <h4>Exit Wound</h4>
+      <ul>
+        <li>No burning, blackening, tattooing, abrasion/contusion collar</li>
+        <li>Edges everted, torn</li>
+        <li>Contused haemorrhagic subcutaneous fat protrudes</li>
+        <li>Shapes: stellate, circular, cruciate, elliptical, crescent/star (scalp)</li>
+        <li>May be larger/irregular if bullet tumbles, deforms, or fragments</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Rifle Entry Wound by Range</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Range</th><th>Features</th></tr>
+      <tr><td>Tight contact (soft tissue)</td><td>Muzzle impression; circular hole with abrasion collar; grease collar; bruising; cherry red; little soiling/tattooing</td></tr>
+      <tr><td>Tight contact (over bone)</td><td>Split/cruciate wound; CO; bruising; little burning; abrasion collar partly lost</td></tr>
+      <tr><td>&lt;15 cm</td><td>Circular hole + abrasion collar; flame burn; burnt hairs; blackening; tattooing; little CO</td></tr>
+      <tr><td>15–30 cm</td><td>No soot; possible powder tattooing; no CO; rarely flame burns</td></tr>
+      <tr><td>40–60 cm</td><td>Circular hole + abrasion collar; no burning, soiling, burnt hairs, or CO</td></tr>
+      <tr><td>Far distant</td><td>Larger irregular hole; irregular abrasion rim; no other features</td></tr>
+    </table>
+  </div>
+
+  <div class="box box-mnemo">
+    <div class="box-label">Mnemonic — Suicidal Firearm (5 S's)</div>
+    <ul class="list">
+      <li><strong>S</strong>ite — Classical: temple, heart, mouth, chin</li>
+      <li><strong>S</strong>ingle shot</li>
+      <li><strong>S</strong>cene — Calm, locked inside, no disturbance</li>
+      <li><strong>S</strong>uicidal note</li>
+      <li><strong>S</strong>pasm — Cadaveric spasm (hallmark finding)</li>
+    </ul>
+  </div>
+
+  <div class="box box-compare">
+    <div class="box-label">Shored Exit Wound</div>
+    <p>When a firm object (belt, waistband, brassiere, collar) presses against the skin at the exit site, or when the body leans against a hard surface — the exit wound becomes circular with an abrasion margin, <span class="highlight">mimicking an entry wound</span>. Context and trajectory analysis differentiate.</p>
+  </div>
+
+  <div class="unit-divider"></div>
+
+  <!-- ============================= UNIT 2 ============================= -->
+  <div class="unit-header" id="u2">
+    <span class="unit-num">Unit 02</span>
+    <h2 class="unit-title">Medico-Legal Autopsy</h2>
+  </div>
+
+  <!-- 2.1 DEFINITIONS -->
+  <div class="sec" id="u2-def">
+    <div class="sec-num">2.1</div>
+    <h2>Definitions &amp; Types of Autopsy</h2>
+  </div>
+
+  <div class="box box-def">
+    <div class="box-label">Forensic Pathology</div>
+    <p>Investigation of sudden, unexpected, and/or violent deaths — determining cause of death and circumstances of how death occurred.</p>
+  </div>
+
+  <div class="box box-def">
+    <div class="box-label">Autopsy</div>
+    <p>Systematic examination of a dead person for medical, legal, and/or scientific purposes.</p>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Type</th><th>Purpose</th><th>Consent / Authority</th></tr>
+      <tr><td><strong>Academic</strong></td><td>Dissection by anatomy students</td><td>Government authority; unclaimed body</td></tr>
+      <tr><td><strong>Pathological / Clinical</strong></td><td>Diagnose cause of death or confirm a diagnosis</td><td>Consent from next of kin required; physicians cannot order without consent</td></tr>
+      <tr><td><strong>Medico-legal / Forensic</strong></td><td>Establish cause and manner of death in sudden, suspicious, unnatural, litigious, or criminal deaths</td><td>Official order from police or Magistrate — NO next-of-kin consent needed</td></tr>
+      <tr><td><strong>Anatomical</strong></td><td>Voluntarily donated body for dissection</td><td>Consent from legal heirs prior to dissection</td></tr>
+    </table>
+  </div>
+
+  <!-- 2.2 OBJECTIVES -->
+  <div class="sec" id="u2-purpose">
+    <div class="sec-num">2.2</div>
+    <h2>Objectives of Medico-Legal Autopsy</h2>
+  </div>
+
+  <p>The autopsy answers: <span class="highlight">Who, When, Where, Why, How, and What.</span></p>
+
+  <ol class="list">
+    <li>Identify the deceased (decomposed, burnt, mutilated, or unidentified body)</li>
+    <li>Determine cause of death (natural or unnatural) and interpret significance of disease</li>
+    <li>Approximate time of death, mode of death, age of injuries, and place of death</li>
+    <li>Determine manner of death (accidental, suicidal, or homicidal)</li>
+    <li>Identify poison or weapon responsible in homicide</li>
+    <li>Assess volitional activity possible after trauma and survival time</li>
+    <li>Document extent of external and internal injuries</li>
+    <li>Determine whether injury was likely to cause death in ordinary course of nature</li>
+    <li>Determine whether treatment was received before death</li>
+    <li>In homicide: number of persons involved; trace evidence; other related offences; multiple methods/weapons; whether body was displaced; relative positions of victim and assailant</li>
+    <li>In newborns: live birth and viability</li>
+    <li>In mutilated/skeletal remains: whether human; how many persons; probable cause and time since death</li>
+  </ol>
+
+  <!-- 2.3 CONSENT -->
+  <div class="sec" id="u2-consent">
+    <div class="sec-num">2.3</div>
+    <h2>Consent &amp; Authority</h2>
+  </div>
+
+  <div class="box box-warn">
+    <div class="box-label">Key Rule</div>
+    <p>Medico-legal autopsy requires <span class="highlight">no consent from relatives</span> — only a legal requisition (authorisation from police or Magistrate) is required.</p>
+  </div>
+
+  <!-- 2.4 PROCEDURE -->
+  <div class="sec" id="u2-procedure">
+    <div class="sec-num">2.4</div>
+    <h2>Procedure for Medico-Legal Autopsy</h2>
+  </div>
+
+  <ol class="list">
+    <li><strong>Scene visit:</strong> If feasible, valuable in murder, poisoning, traffic accidents, firearm injuries, and sexual offences. Can exclude crime in favour of accident, suicide, or natural causes.</li>
+    <li><strong>Authorisation:</strong> Only conducted on official order from police or Magistrate.</li>
+    <li><strong>Personnel:</strong> All registered medical practitioners in government service. Two doctors for suspicious death of a female within 7 years of marriage (burns or other). Board of doctors for custodial deaths, on-table deaths, and second autopsy — odd number for majority decisions.</li>
+    <li><strong>Privacy:</strong> No unauthorized person present.</li>
+    <li><strong>Location &amp; timing:</strong> Must be in an authorized centre. Body should NOT be embalmed before autopsy. Should be performed in daylight (colour changes, bruises, jaundice, PM staining cannot be appreciated in artificial light). Not after 5 PM unless emergency or District Magistrate instruction.</li>
+    <li><strong>Decomposed bodies:</strong> Still perform autopsy — important lesions may survive. Forensic entomologist can assist with time of death.</li>
+    <li><strong>Documentation:</strong> Read inquest report and requisition before starting. Sign all papers. Remember: inquest report may be misleading. Both positive and negative findings must be recorded. Nothing erased — all alterations initialled.</li>
+    <li><strong>Night receipt:</strong> Body preserved at 4°C. Preliminary external examination done at night (temperature, PM staining, rigor mortis). Full autopsy next day.</li>
+    <li><strong>Identification:</strong> A police officer/authorized person and two relatives must identify the body. Names recorded. For unidentified bodies: identification marks, race, religion, sex, age, dental formula, photographs, fingerprints.</li>
+    <li><strong>Chain of evidence:</strong> Essential. Absolute control of specimens removed. All articles (clothes, jewellery, bullets) listed, labelled, sealed, mentioned in report, and handed to police constable on receipt.</li>
+    <li><strong>Restoration:</strong> Body stitched, washed, restored to best cosmetic appearance, then handed to IO.</li>
+  </ol>
+
+  <!-- 2.5 EXTERNAL EXAMINATION -->
+  <div class="sec" id="u2-external">
+    <div class="sec-num">2.5</div>
+    <h2>External Examination</h2>
+  </div>
+
+  <p><em>Observation and documentation of all external characteristics of the decedent.</em></p>
+
+  <h3>Clothing</h3>
+  <ul class="list">
+    <li>Number, labels, laundry marks, design, stains, tears, loss of buttons, cuts, holes, blackening from firearm discharge (with dimensions)</li>
+    <li>Trace evidence: hair, fibres, paint chips, glass, vegetation, insects → collected, labelled, preserved</li>
+    <li>Pockets: medication, drugs of abuse, papers for identification and medical history</li>
+    <li>Remove carefully without tearing. If can't be removed intact, cut away from bullet/cut areas, along seams</li>
+    <li>After autopsy: wet clothing air-dried, packed and sealed in paper bags, handed to police</li>
+  </ul>
+
+  <h3>Body Examination Checklist</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Area</th><th>What to Note</th></tr>
+      <tr><td>Body overview</td><td>Length, weight, sex, race, dentition, build, development, nourishment; surgical procedures/dressings</td></tr>
+      <tr><td>Skin</td><td>General condition, rash, petechiae, colour, turgor; stains (blood, mud, vomit, faeces, corrosives, gunpowder); deformities, scars, tattoos, moles, circumcision</td></tr>
+      <tr><td>Time of death indicators</td><td>Rectal temperature, rigor mortis, PM staining, putrefaction, maggots, stomach contents</td></tr>
+      <tr><td>Face</td><td>Cyanosis, petechiae, pallor, tongue protrusion/biting, lips, gums, teeth, corrosive marks</td></tr>
+      <tr><td>Eyes</td><td>Eyelids, conjunctivae, softening of eyeball, scleral colour, pupil state/colour, contact lenses, petechiae, corneal opacity, artificial eyes</td></tr>
+      <tr><td>Natural orifices</td><td>Nose, mouth, ears, urethra, vagina, anus — discharges, injuries, foreign bodies; blood/CSF from ears/mouth/nostrils</td></tr>
+      <tr><td>Neck</td><td>Bruises, fingernail abrasions, ligature marks, abnormalities</td></tr>
+      <tr><td>Thorax</td><td>Symmetry, outline, injuries</td></tr>
+      <tr><td>Abdomen</td><td>Distension or retraction, striae gravidarum</td></tr>
+      <tr><td>Back</td><td>Bedsores, spinal deformity, injuries</td></tr>
+      <tr><td>Hands &amp; fingernails</td><td>Injuries, defence wounds, electric marks, clenched hands; tissue, blood, dust, foreign matter under nails</td></tr>
+      <tr><td>Limbs</td><td>Fracture and dislocation</td></tr>
+    </table>
+  </div>
+
+  <h3>Documentation of External Injuries</h3>
+  <p>Each injury characterised by: type/nature · size (L×B×D) · shape · site (two external anatomical landmarks) · direction of force · margins/edges/base · distance from heel · time of infliction (inflammatory and colour changes) · vital reaction · foreign materials.</p>
+
+  <div class="box box-key">
+    <div class="box-label">Radiology Indications</div>
+    <p>Identification/dentistry · Mutilated/charred remains · Gunshot wounds · Air embolism · Sharp force wounds · Barotrauma · Explosives · Child abuse · Decomposed body</p>
+  </div>
+
+  <!-- 2.6 INTERNAL EXAMINATION -->
+  <div class="sec" id="u2-internal">
+    <div class="sec-num">2.6</div>
+    <h2>Internal Examination (Evisceration)</h2>
+  </div>
+
+  <p>All three major body cavities — skull, thorax, abdomen — are opened and examined as routine.</p>
+
+  <h3>Order of Opening</h3>
+  <ul class="list">
+    <li>Suspected head injury: skull first, then thorax and abdomen</li>
+    <li>Suspected asphyxial deaths (neck compression): skull and abdomen first, then neck (allows blood drainage for a cleaner dissection)</li>
+    <li>All other cases: thorax and abdomen first, then skull</li>
+  </ul>
+
+  <h3>Skin Incisions</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Type</th><th>Description</th><th>When Used</th></tr>
+      <tr><td><strong>I-shaped</strong></td><td>Chin straight down to symphysis pubis (avoiding umbilicus)</td><td>Most common</td></tr>
+      <tr><td><strong>Y-shaped</strong></td><td>Midline from xiphisternum to pubis; forks to chest towards acromion processes</td><td>Standard alternative</td></tr>
+      <tr><td><strong>Modified Y</strong></td><td>Midline from suprasternal notch to symphysis; extends over clavicle and up behind ears</td><td>Detailed neck organ study (hanging, strangulation)</td></tr>
+      <tr><td><strong>T / "bucket handle"</strong></td><td>Transverse from acromion to acromion + midline to pubis → calyx/U-shape</td><td>Specific anatomical requirements</td></tr>
+    </table>
+  </div>
+
+  <h3>Evisceration Methods</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title" style="color:var(--teal)">En Masse (Letulle)</div>
+      <div class="card-body">Most organs removed in one sweep. Rapid evisceration but longer dissection. Leaves all attachments intact.</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--teal)">Virchow's Method</div>
+      <div class="card-body">Individual organs removed one by one with immediate dissection. Useful for single-organ pathology.</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--teal)">En Bloc (Ghon)</div>
+      <div class="card-body">Compromise between the above two. Most widely used in UK. Relatively quick, preserves inter-organ relationships.</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--teal)">In Situ (Rokitansky)</div>
+      <div class="card-body">Organs dissected in place with minimal evisceration. For highly transmissible diseases.</div>
+    </div>
+  </div>
+
+  <h3>Organ Description</h3>
+  <ul class="list">
+    <li><strong>Size:</strong> Measuring tape; tense capsule → enlargement; loose capsule → shrinkage</li>
+    <li><strong>Shape:</strong> Any deviation from normal</li>
+    <li><strong>Surface:</strong> Normally delicate, smooth, glistening, transparent serosa — note thickening, roughening, dullness</li>
+    <li><strong>Consistency:</strong> Softness/firmness by finger pressure</li>
+    <li><strong>Cohesion:</strong> Resistance of cut surface to tearing/pressure/pulling</li>
+    <li><strong>Cut surface:</strong> Colour and structural details; hollow structures cut open; solid organs "bread-loafed"</li>
+  </ul>
+
+  <!-- 2.7 REPORT -->
+  <div class="sec" id="u2-report">
+    <div class="sec-num">2.7</div>
+    <h2>Report Writing</h2>
+  </div>
+
+  <div class="box box-tip">
+    <div class="box-label">Report Guidelines</div>
+    <ul class="list">
+      <li>Written in duplicate/triplicate on the same day</li>
+      <li>Computerised copy can be shared with police / website</li>
+      <li>In poisoning: opinion reserved until Chemical Examiner's report received; viscera preserved</li>
+      <li>If laboratory tests needed: provisional report first, then supplementary</li>
+      <li>Both positive AND negative findings recorded</li>
+      <li>If cause of death cannot be ascertained: "undetermined" (cause) / "unknown" (manner)</li>
+    </ul>
+  </div>
+
+  <div class="box box-warn">
+    <div class="box-label">Critical — Opinion Quality</div>
+    <p>The word <span class="highlight">"probably"</span> should be avoided. Cause and manner of death are <em>opinions</em>, not facts. A poor opinion is far worse than no opinion — it misleads rather than informs. Opinions can legitimately differ between surgeons.</p>
+  </div>
+
+  <div class="unit-divider"></div>
+
+  <!-- ============================= UNIT 3 ============================= -->
+  <div class="unit-header" id="u3">
+    <span class="unit-num">Unit 03</span>
+    <h2 class="unit-title">Postmortem Artefacts</h2>
+  </div>
+
+  <!-- 3.1 DEFINITION -->
+  <div class="sec" id="u3-def">
+    <div class="sec-num">3.1</div>
+    <h2>Definition &amp; Classification</h2>
+  </div>
+
+  <div class="box box-def">
+    <div class="box-label">Definition — Artefact</div>
+    <p>From Latin: <em>arte</em> (skill) + <em>fact</em> (something made). A <span class="highlight">change or feature that was NOT present in the body (physiologically or pathologically) before death</span>, but was caused or introduced into the body after death — leading to confusion about its nature and cause, and resulting in misinterpretation of medicolegally significant findings.</p>
+  </div>
+
+  <h3>Classification by Causative Agent</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title" style="color:var(--blue)">i. Due to Postmortem Changes</div>
+      <div class="card-body">Arising naturally from the process of decomposition and other postmortem phenomena.</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--orange)">ii. Third Party Artefacts</div>
+      <div class="card-body">Introduced by animals, insects, humans, or other external agents after death.</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--green)">iii. Environmental Artefacts</div>
+      <div class="card-body">Caused by the environment (heat, cold, submersion, soil, chemicals).</div>
+    </div>
+  </div>
+
+  <h3>Classification by Time of Introduction</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Period: Death → Autopsy</th><th>Period: During Autopsy</th></tr>
+      <tr><td>1. Agonal artefacts</td><td>1. Postmortem fractures</td></tr>
+      <tr><td>2. Resuscitation artefacts</td><td>2. Opening of skull cap</td></tr>
+      <tr><td>3. Embalming artefacts</td><td>3. Examination of meninges and brain</td></tr>
+      <tr><td>4. Exhumation artefacts</td><td>4. Dissection artefacts</td></tr>
+      <tr><td>5. Handling of body artefacts</td><td>5. Preservation artefacts</td></tr>
+      <tr><td>6. Rigor mortis related</td><td>6. Miscellaneous</td></tr>
+      <tr><td>7. Postmortem lividity related</td><td></td></tr>
+      <tr><td>8. Decomposition artefacts</td><td></td></tr>
+      <tr><td>9. Third party artefacts (animal &amp; insect activity)</td><td></td></tr>
+    </table>
+  </div>
+
+  <!-- 3.2 RESUSCITATION -->
+  <div class="sec" id="u3-resus">
+    <div class="sec-num">3.2</div>
+    <h2>Resuscitation &amp; Therapeutic Artefacts</h2>
+  </div>
+
+  <div class="box box-warn">
+    <div class="box-label">Critical</div>
+    <p><span class="highlight">History of the patient and case sheet findings are of utmost importance</span> in forensic medicine. Always check these before interpreting findings.</p>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Therapeutic Intervention</th><th>Artefact Produced</th><th>Potential Misinterpretation</th></tr>
+      <tr><td>Injection sites</td><td>Needle marks on skin</td><td>Drug abuse marks</td></tr>
+      <tr><td>Defibrillator pads</td><td>Marks on chest resembling abrasions</td><td>Antemortem abrasion / assault</td></tr>
+      <tr><td>CPR</td><td>Fracture of ribs and sternum; haemothorax; haemopneumothorax; fat embolism from fractured ribs; laceration of spleen, liver, diaphragm</td><td>Assault, blunt thoracic trauma</td></tr>
+      <tr><td>Positive pressure ventilation</td><td>Emphysema; sub-pleural air</td><td>Pulmonary pathology</td></tr>
+      <tr><td>Endotracheal intubation (inexperienced)</td><td>Injury to larynx and adjacent tissues</td><td>Suspicion of foul play (throttling)</td></tr>
+      <tr><td>Carotid angiography</td><td>Neck muscle bruise</td><td>Suspicion of throttling</td></tr>
+      <tr><td>Antemortem surgery</td><td>Altered wound morphology, surgical marks</td><td>Misidentification of wound character</td></tr>
+    </table>
+  </div>
+
+  <div class="box box-compare">
+    <div class="box-label">Agonal Artefact</div>
+    <p>"Agonal" = the struggle that precedes death. The most common agonal artefact is <span class="highlight">regurgitation and aspiration</span>.</p>
+    <div class="compare-grid" style="margin-top:0.75rem">
+      <div class="compare-col ante">
+        <h4>Antemortem Agonal Reaction</h4>
+        <ul><li>Stomach contents aspirated into lower respiratory tract</li><li>Mixed with fluid and mucus → choking → death</li></ul>
+      </div>
+      <div class="compare-col post">
+        <h4>Postmortem Agonal Artefact</h4>
+        <ul><li>Never reaches lower respiratory tract</li><li>Only passive pooling</li></ul>
+      </div>
+    </div>
+    <p style="margin-top:0.5rem; font-size:13px; color:var(--text2)">Neurogenic shock / cardiac arrest before death may prevent any significant bleeding.</p>
+  </div>
+
+  <!-- 3.3 EMBALMING -->
+  <div class="sec" id="u3-embalm">
+    <div class="sec-num">3.3</div>
+    <h2>Embalming Artefacts</h2>
+  </div>
+
+  <p><strong>Embalming</strong> = chemical treatment of dead body to protect from decay.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Embalming Process</th><th>Artefact</th><th>Misinterpretation</th></tr>
+      <tr><td>Trochar insertion for arterial access (from neck and abdomen)</td><td>Freshly created wounds</td><td>Stab wound or gunshot wound</td></tr>
+      <tr><td>Existing wounds</td><td>Change in size, shape, direction; false tracks created</td><td>Altered wound morphology</td></tr>
+      <tr><td>Embalming fluid pressure</td><td>Extravasation of blood from veins/arteries; enlargement of small bruises</td><td>Bruise (false positive or exaggerated)</td></tr>
+      <tr><td>Embalming fluid in tissues</td><td>Chemical contamination of samples</td><td>Interferes with toxicological analysis (false results)</td></tr>
+      <tr><td>Trochar in firearm track</td><td>Track distortion; false track created</td><td>Direction of fire becomes difficult to determine</td></tr>
+    </table>
+  </div>
+
+  <div class="box box-warn">
+    <div class="box-label">Key Rule</div>
+    <p>The body should <span class="highlight">never be embalmed before autopsy</span> — histopathological examination becomes impossible, and toxicological analysis is compromised.</p>
+  </div>
+
+  <!-- 3.4 EXHUMATION -->
+  <div class="sec" id="u3-exhume">
+    <div class="sec-num">3.4</div>
+    <h2>Exhumation (Internment &amp; Exhumation Artefacts)</h2>
+  </div>
+
+  <div class="compare-grid">
+    <div class="compare-col ante">
+      <h4>Fungal Growth</h4>
+      <ul>
+        <li>Fungus on injuries and natural orifices</li>
+        <li>May obscure or simulate antemortem injuries</li>
+      </ul>
+    </div>
+    <div class="compare-col post">
+      <h4>Digging-Related</h4>
+      <ul>
+        <li>Digging process itself may produce fractures of bones</li>
+        <li>May be mistaken for perimortem injuries</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3.5 HANDLING -->
+  <div class="sec" id="u3-handling">
+    <div class="sec-num">3.5</div>
+    <h2>Handling of Cadaver Artefacts</h2>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Cause</th><th>Artefact</th><th>Differentiation</th></tr>
+      <tr><td>Transportation</td><td>Abrasion, laceration, blood spots on clothes and body (absent in original crime scene)</td><td>Scene examination; pattern analysis</td></tr>
+      <tr><td>Careless handling</td><td>Bruise in occipital area (head bumping on hard surface)</td><td>Can be wiped off (postmortem clot lacks fibrin)</td></tr>
+      <tr><td>Breaking rigor mortis to move body</td><td>Fracture of ribs and vertebrae; weak osteoporotic bones may fracture</td><td>Context; bone density; scene evidence</td></tr>
+    </table>
+  </div>
+
+  <div class="box box-def">
+    <div class="box-label">Undertaker's Fracture</div>
+    <p>A postmortem fracture — occurs due to careless handling of the dead body by undertakers (or anyone handling the body). Pathologists extending the head for neck structure removal can also cause C6–C7 fractures. May mimic antemortem cervical injury.</p>
+  </div>
+
+  <!-- 3.6 PM CHANGES -->
+  <div class="sec" id="u3-pm-changes">
+    <div class="sec-num">3.6</div>
+    <h2>Artefacts Due to Postmortem Changes</h2>
+  </div>
+
+  <h3>Rigor Mortis Related</h3>
+  <ul class="list">
+    <li>Breaking rigor mortis to move the body → <span class="highlight">asymmetrical rigor mortis</span> → misinterpretation of Time Since Death</li>
+    <li>Heat stiffening, cold stiffening, and gas stiffening can all <span class="highlight">simulate rigor mortis</span></li>
+  </ul>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Feature</th><th>Rigor Mortis</th><th>Heat Stiffening</th><th>Cold Stiffening</th></tr>
+      <tr><td>Cause</td><td>Normal postmortem process</td><td>Surrounding temperature &gt;65°C</td><td>Exposure to freezing temperatures</td></tr>
+      <tr><td>Duration</td><td>Passes off in ~36 hours</td><td>Remains until muscles/ligaments soften by decomposition</td><td>Until body thaws in warm water</td></tr>
+      <tr><td>Intensity</td><td>Normal</td><td>Much more marked than rigor mortis</td><td>Firm (body fluid freezing + subcutaneous fat solidification)</td></tr>
+    </table>
+  </div>
+
+  <div class="box box-tip">
+    <div class="box-label">Gas Stiffening vs Rigor Mortis — Differentiating Features</div>
+    <ul class="list">
+      <li>Putrefactive changes: <span class="highlight">inflation of tissue spaces by gases</span> (not seen in heat or cold stiffening)</li>
+      <li>No particular order of appearance or disappearance (unlike rigor mortis)</li>
+      <li>Joints are not tight → can be moved easily</li>
+      <li>No muscle shortening (as in heat stiffening)</li>
+      <li>Stiffening disappears by incisions over the affected areas</li>
+    </ul>
+  </div>
+
+  <h3>Hypostasis (Postmortem Lividity) Related Artefacts</h3>
+  <ul class="list">
+    <li>Localised hypostasis may be <span class="highlight">mistaken as bruise</span></li>
+    <li>Hypostasis in dependent heart → <span class="highlight">resembles myocardial infarction</span></li>
+    <li>Hypostasis in dependent lung → <span class="highlight">resembles pneumonic or broncho-pneumonic consolidation</span></li>
+    <li>Hypostasis in dependent intestine → <span class="highlight">suggests corrosion or strangulation</span></li>
+    <li>Hypostasis in dependent stomach → <span class="highlight">looks like poisoning</span></li>
+    <li>Hypostasis in nails → sometimes confused with cyanosis</li>
+  </ul>
+
+  <h3>Hypostasis Colour Changes (Significant)</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Colour</th><th>Cause</th></tr>
+      <tr><td><span class="badge badge-teal">Pink</span></td><td>Refrigeration</td></tr>
+      <tr><td><span class="badge badge-red">Cherry Red</span></td><td>Carbon Monoxide (CO) poisoning</td></tr>
+      <tr><td><span class="badge badge-red">Bright Red</span></td><td>Hydrogen Cyanide poisoning</td></tr>
+      <tr><td><span class="badge badge-orange">Chocolate Brown</span></td><td>Potassium Chromate / Bichromate</td></tr>
+      <tr><td><span class="badge badge-orange">Dark Brown</span></td><td>Phosphorus poisoning</td></tr>
+    </table>
+  </div>
+
+  <div class="box box-warn">
+    <div class="box-label">Pink Hypostasis in Refrigerated Body</div>
+    <p>May cause confusion with CO poisoning. Always correlate with history and toxicology.</p>
+  </div>
+
+  <!-- 3.7 DECOMPOSITION -->
+  <div class="sec" id="u3-decomp">
+    <div class="sec-num">3.7</div>
+    <h2>Decomposition Artefacts</h2>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>#</th><th>Artefact</th><th>Potential Misinterpretation</th><th>Key to Differentiation</th></tr>
+      <tr><td>1</td><td>Swollen oedematous corpulent body in early stage</td><td>Antemortem obesity</td><td>Context; time since death</td></tr>
+      <tr><td>2</td><td>Blood-stained froth from mouth and nostrils</td><td>Pulmonary oedema, head injury, drowning</td><td>History; other findings</td></tr>
+      <tr><td>3</td><td>Postmortem blisters</td><td>Antemortem blisters (burn or scald)</td><td>Histology (no vital reaction in PM blisters)</td></tr>
+      <tr><td>4</td><td>Postmortem bleeding from severed blood vessels</td><td>Antemortem bleeding</td><td>Antemortem clot cannot be wiped off (has fibrin)</td></tr>
+      <tr><td>5</td><td>False groove over neck due to tight collar/neck tie</td><td>Strangulation</td><td>Close observation; history; absence of ecchymosis</td></tr>
+      <tr><td>6</td><td>Marbling (greenish-black vessel outlines from putrefaction)</td><td>Trauma / bruising</td><td>Distribution follows vessels; decomposition context</td></tr>
+      <tr><td>7</td><td>Skin slippage / peeling of epidermis</td><td>Antemortem burns or scalds</td><td>Histology; absence of vital reaction</td></tr>
+      <tr><td>8</td><td>Rupture of oesophagus and stomach (gastric juices)</td><td>Corrosive acid poisoning</td><td>Absence of vital signs; postmortem context; chemical analysis</td></tr>
+      <tr><td>9</td><td>Hypostatic discolouration of intestine</td><td>Strangulated or infarcted bowel</td><td>Histopathology; hospitalisation history</td></tr>
+      <tr><td>10</td><td>Stains on face from regurgitation</td><td>Chemical burns</td><td>Chemical analysis</td></tr>
+      <tr><td>11</td><td>Vaginal introitus loose, lax, flaccid; blood-stained discharge; bluish mucosa discolouration</td><td>Sexual assault</td><td>History; vaginal swab; uterine examination; histopathology</td></tr>
+    </table>
+  </div>
+
+  <div class="box box-def">
+    <div class="box-label">Postmortem vs Antemortem Clot</div>
+    <div class="compare-grid" style="margin-top:0.5rem">
+      <div class="compare-col ante">
+        <h4>Antemortem Clot</h4>
+        <ul><li>Cannot be wiped off</li><li>Has fibrin content</li><li>Firmly adherent</li></ul>
+      </div>
+      <div class="compare-col post">
+        <h4>Postmortem Clot</h4>
+        <ul><li>Can be wiped off easily</li><li>No fibrin</li><li>Jelly-like consistency</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <h3>Special Decomposition Processes</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title" style="color:var(--orange)">Mummification</div>
+      <div class="card-body">Dehydration of tissues in dry, hot conditions. Body becomes hard and leathery. May obscure injuries or cause skin to contract — simulating ligature marks.</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--blue)">Saponification (Adipocere)</div>
+      <div class="card-body">Conversion of body fat to a soap-like substance in humid/aquatic environments. Body found submerged. Preserves body form but alters tissue characteristics.</div>
+    </div>
+  </div>
+
+  <!-- 3.8 ANIMAL / INSECT -->
+  <div class="sec" id="u3-animal">
+    <div class="sec-num">3.8</div>
+    <h2>Animal &amp; Insect-Induced Artefacts</h2>
+  </div>
+
+  <div class="box box-key">
+    <div class="box-label">Key Rule — Animal Wounds</div>
+    <p>Animal-induced wounds show <span class="highlight">no bleeding or blood clots</span> — absence of vital reaction is the key differentiating feature.</p>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Animal</th><th>Type of Artefact</th><th>Misinterpretation</th></tr>
+      <tr><td>Ants &amp; beetles (sandy locations)</td><td>Extensive superficial tissue damage</td><td>Antemortem abrasions; dragging of body</td></tr>
+      <tr><td>Ants &amp; cockroaches (moist areas — eyes, lips, axilla)</td><td>Brown parchmentised areas</td><td>Antemortem abrasion</td></tr>
+      <tr><td>Maggots (in antemortem injuries)</td><td>Alter shape and margins of stab or gunshot wounds</td><td>Different wound type</td></tr>
+      <tr><td>Rats &amp; rodents</td><td>Nibbled pale white wounds (gnawing)</td><td>Antemortem wounds; assault</td></tr>
+      <tr><td>Dogs &amp; jackals</td><td>Deeper teeth impressions</td><td>Superficial stab injury</td></tr>
+      <tr><td>Cats</td><td>Small, rounded bite marks</td><td>Puncture wounds</td></tr>
+      <tr><td>Foxes, jackals, dogs (large)</td><td>Can render body almost to skeleton in days</td><td>Extensive trauma</td></tr>
+      <tr><td>Vultures / birds (open places)</td><td>Extensive damage; bird beak wound appears circular</td><td>Gunshot wound entry</td></tr>
+      <tr><td>Fish, crabs, shrimps (drowning/submersion)</td><td>Damage to lips, cheeks, eyelids, genitalia, fingers, toes, muscles of limbs</td><td>Antemortem injury/assault</td></tr>
+      <tr><td>Large lizards</td><td>Lacerations without blood clots</td><td>Homicidal wounds</td></tr>
+      <tr><td>Aquatic animals (tropical water)</td><td>Extensive soft tissue damage — turtles, sharks</td><td>Trauma</td></tr>
+    </table>
+  </div>
+
+  <!-- 3.9 BURNS -->
+  <div class="sec" id="u3-burns">
+    <div class="sec-num">3.9</div>
+    <h2>Burns Case Artefacts</h2>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Artefact</th><th>Misinterpretation</th><th>Notes</th></tr>
+      <tr><td>Heat ruptures of skin</td><td>Lacerations (blunt force)</td><td>Margins have a charred, cooked appearance; no bruising at margins</td></tr>
+      <tr><td>Heat stiffening (pugilistic attitude)</td><td>Rigor mortis in a specific position</td><td>Position due to muscle protein coagulation, not postmortem rigidity</td></tr>
+      <tr><td>Gasoline/fuel exposure to skin (accidents)</td><td>Abrasion or thermal burn</td><td>After drying → looks like abrasion or burn; chemical analysis differentiates</td></tr>
+      <tr><td>Postmortem corrosion (gasoline)</td><td>Antemortem chemical burn</td><td>Soiling from accident; contact with fuel postmortem</td></tr>
+    </table>
+  </div>
+
+  <div class="box box-def">
+    <div class="box-label">Pugilistic Attitude</div>
+    <p>In severe burns, the body assumes a characteristic <span class="highlight">boxer's stance</span> — arms flexed, fists clenched, legs bent — due to coagulation and shortening of muscle proteins. This is a postmortem heat artefact and must NOT be mistaken for a defensive posture or evidence of a struggle.</p>
+  </div>
+
+  <!-- 3.10 CRIMINAL & SPECIAL -->
+  <div class="sec" id="u3-criminal">
+    <div class="sec-num">3.10</div>
+    <h2>Criminal-Induced &amp; Special Artefacts</h2>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Artefact Category</th><th>Details</th><th>Medicolegal Implication</th></tr>
+      <tr>
+        <td><strong>Kennedy Phenomenon</strong></td>
+        <td>Surgical cleaning/debridement of gunshot wounds removes gunpowder, changes overall character of wound (as in JF Kennedy murder case). Surgical suturing or alteration makes medico-legal evaluation of firearm injury difficult.</td>
+        <td>Range of fire, type of weapon may become impossible to determine</td>
+      </tr>
+      <tr>
+        <td><strong>Rayalaseema Phenomenon</strong></td>
+        <td>Deliberate mutilation of a firearm injury by criminals. E.g. cutting or stabbing through a gunshot wound to obscure its nature. Inserting a bullet into a stab wound.</td>
+        <td>Causes confusion about weapon used; conceals evidence of firearm</td>
+      </tr>
+      <tr>
+        <td><strong>Criminal artefacts (general)</strong></td>
+        <td>Dismemberment and mutilation of body parts after death; alteration of antemortem injuries to cause confusion to the autopsy surgeon</td>
+        <td>Obstructs identification and manner-of-death determination</td>
+      </tr>
+      <tr>
+        <td><strong>X-ray related artefacts</strong></td>
+        <td>False missile shadow on X-ray due to: bullet in shirt pocket; bullet introduced between shirt folds after death; external foreign object during imaging</td>
+        <td>False conclusion of gunshot wound; unnecessary dissection</td>
+      </tr>
+      <tr>
+        <td><strong>Toxicological artefacts</strong></td>
+        <td>Erroneous test results from: faulty collection technique/site/sample; faulty preservation/preservative; time delay in sending samples; introduction of contaminants</td>
+        <td>False positive or false negative toxicology; misdiagnosis of poisoning</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 3.11 AUTOPSY ARTEFACTS -->
+  <div class="sec" id="u3-autopsy">
+    <div class="sec-num">3.11</div>
+    <h2>Artefacts Introduced During Postmortem Examination</h2>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>#</th><th>Artefact</th><th>Misinterpretation</th><th>Prevention</th></tr>
+      <tr><td>1</td><td>Injury to visceral organs during dissection</td><td>Antemortem injury</td><td>Careful technique; note as postmortem artefact</td></tr>
+      <tr><td>2</td><td>Fracture of skull bones during opening — may continue and join with antemortem fracture</td><td>Misinterpretation of entire fracture</td><td>Careful skull cap removal; photographing pre-sectioning</td></tr>
+      <tr><td>3</td><td>Hyoid and thyroid fracture during forceful extraction of neck organs</td><td>Manual strangulation</td><td>Extreme care; dissect neck in situ if needed</td></tr>
+      <tr><td>4</td><td>Oozing of blood into neck tissues during dissection</td><td>Antemortem neck haemorrhage</td><td>Drain blood from skull vessels first (open skull first in neck cases)</td></tr>
+      <tr><td>5</td><td>Postmortem fractures: ribs and vertebrae in elderly/osteoporotic individuals during forceful dissection</td><td>Antemortem rib fractures</td><td>Particularly cautious in elderly; note bone quality</td></tr>
+    </table>
+  </div>
+
+  <div class="box box-tip">
+    <div class="box-label">Autopsy Surgeon Tips</div>
+    <ul class="list">
+      <li>When removing neck organs: care not to fracture thyroid cartilage or hyoid bone</li>
+      <li>In elderly/debilitated persons: unusual fragility may cause postmortem fractures, especially ribs</li>
+      <li>Postmortem fractures lack vital reaction (no haemorrhage, no marrow extrusion, no periosteal reaction) — histology distinguishes antemortem from postmortem fracture</li>
+    </ul>
+  </div>
+
+  <!-- 3.12 IMPORTANCE -->
+  <div class="sec" id="u3-importance">
+    <div class="sec-num">3.12</div>
+    <h2>Medico-Legal Importance of Artefacts</h2>
+  </div>
+
+  <div class="box box-warn">
+    <div class="box-label">Consequences of Misidentifying Artefacts</div>
+    <ul class="list">
+      <li>Wrong conclusion as to <strong>cause of death</strong></li>
+      <li>Wrong conclusion as to <strong>mode of death</strong></li>
+      <li>Wrong conclusion as to <strong>nature of death</strong></li>
+      <li>Wrong determination of whether a wound was <strong>antemortem or postmortem</strong></li>
+      <li>Unjustified <strong>suspicion of foul play</strong></li>
+      <li>Misguided direction to the investigating officer</li>
+      <li><strong>Miscarriage of justice</strong> — imprisonment of innocent persons</li>
+    </ul>
+  </div>
+
+  <div class="box box-key">
+    <div class="box-label">Take Home Message</div>
+    <p>Interpretation of findings over a dead body depends entirely upon the <span class="highlight">ability, dedication, knowledge, and wisdom</span> of the autopsy surgeon. Artefacts, if misidentified, may ultimately lead to the <span class="highlight">imprisonment of an innocent person</span>. Recognition of artefacts is not optional — it is the foundation of just forensic practice.</p>
+  </div>
+
+  <!-- QUICK REFERENCE -->
+  <div class="unit-divider"></div>
+  <div class="unit-header">
+    <span class="unit-num">Quick Ref</span>
+    <h2 class="unit-title">Antemortem vs Postmortem Wound Comparison</h2>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Feature</th><th>Antemortem</th><th>Postmortem</th></tr>
+      <tr><td>Abrasion colour</td><td>Dark brown, parchment-like</td><td>Pale yellow, no parchments</td></tr>
+      <tr><td>Scab</td><td>Present if old</td><td>Never noticed</td></tr>
+      <tr><td>Bleeding surface</td><td>Present if fresh</td><td>No bleeding surface</td></tr>
+      <tr><td>Healing</td><td>Evident</td><td>No healing possible</td></tr>
+      <tr><td>Location of abrasion</td><td>Any part of body</td><td>Usually bony prominences</td></tr>
+      <tr><td>Laceration — vital reaction</td><td>Present</td><td>Absent</td></tr>
+      <tr><td>Laceration — blood clots</td><td>Present (firmly adherent)</td><td>Never seen; if present, can be wiped off</td></tr>
+      <tr><td>Bruise histology</td><td>Haemosiderin, inflammatory cells</td><td>No vital reaction</td></tr>
+      <tr><td>Wound margins</td><td>Red, swollen, everted, tender</td><td>Pale, non-reactive</td></tr>
+    </table>
+  </div>
+
+  <div style="height: 4rem;"></div>
+
+</main>
+</div>
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+}
+
+// Progress bar
+window.addEventListener('scroll', () => {
+  const scrollTop = document.documentElement.scrollTop;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = (scrollTop / docHeight) * 100;
+  document.getElementById('progress').style.width = progress + '%';
+});
+
+// Active sidebar link highlight
+const links = document.querySelectorAll('.sidebar-link');
+const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(sec => {
+    if (window.scrollY >= sec.offsetTop - 100) current = '#' + sec.id;
+  });
+  links.forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === current);
+  });
+}, { passive: true });
+</script>
+</body>
+</html>
