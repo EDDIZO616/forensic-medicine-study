@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forensic Medicine — Practice Questions</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0f1117;--bg2:#171b26;--bg3:#1e2334;--card:#1a1f2e;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  --text:#e8eaf0;--muted:#8b93a8;
+  --accent:#c8a96e;--accent2:#7eb8d4;--accent3:#7ecba0;--accent4:#d47e8f;--accent5:#a07ed4;
+  --correct:#7ecba0;--wrong:#e05c5c;--neutral:#c8a96e;
+  --correct-bg:rgba(126,203,160,0.10);--wrong-bg:rgba(224,92,92,0.10);
+  --tag-bg:rgba(200,169,110,0.12);--tag-text:#c8a96e;
+  --shadow:0 2px 16px rgba(0,0,0,0.4);
+}
+[data-theme="light"] {
+  --bg:#f0ede6;--bg2:#e8e4da;--bg3:#ddd9cf;--card:#faf8f4;
+  --border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.15);
+  --text:#1c1e26;--muted:#5a5e6b;
+  --accent:#8b6914;--accent2:#1a6b8a;--accent3:#1a7a4a;--accent4:#8a1a40;--accent5:#5a1a8a;
+  --correct:#1a7a4a;--wrong:#c0392b;--neutral:#8b6914;
+  --correct-bg:rgba(26,122,74,0.09);--wrong-bg:rgba(192,57,43,0.09);
+  --tag-bg:rgba(139,105,20,0.10);--tag-text:#8b6914;
+  --shadow:0 2px 16px rgba(0,0,0,0.10);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;line-height:1.7;}
+
+/* THEME TOGGLE */
+.theme-toggle{position:fixed;top:1.2rem;right:1.5rem;z-index:999;background:var(--card);border:1px solid var(--border2);border-radius:2rem;padding:.3rem .9rem;cursor:pointer;font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:.5rem;transition:all .2s;box-shadow:var(--shadow);letter-spacing:.05em;}
+.theme-toggle:hover{color:var(--accent);border-color:var(--accent);}
+.toggle-dot{width:18px;height:18px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .3s;}
+
+/* SIDEBAR */
+.sidebar{position:fixed;top:0;left:0;width:240px;height:100vh;background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:100;padding:1.5rem 0 2rem;transition:background .3s;}
+.sidebar::-webkit-scrollbar{width:4px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+.sidebar-logo{padding:0 1.5rem 1.5rem;border-bottom:1px solid var(--border);margin-bottom:1rem;}
+.sidebar-logo .logo-tag{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.3rem;}
+.sidebar-logo h1{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--text);line-height:1.3;}
+
+.score-panel{padding:.8rem 1.5rem;margin:.3rem 1rem 1rem;background:var(--bg3);border:1px solid var(--border);border-radius:8px;}
+.score-panel .sp-label{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;}
+.score-row{display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--muted);padding:.15rem 0;}
+.score-row span:last-child{font-weight:600;color:var(--text);font-family:'DM Mono',monospace;font-size:.8rem;}
+
+.nav-section-label{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);padding:.8rem 1.5rem .3rem;}
+.nav-link{display:flex;align-items:center;gap:.6rem;padding:.4rem 1.5rem;color:var(--muted);text-decoration:none;font-size:.81rem;font-weight:400;transition:all .15s;border-left:2px solid transparent;}
+.nav-link:hover{color:var(--text);background:var(--bg3);}
+.nav-link.active{color:var(--accent);border-left-color:var(--accent);background:var(--tag-bg);}
+.nav-num{font-family:'DM Mono',monospace;font-size:.64rem;color:var(--accent);opacity:.7;min-width:1.4rem;}
+.nav-divider{height:1px;background:var(--border);margin:.6rem 1.5rem;}
+
+/* MAIN */
+.main{margin-left:240px;padding:3rem 3.5rem 5rem;max-width:960px;}
+
+/* HERO */
+.hero{padding:3rem 0 2rem;border-bottom:1px solid var(--border);margin-bottom:3rem;}
+.hero-tag{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:.8rem;}
+.hero h2{font-family:'DM Serif Display',serif;font-size:2.6rem;color:var(--text);line-height:1.2;margin-bottom:.7rem;}
+.hero-sub{font-size:.9rem;color:var(--muted);max-width:520px;line-height:1.8;}
+.hero-stats{display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap;}
+.h-stat{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem 1.1rem;text-align:center;}
+.h-stat .hs-n{font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--accent);line-height:1;}
+.h-stat .hs-l{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:.2rem;}
+
+/* SECTION HEADER */
+.section-header{margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
+.section-tag{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem;}
+.section-header h3{font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--text);}
+.section-header p{font-size:.82rem;color:var(--muted);margin-top:.3rem;}
+
+/* MCQ */
+.mcq-block{margin-bottom:1.4rem;scroll-margin-top:2rem;}
+.mcq-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.3rem 1.4rem;transition:border-color .2s;}
+.mcq-card.answered{border-color:var(--border2);}
+.q-header{display:flex;align-items:flex-start;gap:.9rem;margin-bottom:1rem;}
+.q-num{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--accent);background:var(--tag-bg);padding:.25rem .55rem;border-radius:4px;letter-spacing:.05em;flex-shrink:0;margin-top:.15rem;}
+.q-text{font-size:.9rem;color:var(--text);line-height:1.65;font-weight:500;}
+.choices{display:grid;gap:.5rem;}
+.choice-btn{display:flex;align-items:flex-start;gap:.8rem;width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:.7rem .9rem;cursor:pointer;text-align:left;transition:all .18s;color:var(--text);font-family:'Outfit',sans-serif;font-size:.83rem;line-height:1.5;}
+.choice-btn:hover:not(:disabled){background:var(--bg2);border-color:var(--border2);}
+.choice-btn:disabled{cursor:default;}
+.choice-btn.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);}
+.choice-btn.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong);}
+.choice-btn.reveal{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);}
+.choice-lbl{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--accent);min-width:1.2rem;padding-top:.1rem;flex-shrink:0;}
+.choice-btn.correct .choice-lbl,.choice-btn.reveal .choice-lbl{color:var(--correct);}
+.choice-btn.wrong .choice-lbl{color:var(--wrong);}
+.feedback{display:flex;align-items:center;gap:.5rem;margin-top:.7rem;font-size:.78rem;font-weight:500;padding:.5rem .7rem;border-radius:6px;}
+.feedback.correct-fb{background:var(--correct-bg);color:var(--correct);}
+.feedback.wrong-fb{background:var(--wrong-bg);color:var(--wrong);}
+.feedback .fb-icon{font-size:.9rem;flex-shrink:0;}
+
+/* SHORT ANSWER */
+.sa-block{margin-bottom:1.4rem;scroll-margin-top:2rem;}
+.sa-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.sa-top{padding:1.2rem 1.4rem;}
+.sa-header{display:flex;align-items:flex-start;gap:.9rem;margin-bottom:.7rem;}
+.sa-marks{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--accent5);background:rgba(160,126,212,0.12);padding:.2rem .5rem;border-radius:4px;letter-spacing:.05em;flex-shrink:0;margin-top:.1rem;}
+.sa-q{font-size:.9rem;color:var(--text);line-height:1.65;font-weight:500;}
+.sa-answer-area{background:var(--bg3);border-top:1px solid var(--border);padding:1rem 1.4rem;}
+.sa-answer-label{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem;}
+.toggle-ans-btn{background:var(--tag-bg);border:1px solid rgba(200,169,110,0.2);border-radius:4px;padding:.15rem .5rem;font-family:'DM Mono',monospace;font-size:.6rem;color:var(--accent);cursor:pointer;transition:all .15s;letter-spacing:.05em;}
+.toggle-ans-btn:hover{background:rgba(200,169,110,0.2);}
+.sa-model-answer{font-size:.83rem;color:var(--muted);line-height:1.7;display:none;}
+.sa-model-answer.visible{display:block;}
+.sa-model-answer ul{list-style:none;padding:0;}
+.sa-model-answer ul li{padding:.2rem 0 .2rem .9rem;position:relative;border-bottom:1px solid var(--border);}
+.sa-model-answer ul li:last-child{border-bottom:none;}
+.sa-model-answer ul li::before{content:'·';position:absolute;left:0;color:var(--accent);}
+.sa-model-answer p{margin-bottom:.4rem;}
+
+/* CASE STUDY */
+.case-block{margin-bottom:2rem;scroll-margin-top:2rem;}
+.case-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.case-scenario{padding:1.3rem 1.5rem;border-bottom:1px solid var(--border2);background:var(--bg2);}
+.case-scenario-tag{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--accent4);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;}
+.case-scenario p{font-size:.85rem;color:var(--text);line-height:1.75;}
+.case-questions{padding:1.2rem 1.5rem;}
+.case-q-item{margin-bottom:1.1rem;padding-bottom:1.1rem;border-bottom:1px solid var(--border);}
+.case-q-item:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+.case-q-header{display:flex;gap:.8rem;align-items:flex-start;margin-bottom:.5rem;}
+.case-q-num{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--accent);background:var(--tag-bg);padding:.2rem .5rem;border-radius:4px;flex-shrink:0;margin-top:.1rem;}
+.case-q-marks{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--accent4);background:rgba(212,126,143,0.12);padding:.2rem .5rem;border-radius:4px;flex-shrink:0;margin-top:.1rem;}
+.case-q-text{font-size:.88rem;color:var(--text);line-height:1.6;font-weight:500;}
+.case-ans-area{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:.9rem 1rem;margin-top:.5rem;display:none;}
+.case-ans-area.visible{display:block;}
+.case-ans-area p,.case-ans-area ul{font-size:.82rem;color:var(--muted);line-height:1.7;}
+.case-ans-area ul{list-style:none;padding:0;}
+.case-ans-area ul li{padding:.2rem 0 .2rem .9rem;position:relative;border-bottom:1px solid var(--border);}
+.case-ans-area ul li:last-child{border-bottom:none;}
+.case-ans-area ul li::before{content:'·';position:absolute;left:0;color:var(--accent);}
+.reveal-case-btn{background:var(--tag-bg);border:1px solid rgba(200,169,110,0.2);border-radius:5px;padding:.3rem .7rem;font-family:'DM Mono',monospace;font-size:.62rem;color:var(--accent);cursor:pointer;transition:all .15s;letter-spacing:.04em;margin-top:.5rem;}
+.reveal-case-btn:hover{background:rgba(200,169,110,0.2);}
+
+/* SEPARATOR */
+.section-sep{height:1px;background:var(--border);margin:3rem 0;}
+
+/* PROGRESS BAR */
+.progress-wrap{margin-bottom:.5rem;}
+.progress-label{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.3rem;display:flex;justify-content:space-between;}
+.progress-bar{height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .4s;}
+
+/* RESET BTN */
+.reset-btn{background:transparent;border:1px solid var(--border2);border-radius:6px;padding:.4rem 1rem;font-family:'DM Mono',monospace;font-size:.65rem;color:var(--muted);cursor:pointer;transition:all .2s;letter-spacing:.06em;text-transform:uppercase;display:block;width:100%;margin-top:.8rem;}
+.reset-btn:hover{color:var(--wrong);border-color:var(--wrong);}
+
+@media(max-width:860px){.sidebar{width:200px;}.main{margin-left:200px;padding:2rem 1.5rem 4rem;}}
+@media(max-width:640px){.sidebar{display:none;}.main{margin-left:0;padding:1.5rem 1rem 4rem;}.hero-stats{gap:.6rem;}}
+</style>
+</head>
+<body data-theme="dark">
+
+<button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+  <span class="toggle-dot" id="toggle-icon">☀</span>
+  <span id="toggle-label">LIGHT</span>
+</button>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-tag">Practice Questions</div>
+    <h1>Forensic Medicine</h1>
+  </div>
+
+  <div class="score-panel">
+    <div class="sp-label">MCQ Score</div>
+    <div class="score-row"><span>Answered</span><span id="sc-answered">0 / 50</span></div>
+    <div class="score-row"><span>Correct</span><span id="sc-correct">0</span></div>
+    <div class="score-row"><span>Wrong</span><span id="sc-wrong">0</span></div>
+    <div class="progress-wrap" style="margin-top:.6rem">
+      <div class="progress-label"><span>Progress</span><span id="sc-pct">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="sc-bar" style="width:0%"></div></div>
+    </div>
+    <button class="reset-btn" onclick="resetAll()">↺ Reset All MCQs</button>
+  </div>
+
+  <div class="nav-section-label">Sections</div>
+  <a class="nav-link" href="#sec-mcq"><span class="nav-num">01</span> 50 MCQs</a>
+  <a class="nav-link" href="#sec-sa"><span class="nav-num">02</span> Short Answer (×30)</a>
+  <a class="nav-link" href="#sec-case"><span class="nav-num">03</span> Case Studies (×5)</a>
+
+  <div class="nav-divider"></div>
+  <div class="nav-section-label">MCQ Groups</div>
+  <a class="nav-link" href="#mcq-1"><span class="nav-num">Q1</span> Definitions</a>
+  <a class="nav-link" href="#mcq-11"><span class="nav-num">Q11</span> History</a>
+  <a class="nav-link" href="#mcq-21"><span class="nav-num">Q21</span> Disciplines</a>
+  <a class="nav-link" href="#mcq-31"><span class="nav-num">Q31</span> Trace Evidence</a>
+  <a class="nav-link" href="#mcq-41"><span class="nav-num">Q41</span> Collection & Custody</a>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Maseno University · Medical Laboratory Science</div>
+  <h2>Forensic Medicine<br>Practice Questions</h2>
+  <p class="hero-sub">Three question sets covering all notes. MCQs show instant feedback. Short answers and case studies reveal model answers on demand.</p>
+  <div class="hero-stats">
+    <div class="h-stat"><div class="hs-n">50</div><div class="hs-l">MCQs · 1 mark</div></div>
+    <div class="h-stat"><div class="hs-n">30</div><div class="hs-l">Short · 5 marks</div></div>
+    <div class="h-stat"><div class="hs-n">5</div><div class="hs-l">Case Studies · 20 marks</div></div>
+    <div class="h-stat"><div class="hs-n">250</div><div class="hs-l">Total marks</div></div>
+  </div>
+</div>
+
+<!-- ====== SECTION 1: MCQs ====== -->
+<div id="sec-mcq">
+  <div class="section-header">
+    <div class="section-tag">Section 01 · 50 Questions · 1 Mark Each</div>
+    <h3>Multiple Choice Questions</h3>
+    <p>Select an answer to receive instant feedback. One correct answer per question.</p>
+  </div>
+
+  <div id="mcq-container"></div>
+</div>
+
+<div class="section-sep"></div>
+
+<!-- ====== SECTION 2: SHORT ANSWER ====== -->
+<div id="sec-sa">
+  <div class="section-header">
+    <div class="section-tag">Section 02 · 30 Questions · 5 Marks Each</div>
+    <h3>Short Answer Questions</h3>
+    <p>Attempt each question. Reveal the model answer when ready to compare.</p>
+  </div>
+  <div id="sa-container"></div>
+</div>
+
+<div class="section-sep"></div>
+
+<!-- ====== SECTION 3: CASE STUDIES ====== -->
+<div id="sec-case">
+  <div class="section-header">
+    <div class="section-tag">Section 03 · 5 Questions · 20 Marks Each</div>
+    <h3>Long Answer — Case Study Questions</h3>
+    <p>Each case presents a clinical or forensic scenario followed by structured sub-questions. Reveal model answers after attempting.</p>
+  </div>
+  <div id="case-container"></div>
+</div>
+
+<!-- FOOTER -->
+<div style="padding-top:2rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-top:1rem;">
+  <div>
+    <div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--accent);letter-spacing:.1em;margin-bottom:.2rem;">FORENSIC MEDICINE · PRACTICE QUESTIONS</div>
+    <div style="font-size:.78rem;color:var(--muted);">Medical Laboratory Science · Maseno University</div>
+  </div>
+  <div style="font-family:'DM Mono',monospace;font-size:.65rem;color:var(--muted);">50 MCQ + 30 SAQ + 5 CSQ · 250 marks total</div>
+</div>
+
+</main>
+
+<script>
+/* ===================== DATA ===================== */
+
+const MCQ_DATA = [
+  /* 1-10: Definitions & Intro */
+  {id:1, group:"mcq-1", text:"The Latin word 'forensis' from which 'forensic' is derived means:", choices:["A. Science of death","B. Forum or court of law","C. Medical testimony","D. Criminal investigation"], answer:1, explanation:"'Forensic' comes from the Latin forensis meaning 'forum' or 'of the court of law' — the meeting place where legal matters were discussed."},
+  {id:2, group:"mcq-1", text:"Forensic medicine is best defined as:", choices:["A. The science of criminal investigation","B. Application of medical knowledge for purposes of law and administration of justice","C. The study of poisons in the body","D. Identification of criminals using physical measurements"], answer:1, explanation:"Forensic medicine — also called Legal Medicine or State Medicine — is defined as the application of medical knowledge for the purposes of law and administration of justice."},
+  {id:3, group:"mcq-1", text:"Which term refers to the legal aspects of medical practice that brings doctors into contact with laws?", choices:["A. Forensic Science","B. State Medicine","C. Medical Jurisprudence","D. Forensic Pathology"], answer:2, explanation:"Medical Jurisprudence deals with the legal aspects of medical practice and knowledge, bringing doctors into contact with laws."},
+  {id:4, group:"mcq-1", text:"State Medicine is concerned primarily with:", choices:["A. Criminal investigations","B. Prevention of disease and legal duties of medical practitioners","C. Identification of bite marks","D. Analysis of trace evidence"], answer:1, explanation:"State Medicine applies medical knowledge in disease prevention and defines the duty of a doctor regarding births, deaths, notifiable diseases, and food poisoning."},
+  {id:5, group:"mcq-1", text:"The first known forensic case (3rd century China) involved which method of confirmation?", choices:["A. Fingerprint analysis","B. Toxicological testing","C. Simulation of the crime using live and dead pigs","D. Handwriting comparison"], answer:2, explanation:"The coroner confirmed the wife poisoned her husband by simulating the crime with live and dead pigs — the dead pig had no ash in its mouth while the live pig did."},
+  {id:6, group:"mcq-1", text:"In the Scientific Method applied to forensics, who constructs the hypothesis?", choices:["A. The forensic scientist in the lab","B. The forensic pathologist","C. Police and investigators at the scene","D. The medical examiner"], answer:2, explanation:"The hypothesis is constructed by police — answering what happened, how, and when. The crime-scene investigator does not form a hypothesis but sends evidence to the lab."},
+  {id:7, group:"mcq-1", text:"Trace evidence is defined as material that:", choices:["A. Is only biological in nature","B. Can only be seen under a microscope","C. Is easily transferred from one location to another due to size and texture","D. Must weigh less than one gram"], answer:2, explanation:"Trace evidence is characterized by materials that, because of their small size and texture, are easily transferred from one location to another (Houck, 2009)."},
+  {id:8, group:"mcq-1", text:"Locard's Exchange Principle states that:", choices:["A. Fingerprints are unique to each individual","B. Every contact leaves a trace and transfer is usually two-way","C. DNA cannot be destroyed","D. Blood type determines guilt"], answer:1, explanation:"Locard's Principle: every contact leaves a trace, and the exchange of traces is usually a two-way process. The more violent the contact, the more likely transfer occurs."},
+  {id:9, group:"mcq-1", text:"Locard's Exchange Principle was developed by:", choices:["A. Francis Galton","B. Mathieu Orfila","C. Sir Edmond Locard","D. Karl Landsteiner"], answer:2, explanation:"Sir Edmond Locard (1877–1966) developed the exchange principle that forms the basis of trace evidence analysis."},
+  {id:10, group:"mcq-1", text:"Which of the following is NOT part of the Scientific Method in forensics?", choices:["A. Identify the problem","B. Construct a hypothesis at the crime scene","C. Analyze results in the laboratory","D. Draw a conclusion after all evidence is processed"], answer:1, explanation:"The crime-scene investigator does NOT form a hypothesis — that role belongs to police. The investigator's role is to collect and send evidence to the lab."},
+
+  /* 11-20: History */
+  {id:11, group:"mcq-11", text:"Who performed the first known autopsy (44 BC) and on whom?", choices:["A. Ambroise Paré on a soldier","B. Antistius on Julius Caesar","C. Sung Tzu on a murder victim","D. Mathieu Orfila on a poison victim"], answer:1, explanation:"Antistius, a Roman physician, performed the first autopsy on Julius Caesar in 44 BC, identifying 23 stab wounds and the fatal stroke between the 1st and 2nd ribs."},
+  {id:12, group:"mcq-11", text:"How many stab wounds were reported in the first known autopsy?", choices:["A. 15","B. 19","C. 23","D. 27"], answer:2, explanation:"Antistius reported 23 knife wounds on Julius Caesar, identifying the stroke between the first and second ribs as the actual fatal wound."},
+  {id:13, group:"mcq-11", text:"Sung Tzu (AD 1247) is credited with developing which forensic discipline indirectly?", choices:["A. Forensic toxicology","B. Forensic entomology","C. Forensic psychiatry","D. Forensic odontology"], answer:1, explanation:"Sung Tzu had farmers stand their sickles in the sun; flies were drawn to blood on the murder weapon — indirectly giving rise to forensic entomology."},
+  {id:14, group:"mcq-11", text:"Ambroise Paré (1547) is considered the first:", choices:["A. Forensic toxicologist","B. Forensic entomologist","C. Forensic pathologist","D. Forensic psychologist"], answer:2, explanation:"Ambroise Paré, a French military surgeon, is considered the first forensic pathologist. He wrote Reports in Court — a manual for writing legal medical reports."},
+  {id:15, group:"mcq-11", text:"The first individual convicted of murder from ballistic evidence was:", choices:["A. Calvin Goddard","B. John Toms","C. Alphonse Bertillon","D. James Marsh"], answer:1, explanation:"John Toms (1784) was the first person convicted of murder using ballistic evidence — pistol wad paper recovered from the victim was matched to a newspaper in Toms' pocket."},
+  {id:16, group:"mcq-11", text:"Mathieu Orfila (1814) is known as the father of modern toxicology primarily because he:", choices:["A. Identified ABO blood groups","B. Identified arsenic as a poison and developed detection techniques","C. Developed fingerprinting","D. Introduced the concept of modus operandi"], answer:1, explanation:"Orfila identified arsenic as a poison, developed techniques to detect its use, and developed tests for blood presence in forensic contexts — making him the first forensic toxicologist."},
+  {id:17, group:"mcq-11", text:"Who coined the term 'Modus Operandi' in forensics?", choices:["A. Francis Galton","B. Albert Osborn","C. L. Atcherley","D. Edward Henry"], answer:2, explanation:"L. Atcherley, the first forensic psychologist in the 1880s, coined the term 'Modus Operandi' (mode of operation) to identify distinctive criminal signatures."},
+  {id:18, group:"mcq-11", text:"The Father of Anthropometry — who measured criminals for identification — was:", choices:["A. Karl Landsteiner","B. Alphonse Bertillon","C. Francis Galton","D. Edward Henry"], answer:1, explanation:"Alphonse Bertillon (1882) was the 'Father of Anthropometry,' developing an identification system based on metric measurements of criminals. It is no longer in use today."},
+  {id:19, group:"mcq-11", text:"Who first developed a procedure for determining ABO blood type from dried bloodstains?", choices:["A. Karl Landsteiner","B. James Marsh","C. Leone Lattes","D. Calvin Goddard"], answer:2, explanation:"Leone Lattes (1887–1954), the 'Father of Bloodstain Identification,' developed a procedure to determine blood type (A, B, AB, or O) from dried blood stains."},
+  {id:20, group:"mcq-11", text:"The 1929 St. Valentine's Day Massacre forensic work was done by:", choices:["A. Francis Galton","B. Calvin Goddard","C. J. Edgar Hoover","D. Edward Henry"], answer:1, explanation:"Calvin Goddard (1929) showed that bullets from the Chicago massacre did not come from police-issued firearms through ballistic analysis, leading to arrest of the true perpetrators."},
+
+  /* 21-30: Disciplines */
+  {id:21, group:"mcq-21", text:"Forensic pathology is centered on:", choices:["A. DNA analysis of hair samples","B. The autopsy — investigation of sudden, unexpected, or violent deaths","C. Analysis of insect activity on decomposing bodies","D. Mental state evaluation of criminals"], answer:1, explanation:"The autopsy is central to forensic pathology, which is a subspecialty focused on investigation of sudden, unexpected, and/or violent deaths."},
+  {id:22, group:"mcq-21", text:"A forensic anthropologist is primarily concerned with:", choices:["A. Dental identification","B. Insect succession patterns","C. Skeletal remains — questions of species, gender, age, race, and trauma","D. Document authentication"], answer:2, explanation:"Forensic anthropology examines skeletal remains to answer questions about species of origin, gender, age, race, stature, nutritional status, disease, and skeletal trauma."},
+  {id:23, group:"mcq-21", text:"Which discipline is most useful for estimating time of death in decomposed bodies?", choices:["A. Forensic odontology","B. Forensic entomology","C. Forensic psychiatry","D. Computer forensics"], answer:1, explanation:"Forensic entomology studies insect succession patterns in decomposing bodies; evaluation of larvae permits scientific estimation of time of death."},
+  {id:24, group:"mcq-21", text:"For forensic toxicology results to have forensic significance, they must include:", choices:["A. Only a qualitative screening test","B. Both a qualitative screening test and a confirmatory quantitative test","C. A DNA analysis alongside toxicology","D. Witness testimony corroborating the findings"], answer:1, explanation:"A forensic toxicology result requires two separate methodologies: an initial (screening/qualitative) test AND a confirmatory (quantitative) test."},
+  {id:25, group:"mcq-21", text:"A 'psychological autopsy' is used by:", choices:["A. Forensic engineers","B. Forensic pathologists working with forensic psychiatrists","C. Computer forensic specialists","D. Forensic anthropologists"], answer:1, explanation:"A psychological autopsy is used in forensic psychiatry to determine the state of mind of a suicide victim, often involving forensic pathologists and psychiatrists."},
+  {id:26, group:"mcq-21", text:"Forensic odontology is most commonly used in cases of:", choices:["A. Poisoning deaths","B. Identification of badly burned or decomposed bodies, and bite-mark analysis","C. Ballistic evidence analysis","D. Insect succession study"], answer:1, explanation:"Forensic odontology assists in identification of remains where the body is not visually identifiable. Most cases involve badly burned or badly decomposed individuals."},
+  {id:27, group:"mcq-21", text:"Which forensic discipline would investigate a collapsed building causing death?", choices:["A. Forensic pathology","B. Forensic artistry","C. Forensic engineering","D. Computer forensics"], answer:2, explanation:"Forensic engineering covers structural failures, collapsed buildings, vehicular collisions, engine defects, and electrocutions related to death."},
+  {id:28, group:"mcq-21", text:"Forensic artistry's most common application in forensic pathology is:", choices:["A. Aging photographs of missing persons","B. Facial reconstruction over an unidentified skull","C. Drawing crime scene layouts","D. Creating suspect composites from DNA"], answer:1, explanation:"The most common situation for forensic pathologist interaction with forensic artists is when the pathologist has an unidentified skeleton — a forensic artist sculpts a face over the skull."},
+  {id:29, group:"mcq-21", text:"Computer forensics might be consulted in a death case when:", choices:["A. The victim's identity is unknown","B. A suicide involved an unusual method the individual may have researched online","C. Insect activity suggests an early time of death","D. The victim was poisoned"], answer:1, explanation:"If a death is determined to be a suicide using an unusual method, analysis of the person's computer may disclose how the individual learned of that method."},
+  {id:30, group:"mcq-21", text:"In the Menendez Brothers case, which type of forensic evidence was NOT mentioned as used?", choices:["A. Handwriting analysis","B. Firearms/ballistics records","C. Financial records","D. DNA blood typing"], answer:3, explanation:"The Menendez case used handwriting analysis, firearms registration records, and financial behavior patterns as evidence. DNA blood typing was not mentioned in the case details."},
+
+  /* 31-40: Trace Evidence */
+  {id:31, group:"mcq-31", text:"Adipocere — identified by Thomas Browne in 1658 — refers to:", choices:["A. A waxy result of decay of fatty tissue","B. Carbon monoxide in blood","C. Dried seminal fluid","D. Crystallized arsenic in tissue"], answer:0, explanation:"Thomas Browne identified adipocere — the waxy result of the decay of fatty tissue — one of the first steps toward recognizing processes of decomposition."},
+  {id:32, group:"mcq-31", text:"The classical identification marker for saliva in dried stains is:", choices:["A. Prostate-specific antigen","B. Amylase enzyme","C. Hemoglobin","D. Spermine"], answer:1, explanation:"The classical identification marker for saliva is the enzyme amylase, which is usually present in large quantities. However, amylase is also found in pancreatic juice."},
+  {id:33, group:"mcq-31", text:"What percentage of the population are 'secretors' who secrete blood group substances in body fluids?", choices:["A. 50%","B. 65%","C. 80%","D. 95%"], answer:2, explanation:"About 80% of people are secretors — they secrete their blood group substances in saliva, semen, vaginal secretions, and tears. Those who do not are non-secretors."},
+  {id:34, group:"mcq-31", text:"In sexual assault trace evidence, how many pre-hymenal swabs are taken?", choices:["A. 1","B. 2","C. 3","D. 4"], answer:2, explanation:"3 pre-hymenal swabs are taken: one from medial sides of thighs, one from the area around the vulva, and one from the pre-hymenal area in the introitus."},
+  {id:35, group:"mcq-31", text:"The average volume of a male ejaculate is approximately:", choices:["A. 1.0 ml","B. 2.0 ml","C. 3.5 ml","D. 5.0 ml"], answer:2, explanation:"An average male ejaculate measures around 3.5 milliliters, containing between 10 and 50 million sperm cells per milliliter."},
+  {id:36, group:"mcq-31", text:"Semen coagulates immediately after ejaculation and then liquefies after approximately:", choices:["A. 5 minutes","B. 10 minutes","C. 15 minutes","D. 30 minutes"], answer:2, explanation:"Semen coagulates immediately after ejaculation and then liquefies after 15 minutes. Both processes depend on different enzymes in semen."},
+  {id:37, group:"mcq-31", text:"The double swab technique for saliva recovery from skin is preferred over the single swab technique because:", choices:["A. It uses less distilled water","B. The first wet swab rehydrates cells, and the dry second swab collects more DNA","C. It avoids any skin contamination","D. It is faster to perform"], answer:1, explanation:"The wet first swab rehydrates and loosens dried epithelial cells. The dry second swab then absorbs the wetness, collecting more DNA than the single swab classical method."},
+  {id:38, group:"mcq-31", text:"Which preservative is used for chemical analysis of trace specimens?", choices:["A. Heparin","B. 10% formal saline","C. Saturated saline","D. 95% alcohol"], answer:2, explanation:"For chemical analysis, saturated saline is used as a preservative — it acts by dehydration, extracting water from the tissues."},
+  {id:39, group:"mcq-31", text:"What should be placed over blood collected in a CO poisoning case?", choices:["A. Saturated saline","B. A layer of liquid paraffin","C. Heparin","D. Distilled water"], answer:1, explanation:"In CO poisoning cases, a layer of liquid paraffin is placed over the collected blood to prevent evaporation of carbon monoxide from the sample."},
+  {id:40, group:"mcq-31", text:"In a disputed paternity case, the sample of the father must be signed by:", choices:["A. The father himself","B. The attending doctor","C. The mother","D. Both parents together"], answer:2, explanation:"In disputed paternity: the father's sample is signed by the mother, the mother's sample is signed by the father, and the child's sample is signed by both parents."},
+
+  /* 41-50: Collection & Custody */
+  {id:41, group:"mcq-41", text:"In the vacuum sweeping trace evidence collection method, what must be done between uses?", choices:["A. The vacuum must be cooled down","B. All parts, filters, and traps must be changed and rigorously cleaned","C. The nozzle must be sterilized with ethanol only","D. A new bag must be inserted and sealed"], answer:1, explanation:"All parts, filters, and traps must be changed and rigorously cleaned between vacuuming to avoid cross-contamination of trace evidence."},
+  {id:42, group:"mcq-41", text:"During the Overview Phase of trace evidence collection, the examiner should:", choices:["A. Immediately collect all visible specimens","B. Walk the area end-to-end twice and move objects","C. Review case history, visit the scene, and observe overall layout","D. Package and label all collected samples"], answer:2, explanation:"The Overview Phase involves going through case history, studying documents, visiting the scene, and having an overall view of the scene, body position, and object locations."},
+  {id:43, group:"mcq-41", text:"The Review Phase of evidence collection is critical because:", choices:["A. Specimens must be photographed a second time","B. Evidence not collected at this stage is lost forever","C. The chain of custody document must be signed","D. All specimens need to be re-labeled"], answer:1, explanation:"The Review Phase ensures nothing is left at the scene — if evidence is not collected, it will be left forever and important clues may be permanently lost."},
+  {id:44, group:"mcq-41", text:"The quantity of blood collected from a living person for forensic analysis is:", choices:["A. 5–8 ml","B. 10–15 ml","C. 20–30 ml","D. 50–100 ml"], answer:1, explanation:"In living persons, 10–15 ml of blood is collected. At autopsy, 50–100 ml is collected."},
+  {id:45, group:"mcq-41", text:"Completely burnt bones are NOT useful for:", choices:["A. Species identification","B. Age estimation","C. DNA analysis","D. Gender estimation"], answer:2, explanation:"Completely burnt bones are not useful for DNA analysis, as the heat destroys the DNA material required for molecular identification."},
+  {id:46, group:"mcq-41", text:"The preferred bone for forensic analysis (highest priority) is:", choices:["A. Tibia","B. Humerus","C. Femur","D. Rib"], answer:2, explanation:"The order of preference for bones is: Femur → Tibia → Humerus → Molar teeth → Ribs. The femur is preferred as it is larger and easier to work with."},
+  {id:47, group:"mcq-41", text:"Nail drug levels are detectable from what point after ingestion?", choices:["A. Immediately after ingestion","B. 2 days post-ingestion","C. 2 weeks post-ingestion","D. 4 weeks post-ingestion"], answer:2, explanation:"Nail samples can be taken two weeks after ingestion of the drug. The drug enters the nail through the nail root and bed."},
+  {id:48, group:"mcq-41", text:"In the Chain of Custody, what makes a chain 'surer'?", choices:["A. More people handling the specimen with documentation","B. Fewer people involved in handling the specimen","C. Using more types of preservatives","D. Longer chain with multiple labs testing the specimen"], answer:1, explanation:"The principle of chain of custody: shorter the chain the better; fewer persons involved, the surer the chain. Every surrender must be on a written receipt."},
+  {id:49, group:"mcq-41", text:"When collecting hair for comparison purposes, how many known exemplar hairs are recommended from the head?", choices:["A. 10 pulled + 10 combed","B. 15 pulled + 15 combed","C. 25 pulled + 25 combed","D. 50 pulled + 50 combed"], answer:2, explanation:"It is recommended to collect 25 pulled hairs and 25 combed/naturally shed hairs from various areas of the head (and beard if present) or pubic region."},
+  {id:50, group:"mcq-41", text:"Why should dried blood samples NOT be stored in plastic containers?", choices:["A. Plastic reacts chemically with blood proteins","B. Residual moisture promotes microorganism growth that can destroy evidence","C. Plastic prevents freezing","D. Plastic is too porous and allows evaporation"], answer:1, explanation:"If the sample is still damp, moisture inside a plastic container causes microorganism growth that can destroy the evidence. Samples should not be in any container for more than two hours."},
+];
+
+const SA_DATA = [
+  {id:1, text:"Define forensic medicine and distinguish it from forensic science. (5 marks)", answer:`<ul>
+    <li>Forensic medicine (Legal Medicine / State Medicine): application of medical knowledge for purposes of law and administration of justice (1 mark)</li>
+    <li>Forensic science: broader term — application of ANY science to criminal and civil laws enforced by police agencies in a criminal justice system (1 mark)</li>
+    <li>Medical Jurisprudence: deals with the legal aspects of medical practice; brings doctors into contact with laws (1 mark)</li>
+    <li>State Medicine specifically covers mandatory duties: notification of births, deaths, notifiable diseases, food poisoning (1 mark)</li>
+    <li>Key difference: forensic medicine is medicine applied to law; forensic science encompasses all scientific disciplines applied to law (1 mark)</li>
+  </ul>`},
+  {id:2, text:"Explain Locard's Exchange Principle and give two examples of its application in sexual assault cases. (5 marks)", answer:`<ul>
+    <li>Locard's Principle: every contact leaves a trace (1 mark)</li>
+    <li>Transfer is a two-way process; more violent contact = more likely transfer (1 mark)</li>
+    <li>Example 1: biological material (semen, blood, saliva, hair) transfers from assailant to victim (1 mark)</li>
+    <li>Example 2: victim's hair or fibres transfer to assailant during struggle (1 mark)</li>
+    <li>Both assailant and victim transfer material to the scene; non-biological material from scene can transfer to both (1 mark)</li>
+  </ul>`},
+  {id:3, text:"Describe the four phases of trace evidence collection in order. (5 marks)", answer:`<ul>
+    <li>Phase 1 — Overview: review case history, study documents, visit scene, observe body position and object locations (1 mark)</li>
+    <li>Phase 2 — Detailed Discovery: walk area end-to-end twice, move objects, check under body, concentrate on areas of interest (1 mark)</li>
+    <li>Phase 3 — Recovery: collect each specimen, identify and note its location, photograph where possible (1 mark)</li>
+    <li>Phase 4 — Review: go through all prior phases, ensure nothing is missed (1 mark)</li>
+    <li>Specimens exist in three forms: dry (scrape/wet swab), wet (dry first then collect), mixed (cut and separate the relevant portion) (1 mark)</li>
+  </ul>`},
+  {id:4, text:"State five key elements that must appear on a label for a forensic specimen container. (5 marks)", answer:`<ul>
+    <li>Jar/container number (1, 2, 3…) (1 mark)</li>
+    <li>Name of specimen and site of collection (1 mark)</li>
+    <li>Preservative used (1 mark)</li>
+    <li>PMR / MLC number; date and time of collection (1 mark)</li>
+    <li>Doctor's name, signature, and official seal; examination required (1 mark)</li>
+  </ul>`},
+  {id:5, text:"Describe the Chain of Custody in forensic evidence handling and state three principles that govern it. (5 marks)", answer:`<ul>
+    <li>Chain of custody: documentation of all persons who handle a specimen at any stage — what was collected, why, to whom handed, when, and for how long (2 marks)</li>
+    <li>Principle 1: Shorter chain is better — fewer people involved (1 mark)</li>
+    <li>Principle 2: Every transfer/surrender must be on a written receipt (1 mark)</li>
+    <li>Principle 3: Chain must be maintained until specimens are presented in court; handling must be certified in writing (1 mark)</li>
+  </ul>`},
+  {id:6, text:"List and briefly describe five collection methods for trace evidence. (5 marks)", answer:`<ul>
+    <li>Lifting: adhesive tape rolled over surface; placed on clear plastic (1 mark)</li>
+    <li>Scraping: spatula dislodges material onto clean paper; done in lab environment (1 mark)</li>
+    <li>Vacuum sweeping: filter-trap vacuum; filters changed between uses to prevent contamination (1 mark)</li>
+    <li>Combing: clean comb through hair; comb and debris packaged together (1 mark)</li>
+    <li>Clipping: nail clipping and scraping; right and left hands packaged separately (1 mark)</li>
+  </ul>`},
+  {id:7, text:"What is forensic entomology? Explain how insect evidence is used to estimate time of death. (5 marks)", answer:`<ul>
+    <li>Forensic entomology: subspecialty of entomology studying insect succession patterns in decomposing human bodies (1 mark)</li>
+    <li>Insects (especially flies) colonize a corpse in predictable, well-documented sequences (1 mark)</li>
+    <li>Evaluation of larval stages present on the body permits scientific estimation of the post-mortem interval (time of death) (1 mark)</li>
+    <li>In certain circumstances, location of death may also be determined (e.g., insects not native to where body was found) (1 mark)</li>
+    <li>First applied historically when Sung Tzu (1247 AD) observed flies attracted to blood residue on a murder weapon (1 mark)</li>
+  </ul>`},
+  {id:8, text:"Describe the collection and preservation of liquid blood evidence at a crime scene. (5 marks)", answer:`<ul>
+    <li>Collected from blood pools or clothing using gauze pad or sterile cotton cloth (1 mark)</li>
+    <li>Sample must be dried at room temperature before packaging; after 48 hours the sample may be useless (1 mark)</li>
+    <li>Must be refrigerated or frozen and delivered to laboratory as quickly as possible (1 mark)</li>
+    <li>If mailed: completely air-dry before packaging in brown paper bag or box; one item per container (1 mark)</li>
+    <li>Never use plastic containers — residual moisture promotes microorganism growth that destroys evidence (1 mark)</li>
+  </ul>`},
+  {id:9, text:"How is dried blood collected from a large non-transportable surface? Describe two methods. (5 marks)", answer:`<ul>
+    <li>Method 1: Cut out the stained area — section is packaged same as other dried blood; a separate control sample must be provided (2 marks)</li>
+    <li>Method 2: Tape-lift using fingerprint tape — do not touch sticky side with bare hands; run blunt object over tape to ensure contact with stain; lay lifted stain on clear plastic, package and label (2 marks)</li>
+    <li>Alternative: scrape flakes of dried stain with a clean sharp object into a paper packet (1 mark)</li>
+  </ul>`},
+  {id:10, text:"What is forensic toxicology? Distinguish between qualitative and quantitative toxicological tests. (5 marks)", answer:`<ul>
+    <li>Forensic toxicology: identification and quantification of drugs and other poisons or toxins in body tissues including blood (1 mark)</li>
+    <li>Qualitative (screening) tests: result is either positive (drug/toxin present) or negative (not present); indicates presence only (2 marks)</li>
+    <li>Quantitative (confirmatory) tests: determines specific levels/concentration of the drug or toxin (2 marks)</li>
+    <li>For forensic significance, BOTH an initial screening test AND a confirmatory test are required (mentioned in each category above)</li>
+  </ul>`},
+  {id:11, text:"Describe the composition of seminal fluid and the forensic implications of vasectomy and aspermia. (5 marks)", answer:`<ul>
+    <li>Composition: 60% seminal vesicle secretions, 30% prostate gland, 10% epididymis and bulbourethral glands (2 marks)</li>
+    <li>Average ejaculate: ~3.5 ml; 10–50 million sperm/ml (1 mark)</li>
+    <li>Vasectomy: sterilization renders male unable to produce sperm (2–4 months post-procedure); seminal fluid still present and forensically detectable (1 mark)</li>
+    <li>Aspermia: male produces no sperm; seminal fluid with prostate and seminal vesicle secretions still detectable by lab tests (1 mark)</li>
+  </ul>`},
+  {id:12, text:"Describe the double swab technique for saliva recovery from skin. Why is it preferred? (5 marks)", answer:`<ul>
+    <li>Step 1: Soak first swab in sterile distilled water; roll over suspected area in circular motion with slight pressure (1 mark)</li>
+    <li>Step 2: Allow first swab to dry in contamination-free environment for minimum 30 minutes (1 mark)</li>
+    <li>Step 3: Within 10 seconds of completing first swab, roll second DRY swab over the now-moist area to absorb wetness (1 mark)</li>
+    <li>Step 4: Allow second swab to dry 30 minutes; pack and seal both swabs together with case/sample numbers (1 mark)</li>
+    <li>Preferred because the wet swab rehydrates and loosens dried epithelial cells; the dry swab then collects more DNA than the single swab technique (1 mark)</li>
+  </ul>`},
+  {id:13, text:"State five important milestones in the history of forensic science with approximate dates. (5 marks)", answer:`<ul>
+    <li>44 BC: Antistius — first autopsy on Julius Caesar; 23 wounds identified (1 mark)</li>
+    <li>1547: Ambroise Paré — first forensic pathologist; wrote Reports in Court (1 mark)</li>
+    <li>1814: Mathieu Orfila — father of modern toxicology; identified arsenic as a poison (1 mark)</li>
+    <li>1882: Alphonse Bertillon — father of anthropometry; developed criminal identification system (1 mark)</li>
+    <li>1887–1954: Leone Lattes — father of bloodstain ID; ABO blood typing of dried stains (1 mark)</li>
+  </ul>`},
+  {id:14, text:"Explain how hair evidence is collected and what it can reveal in a forensic investigation. (5 marks)", answer:`<ul>
+    <li>Collection methods: tweezers for visible hairs; tape-lifting for surface hairs; vacuum with filter unit for large areas (1 mark)</li>
+    <li>Photograph in place before collection; wear new clean gloves; place on Post-it note, fold into labeled envelope (1 mark)</li>
+    <li>Hair can reveal: racial background, drug/toxin use, heavy metals, nutritional deficiencies (1 mark)</li>
+    <li>If follicle present: DNA identification possible (1 mark)</li>
+    <li>Microscopic examination at 40–400×: cuticle pattern, cortex pigmentation, medulla pattern — comparison microscope allows two samples to be viewed simultaneously (1 mark)</li>
+  </ul>`},
+  {id:15, text:"What preservative is used for each of the following specimen types: chemical analysis, histopathology, and serology? (5 marks)", answer:`<ul>
+    <li>Chemical analysis: saturated saline — acts by dehydration, extracting water from tissues (1–2 marks)</li>
+    <li>Histopathology: 10% formal saline (10% formalin in saturated saline) or 95% alcohol — preserves and prevents autolysis, hardens tissue (1–2 marks)</li>
+    <li>Serology: anticoagulants — calcium oxalate or heparin — provides anti-coagulative activity (1 mark)</li>
+  </ul>`},
+  {id:16, text:"Describe the collection procedure for bone specimens in forensic investigations. (5 marks)", answer:`<ul>
+    <li>Wash and air-dry completely; never add formalin (1 mark)</li>
+    <li>Roll/wrap in brown paper, seal in cotton cloth; 30 g minimum in screw-cap plastic container without preservative (1 mark)</li>
+    <li>Submit to laboratory without delay (1 mark)</li>
+    <li>Order of preference: Femur → Tibia → Humerus → Molar teeth → Ribs; send at least two intact bones (1 mark)</li>
+    <li>Completely burnt bones are NOT useful for DNA analysis (1 mark)</li>
+  </ul>`},
+  {id:17, text:"Explain the medicolegal importance of saliva evidence in criminal investigations. (5 marks)", answer:`<ul>
+    <li>Saliva can be identified by amylase enzyme in dried stains/swabs (1 mark)</li>
+    <li>Since ~80% are secretors, saliva stains can reveal blood group of assailant (1 mark)</li>
+    <li>Found in sexual assault cases: bite marks on victim's body contain deposited saliva (1 mark)</li>
+    <li>True bites leave dental impression for suspect identification (1 mark)</li>
+    <li>Love bites (suction hemorrhages on neck, breasts, medial thighs) contain saliva useful for identity testing via DNA (1 mark)</li>
+  </ul>`},
+  {id:18, text:"What is forensic anthropology? List four questions a forensic anthropologist can answer from skeletal remains. (5 marks)", answer:`<ul>
+    <li>Forensic anthropology: subspecialty of physical anthropology examining skeletal remains to assist forensic investigations (1 mark)</li>
+    <li>Question 1: Species of origin — human vs non-human bones (1 mark)</li>
+    <li>Question 2: Gender of the individual (1 mark)</li>
+    <li>Question 3: Age at time of death (1 mark)</li>
+    <li>Question 4: Any of: race, stature, nutritional status, existence of disease processes, presence and character of skeletal trauma (1 mark)</li>
+  </ul>`},
+  {id:19, text:"Describe three special circumstances in blood collection and the specific instruction for each. (5 marks)", answer:`<ul>
+    <li>CO poisoning: layer of liquid paraffin placed over collected blood to prevent evaporation of carbon monoxide (1–2 marks)</li>
+    <li>Alcohol intoxication: do NOT clean collection site with spirit/alcohol — this would contaminate the sample and falsely elevate alcohol levels (1–2 marks)</li>
+    <li>Disputed paternity: collected from peripheral vein, anticoagulant only, in presence of all contesting parties, cross-signed by opposing party (1 mark)</li>
+  </ul>`},
+  {id:20, text:"What is forensic odontology and in what types of cases is it most commonly applied? (5 marks)", answer:`<ul>
+    <li>Forensic odontology: subspecialty of dentistry using dental examination for identification of human remains and evaluation of bite-marks (1 mark)</li>
+    <li>Most common application: assisting forensic pathologists in identification of bodies not visually identifiable (1 mark)</li>
+    <li>Case type 1: badly burned bodies where visual identification and fingerprinting are not possible (1 mark)</li>
+    <li>Case type 2: badly decomposed bodies (1 mark)</li>
+    <li>Bite-mark analysis: bite on victim can be 'matched' to a suspect's dental impression (1 mark)</li>
+  </ul>`},
+  {id:21, text:"Describe the proper procedure for collecting vaginal swabs in a sexual assault case. (5 marks)", answer:`<ul>
+    <li>Swabs must be taken BEFORE digital examination and before urine sample; check for authority and obtain consent (1 mark)</li>
+    <li>Place patient in lithotomy position; first take 3 pre-hymenal swabs (medial thighs, vulvar area, pre-hymenal introitus) (1 mark)</li>
+    <li>If hymen is intact: do not attempt digital examination or speculum (1 mark)</li>
+    <li>Introduce vaginal speculum; pass cotton swabs through opening and collect 2 swabs from high up (vaginal swabs) (1 mark)</li>
+    <li>Prepare slides: rub swab on middle third of slide, two slides air-dried, placed face-to-face with matchstick spacers between them (1 mark)</li>
+  </ul>`},
+  {id:22, text:"Explain what vomitus is and its medicolegal significance in forensic investigations. (5 marks)", answer:`<ul>
+    <li>Vomitus (emesis): involuntary forceful expulsion of stomach contents through the mouth, sometimes nose (1 mark)</li>
+    <li>Triggered by stimulation of the chemoreceptor trigger zone (area postrema) on floor of fourth ventricle (1 mark)</li>
+    <li>Medicolegal significance: found in cases of poisoning or drug abuse, hanging, or sexual abuse (1 mark)</li>
+    <li>Can be tested for presence or absence of drugs or poisons that may have been administered (1 mark)</li>
+    <li>Limitation: rarely found at crime scene; not highly evidentiary on its own (1 mark)</li>
+  </ul>`},
+  {id:23, text:"What is sweat evidence used for in forensic investigations? Describe its limitations. (5 marks)", answer:`<ul>
+    <li>Sweat is primarily used for workplace drug testing (1 mark)</li>
+    <li>Collection must occur over a minimum of one week; non-invasive (1 mark)</li>
+    <li>No preservative is added (1 mark)</li>
+    <li>Limitation 1: collection is not easy and requires time to obtain adequate volume for analysis (1 mark)</li>
+    <li>Limitation 2: useful only for qualitative analysis — cannot determine specific drug concentrations/quantities (1 mark)</li>
+  </ul>`},
+  {id:24, text:"Describe the nail sampling procedure for forensic drug analysis. (5 marks)", answer:`<ul>
+    <li>Nails grow at 1/3 to 1/10 the speed of hair; drug levels similar to those in hair (1 mark)</li>
+    <li>Detectable from 2 weeks post-ingestion; no timeframe determination possible (drug enters via root/bed) (1 mark)</li>
+    <li>Clip the overhang of each nail as in normal grooming; also scrape beneath the nails (1 mark)</li>
+    <li>Package into 4 separate self-sealing plastic bags: left hand, right hand, left foot, right foot (1 mark)</li>
+    <li>Wipe scissors/nail clippers with alcohol wipe between each nail set to avoid cross-contamination (1 mark)</li>
+  </ul>`},
+  {id:25, text:"Explain the roles of Francis Galton and Edward Henry in the development of fingerprinting. (5 marks)", answer:`<ul>
+    <li>Francis Galton (1822–1911): 'Father of Fingerprinting' — developed fingerprinting as a method to uniquely identify individuals (2 marks)</li>
+    <li>Edward Henry (1890): developed the FIRST fingerprint classification system — fingerprints sorted by physiological characteristics (2 marks)</li>
+    <li>Henry's system was used until the 1990s when it was replaced by a ridge flow classification system (1 mark)</li>
+  </ul>`},
+  {id:26, text:"Describe the containers, lids, and preservatives used for histopathological specimen preservation. (5 marks)", answer:`<ul>
+    <li>Container: glass container, sized according to the organ being preserved (1 mark)</li>
+    <li>Lid: glass lid (1 mark)</li>
+    <li>Preservative: 10% formal saline (10% formalin in saturated saline) OR 95% alcohol (1 mark)</li>
+    <li>Purpose: preserves tissues, prevents autolysis (self-digestion), and hardens the tissues for microscopic examination (1 mark)</li>
+    <li>Properties of a good preservative: cheap, easily available, chemically inert, effective, does not react with container or specimen (1 mark)</li>
+  </ul>`},
+  {id:27, text:"Who was Alphonse Bertillon and why is his method of identification no longer in use? (5 marks)", answer:`<ul>
+    <li>Alphonse Bertillon (1882): French police officer known as the 'Father of Anthropometry' (1 mark)</li>
+    <li>Developed anthropometry: identification system based on precise metric measurements of criminals (height, limb lengths, skull dimensions, etc.) (2 marks)</li>
+    <li>Purpose: to ensure accurate identification of repeat criminals before fingerprinting was established (1 mark)</li>
+    <li>No longer in use: replaced by fingerprinting (more reliable, unique, faster) and later by DNA profiling; metric measurements are not unique enough across a population (1 mark)</li>
+  </ul>`},
+  {id:28, text:"Describe the collection of fibres as trace evidence and state which adhesive tapes must NOT be used and why. (5 marks)", answer:`<ul>
+    <li>Remove individual fibres with forceps or gloved fingers (1 mark)</li>
+    <li>Place in paper evidence fold, glassine envelope, or on adhesive edge of a low-tack Post-it note (1 mark)</li>
+    <li>Do NOT crush or bend fibres during collection or packaging (1 mark)</li>
+    <li>High-tack tapes that must NOT be used: duct tape, latent print lift tape, first aid tape, regular adhesive tape, lint rollers, masking tape, strapping tape, packing tape (1 mark)</li>
+    <li>Reason: high-tack adhesive can destroy fine fibres or bind them so strongly that laboratory examination and removal become impossible (1 mark)</li>
+  </ul>`},
+  {id:29, text:"Explain the steps involved in preparing vaginal swab slides for microscopic examination. (5 marks)", answer:`<ul>
+    <li>One vaginal swab (of the two collected) is selected for slide preparation (1 mark)</li>
+    <li>The swab is rubbed on the middle third of a clean glass slide (1 mark)</li>
+    <li>Two slides are prepared from the same swab (1 mark)</li>
+    <li>Slides are air-dried (not heated, not exposed to sunlight) (1 mark)</li>
+    <li>Slides are placed face-to-face with matchsticks between them as spacers so surfaces do not rub against each other; then packaged (1 mark)</li>
+  </ul>`},
+  {id:30, text:"Describe what information must be sent in the forwarding letter that accompanies forensic specimens to the laboratory. (5 marks)", answer:`<ul>
+    <li>Copy of MLR / PMR (medico-legal register / post-mortem register) (1 mark)</li>
+    <li>Copy of FIR (First Information Report) (1 mark)</li>
+    <li>Copy of inquest report (1 mark)</li>
+    <li>Specimen of the seal (to verify integrity) (1 mark)</li>
+    <li>Request letter containing bio-data, name of specimen, examination required (1 mark)</li>
+  </ul>`},
+];
+
+const CASE_DATA = [
+  {
+    id:1,
+    title:"Case Study 1 — Unidentified Remains",
+    scenario:`A skeleton is discovered in a shallow grave in a rural area. Police are called to the scene. The bones are scattered and partially buried. Some bones show signs of trauma. The skull is intact. There is evidence of insect activity and some bones appear partially burned. Investigators collect the remains and call in forensic specialists.`,
+    questions:[
+      {num:"(a)", marks:4, text:"Which forensic disciplines should be consulted and what specific questions can each answer in this case?", answer:`<ul><li>Forensic anthropology: determine species (human/animal), gender, age, race, stature, nutritional status, and nature of skeletal trauma (2 marks)</li><li>Forensic entomology: estimate time of death from insect succession patterns and larval stages (1 mark)</li><li>Forensic pathology: overall investigation, coordination, and determination of cause/manner of death (1 mark)</li></ul>`},
+      {num:"(b)", marks:4, text:"Describe the proper procedure for collecting and packaging bone specimens from this scene.", answer:`<ul><li>Wash and air-dry bones; do NOT add formalin (1 mark)</li><li>Wrap in brown paper, seal in cotton cloth; 30 g minimum in screw-cap plastic container (1 mark)</li><li>Order of preference: Femur → Tibia → Humerus → Molar teeth → Ribs; send at least two intact bones (1 mark)</li><li>Note: completely burnt bones are NOT useful for DNA analysis — document which are burnt (1 mark)</li></ul>`},
+      {num:"(c)", marks:4, text:"What is the forensic significance of insect evidence on the partially decomposed remains? How would you collect it?", answer:`<ul><li>Insect succession patterns allow estimation of the post-mortem interval (time since death) (1 mark)</li><li>Type and developmental stage of insects present correlates with known colonization timelines (1 mark)</li><li>Location of insects may indicate whether the body was moved after death (1 mark)</li><li>Collection: preserve larval stages in 70% ethanol; also collect live specimens in ventilated containers; photograph in situ before collection (1 mark)</li></ul>`},
+      {num:"(d)", marks:4, text:"Explain how chain of custody must be managed at this scene from collection through to court presentation.", answer:`<ul><li>Document everything collected: what, why, from whom, when, how long in custody (1 mark)</li><li>All transfers on written receipts; shorter chain is better — minimize handlers (1 mark)</li><li>All containers sealed with wax; labelled with case number, date, collector's name, seal (1 mark)</li><li>Maintained continuously until specimens are presented in court; seal integrity checked at every transfer (1 mark)</li></ul>`},
+      {num:"(e)", marks:4, text:"The skull appears to have a healed old fracture and a fresh perimortem fracture. How does forensic anthropology differentiate these, and what is the significance of each?", answer:`<ul><li>Healed fracture: bone remodeling evident — smooth edges, new bone formation around defect — indicates the individual survived this injury (2 marks)</li><li>Perimortem fracture: no bone remodeling, fresh edges, may show green-stick pattern consistent with bone fractured while still 'fresh/living' — indicates trauma at or around time of death (2 marks)</li><li>Significance: healed fracture may help identify the individual; perimortem fracture is evidence of cause of death or ante-mortem violence</li></ul>`},
+    ]
+  },
+  {
+    id:2,
+    title:"Case Study 2 — Suspected Sexual Assault",
+    scenario:`A 24-year-old female presents to the emergency department at 2:00 AM reporting a sexual assault that occurred approximately 4 hours earlier. She has visible bruising on her neck and medial thighs. She has not bathed. Police accompany her. The attending physician must collect forensic evidence before any treatment is initiated.`,
+    questions:[
+      {num:"(a)", marks:4, text:"Describe the order and method of swab collection that should be performed on this patient.", answer:`<ul><li>Swabs must be taken BEFORE digital examination and before urine sample (1 mark)</li><li>Pre-hymenal swabs first — 3 swabs: medial thighs, vulvar area, pre-hymenal introitus (1 mark)</li><li>Vaginal swabs: patient in lithotomy position; introduce speculum (unless hymen intact); 2 swabs from high up in vagina (1 mark)</li><li>Pipette method alternative: instil 20 ml normal saline into vagina, aspirate with bulbed pipette, transfer to test tube (1 mark)</li></ul>`},
+      {num:"(b)", marks:4, text:"The neck bruising appears consistent with bite marks. Describe how saliva evidence should be recovered from this site.", answer:`<ul><li>Double swab technique preferred: soak first swab in sterile distilled water, roll over bite mark in circular motion with light pressure (1 mark)</li><li>Allow first swab to dry in contamination-free environment for minimum 30 minutes (1 mark)</li><li>Within 10 seconds, roll second DRY swab over same area to absorb wetness (1 mark)</li><li>Both swabs dried for 30 minutes then packed and sealed together; marked with sample and case numbers (1 mark)</li></ul>`},
+      {num:"(c)", marks:4, text:"What is the medicolegal significance of 'love bites' found on the medial thighs, and what does the presence of saliva at these sites suggest?", answer:`<ul><li>Love bites = suction hemorrhages caused by pressure/suction between tongue and teeth; appear as tiny areas of hemorrhage (1 mark)</li><li>Found on neck, breasts, chest wall, medial thighs — typically in sexual assault (1 mark)</li><li>Saliva deposited at these sites can be used for identity testing via DNA and blood group typing (secretors) (1 mark)</li><li>~80% of population are secretors — blood group substances present in saliva can narrow suspect pool; DNA can confirm identity (1 mark)</li></ul>`},
+      {num:"(d)", marks:4, text:"Explain what happens to semen after ejaculation and why this is important for the timing of evidence collection.", answer:`<ul><li>Semen coagulates immediately after ejaculation; liquefies after ~15 minutes (enzymes: collagenase, fibrinolysin, hyaluronidase, trypsin) (1 mark)</li><li>Sperm cells begin to degrade over time — prompt collection (within hours) improves likelihood of finding intact sperm (1 mark)</li><li>Vasectomized, oligospermic, or aspermiac suspects still produce detectable seminal fluid (no sperm does not rule out assault) (1 mark)</li><li>Dried seminal stains on fabric: cut and shade-dry to prevent putrefaction; stains on smooth surfaces: scrape with blunt scalpel into glass container (1 mark)</li></ul>`},
+      {num:"(e)", marks:4, text:"What is a 'secretor' and how does this concept affect the forensic analysis of biological evidence in this case?", answer:`<ul><li>Secretors: ~80% of people who secrete blood group antigens (A, B, AB, O) into body secretions including saliva, semen, vaginal secretions, and tears (1 mark)</li><li>Non-secretors (~20%): do not secrete these antigens; blood group cannot be determined from secretions (1 mark)</li><li>Forensic value: if assailant is a secretor, blood group can be determined from saliva or semen collected, narrowing suspect pool (1 mark)</li><li>Combined with DNA analysis of recovered biological material, secretor status adds a further layer of identification evidence (1 mark)</li></ul>`},
+    ]
+  },
+  {
+    id:3,
+    title:"Case Study 3 — Suspicious Death with Possible Poisoning",
+    scenario:`A 52-year-old male is found dead at home. His wife reports he had been unwell for two days complaining of abdominal pain and vomiting. The body is found with vomitus nearby. No obvious external injuries. The man has a significant life insurance policy and recent marital problems are known. Police suspect possible poisoning. An autopsy is ordered.`,
+    questions:[
+      {num:"(a)", marks:4, text:"What forensic disciplines would be involved in investigating this death and what would each contribute?", answer:`<ul><li>Forensic pathology: perform autopsy, determine cause and manner of death, collect specimens (1 mark)</li><li>Forensic toxicology: identify and quantify any drugs or poisons in blood, urine, stomach contents, liver (1 mark)</li><li>Computer forensics: if the deceased researched poisons or methods online — computer analysis may reveal intent (1 mark)</li><li>Forensic psychiatry: may provide psychological profiling of motive; psychological autopsy to assess state of mind (1 mark)</li></ul>`},
+      {num:"(b)", marks:4, text:"Describe the proper collection of blood samples at autopsy in this suspected poisoning case.", answer:`<ul><li>Blood collected directly from the heart or large veins bringing blood to the heart (not peripheral vein) at autopsy (1 mark)</li><li>Quantity at autopsy: 50–100 ml collected (1 mark)</li><li>Preserved in sterile glass test tube with glass or rubber stopper; anticoagulant (heparin or Ca. oxalate) added (1 mark)</li><li>Label: specimen name, site of collection, preservative used, PMR number, date/time, doctor's signature and seal (1 mark)</li></ul>`},
+      {num:"(c)", marks:4, text:"Vomitus is found near the body. What is its forensic significance and how should it be collected and processed?", answer:`<ul><li>Vomit stains can assist crime scene reconstruction and may contain residual drug/poison if administered (1 mark)</li><li>The questioned sample should be tested for presence or absence of specific drugs or poisons (1 mark)</li><li>Collection: scrape or swab the vomitus sample onto clean paper/into glass container; photograph in situ first (1 mark)</li><li>Limitation: vomitus is rarely found at crime scenes and has limited evidentiary value alone — most valuable when combined with toxicological confirmation in blood/tissue (1 mark)</li></ul>`},
+      {num:"(d)", marks:4, text:"Explain the two-test requirement in forensic toxicology and why it is necessary for court admissibility.", answer:`<ul><li>Initial screening test (qualitative): determines PRESENCE or ABSENCE of a drug/toxin — result is positive or negative (1 mark)</li><li>Confirmatory test (quantitative): determines the SPECIFIC LEVEL/CONCENTRATION of the drug or toxin (1 mark)</li><li>Necessity: screening tests can produce false positives due to cross-reactivity with other substances; confirmatory test using a different methodology (e.g., GC-MS) provides independent verification (1 mark)</li><li>For forensic significance and court admissibility, BOTH tests are required — one alone is insufficient (1 mark)</li></ul>`},
+      {num:"(e)", marks:4, text:"Describe the historical development of toxicology as a forensic discipline, citing key figures and their contributions.", answer:`<ul><li>James Marsh (1839): first to introduce chemical evidence of arsenic in a body during a court trial (1 mark)</li><li>Mathieu Orfila (1814): identified arsenic as a poison, developed detection techniques, first forensic toxicologist — 'Father of Modern Toxicology' (1 mark)</li><li>Orfila also developed tests for the presence of blood in forensic contexts (1 mark)</li><li>Modern toxicology: now covers screening and confirmatory tests for all drug classes using immunoassay, GC-MS, LC-MS methods; required to be performed in accredited laboratories (1 mark)</li></ul>`},
+    ]
+  },
+  {
+    id:4,
+    title:"Case Study 4 — Crime Scene Trace Evidence",
+    scenario:`A residential burglary results in the murder of the homeowner. The suspect fled through a broken window. At the scene: broken glass, blood smears on the window frame, carpet fibres on the exterior wall, shoe impressions in the garden, and a cigarette butt near the window. A suspect is apprehended two days later with scratches on his arms and a torn jacket.`,
+    questions:[
+      {num:"(a)", marks:4, text:"Classify each item of evidence found at this scene as biological or non-biological trace evidence and justify your classification.", answer:`<ul><li>Blood smears on window frame: BIOLOGICAL — originates from a human source (blood/body fluid) (1 mark)</li><li>Cigarette butt: BIOLOGICAL — contains saliva (DNA source) AND non-biological — the cigarette material itself (1 mark)</li><li>Carpet fibres on wall: NON-BIOLOGICAL — environmental/manufactured material (1 mark)</li><li>Shoe impressions: NON-BIOLOGICAL — environmental impression evidence (soil, surface pattern) (1 mark)</li></ul>`},
+      {num:"(b)", marks:4, text:"Describe how blood evidence on the window frame should be collected, packaged, and sent to the laboratory.", answer:`<ul><li>Dry stain on hard surface: scrape off with scalpel onto glazed paper; OR wet cotton swab in normal saline, rolled over stain, air-dried, placed in clean glass test tube (1 mark)</li><li>If portion can be cut: cut that section, cover with paper and tape to prevent contamination; send with a control sample from unstained surface nearby (1 mark)</li><li>Packaging: brown paper bag or box (NOT plastic); label with case number, site, date/time, collector's name (1 mark)</li><li>Dispatch to lab quickly; if blood is still wet, dry at room temperature first — sample may be useless after 48 hours (1 mark)</li></ul>`},
+      {num:"(c)", marks:4, text:"How would you collect and package the carpet fibres found on the exterior wall? What analysis can be performed on fibres?", answer:`<ul><li>Remove with forceps or gloved fingers; do NOT crush or bend (1 mark)</li><li>Place in paper evidence fold, glassine envelope, or Post-it adhesive edge; do NOT use high-tack tape (duct tape, packing tape, lint roller) (1 mark)</li><li>Label and seal; deliver to lab for comparison with fibres from carpet inside the property (1 mark)</li><li>Laboratory analysis: physical properties (color, texture), optical properties (microscopy — cross-section shape, birefringence), chemical analysis (fiber type — nylon, polyester, cotton, wool) (1 mark)</li></ul>`},
+      {num:"(d)", marks:4, text:"The suspect has scratches on his arms. Explain how nail scrapings from the victim could link the suspect to the crime.", answer:`<ul><li>During an assault, victims may scratch the attacker — depositing the attacker's skin cells, blood, or fibres under their nails (Locard's principle) (1 mark)</li><li>Nail scrapings collected from victim: use fingernail scraper or cotton swab under each nail; right and left hands packaged separately (1 mark)</li><li>DNA extracted from skin cells under victim's nails can be compared to DNA reference sample from the suspect (1 mark)</li><li>A match places the suspect in physical contact with the victim — powerful corroborating evidence especially combined with scratches observed on suspect's arms (1 mark)</li></ul>`},
+      {num:"(e)", marks:4, text:"The cigarette butt near the window contains saliva. Outline how you would process this for DNA and what the limitations are.", answer:`<ul><li>Collection: swab the mouthpiece end of the butt using double swab technique or place entire butt in paper envelope (not plastic) (1 mark)</li><li>Lab analysis: extract DNA from buccal epithelial cells deposited in saliva during smoking (1 mark)</li><li>Classical ID marker: amylase enzyme confirms presence of saliva; DNA profiling (STR analysis) provides individual identification (1 mark)</li><li>Limitations: if suspect is a non-secretor (~20%), blood group typing is impossible; environmental degradation (rain, UV, time) may reduce DNA quality; result requires a reference sample from the suspect to compare (1 mark)</li></ul>`},
+    ]
+  },
+  {
+    id:5,
+    title:"Case Study 5 — Hit and Run with Unidentified Victim",
+    scenario:`A badly burned body is recovered from a vehicle involved in a hit-and-run incident. The body is charred and unidentified. No documents were found at the scene. The vehicle's VIN has been removed. Police need to identify the victim and determine whether the death was accidental or criminal. Multiple forensic specialists are consulted.`,
+    questions:[
+      {num:"(a)", marks:5, text:"Identify five forensic disciplines that should be consulted and the specific contribution of each to this investigation.", answer:`<ul><li>Forensic pathology: conduct autopsy, determine cause and manner of death, collect specimens and coordinate investigation (1 mark)</li><li>Forensic anthropology: from skeletal remains determine gender, age, race, stature, and any ante-mortem or perimortem trauma (1 mark)</li><li>Forensic odontology: dental records comparison for identification — most applicable when visual ID, fingerprints, and DNA are unavailable due to burning (1 mark)</li><li>Forensic toxicology: determine if victim was alive or dead before fire (CO in blood indicates alive at time of fire); detect alcohol/drugs (1 mark)</li><li>Forensic engineering: examine vehicle for mechanical defects, evidence of tampering, reconstruction of impact dynamics (1 mark)</li></ul>`},
+      {num:"(b)", marks:4, text:"Explain what Carbon Monoxide (CO) levels in blood can tell investigators about this victim, and describe the correct collection procedure.", answer:`<ul><li>Elevated COHb (carboxyhemoglobin) in blood indicates the victim was alive and breathing during the fire — inhaled CO (1 mark)</li><li>Absent or very low COHb suggests the victim was dead before the fire — body was placed in vehicle post-mortem (important for homicide vs. accident) (1 mark)</li><li>Collection: blood drawn directly from heart or large veins at autopsy (not peripheral) (1 mark)</li><li>A layer of liquid paraffin is placed OVER the collected blood to prevent evaporation of CO from the specimen (1 mark)</li></ul>`},
+      {num:"(c)", marks:4, text:"Burnt bones are recovered. Describe the limitations of bone evidence in this case and what identification methods remain available.", answer:`<ul><li>Completely burnt bones are NOT useful for DNA analysis — heat destroys DNA (1 mark)</li><li>However, skeletal morphology may still allow anthropological assessment of gender, age, race if bones are not fully destroyed (1 mark)</li><li>Odontological examination of molar teeth may still be possible even in badly burned remains; dental records comparison can confirm identity (1 mark)</li><li>Alternative methods: ante-mortem radiographs (X-ray comparison of bone structure), medical implants (serial numbers), facial reconstruction if skull is intact (1 mark)</li></ul>`},
+      {num:"(d)", marks:4, text:"Describe the role of forensic engineering in this investigation and what evidence from the vehicle could indicate criminal intent.", answer:`<ul><li>Forensic engineering examines vehicle structures, mechanical systems, and accident dynamics (1 mark)</li><li>Removed VIN: indicates attempt to conceal vehicle identity — criminal intent (1 mark)</li><li>Engine/brake examination: deliberate tampering (e.g., severed brake lines) would indicate premeditated criminal act versus accident (1 mark)</li><li>Impact reconstruction: analysis of deformation patterns, glass distribution, and skid marks can determine speed, direction of impact, and whether victim was inside or placed in vehicle post-collision (1 mark)</li></ul>`},
+      {num:"(e)", marks:3, text:"Explain the significance of Locard's Exchange Principle in this investigation and give two specific examples of trace evidence exchange that may have occurred.", answer:`<ul><li>Locard's Principle: every contact leaves a trace — the perpetrator would have left trace evidence on the vehicle or victim and taken trace evidence away (1 mark)</li><li>Example 1: paint transfer — hit-and-run vehicle paint may be on victim's clothing or another vehicle; or victim's vehicle paint on the suspect's vehicle (1 mark)</li><li>Example 2: hair, fibres, or skin cells from the driver/suspect may be found on the steering wheel, seat, or interior — linking a specific person to the vehicle (1 mark)</li></ul>`},
+    ]
+  }
+];
+
+/* ===================== RENDER FUNCTIONS ===================== */
+
+let answered = 0, correct = 0, wrong = 0;
+
+function renderMCQs() {
+  const container = document.getElementById('mcq-container');
+  MCQ_DATA.forEach(q => {
+    const block = document.createElement('div');
+    block.className = 'mcq-block';
+    block.id = q.id === 1 ? 'mcq-1' : q.id === 11 ? 'mcq-11' : q.id === 21 ? 'mcq-21' : q.id === 31 ? 'mcq-31' : q.id === 41 ? 'mcq-41' : '';
+    block.innerHTML = `
+      <div class="mcq-card" id="mcq-card-${q.id}">
+        <div class="q-header">
+          <span class="q-num">Q${String(q.id).padStart(2,'0')}</span>
+          <span class="q-text">${q.text}</span>
+        </div>
+        <div class="choices" id="choices-${q.id}">
+          ${q.choices.map((c,i) => `
+            <button class="choice-btn" onclick="selectAnswer(${q.id},${i})" id="choice-${q.id}-${i}">
+              <span class="choice-lbl">${['A','B','C','D'][i]}</span>
+              <span>${c.substring(3)}</span>
+            </button>
+          `).join('')}
+        </div>
+        <div id="feedback-${q.id}" style="display:none"></div>
+      </div>
+    `;
+    container.appendChild(block);
+  });
+}
+
+function selectAnswer(qId, choiceIndex) {
+  const q = MCQ_DATA.find(x => x.id === qId);
+  const allBtns = document.querySelectorAll(`#choices-${qId} .choice-btn`);
+  allBtns.forEach(b => { b.disabled = true; });
+
+  const isCorrect = choiceIndex === q.answer;
+  allBtns[choiceIndex].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) allBtns[q.answer].classList.add('reveal');
+
+  const fb = document.getElementById(`feedback-${qId}`);
+  fb.style.display = 'flex';
+  fb.className = `feedback ${isCorrect ? 'correct-fb' : 'wrong-fb'}`;
+  fb.innerHTML = `<span class="fb-icon">${isCorrect ? '✓' : '✗'}</span><span>${isCorrect ? 'Correct. ' : 'Incorrect. '}${q.explanation}</span>`;
+
+  document.getElementById(`mcq-card-${qId}`).classList.add('answered');
+
+  answered++;
+  if (isCorrect) correct++; else wrong++;
+  updateScore();
+}
+
+function updateScore() {
+  document.getElementById('sc-answered').textContent = `${answered} / 50`;
+  document.getElementById('sc-correct').textContent = correct;
+  document.getElementById('sc-wrong').textContent = wrong;
+  const pct = Math.round((answered / 50) * 100);
+  document.getElementById('sc-pct').textContent = pct + '%';
+  document.getElementById('sc-bar').style.width = pct + '%';
+}
+
+function resetAll() {
+  answered = 0; correct = 0; wrong = 0;
+  updateScore();
+  document.getElementById('mcq-container').innerHTML = '';
+  renderMCQs();
+}
+
+function renderSA() {
+  const container = document.getElementById('sa-container');
+  SA_DATA.forEach(q => {
+    const block = document.createElement('div');
+    block.className = 'sa-block';
+    block.innerHTML = `
+      <div class="sa-card">
+        <div class="sa-top">
+          <div class="sa-header">
+            <span class="q-num">Q${String(q.id).padStart(2,'0')}</span>
+            <span class="sa-marks">5 marks</span>
+            <span class="sa-q">${q.text}</span>
+          </div>
+        </div>
+        <div class="sa-answer-area">
+          <div class="sa-answer-label">
+            Model Answer
+            <button class="toggle-ans-btn" onclick="toggleSA(${q.id})">Show answer</button>
+          </div>
+          <div class="sa-model-answer" id="sa-ans-${q.id}">${q.answer}</div>
+        </div>
+      </div>
+    `;
+    container.appendChild(block);
+  });
+}
+
+function toggleSA(id) {
+  const el = document.getElementById(`sa-ans-${id}`);
+  const btn = el.previousElementSibling;
+  const visible = el.classList.contains('visible');
+  el.classList.toggle('visible');
+  btn.textContent = visible ? 'Show answer' : 'Hide answer';
+}
+
+function renderCases() {
+  const container = document.getElementById('case-container');
+  CASE_DATA.forEach(cs => {
+    const block = document.createElement('div');
+    block.className = 'case-block';
+    block.innerHTML = `
+      <div class="case-card">
+        <div class="case-scenario">
+          <div class="case-scenario-tag">Case Study ${cs.id} · 20 Marks</div>
+          <div style="font-family:'DM Mono',monospace;font-size:.8rem;font-weight:500;color:var(--text);margin-bottom:.6rem;">${cs.title}</div>
+          <p>${cs.scenario}</p>
+        </div>
+        <div class="case-questions">
+          ${cs.questions.map((cq, i) => `
+            <div class="case-q-item">
+              <div class="case-q-header">
+                <span class="case-q-num">${cq.num}</span>
+                <span class="case-q-marks">${cq.marks} marks</span>
+                <span class="case-q-text">${cq.text}</span>
+              </div>
+              <button class="reveal-case-btn" onclick="toggleCase('case-${cs.id}-${i}', this)">Show model answer</button>
+              <div class="case-ans-area" id="case-${cs.id}-${i}">${cq.answer}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+    container.appendChild(block);
+  });
+}
+
+function toggleCase(id, btn) {
+  const el = document.getElementById(id);
+  const visible = el.classList.contains('visible');
+  el.classList.toggle('visible');
+  btn.textContent = visible ? 'Show model answer' : 'Hide model answer';
+}
+
+/* ===================== THEME ===================== */
+function toggleTheme() {
+  const body = document.body;
+  const isLight = body.dataset.theme === 'light';
+  body.dataset.theme = isLight ? 'dark' : 'light';
+  document.getElementById('toggle-icon').textContent = isLight ? '☀' : '☾';
+  document.getElementById('toggle-label').textContent = isLight ? 'LIGHT' : 'DARK';
+}
+
+/* ===================== NAV HIGHLIGHT ===================== */
+const navLinks = document.querySelectorAll('.nav-link');
+function updateNav() {
+  const anchors = ['sec-mcq','sec-sa','sec-case'];
+  let cur = '';
+  anchors.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 140) cur = '#' + id;
+  });
+  navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === cur));
+}
+window.addEventListener('scroll', updateNav);
+
+/* ===================== INIT ===================== */
+renderMCQs();
+renderSA();
+renderCases();
+updateNav();
+</script>
+</body>
+</html>
