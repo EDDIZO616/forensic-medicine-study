@@ -1,0 +1,1324 @@
+
+bash
+
+cat > /mnt/user-data/outputs/forensic_medicine_questions.html << 'HTMLEOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forensic Medicine — Question Bank</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0d0d0f;--bg2:#141418;--bg3:#1c1c22;--bg4:#242430;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  --text:#e8e6e0;--text2:#9e9b94;--text3:#6b6865;
+  --accent:#c8a96e;--accent2:#e8c88e;--accent-dim:rgba(200,169,110,0.12);
+  --red:#d96b6b;--green:#6bba8a;--blue:#6b9fd9;--purple:#a87ed9;--teal:#5bbdaa;
+  --red-bg:rgba(217,107,107,0.1);--green-bg:rgba(107,186,138,0.1);
+  --blue-bg:rgba(107,159,217,0.1);--purple-bg:rgba(168,126,217,0.1);
+  --teal-bg:rgba(91,189,170,0.1);
+}
+.light-mode {
+  --bg:#f5f3ee;--bg2:#eeebe4;--bg3:#e6e2d9;--bg4:#ddd9ce;
+  --border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.15);
+  --text:#1a1916;--text2:#5a5752;--text3:#8a8783;
+  --accent:#8a6420;--accent2:#6a4c10;--accent-dim:rgba(138,100,32,0.1);
+  --red:#a83030;--green:#2a7a4a;--blue:#2050a0;--purple:#6030a0;--teal:#1a7060;
+  --red-bg:rgba(168,48,48,0.08);--green-bg:rgba(42,122,74,0.08);
+  --blue-bg:rgba(32,80,160,0.08);--purple-bg:rgba(96,48,160,0.08);
+  --teal-bg:rgba(26,112,96,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;transition:background .3s,color .3s;}
+
+/* TOPNAV */
+.topnav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;}
+.topnav-title{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;}
+.topnav-right{display:flex;gap:8px;align-items:center;}
+.btn-sm{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:5px 14px;border-radius:20px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;letter-spacing:.03em;}
+.btn-sm:hover{border-color:var(--accent);color:var(--accent);}
+
+/* LAYOUT */
+.layout{display:flex;min-height:calc(100vh - 56px);}
+.sidebar{width:250px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;padding:1.5rem 0;}
+.sidebar::-webkit-scrollbar{width:4px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+.sb-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);padding:.3rem 1.5rem .5rem;}
+.sb-link{display:block;padding:.35rem 1.5rem;font-size:13px;color:var(--text2);text-decoration:none;transition:all .15s;border-left:2px solid transparent;line-height:1.4;}
+.sb-link:hover{color:var(--text);background:var(--accent-dim);border-left-color:var(--accent);}
+.sb-link.active{color:var(--accent);border-left-color:var(--accent);background:var(--accent-dim);}
+.sb-div{height:1px;background:var(--border);margin:.5rem 1.5rem;}
+
+.main{flex:1;padding:2.5rem 3rem;max-width:920px;}
+
+/* HERO */
+.hero{margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--border);}
+.hero-tag{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.75rem;}
+.hero h1{font-family:'Libre Baskerville',serif;font-size:2rem;font-weight:700;color:var(--text);line-height:1.25;margin-bottom:.75rem;}
+.hero p{color:var(--text2);font-size:15px;}
+
+/* SCORE CARD */
+.score-card{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:2rem;}
+.score-box{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;text-align:center;}
+.score-box .num{font-family:'IBM Plex Mono',monospace;font-size:1.6rem;font-weight:500;color:var(--accent);}
+.score-box .lbl{font-size:12px;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;margin-top:2px;}
+
+/* SECTION HEADERS */
+.sec-header{margin:2.5rem 0 1.5rem;padding-bottom:.75rem;border-bottom:1px solid var(--border);display:flex;align-items:baseline;gap:1rem;}
+.sec-num{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;flex-shrink:0;}
+.sec-title{font-family:'Libre Baskerville',serif;font-size:1.4rem;font-weight:700;color:var(--text);}
+
+/* QUESTION CARDS */
+.q-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.5rem 1.75rem;margin-bottom:1.25rem;transition:border-color .2s;}
+.q-card.answered-correct{border-color:var(--green);}
+.q-card.answered-wrong{border-color:var(--red);}
+.q-meta{display:flex;align-items:center;gap:10px;margin-bottom:.75rem;}
+.q-num{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);background:var(--accent-dim);padding:2px 10px;border-radius:3px;letter-spacing:.08em;}
+.q-tag{font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.q-text{font-size:15px;color:var(--text);line-height:1.65;margin-bottom:1rem;}
+
+/* MCQ OPTIONS */
+.options{display:flex;flex-direction:column;gap:8px;}
+.option{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:all .2s;background:var(--bg3);}
+.option:hover:not(.locked){border-color:var(--accent);background:var(--accent-dim);}
+.option.selected-correct{border-color:var(--green);background:var(--green-bg);}
+.option.selected-wrong{border-color:var(--red);background:var(--red-bg);}
+.option.reveal-correct{border-color:var(--green);background:var(--green-bg);}
+.option.locked{cursor:default;}
+.opt-letter{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--accent);font-weight:500;flex-shrink:0;margin-top:2px;width:18px;}
+.opt-text{font-size:14px;color:var(--text);line-height:1.55;}
+.option.selected-correct .opt-letter,.option.selected-correct .opt-text{color:var(--green);}
+.option.selected-wrong .opt-letter,.option.selected-wrong .opt-text{color:var(--red);}
+.option.reveal-correct .opt-letter,.option.reveal-correct .opt-text{color:var(--green);}
+
+/* FEEDBACK */
+.feedback{margin-top:.75rem;padding:.75rem 1rem;border-radius:6px;font-size:13.5px;line-height:1.55;display:none;}
+.feedback.show{display:block;}
+.feedback.correct{background:var(--green-bg);border:1px solid var(--green);color:var(--green);}
+.feedback.wrong{background:var(--red-bg);border:1px solid var(--red);color:var(--red);}
+.feedback-icon{font-weight:700;margin-right:6px;}
+
+/* SHORT ANSWER CARDS */
+.sa-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.5rem 1.75rem;margin-bottom:1.25rem;}
+.sa-points{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--teal);background:var(--teal-bg);padding:2px 10px;border-radius:3px;letter-spacing:.06em;}
+.sa-reveal-btn{margin-top:1rem;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:7px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.sa-reveal-btn:hover{border-color:var(--accent);color:var(--accent);}
+.sa-answer{margin-top:.75rem;padding:1rem 1.25rem;background:var(--bg3);border:1px solid var(--border2);border-left:3px solid var(--teal);border-radius:6px;font-size:13.5px;line-height:1.7;color:var(--text2);display:none;}
+.sa-answer.show{display:block;}
+.sa-answer strong{color:var(--text);}
+.sa-answer ul{padding-left:1.3rem;margin-top:.4rem;}
+.sa-answer li{margin-bottom:.3rem;}
+
+/* CASE STUDY CARDS */
+.case-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;margin-bottom:1.5rem;overflow:hidden;}
+.case-banner{background:var(--bg4);border-bottom:1px solid var(--border);padding:1rem 1.75rem;display:flex;align-items:center;gap:12px;}
+.case-badge{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--purple);background:var(--purple-bg);padding:3px 12px;border-radius:3px;letter-spacing:.08em;}
+.case-marks{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:.06em;}
+.case-body{padding:1.5rem 1.75rem;}
+.case-scenario{background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:6px;padding:1rem 1.25rem;margin-bottom:1.25rem;font-size:14px;line-height:1.7;color:var(--text);}
+.case-scenario em{color:var(--blue);font-style:italic;}
+.case-parts{display:flex;flex-direction:column;gap:10px;margin-bottom:1rem;}
+.case-part{padding:.65rem 1rem;background:var(--bg3);border:1px solid var(--border);border-radius:6px;font-size:14px;color:var(--text);}
+.case-part span{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);margin-right:8px;}
+.case-reveal-btn{background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:8px 20px;border-radius:6px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.case-reveal-btn:hover{border-color:var(--purple);color:var(--purple);}
+.case-answer{margin-top:1rem;padding:1.25rem;background:var(--bg3);border:1px solid var(--border2);border-left:3px solid var(--purple);border-radius:6px;font-size:13.5px;line-height:1.75;color:var(--text2);display:none;}
+.case-answer.show{display:block;}
+.case-answer h4{font-size:13px;font-weight:600;color:var(--purple);font-family:'IBM Plex Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin:.85rem 0 .4rem;}
+.case-answer h4:first-child{margin-top:0;}
+.case-answer ul{padding-left:1.3rem;}
+.case-answer li{margin-bottom:.3rem;color:var(--text);}
+.case-answer p{color:var(--text);margin-bottom:.4rem;}
+.case-answer strong{color:var(--accent);}
+
+/* DIVIDER */
+.unit-div{height:1px;background:var(--border);margin:2.5rem 0;}
+
+/* PROGRESS BAR */
+#progress{position:fixed;top:56px;left:0;height:2px;background:var(--accent);z-index:200;width:0%;transition:width .1s;}
+
+/* RESET BTN */
+.reset-btn{background:var(--red-bg);border:1px solid var(--red);color:var(--red);padding:6px 18px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.reset-btn:hover{background:var(--red);color:#fff;}
+
+@media(max-width:900px){.sidebar{display:none;}.main{padding:1.5rem;}.score-card{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<nav class="topnav">
+  <span class="topnav-title">Forensic Medicine · Question Bank</span>
+  <div class="topnav-right">
+    <button class="reset-btn" onclick="resetAll()">↺ Reset All</button>
+    <button class="btn-sm" onclick="toggleTheme()">☀ Light / ☾ Dark</button>
+  </div>
+</nav>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div style="padding:.3rem 0 .5rem;">
+    <div class="sb-label">Sections</div>
+    <a href="#mcq" class="sb-link">MCQ — 50 Questions</a>
+    <a href="#saq" class="sb-link">Short Answer — 30 Qs</a>
+    <a href="#case" class="sb-link">Case Studies — 5 Qs</a>
+  </div>
+  <div class="sb-div"></div>
+  <div class="sb-label">MCQ Topics</div>
+  <a href="#mcq-wounds" class="sb-link">Injuries & Wounds (1–18)</a>
+  <a href="#mcq-autopsy" class="sb-link">Autopsy (19–34)</a>
+  <a href="#mcq-artefacts" class="sb-link">PM Artefacts (35–50)</a>
+  <div class="sb-div"></div>
+  <div class="sb-label">SAQ Topics</div>
+  <a href="#saq-wounds" class="sb-link">Injuries & Wounds (1–10)</a>
+  <a href="#saq-autopsy" class="sb-link">Autopsy (11–20)</a>
+  <a href="#saq-artefacts" class="sb-link">PM Artefacts (21–30)</a>
+  <div class="sb-div"></div>
+  <div class="sb-label">Case Studies</div>
+  <a href="#case1" class="sb-link">Case 1 — Blunt Trauma</a>
+  <a href="#case2" class="sb-link">Case 2 — Firearm</a>
+  <a href="#case3" class="sb-link">Case 3 — Strangulation</a>
+  <a href="#case4" class="sb-link">Case 4 — Decomposed Body</a>
+  <a href="#case5" class="sb-link">Case 5 — Suspicious Death</a>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+<div class="hero" id="top">
+  <div class="hero-tag">Forensic Medicine · Examination Preparation</div>
+  <h1>Question Bank</h1>
+  <p>50 MCQs with instant validation · 30 Short Answer Questions (5 marks each) · 5 Case Study Questions (20 marks each). Select MCQ options to see immediate feedback. Reveal answer buttons for SAQ and case studies.</p>
+</div>
+
+<!-- SCORE DASHBOARD -->
+<div class="score-card" id="dashboard">
+  <div class="score-box"><div class="num" id="sc-correct">0</div><div class="lbl">Correct</div></div>
+  <div class="score-box"><div class="num" id="sc-wrong">0</div><div class="lbl">Incorrect</div></div>
+  <div class="score-box"><div class="num" id="sc-total">0 / 50</div><div class="lbl">MCQs Answered</div></div>
+</div>
+
+<!-- ============================================================ MCQ ============================================================ -->
+<div class="sec-header" id="mcq">
+  <span class="sec-num">Section A</span>
+  <h2 class="sec-title">Multiple Choice Questions — 50 Questions (1 mark each)</h2>
+</div>
+
+<!-- MCQ Wounds -->
+<div id="mcq-wounds" style="scroll-margin-top:70px;">
+<p style="color:var(--text3);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;">Unit 1 · Injuries & Wounds · Questions 1–18</p>
+
+<!-- Q1 -->
+<div class="q-card" id="qc1">
+  <div class="q-meta"><span class="q-num">Q 01</span><span class="q-tag">Injuries & Wounds</span></div>
+  <div class="q-text">According to English case law, for a wound to be legally constituted, which of the following is required?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,1,'A')"><span class="opt-letter">A</span><span class="opt-text">Breach of the epidermis only</span></div>
+    <div class="option" onclick="answer(this,1,'B')"><span class="opt-letter">B</span><span class="opt-text">Breach of full thickness of the skin involving both epidermis and dermis</span></div>
+    <div class="option" onclick="answer(this,1,'C')"><span class="opt-letter">C</span><span class="opt-text">Any internal organ injury</span></div>
+    <div class="option" onclick="answer(this,1,'D')"><span class="opt-letter">D</span><span class="opt-text">A bruise on the surface of the skin</span></div>
+  </div>
+  <div class="feedback" id="fb1"></div>
+</div>
+
+<!-- Q2 -->
+<div class="q-card" id="qc2">
+  <div class="q-meta"><span class="q-num">Q 02</span><span class="q-tag">Injuries & Wounds</span></div>
+  <div class="q-text">Which of the following is NOT classified as a wound under the strict legal definition?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,2,'A')"><span class="opt-letter">A</span><span class="opt-text">Incised wound</span></div>
+    <div class="option" onclick="answer(this,2,'B')"><span class="opt-letter">B</span><span class="opt-text">Stab wound</span></div>
+    <div class="option" onclick="answer(this,2,'C')"><span class="opt-letter">C</span><span class="opt-text">Bruise (contusion)</span></div>
+    <div class="option" onclick="answer(this,2,'D')"><span class="opt-letter">D</span><span class="opt-text">Laceration involving full skin thickness</span></div>
+  </div>
+  <div class="feedback" id="fb2"></div>
+</div>
+
+<!-- Q3 -->
+<div class="q-card" id="qc3">
+  <div class="q-meta"><span class="q-num">Q 03</span><span class="q-tag">Abrasions</span></div>
+  <div class="q-text">What is the forensic significance of an abrasion compared to a bruise?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,3,'A')"><span class="opt-letter">A</span><span class="opt-text">Abrasions always bleed more profusely</span></div>
+    <div class="option" onclick="answer(this,3,'B')"><span class="opt-letter">B</span><span class="opt-text">Abrasions always indicate the precise point of impact unlike bruises</span></div>
+    <div class="option" onclick="answer(this,3,'C')"><span class="opt-letter">C</span><span class="opt-text">Abrasions are more important clinically</span></div>
+    <div class="option" onclick="answer(this,3,'D')"><span class="opt-letter">D</span><span class="opt-text">Abrasions are only seen in homicidal cases</span></div>
+  </div>
+  <div class="feedback" id="fb3"></div>
+</div>
+
+<!-- Q4 -->
+<div class="q-card" id="qc4">
+  <div class="q-meta"><span class="q-num">Q 04</span><span class="q-tag">Abrasions</span></div>
+  <div class="q-text">Graze abrasions (gravel rash) are most commonly seen in which setting?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,4,'A')"><span class="opt-letter">A</span><span class="opt-text">Strangulation</span></div>
+    <div class="option" onclick="answer(this,4,'B')"><span class="opt-letter">B</span><span class="opt-text">Road traffic accidents</span></div>
+    <div class="option" onclick="answer(this,4,'C')"><span class="opt-letter">C</span><span class="opt-text">Hanging</span></div>
+    <div class="option" onclick="answer(this,4,'D')"><span class="opt-letter">D</span><span class="opt-text">Drowning</span></div>
+  </div>
+  <div class="feedback" id="fb4"></div>
+</div>
+
+<!-- Q5 -->
+<div class="q-card" id="qc5">
+  <div class="q-meta"><span class="q-num">Q 05</span><span class="q-tag">Bruises</span></div>
+  <div class="q-text">When blood collects within a mass beneath the skin rather than being diffused within the tissues, it forms a:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,5,'A')"><span class="opt-letter">A</span><span class="opt-text">Petechiae</span></div>
+    <div class="option" onclick="answer(this,5,'B')"><span class="opt-letter">B</span><span class="opt-text">Haematoma</span></div>
+    <div class="option" onclick="answer(this,5,'C')"><span class="opt-letter">C</span><span class="opt-text">Ecchymosis</span></div>
+    <div class="option" onclick="answer(this,5,'D')"><span class="opt-letter">D</span><span class="opt-text">Purpura</span></div>
+  </div>
+  <div class="feedback" id="fb5"></div>
+</div>
+
+<!-- Q6 -->
+<div class="q-card" id="qc6">
+  <div class="q-meta"><span class="q-num">Q 06</span><span class="q-tag">Bruises</span></div>
+  <div class="q-text">During the healing of a bruise, haemoglobin is broken down to biliverdin, which is then converted by biliverdin reductase to:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,6,'A')"><span class="opt-letter">A</span><span class="opt-text">Haemosiderin (brown)</span></div>
+    <div class="option" onclick="answer(this,6,'B')"><span class="opt-letter">B</span><span class="opt-text">Bilirubin (yellow)</span></div>
+    <div class="option" onclick="answer(this,6,'C')"><span class="opt-letter">C</span><span class="opt-text">Ferritin (gold)</span></div>
+    <div class="option" onclick="answer(this,6,'D')"><span class="opt-letter">D</span><span class="opt-text">Myoglobin (red)</span></div>
+  </div>
+  <div class="feedback" id="fb6"></div>
+</div>
+
+<!-- Q7 -->
+<div class="q-card" id="qc7">
+  <div class="q-meta"><span class="q-num">Q 07</span><span class="q-tag">Lacerations</span></div>
+  <div class="q-text">Which of the following is a distinguishing characteristic of a laceration compared to an incised wound?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,7,'A')"><span class="opt-letter">A</span><span class="opt-text">Clean-cut well-defined margins</span></div>
+    <div class="option" onclick="answer(this,7,'B')"><span class="opt-letter">B</span><span class="opt-text">Profuse haemorrhage</span></div>
+    <div class="option" onclick="answer(this,7,'C')"><span class="opt-letter">C</span><span class="opt-text">Ragged, irregular margins with tissue tags and crushed hair bulbs</span></div>
+    <div class="option" onclick="answer(this,7,'D')"><span class="opt-letter">D</span><span class="opt-text">Spindle-shaped wound with greater retraction at the centre</span></div>
+  </div>
+  <div class="feedback" id="fb7"></div>
+</div>
+
+<!-- Q8 -->
+<div class="q-card" id="qc8">
+  <div class="q-meta"><span class="q-num">Q 08</span><span class="q-tag">Lacerations</span></div>
+  <div class="q-text">A laceration on the scalp bleeds more freely than lacerations elsewhere on the body because:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,8,'A')"><span class="opt-letter">A</span><span class="opt-text">The scalp has no subcutaneous fat</span></div>
+    <div class="option" onclick="answer(this,8,'B')"><span class="opt-letter">B</span><span class="opt-text">Temporal arteries are firmly bound and cannot retract/contract</span></div>
+    <div class="option" onclick="answer(this,8,'C')"><span class="opt-letter">C</span><span class="opt-text">The skull provides a rigid backing preventing compression</span></div>
+    <div class="option" onclick="answer(this,8,'D')"><span class="opt-letter">D</span><span class="opt-text">The scalp has a higher capillary density than other areas</span></div>
+  </div>
+  <div class="feedback" id="fb8"></div>
+</div>
+
+<!-- Q9 -->
+<div class="q-card" id="qc9">
+  <div class="q-meta"><span class="q-num">Q 09</span><span class="q-tag">Incised Wounds</span></div>
+  <div class="q-text">In an incised wound, the deeper commencement is known as the "head of the wound." What is the progressive shallowing towards termination called?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,9,'A')"><span class="opt-letter">A</span><span class="opt-text">Bevelling</span></div>
+    <div class="option" onclick="answer(this,9,'B')"><span class="opt-letter">B</span><span class="opt-text">Tailing</span></div>
+    <div class="option" onclick="answer(this,9,'C')"><span class="opt-letter">C</span><span class="opt-text">Undermining</span></div>
+    <div class="option" onclick="answer(this,9,'D')"><span class="opt-letter">D</span><span class="opt-text">Gaping</span></div>
+  </div>
+  <div class="feedback" id="fb9"></div>
+</div>
+
+<!-- Q10 -->
+<div class="q-card" id="qc10">
+  <div class="q-meta"><span class="q-num">Q 10</span><span class="q-tag">Incised Wounds</span></div>
+  <div class="q-text">Suicidal incised wounds on the neck characteristically show hesitation cuts at the beginning. What does this indicate?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,10,'A')"><span class="opt-letter">A</span><span class="opt-text">The weapon was blunt</span></div>
+    <div class="option" onclick="answer(this,10,'B')"><span class="opt-letter">B</span><span class="opt-text">Multiple attackers were involved</span></div>
+    <div class="option" onclick="answer(this,10,'C')"><span class="opt-letter">C</span><span class="opt-text">The person made multiple tentative shallow cuts before the final deeper one — supports suicidal intent</span></div>
+    <div class="option" onclick="answer(this,10,'D')"><span class="opt-letter">D</span><span class="opt-text">The wound was inflicted postmortem</span></div>
+  </div>
+  <div class="feedback" id="fb10"></div>
+</div>
+
+<!-- Q11 -->
+<div class="q-card" id="qc11">
+  <div class="q-meta"><span class="q-num">Q 11</span><span class="q-tag">Stab Wounds</span></div>
+  <div class="q-text">In a stab wound, which measurement is characteristically greater than the others?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,11,'A')"><span class="opt-letter">A</span><span class="opt-text">Width</span></div>
+    <div class="option" onclick="answer(this,11,'B')"><span class="opt-letter">B</span><span class="opt-text">Length</span></div>
+    <div class="option" onclick="answer(this,11,'C')"><span class="opt-letter">C</span><span class="opt-text">Depth</span></div>
+    <div class="option" onclick="answer(this,11,'D')"><span class="opt-letter">D</span><span class="opt-text">All are equal</span></div>
+  </div>
+  <div class="feedback" id="fb11"></div>
+</div>
+
+<!-- Q12 -->
+<div class="q-card" id="qc12">
+  <div class="q-meta"><span class="q-num">Q 12</span><span class="q-tag">Stab Wounds</span></div>
+  <div class="q-text">A stab wound to the neck that penetrates the jugular vein can lead to which serious complication?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,12,'A')"><span class="opt-letter">A</span><span class="opt-text">Fat embolism</span></div>
+    <div class="option" onclick="answer(this,12,'B')"><span class="opt-letter">B</span><span class="opt-text">Air embolism (due to negative pressure sucking air into the vein)</span></div>
+    <div class="option" onclick="answer(this,12,'C')"><span class="opt-letter">C</span><span class="opt-text">Haemothorax</span></div>
+    <div class="option" onclick="answer(this,12,'D')"><span class="opt-letter">D</span><span class="opt-text">Septicaemia</span></div>
+  </div>
+  <div class="feedback" id="fb12"></div>
+</div>
+
+<!-- Q13 -->
+<div class="q-card" id="qc13">
+  <div class="q-meta"><span class="q-num">Q 13</span><span class="q-tag">Firearm Wounds</span></div>
+  <div class="q-text">Which of the following statements correctly relates velocity to wounding power in firearm injuries?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,13,'A')"><span class="opt-letter">A</span><span class="opt-text">Mass is more important than velocity</span></div>
+    <div class="option" onclick="answer(this,13,'B')"><span class="opt-letter">B</span><span class="opt-text">Velocity is more important than mass in determining wounding power</span></div>
+    <div class="option" onclick="answer(this,13,'C')"><span class="opt-letter">C</span><span class="opt-text">Both mass and velocity contribute equally</span></div>
+    <div class="option" onclick="answer(this,13,'D')"><span class="opt-letter">D</span><span class="opt-text">Neither mass nor velocity affects wounding power</span></div>
+  </div>
+  <div class="feedback" id="fb13"></div>
+</div>
+
+<!-- Q14 -->
+<div class="q-card" id="qc14">
+  <div class="q-meta"><span class="q-num">Q 14</span><span class="q-tag">Firearm Wounds</span></div>
+  <div class="q-text">At tight contact range over soft tissue, which of the following is NOT typically seen in a rifle entry wound?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,14,'A')"><span class="opt-letter">A</span><span class="opt-text">Cherry red discolouration of tissues</span></div>
+    <div class="option" onclick="answer(this,14,'B')"><span class="opt-letter">B</span><span class="opt-text">Abrasion collar</span></div>
+    <div class="option" onclick="answer(this,14,'C')"><span class="opt-letter">C</span><span class="opt-text">Stellate wound shape</span></div>
+    <div class="option" onclick="answer(this,14,'D')"><span class="opt-letter">D</span><span class="opt-text">Heavy powder tattooing</span></div>
+  </div>
+  <div class="feedback" id="fb14"></div>
+</div>
+
+<!-- Q15 -->
+<div class="q-card" id="qc15">
+  <div class="q-meta"><span class="q-num">Q 15</span><span class="q-tag">Firearm Wounds</span></div>
+  <div class="q-text">Exit wounds characteristically show which of the following features?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,15,'A')"><span class="opt-letter">A</span><span class="opt-text">Abrasion collar and burning</span></div>
+    <div class="option" onclick="answer(this,15,'B')"><span class="opt-letter">B</span><span class="opt-text">Everted torn edges with protruding haemorrhagic subcutaneous tissue</span></div>
+    <div class="option" onclick="answer(this,15,'C')"><span class="opt-letter">C</span><span class="opt-text">Grease collar</span></div>
+    <div class="option" onclick="answer(this,15,'D')"><span class="opt-letter">D</span><span class="opt-text">Blackening and powder tattooing</span></div>
+  </div>
+  <div class="feedback" id="fb15"></div>
+</div>
+
+<!-- Q16 -->
+<div class="q-card" id="qc16">
+  <div class="q-meta"><span class="q-num">Q 16</span><span class="q-tag">Firearm Wounds</span></div>
+  <div class="q-text">The hallmark finding in a suicidal firearm death is:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,16,'A')"><span class="opt-letter">A</span><span class="opt-text">Multiple entry wounds</span></div>
+    <div class="option" onclick="answer(this,16,'B')"><span class="opt-letter">B</span><span class="opt-text">Cadaveric spasm with gun in hand</span></div>
+    <div class="option" onclick="answer(this,16,'C')"><span class="opt-letter">C</span><span class="opt-text">Clothing involvement</span></div>
+    <div class="option" onclick="answer(this,16,'D')"><span class="opt-letter">D</span><span class="opt-text">Wound on the back</span></div>
+  </div>
+  <div class="feedback" id="fb16"></div>
+</div>
+
+<!-- Q17 -->
+<div class="q-card" id="qc17">
+  <div class="q-meta"><span class="q-num">Q 17</span><span class="q-tag">Injuries</span></div>
+  <div class="q-text">A person falls forward after a cardiac arrest. Where would you expect to find abrasions, and which areas would be conspicuously uninjured?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,17,'A')"><span class="opt-letter">A</span><span class="opt-text">Abrasions on forehead/nose/cheek; no injuries on upper limbs</span></div>
+    <div class="option" onclick="answer(this,17,'B')"><span class="opt-letter">B</span><span class="opt-text">Abrasions on palms; no injuries on face</span></div>
+    <div class="option" onclick="answer(this,17,'C')"><span class="opt-letter">C</span><span class="opt-text">Abrasions on occiput; no injuries on face</span></div>
+    <div class="option" onclick="answer(this,17,'D')"><span class="opt-letter">D</span><span class="opt-text">Abrasions on knees; no injuries elsewhere</span></div>
+  </div>
+  <div class="feedback" id="fb17"></div>
+</div>
+
+<!-- Q18 -->
+<div class="q-card" id="qc18">
+  <div class="q-meta"><span class="q-num">Q 18</span><span class="q-tag">Injuries</span></div>
+  <div class="q-text">Fingernail abrasions are characteristically seen in which of the following scenarios?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,18,'A')"><span class="opt-letter">A</span><span class="opt-text">Firearm injuries</span></div>
+    <div class="option" onclick="answer(this,18,'B')"><span class="opt-letter">B</span><span class="opt-text">Throttling, sexual assaults, and child abuse</span></div>
+    <div class="option" onclick="answer(this,18,'C')"><span class="opt-letter">C</span><span class="opt-text">Road traffic accidents only</span></div>
+    <div class="option" onclick="answer(this,18,'D')"><span class="opt-letter">D</span><span class="opt-text">Hanging</span></div>
+  </div>
+  <div class="feedback" id="fb18"></div>
+</div>
+</div><!-- end mcq-wounds -->
+
+<!-- MCQ AUTOPSY -->
+<div id="mcq-autopsy" style="scroll-margin-top:70px;margin-top:2rem;">
+<p style="color:var(--text3);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;">Unit 2 · Medico-Legal Autopsy · Questions 19–34</p>
+
+<!-- Q19 -->
+<div class="q-card" id="qc19">
+  <div class="q-meta"><span class="q-num">Q 19</span><span class="q-tag">Autopsy</span></div>
+  <div class="q-text">Which type of autopsy is conducted under the laws of the State for protection of citizens' rights in cases of sudden, suspicious, or criminal deaths?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,19,'A')"><span class="opt-letter">A</span><span class="opt-text">Academic autopsy</span></div>
+    <div class="option" onclick="answer(this,19,'B')"><span class="opt-letter">B</span><span class="opt-text">Clinical autopsy</span></div>
+    <div class="option" onclick="answer(this,19,'C')"><span class="opt-letter">C</span><span class="opt-text">Medico-legal / Forensic autopsy</span></div>
+    <div class="option" onclick="answer(this,19,'D')"><span class="opt-letter">D</span><span class="opt-text">Anatomical autopsy</span></div>
+  </div>
+  <div class="feedback" id="fb19"></div>
+</div>
+
+<!-- Q20 -->
+<div class="q-card" id="qc20">
+  <div class="q-meta"><span class="q-num">Q 20</span><span class="q-tag">Autopsy</span></div>
+  <div class="q-text">For a medico-legal autopsy, what is mandatory before the procedure begins?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,20,'A')"><span class="opt-letter">A</span><span class="opt-text">Written consent from the next of kin</span></div>
+    <div class="option" onclick="answer(this,20,'B')"><span class="opt-letter">B</span><span class="opt-text">Official legal requisition from the police or Magistrate</span></div>
+    <div class="option" onclick="answer(this,20,'C')"><span class="opt-letter">C</span><span class="opt-text">Consent from the hospital administration</span></div>
+    <div class="option" onclick="answer(this,20,'D')"><span class="opt-letter">D</span><span class="opt-text">Approval from a panel of three senior physicians</span></div>
+  </div>
+  <div class="feedback" id="fb20"></div>
+</div>
+
+<!-- Q21 -->
+<div class="q-card" id="qc21">
+  <div class="q-meta"><span class="q-num">Q 21</span><span class="q-tag">Autopsy</span></div>
+  <div class="q-text">Why should a medico-legal autopsy ideally be performed in daylight?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,21,'A')"><span class="opt-letter">A</span><span class="opt-text">Legal requirement prohibiting night autopsies</span></div>
+    <div class="option" onclick="answer(this,21,'B')"><span class="opt-letter">B</span><span class="opt-text">Colour changes such as jaundice, bruise changes, and PM staining cannot be reliably appreciated in artificial light</span></div>
+    <div class="option" onclick="answer(this,21,'C')"><span class="opt-letter">C</span><span class="opt-text">More staff available during the day</span></div>
+    <div class="option" onclick="answer(this,21,'D')"><span class="opt-letter">D</span><span class="opt-text">Equipment functions better in daylight</span></div>
+  </div>
+  <div class="feedback" id="fb21"></div>
+</div>
+
+<!-- Q22 -->
+<div class="q-card" id="qc22">
+  <div class="q-meta"><span class="q-num">Q 22</span><span class="q-tag">Autopsy</span></div>
+  <div class="q-text">Which skin incision is most commonly used in medico-legal autopsies?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,22,'A')"><span class="opt-letter">A</span><span class="opt-text">Y-shaped incision</span></div>
+    <div class="option" onclick="answer(this,22,'B')"><span class="opt-letter">B</span><span class="opt-text">Modified Y-shaped incision</span></div>
+    <div class="option" onclick="answer(this,22,'C')"><span class="opt-letter">C</span><span class="opt-text">I-shaped incision from chin to symphysis pubis</span></div>
+    <div class="option" onclick="answer(this,22,'D')"><span class="opt-letter">D</span><span class="opt-text">T-shaped (bucket handle) incision</span></div>
+  </div>
+  <div class="feedback" id="fb22"></div>
+</div>
+
+<!-- Q23 -->
+<div class="q-card" id="qc23">
+  <div class="q-meta"><span class="q-num">Q 23</span><span class="q-tag">Autopsy</span></div>
+  <div class="q-text">In cases of suspected asphyxial death due to neck compression, which order of cavity opening is recommended?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,23,'A')"><span class="opt-letter">A</span><span class="opt-text">Neck → Skull → Thorax → Abdomen</span></div>
+    <div class="option" onclick="answer(this,23,'B')"><span class="opt-letter">B</span><span class="opt-text">Skull → Thorax → Abdomen → Neck</span></div>
+    <div class="option" onclick="answer(this,23,'C')"><span class="opt-letter">C</span><span class="opt-text">Skull and Abdomen first, then Neck (to drain blood, providing a cleaner field)</span></div>
+    <div class="option" onclick="answer(this,23,'D')"><span class="opt-letter">D</span><span class="opt-text">Thorax and Abdomen first, then Skull and Neck simultaneously</span></div>
+  </div>
+  <div class="feedback" id="fb23"></div>
+</div>
+
+<!-- Q24 -->
+<div class="q-card" id="qc24">
+  <div class="q-meta"><span class="q-num">Q 24</span><span class="q-tag">Autopsy</span></div>
+  <div class="q-text">The Modified Y-shaped incision is specifically used when:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,24,'A')"><span class="opt-letter">A</span><span class="opt-text">A female body is being examined</span></div>
+    <div class="option" onclick="answer(this,24,'B')"><span class="opt-letter">B</span><span class="opt-text">A detailed study of neck organs is required (e.g., hanging or strangulation)</span></div>
+    <div class="option" onclick="answer(this,24,'C')"><span class="opt-letter">C</span><span class="opt-text">The body is in advanced decomposition</span></div>
+    <div class="option" onclick="answer(this,24,'D')"><span class="opt-letter">D</span><span class="opt-text">A second autopsy is being conducted</span></div>
+  </div>
+  <div class="feedback" id="fb24"></div>
+</div>
+
+<!-- Q25 -->
+<div class="q-card" id="qc25">
+  <div class="q-meta"><span class="q-num">Q 25</span><span class="q-tag">Autopsy</span></div>
+  <div class="q-text">Which evisceration method is most widely used in the United Kingdom and preserves most important inter-organ relationships?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,25,'A')"><span class="opt-letter">A</span><span class="opt-text">Letulle (En masse)</span></div>
+    <div class="option" onclick="answer(this,25,'B')"><span class="opt-letter">B</span><span class="opt-text">Virchow's method</span></div>
+    <div class="option" onclick="answer(this,25,'C')"><span class="opt-letter">C</span><span class="opt-text">Ghon (En bloc)</span></div>
+    <div class="option" onclick="answer(this,25,'D')"><span class="opt-letter">D</span><span class="opt-text">Rokitansky (In situ)</span></div>
+  </div>
+  <div class="feedback" id="fb25"></div>
+</div>
+
+<!-- Q26 -->
+<div class="q-card" id="qc26">
+  <div class="q-meta"><span class="q-num">Q 26</span><span class="q-tag">Autopsy</span></div>
+  <div class="q-text">In a suspected poisoning case, the autopsy surgeon should:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,26,'A')"><span class="opt-letter">A</span><span class="opt-text">Give an immediate definitive opinion based on gross findings</span></div>
+    <div class="option" onclick="answer(this,26,'B')"><span class="opt-letter">B</span><span class="opt-text">Reserve the opinion until the Chemical Examiner's report is received and preserve viscera</span></div>
+    <div class="option" onclick="answer(this,26,'C')"><span class="opt-letter">C</span><span class="opt-text">Decline to write a report until all tests are complete</span></div>
+    <div class="option" onclick="answer(this,26,'D')"><span class="opt-letter">D</span><span class="opt-text">State "death by poisoning" in the provisional report</span></div>
+  </div>
+  <div class="feedback" id="fb26"></div>
+</div>
+
+<!-- Q27 -->
+<div class="q-card" id="qc27">
+  <div class="q-meta"><span class="q-num">Q 27</span><span class="q-tag">Autopsy</span></div>
+  <div class="q-text">Which of the following is an indication for radiological examination at autopsy?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,27,'A')"><span class="opt-letter">A</span><span class="opt-text">Death from natural causes in an elderly patient</span></div>
+    <div class="option" onclick="answer(this,27,'B')"><span class="opt-letter">B</span><span class="opt-text">Gunshot wounds, child abuse, decomposed or charred remains</span></div>
+    <div class="option" onclick="answer(this,27,'C')"><span class="opt-letter">C</span><span class="opt-text">Every medico-legal autopsy as routine</span></div>
+    <div class="option" onclick="answer(this,27,'D')"><span class="opt-letter">D</span><span class="opt-text">Only when the cause of death is unknown</span></div>
+  </div>
+  <div class="feedback" id="fb27"></div>
+</div>
+
+<!-- Q28 -->
+<div class="q-card" id="qc28">
+  <div class="q-meta"><span class="q-num">Q 28</span><span class="q-tag">Autopsy</span></div>
+  <div class="q-text">If the cause and manner of death cannot be established at autopsy, the correct way to report is:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,28,'A')"><span class="opt-letter">A</span><span class="opt-text">Write "probably natural causes"</span></div>
+    <div class="option" onclick="answer(this,28,'B')"><span class="opt-letter">B</span><span class="opt-text">Cause of death — "undetermined"; Manner of death — "unknown"</span></div>
+    <div class="option" onclick="answer(this,28,'C')"><span class="opt-letter">C</span><span class="opt-text">Refuse to submit a report</span></div>
+    <div class="option" onclick="answer(this,28,'D')"><span class="opt-letter">D</span><span class="opt-text">State "inconclusive" and sign the report</span></div>
+  </div>
+  <div class="feedback" id="fb28"></div>
+</div>
+
+<!-- Q29 -->
+<div class="q-card" id="qc29">
+  <div class="q-meta"><span class="q-num">Q 29</span><span class="q-tag">Autopsy</span></div>
+  <div class="q-text">Two doctors are required to conduct the autopsy when:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,29,'A')"><span class="opt-letter">A</span><span class="opt-text">Any death occurs outside the hospital</span></div>
+    <div class="option" onclick="answer(this,29,'B')"><span class="opt-letter">B</span><span class="opt-text">Death of a female due to burns or other suspicious reasons within 7 years of marriage</span></div>
+    <div class="option" onclick="answer(this,29,'C')"><span class="opt-letter">C</span><span class="opt-text">The deceased is a government official</span></div>
+    <div class="option" onclick="answer(this,29,'D')"><span class="opt-letter">D</span><span class="opt-text">The body has been dead for more than 24 hours</span></div>
+  </div>
+  <div class="feedback" id="fb29"></div>
+</div>
+
+<!-- Q30 -->
+<div class="q-card" id="qc30">
+  <div class="q-meta"><span class="q-num">Q 30</span><span class="q-tag">Autopsy</span></div>
+  <div class="q-text">The Rokitansky (in situ) method of evisceration is the preferred approach in cases of:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,30,'A')"><span class="opt-letter">A</span><span class="opt-text">Head injuries</span></div>
+    <div class="option" onclick="answer(this,30,'B')"><span class="opt-letter">B</span><span class="opt-text">Highly transmissible infectious diseases</span></div>
+    <div class="option" onclick="answer(this,30,'C')"><span class="opt-letter">C</span><span class="opt-text">Paediatric autopsies</span></div>
+    <div class="option" onclick="answer(this,30,'D')"><span class="opt-letter">D</span><span class="opt-text">Poisoning cases</span></div>
+  </div>
+  <div class="feedback" id="fb30"></div>
+</div>
+
+<!-- Q31 -->
+<div class="q-card" id="qc31">
+  <div class="q-meta"><span class="q-num">Q 31</span><span class="q-tag">Autopsy</span></div>
+  <div class="q-text">Chain of evidence at autopsy requires:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,31,'A')"><span class="opt-letter">A</span><span class="opt-text">All specimens labelled and handed to relatives for safekeeping</span></div>
+    <div class="option" onclick="answer(this,31,'B')"><span class="opt-letter">B</span><span class="opt-text">Identifying the body and maintaining absolute control of all specimens removed</span></div>
+    <div class="option" onclick="answer(this,31,'C')"><span class="opt-letter">C</span><span class="opt-text">Only the bullet needs to be logged; other specimens can be discarded</span></div>
+    <div class="option" onclick="answer(this,31,'D')"><span class="opt-letter">D</span><span class="opt-text">The investigating officer keeps all specimens personally</span></div>
+  </div>
+  <div class="feedback" id="fb31"></div>
+</div>
+
+<!-- Q32 -->
+<div class="q-card" id="qc32">
+  <div class="q-meta"><span class="q-num">Q 32</span><span class="q-tag">Autopsy</span></div>
+  <div class="q-text">When examining petechial haemorrhages in the eyes during external examination, which form of death should this finding particularly prompt investigation for?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,32,'A')"><span class="opt-letter">A</span><span class="opt-text">Myocardial infarction</span></div>
+    <div class="option" onclick="answer(this,32,'B')"><span class="opt-letter">B</span><span class="opt-text">Asphyxial death</span></div>
+    <div class="option" onclick="answer(this,32,'C')"><span class="opt-letter">C</span><span class="opt-text">Drowning exclusively</span></div>
+    <div class="option" onclick="answer(this,32,'D')"><span class="opt-letter">D</span><span class="opt-text">Drug overdose</span></div>
+  </div>
+  <div class="feedback" id="fb32"></div>
+</div>
+
+<!-- Q33 -->
+<div class="q-card" id="qc33">
+  <div class="q-meta"><span class="q-num">Q 33</span><span class="q-tag">Autopsy</span></div>
+  <div class="q-text">Which statement about the autopsy report is correct?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,33,'A')"><span class="opt-letter">A</span><span class="opt-text">Only positive findings need to be recorded</span></div>
+    <div class="option" onclick="answer(this,33,'B')"><span class="opt-letter">B</span><span class="opt-text">The word "probably" should be used to convey uncertainty</span></div>
+    <div class="option" onclick="answer(this,33,'C')"><span class="opt-letter">C</span><span class="opt-text">Both positive and negative findings must be recorded; "probably" should be avoided</span></div>
+    <div class="option" onclick="answer(this,33,'D')"><span class="opt-letter">D</span><span class="opt-text">The report can be written days later from memory</span></div>
+  </div>
+  <div class="feedback" id="fb33"></div>
+</div>
+
+<!-- Q34 -->
+<div class="q-card" id="qc34">
+  <div class="q-meta"><span class="q-num">Q 34</span><span class="q-tag">Autopsy</span></div>
+  <div class="q-text">A tense capsule on examination of a solid organ at autopsy indicates:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,34,'A')"><span class="opt-letter">A</span><span class="opt-text">Organ shrinkage</span></div>
+    <div class="option" onclick="answer(this,34,'B')"><span class="opt-letter">B</span><span class="opt-text">Normal organ</span></div>
+    <div class="option" onclick="answer(this,34,'C')"><span class="opt-letter">C</span><span class="opt-text">Organ enlargement</span></div>
+    <div class="option" onclick="answer(this,34,'D')"><span class="opt-letter">D</span><span class="opt-text">Organ fibrosis</span></div>
+  </div>
+  <div class="feedback" id="fb34"></div>
+</div>
+</div><!-- end mcq-autopsy -->
+
+<!-- MCQ ARTEFACTS -->
+<div id="mcq-artefacts" style="scroll-margin-top:70px;margin-top:2rem;">
+<p style="color:var(--text3);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;">Unit 3 · Postmortem Artefacts · Questions 35–50</p>
+
+<!-- Q35 -->
+<div class="q-card" id="qc35">
+  <div class="q-meta"><span class="q-num">Q 35</span><span class="q-tag">PM Artefacts</span></div>
+  <div class="q-text">A postmortem artefact is best defined as:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,35,'A')"><span class="opt-letter">A</span><span class="opt-text">Any pathological disease process found at autopsy</span></div>
+    <div class="option" onclick="answer(this,35,'B')"><span class="opt-letter">B</span><span class="opt-text">A change or feature not present before death but introduced after death, causing confusion about its nature and cause</span></div>
+    <div class="option" onclick="answer(this,35,'C')"><span class="opt-letter">C</span><span class="opt-text">An injury inflicted during criminal activity</span></div>
+    <div class="option" onclick="answer(this,35,'D')"><span class="opt-letter">D</span><span class="opt-text">A laboratory finding unique to postmortem samples</span></div>
+  </div>
+  <div class="feedback" id="fb35"></div>
+</div>
+
+<!-- Q36 -->
+<div class="q-card" id="qc36">
+  <div class="q-meta"><span class="q-num">Q 36</span><span class="q-tag">PM Artefacts</span></div>
+  <div class="q-text">CPR performed before death can produce which of the following postmortem findings that could be misinterpreted?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,36,'A')"><span class="opt-letter">A</span><span class="opt-text">Petechiae in the conjunctiva</span></div>
+    <div class="option" onclick="answer(this,36,'B')"><span class="opt-letter">B</span><span class="opt-text">Rib and sternal fractures, lacerations of liver and spleen</span></div>
+    <div class="option" onclick="answer(this,36,'C')"><span class="opt-letter">C</span><span class="opt-text">Hyoid bone fracture</span></div>
+    <div class="option" onclick="answer(this,36,'D')"><span class="opt-letter">D</span><span class="opt-text">Gunshot residue on hands</span></div>
+  </div>
+  <div class="feedback" id="fb36"></div>
+</div>
+
+<!-- Q37 -->
+<div class="q-card" id="qc37">
+  <div class="q-meta"><span class="q-num">Q 37</span><span class="q-tag">PM Artefacts</span></div>
+  <div class="q-text">Injuries to the larynx and adjacent tissues during endotracheal intubation may be misinterpreted as:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,37,'A')"><span class="opt-letter">A</span><span class="opt-text">Drowning</span></div>
+    <div class="option" onclick="answer(this,37,'B')"><span class="opt-letter">B</span><span class="opt-text">Evidence of throttling / foul play</span></div>
+    <div class="option" onclick="answer(this,37,'C')"><span class="opt-letter">C</span><span class="opt-text">Blunt force trauma to the neck</span></div>
+    <div class="option" onclick="answer(this,37,'D')"><span class="opt-letter">D</span><span class="opt-text">Hanging</span></div>
+  </div>
+  <div class="feedback" id="fb37"></div>
+</div>
+
+<!-- Q38 -->
+<div class="q-card" id="qc38">
+  <div class="q-meta"><span class="q-num">Q 38</span><span class="q-tag">PM Artefacts</span></div>
+  <div class="q-text">Embalming fluid under pressure can create which important artefact?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,38,'A')"><span class="opt-letter">A</span><span class="opt-text">Chemical burns of the skin</span></div>
+    <div class="option" onclick="answer(this,38,'B')"><span class="opt-letter">B</span><span class="opt-text">Extravasation of blood from vessels, simulating bruises or enlarging existing ones</span></div>
+    <div class="option" onclick="answer(this,38,'C')"><span class="opt-letter">C</span><span class="opt-text">Liquefaction of brain tissue</span></div>
+    <div class="option" onclick="answer(this,38,'D')"><span class="opt-letter">D</span><span class="opt-text">Formation of adipocere</span></div>
+  </div>
+  <div class="feedback" id="fb38"></div>
+</div>
+
+<!-- Q39 -->
+<div class="q-card" id="qc39">
+  <div class="q-meta"><span class="q-num">Q 39</span><span class="q-tag">PM Artefacts</span></div>
+  <div class="q-text">Localised postmortem lividity (hypostasis) can be mistaken for:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,39,'A')"><span class="opt-letter">A</span><span class="opt-text">A bruise (contusion)</span></div>
+    <div class="option" onclick="answer(this,39,'B')"><span class="opt-letter">B</span><span class="opt-text">A laceration</span></div>
+    <div class="option" onclick="answer(this,39,'C')"><span class="opt-letter">C</span><span class="opt-text">A firearm exit wound</span></div>
+    <div class="option" onclick="answer(this,39,'D')"><span class="opt-letter">D</span><span class="opt-text">An abrasion</span></div>
+  </div>
+  <div class="feedback" id="fb39"></div>
+</div>
+
+<!-- Q40 -->
+<div class="q-card" id="qc40">
+  <div class="q-meta"><span class="q-num">Q 40</span><span class="q-tag">PM Artefacts</span></div>
+  <div class="q-text">Cherry red hypostasis is most characteristic of poisoning by:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,40,'A')"><span class="opt-letter">A</span><span class="opt-text">Phosphorus</span></div>
+    <div class="option" onclick="answer(this,40,'B')"><span class="opt-letter">B</span><span class="opt-text">Potassium bichromate</span></div>
+    <div class="option" onclick="answer(this,40,'C')"><span class="opt-letter">C</span><span class="opt-text">Carbon monoxide</span></div>
+    <div class="option" onclick="answer(this,40,'D')"><span class="opt-letter">D</span><span class="opt-text">Cyanide (which gives bright red)</span></div>
+  </div>
+  <div class="feedback" id="fb40"></div>
+</div>
+
+<!-- Q41 -->
+<div class="q-card" id="qc41">
+  <div class="q-meta"><span class="q-num">Q 41</span><span class="q-tag">PM Artefacts</span></div>
+  <div class="q-text">A body found refrigerated shows pink-coloured hypostasis. This can be confused with:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,41,'A')"><span class="opt-letter">A</span><span class="opt-text">Phosphorus poisoning</span></div>
+    <div class="option" onclick="answer(this,41,'B')"><span class="opt-letter">B</span><span class="opt-text">Carbon monoxide (CO) poisoning</span></div>
+    <div class="option" onclick="answer(this,41,'C')"><span class="opt-letter">C</span><span class="opt-text">Cyanide poisoning</span></div>
+    <div class="option" onclick="answer(this,41,'D')"><span class="opt-letter">D</span><span class="opt-text">Strychnine poisoning</span></div>
+  </div>
+  <div class="feedback" id="fb41"></div>
+</div>
+
+<!-- Q42 -->
+<div class="q-card" id="qc42">
+  <div class="q-meta"><span class="q-num">Q 42</span><span class="q-tag">PM Artefacts</span></div>
+  <div class="q-text">The "Undertaker's fracture" is a postmortem fracture that typically occurs at which vertebral level?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,42,'A')"><span class="opt-letter">A</span><span class="opt-text">C1–C2</span></div>
+    <div class="option" onclick="answer(this,42,'B')"><span class="opt-letter">B</span><span class="opt-text">C6–C7</span></div>
+    <div class="option" onclick="answer(this,42,'C')"><span class="opt-letter">C</span><span class="opt-text">T4–T5</span></div>
+    <div class="option" onclick="answer(this,42,'D')"><span class="opt-letter">D</span><span class="opt-text">L1–L2</span></div>
+  </div>
+  <div class="feedback" id="fb42"></div>
+</div>
+
+<!-- Q43 -->
+<div class="q-card" id="qc43">
+  <div class="q-meta"><span class="q-num">Q 43</span><span class="q-tag">PM Artefacts</span></div>
+  <div class="q-text">What is the key feature that distinguishes animal-induced postmortem wounds from antemortem wounds?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,43,'A')"><span class="opt-letter">A</span><span class="opt-text">Location on the body</span></div>
+    <div class="option" onclick="answer(this,43,'B')"><span class="opt-letter">B</span><span class="opt-text">Absence of bleeding or blood clots (no vital reaction)</span></div>
+    <div class="option" onclick="answer(this,43,'C')"><span class="opt-letter">C</span><span class="opt-text">Presence of animal fur in the wound</span></div>
+    <div class="option" onclick="answer(this,43,'D')"><span class="opt-letter">D</span><span class="opt-text">Depth of the wound</span></div>
+  </div>
+  <div class="feedback" id="fb43"></div>
+</div>
+
+<!-- Q44 -->
+<div class="q-card" id="qc44">
+  <div class="q-meta"><span class="q-num">Q 44</span><span class="q-tag">PM Artefacts</span></div>
+  <div class="q-text">Gas stiffening can be differentiated from true rigor mortis by which finding?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,44,'A')"><span class="opt-letter">A</span><span class="opt-text">Gas stiffening always affects the upper limbs first</span></div>
+    <div class="option" onclick="answer(this,44,'B')"><span class="opt-letter">B</span><span class="opt-text">Joints remain non-tight in gas stiffening and stiffening disappears with incisions; putrefactive tissue inflation is present</span></div>
+    <div class="option" onclick="answer(this,44,'C')"><span class="opt-letter">C</span><span class="opt-text">Gas stiffening resolves within 36 hours just like rigor mortis</span></div>
+    <div class="option" onclick="answer(this,44,'D')"><span class="opt-letter">D</span><span class="opt-text">Rigor mortis does not affect the jaw</span></div>
+  </div>
+  <div class="feedback" id="fb44"></div>
+</div>
+
+<!-- Q45 -->
+<div class="q-card" id="qc45">
+  <div class="q-meta"><span class="q-num">Q 45</span><span class="q-tag">PM Artefacts</span></div>
+  <div class="q-text">The Kennedy Phenomenon refers to:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,45,'A')"><span class="opt-letter">A</span><span class="opt-text">Medico-legal evaluation of firearm injury made difficult by surgical cleaning/suturing of the wound</span></div>
+    <div class="option" onclick="answer(this,45,'B')"><span class="opt-letter">B</span><span class="opt-text">Criminal mutilation of firearm wounds to conceal their nature</span></div>
+    <div class="option" onclick="answer(this,45,'C')"><span class="opt-letter">C</span><span class="opt-text">Animal activity that mimics gunshot wounds</span></div>
+    <div class="option" onclick="answer(this,45,'D')"><span class="opt-letter">D</span><span class="opt-text">Postmortem redistribution of drugs in the bloodstream</span></div>
+  </div>
+  <div class="feedback" id="fb45"></div>
+</div>
+
+<!-- Q46 -->
+<div class="q-card" id="qc46">
+  <div class="q-meta"><span class="q-num">Q 46</span><span class="q-tag">PM Artefacts</span></div>
+  <div class="q-text">The Rayalaseema Phenomenon differs from the Kennedy Phenomenon in that it involves:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,46,'A')"><span class="opt-letter">A</span><span class="opt-text">Medical/surgical alteration of wounds</span></div>
+    <div class="option" onclick="answer(this,46,'B')"><span class="opt-letter">B</span><span class="opt-text">Deliberate criminal mutilation of firearm injuries (e.g., cutting or stabbing through the gunshot wound)</span></div>
+    <div class="option" onclick="answer(this,46,'C')"><span class="opt-letter">C</span><span class="opt-text">Postmortem animal damage to the wound</span></div>
+    <div class="option" onclick="answer(this,46,'D')"><span class="opt-letter">D</span><span class="opt-text">Embalming fluid altering the wound track</span></div>
+  </div>
+  <div class="feedback" id="fb46"></div>
+</div>
+
+<!-- Q47 -->
+<div class="q-card" id="qc47">
+  <div class="q-meta"><span class="q-num">Q 47</span><span class="q-tag">PM Artefacts</span></div>
+  <div class="q-text">Hypostasis in the dependent lung is most likely to be misinterpreted as:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,47,'A')"><span class="opt-letter">A</span><span class="opt-text">Pulmonary embolism</span></div>
+    <div class="option" onclick="answer(this,47,'B')"><span class="opt-letter">B</span><span class="opt-text">Pneumonic or broncho-pneumonic consolidation</span></div>
+    <div class="option" onclick="answer(this,47,'C')"><span class="opt-letter">C</span><span class="opt-text">Lung abscess</span></div>
+    <div class="option" onclick="answer(this,47,'D')"><span class="opt-letter">D</span><span class="opt-text">Pulmonary haemorrhage</span></div>
+  </div>
+  <div class="feedback" id="fb47"></div>
+</div>
+
+<!-- Q48 -->
+<div class="q-card" id="qc48">
+  <div class="q-meta"><span class="q-num">Q 48</span><span class="q-tag">PM Artefacts</span></div>
+  <div class="q-text">Pugilistic (boxer's) attitude seen in bodies recovered from fires is caused by:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,48,'A')"><span class="opt-letter">A</span><span class="opt-text">The deceased trying to protect themselves — indicating they were alive during the fire</span></div>
+    <div class="option" onclick="answer(this,48,'B')"><span class="opt-letter">B</span><span class="opt-text">Coagulation and shortening of muscle proteins due to intense heat — a postmortem artefact</span></div>
+    <div class="option" onclick="answer(this,48,'C')"><span class="opt-letter">C</span><span class="opt-text">Rigor mortis setting in rapidly due to heat</span></div>
+    <div class="option" onclick="answer(this,48,'D')"><span class="opt-letter">D</span><span class="opt-text">Postmortem trauma from falling debris</span></div>
+  </div>
+  <div class="feedback" id="fb48"></div>
+</div>
+
+<!-- Q49 -->
+<div class="q-card" id="qc49">
+  <div class="q-meta"><span class="q-num">Q 49</span><span class="q-tag">PM Artefacts</span></div>
+  <div class="q-text">A loose, flaccid vaginal introitus with blood-stained discharge found during postmortem examination of a female decomposed body should prompt:</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,49,'A')"><span class="opt-letter">A</span><span class="opt-text">An immediate conclusion of sexual assault</span></div>
+    <div class="option" onclick="answer(this,49,'B')"><span class="opt-letter">B</span><span class="opt-text">Correlation with history, vaginal swab, uterine examination, and histopathology before any conclusion</span></div>
+    <div class="option" onclick="answer(this,49,'C')"><span class="opt-letter">C</span><span class="opt-text">No further investigation needed as it is a normal decomposition finding</span></div>
+    <div class="option" onclick="answer(this,49,'D')"><span class="opt-letter">D</span><span class="opt-text">Reporting to police without autopsy documentation</span></div>
+  </div>
+  <div class="feedback" id="fb49"></div>
+</div>
+
+<!-- Q50 -->
+<div class="q-card" id="qc50">
+  <div class="q-meta"><span class="q-num">Q 50</span><span class="q-tag">PM Artefacts</span></div>
+  <div class="q-text">What is the ultimate medicolegal risk when postmortem artefacts are misidentified?</div>
+  <div class="options">
+    <div class="option" onclick="answer(this,50,'A')"><span class="opt-letter">A</span><span class="opt-text">Delayed release of the body</span></div>
+    <div class="option" onclick="answer(this,50,'B')"><span class="opt-letter">B</span><span class="opt-text">Incorrect insurance payouts</span></div>
+    <div class="option" onclick="answer(this,50,'C')"><span class="opt-letter">C</span><span class="opt-text">Imprisonment of an innocent person / miscarriage of justice</span></div>
+    <div class="option" onclick="answer(this,50,'D')"><span class="opt-letter">D</span><span class="opt-text">Loss of medical licence only</span></div>
+  </div>
+  <div class="feedback" id="fb50"></div>
+</div>
+</div><!-- end mcq-artefacts -->
+
+<!-- ============================================================ SAQ ============================================================ -->
+<div class="unit-div"></div>
+<div class="sec-header" id="saq">
+  <span class="sec-num">Section B</span>
+  <h2 class="sec-title">Short Answer Questions — 30 Questions (5 marks each)</h2>
+</div>
+<p style="color:var(--text2);font-size:13.5px;margin-bottom:1.5rem;">Click "Reveal Answer" after attempting each question. Model answers are provided for self-assessment.</p>
+
+<div id="saq-wounds" style="scroll-margin-top:70px;">
+<p style="color:var(--text3);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;">Unit 1 · Injuries & Wounds · SAQ 1–10</p>
+
+<!-- SAQ 1 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 01</span><span class="sa-points">5 MARKS</span></div><div class="q-text">Define an abrasion and describe the four types of abrasions with examples of each.</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><strong>Definition (1 mark):</strong> An injury involving only the outer layers of the skin, not penetrating the full thickness of the epidermis.<br><br><strong>Four types (1 mark each):</strong><ul><li><strong>Scratch/Linear:</strong> Caused by sharp/pointed object (fingernails, thorns, pins) moving across skin; clean start, tags at end. Seen in throttling, sexual assault, child abuse.</li><li><strong>Graze/Sliding:</strong> Horizontal friction between skin and rough surface; shows parallel longitudinal lines indicating direction of force. Most common type — seen in RTAs.</li><li><strong>Pressure/Crushing:</strong> Direct impact or linear pressure of rough object; crushes superficial cuticle. E.g., noose or ligature marks in hanging/strangulation.</li><li><strong>Imprint/Patterned:</strong> Force applied perpendicular to skin; cuticle bears object's imprint; becomes brownish and parchmentized. E.g., tyre tread, radiator grill, bite marks.</li></ul></div></div>
+
+<!-- SAQ 2 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 02</span><span class="sa-points">5 MARKS</span></div><div class="q-text">Describe the healing process of a bruise and outline the methods used to estimate the age of a bruise.</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><strong>Healing process (3 marks):</strong> Extravasation of blood is followed by an inflammatory reaction causing vasodilation. Macrophages break down haemoglobin to <strong>biliverdin</strong> (green). Biliverdin reductase converts this to <strong>bilirubin</strong> (yellow). Iron released from haemoglobin combines with ferritin → <strong>haemosiderin</strong>. Colour change starts at the periphery and extends inwards.<br><br><strong>Methods of dating (2 marks):</strong><ul><li>Histology (only in postmortem context)</li><li>Colour changes (visual examination)</li><li>Calorimetry</li><li>Spectrophotometry</li></ul><strong>Important caveat:</strong> Reliable microscopic dating is not possible. Only state whether bruise is recent or old.</div></div>
+
+<!-- SAQ 3 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 03</span><span class="sa-points">5 MARKS</span></div><div class="q-text">Compare and contrast the characteristics of incised wounds versus lacerations.</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><ul><li><strong>Causative agent:</strong> Incised — sharp cutting instrument; Laceration — blunt force (shearing/crushing)</li><li><strong>Margins:</strong> Incised — clean-cut, well-defined, everted; Laceration — ragged, irregular, tissue tags, crushed hair bulbs</li><li><strong>Haemorrhage:</strong> Incised — more (vessels cut cleanly); Laceration — less (arteries crushed and clot rapidly)</li><li><strong>Depth:</strong> Incised — deeper at commencement, shallower at end (tailing); Laceration — variable with internal tissue bridges</li><li><strong>Healing:</strong> Both produce permanent scars; vital reaction differentiates antemortem from postmortem</li><li><strong>Forensic:</strong> Incised wounds imply intent (criminal context); suicidal incised wounds show hesitation cuts; lacerations commonly from RTAs and blunt assault</li></ul></div></div>
+
+<!-- SAQ 4 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 04</span><span class="sa-points">5 MARKS</span></div><div class="q-text">What are the characteristics of stab wounds? How does the medicolegal context help determine suicidal versus homicidal intent?</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><strong>Characteristics (3 marks):</strong><ul><li>Depth greater than length and width (key feature)</li><li>Clean inverted margins; everted in fatty areas</li><li>Length slightly less than blade width (skin stretches)</li><li>May have abrasion/bruise at full penetration</li><li>Depth ≤ blade length; may exceed on yielding surfaces</li></ul><strong>Medicolegal context (2 marks):</strong><ul><li><strong>Suicidal:</strong> Accessible body parts (chest, abdomen); direction upward, backward, to the right; hesitation wounds possible; variable depth</li><li><strong>Homicidal:</strong> Inaccessible areas; clothing often involved; multiple wounds; no hesitation pattern</li><li><strong>Accidental:</strong> Rare; history of accident clearly present</li></ul></div></div>
+
+<!-- SAQ 5 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 05</span><span class="sa-points">5 MARKS</span></div><div class="q-text">Describe the features that differentiate an entry wound from an exit wound in a firearm injury.</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><strong>Entry wound features (3 marks):</strong><ul><li>Abrasion collar / contusion ring (always present)</li><li>Grease collar (from barrel lubricant)</li><li>Burning, singeing, blackening at close range</li><li>Powder tattooing at intermediate range</li><li>Cherry red tissues from CO at contact range</li><li>Inverted wound edges</li><li>Wads in wound (shotgun)</li></ul><strong>Exit wound features (2 marks):</strong><ul><li>No abrasion collar, burning, blackening, tattooing</li><li>Everted torn edges with protruding haemorrhagic subcutaneous fat</li><li>Shapes: stellate, circular, cruciate, elliptical, crescent (especially scalp)</li><li>May be larger or irregular if bullet tumbles, deforms, or fragments</li></ul></div></div>
+
+<!-- SAQ 6 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 06</span><span class="sa-points">5 MARKS</span></div><div class="q-text">What is a "shored exit wound"? How is it formed and why is it medicolegally important?</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><strong>Definition (1 mark):</strong> An exit wound that has been supported by a firm surface or object at the time of exit, resulting in a circular or nearly circular defect with a marginal abrasion — mimicking an entry wound.<br><br><strong>Formation (2 marks):</strong> Occurs when a firm object (belt, waistband, brassiere, collar, tie) is pressed against the skin at the exit site, OR when the body is leaning against a hard surface (wall, chair, floor). The support prevents the skin from tearing outward freely.<br><br><strong>Medicolegal importance (2 marks):</strong><ul><li>Can be confused with an entry wound, leading to incorrect conclusion about direction of fire</li><li>May falsely suggest two entry wounds when there is actually one entry and one shored exit</li><li>The number of bullets remaining in the body may be incorrectly calculated</li><li>Context, trajectory, and detailed wound examination must be used to differentiate</li></ul></div></div>
+
+<!-- SAQ 7 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 07</span><span class="sa-points">5 MARKS</span></div><div class="q-text">List and briefly describe the five S's used as a mnemonic for diagnosing suicidal firearm deaths.</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><ul><li><strong>Site (1 mark):</strong> Classical suicidal sites — temple, heart, mouth, chin. These are accessible areas the individual can reach with their own hand.</li><li><strong>Single shot (1 mark):</strong> Suicide typically involves a single gunshot. Multiple shots suggest homicide or accident.</li><li><strong>Scene (1 mark):</strong> Scene is usually calm, locked from inside, with no evidence of struggle or disturbance.</li><li><strong>Suicidal Note (1 mark):</strong> May be present — written note explaining intent. Absence doesn't rule out suicide, but presence strongly supports it.</li><li><strong>Spasm — Cadaveric spasm (1 mark):</strong> This is the hallmark. The weapon remains firmly gripped in the hand at the moment of death due to cadaveric spasm — near impossible to simulate postmortem.</li></ul></div></div>
+
+<!-- SAQ 8 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 08</span><span class="sa-points">5 MARKS</span></div><div class="q-text">Describe the classification of firearm injuries from shotguns based on range, including wound characteristics and mortality at each type.</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><ul><li><strong>Type I — &lt;5 metres (2 marks):</strong> All pellets strike as a single mass; results in massive kinetic energy transfer; tissue avulsion; single large circular wound. Mortality: 85–90%.</li><li><strong>Type II — 5–12 metres (2 marks):</strong> Significant pellet dispersal and loss of kinetic energy; less tissue destruction; may penetrate deep fascia; fractures rare; ocular injuries possible; risk of lead pellet embolisation. Mortality: 15–20%.</li><li><strong>Type III — &gt;12 metres (1 mark):</strong> Usually only skin penetrated; diffuse pellet pattern; no significant deep tissue injury. Mortality: 0–5%.</li></ul></div></div>
+
+<!-- SAQ 9 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 09</span><span class="sa-points">5 MARKS</span></div><div class="q-text">What is the forensic importance of examining the clothing at a medico-legal autopsy?</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><ul><li><strong>Evidence of force/weapon (1 mark):</strong> Cuts, holes, tears, and the pattern of damage may correspond to the weapon used (knife, bullet, blunt object).</li><li><strong>Trace evidence (1 mark):</strong> Hair, fibres, paint chips, glass fragments, vegetation, and insect activity can identify environment of death or contact with a suspect.</li><li><strong>Range of fire (1 mark):</strong> Blackening, burning, and powder tattooing on clothing indicate contact or close-range firearm discharge — even when skin has been cleaned or treated.</li><li><strong>Identity and history (1 mark):</strong> Labels, laundry marks, personal papers, medication in pockets help with identification and medical history.</li><li><strong>Proper handling (1 mark):</strong> Clothing must be removed carefully without tearing; cut away from injury sites if intact removal is impossible; wet clothing air-dried and packed in paper bags (not plastic) to prevent artefactual mould growth.</li></ul></div></div>
+
+<!-- SAQ 10 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 10</span><span class="sa-points">5 MARKS</span></div><div class="q-text">Define the term "kinetic injury" and give examples. How does the area of force application affect wound severity?</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><strong>Definition (1 mark):</strong> Injuries in category 1 (mechanical/physical) — caused by the application of physical force. Contrasted with non-kinetic (thermal, chemical, miscellaneous).<br><br><strong>Examples (2 marks):</strong> Abrasion, bruise/contusion, laceration, incised wound, stab wound, firearm wound, fracture/dislocation of bone or joint.<br><br><strong>Area vs severity (2 marks):</strong> For any given amount of force, the greater the area over which it is delivered, the <strong>less severe</strong> the wound. This applies to both blunt and sharp trauma.<ul><li>Example — blunt force: a broad-surfaced club causes a bruise/laceration; a narrow-tipped weapon concentrates force → deeper penetration</li><li>Example — sharp force: a razor-sharp edge concentrates force on a thin line → deeper incision than a blunt edge applying the same force over a wider area</li></ul></div></div>
+</div>
+
+<!-- SAQ AUTOPSY -->
+<div id="saq-autopsy" style="scroll-margin-top:70px;margin-top:2rem;">
+<p style="color:var(--text3);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;">Unit 2 · Autopsy · SAQ 11–20</p>
+
+<!-- SAQ 11 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 11</span><span class="sa-points">5 MARKS</span></div><div class="q-text">List five objectives of a medico-legal autopsy.</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><ul><li><strong>1 mark each — any five of the following:</strong></li><li>Identify the deceased (decomposed, burnt, mutilated, or unidentified body)</li><li>Determine cause of death (natural or unnatural) and interpret significance of any disease</li><li>Approximate time of death, mode of death, age of injuries, and place of death</li><li>Determine manner of death (accidental, suicidal, or homicidal)</li><li>Identify poison or weapon responsible for death in homicide</li><li>Assess volitional activity possible after trauma and survival time</li><li>Document extent of external and internal injuries</li><li>Determine whether injury was likely to cause death in ordinary course of nature</li><li>In homicide: determine number of persons involved, trace evidence, other related offences</li><li>In newborns: determine live birth and viability</li></ul></div></div>
+
+<!-- SAQ 12 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 12</span><span class="sa-points">5 MARKS</span></div><div class="q-text">Describe the procedure to be followed when a body is received at night for a medico-legal autopsy.</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><ul><li><strong>Preservation (1 mark):</strong> Body preserved at 4°C after noting the date and exact time of receipt.</li><li><strong>Preliminary examination (2 marks):</strong> A preliminary external examination is conducted to document: external appearances; rectal (body) temperature; extent of postmortem staining (lividity); presence and degree of rigor mortis.</li><li><strong>Identification (1 mark):</strong> The police officer accompanying the body and identity details are documented; identification by relatives if possible.</li><li><strong>Full autopsy (1 mark):</strong> The actual full postmortem examination is deferred to the next day in daylight, to allow for accurate assessment of colour changes (jaundice, bruise changes, PM staining).</li></ul></div></div>
+
+<!-- SAQ 13 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 13</span><span class="sa-points">5 MARKS</span></div><div class="q-text">Why is it important that the body should never be embalmed before a medico-legal autopsy? What problems does prior embalming create?</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><ul><li><strong>Histopathological examination becomes impossible (1 mark):</strong> Chemical fixation from embalming fluid alters tissue architecture and cellular morphology, making microscopic examination unreliable.</li><li><strong>Toxicological analysis is compromised (1 mark):</strong> Embalming fluids (formaldehyde, methanol, glycerine) interfere with toxicological tests and may cause false positive or false negative results for drugs and poisons.</li><li><strong>Bruises may be altered (1 mark):</strong> Embalming fluid pressure can extravasate blood from vessels, creating false bruises, or enlarging minor bruises — leading to misinterpretation of assault.</li><li><strong>Wound tracks are distorted (1 mark):</strong> Trochar insertion creates new wounds (potentially mimicking stab/gunshot wounds), and existing wound tracks may be distorted, making it impossible to determine direction of fire or type of weapon.</li><li><strong>Chain of evidence is broken (1 mark):</strong> Evidence within the body (e.g., undigested tablets, retained bullets, trace materials) may be washed out or disturbed during the embalming process.</li></ul></div></div>
+
+<!-- SAQ 14 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 14</span><span class="sa-points">5 MARKS</span></div><div class="q-text">Describe the four types of skin incisions used in autopsy and state the specific indication for each.</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><ul><li><strong>I-shaped (1 mark):</strong> Incision from chin straight down to symphysis pubis, avoiding umbilicus. Most common method used.</li><li><strong>Y-shaped (1 mark):</strong> Straight line from xiphisternum to pubis, with forks running to the chest towards the acromion processes. Standard alternative to I-shaped.</li><li><strong>Modified Y-shaped (2 marks):</strong> Midline from suprasternal notch to symphysis, extending over the clavicle and upward over the neck behind the ears. Used specifically when a detailed study of neck organs is required — such as in cases of hanging or strangulation.</li><li><strong>T-shaped / "bucket handle" (1 mark):</strong> Transverse incision from acromion to acromion along the clavicle line + midline to pubis creating a calyx/U-shape. Used for specific anatomical requirements or when the standard incisions are not appropriate.</li></ul></div></div>
+
+<!-- SAQ 15 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 15</span><span class="sa-points">5 MARKS</span></div><div class="q-text">Compare the four evisceration methods used in autopsy, describing their advantages and disadvantages.</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><ul><li><strong>En masse — Letulle (1 mark):</strong> Most organs removed in one sweep. Advantage: rapid evisceration; leaves all attachments intact. Disadvantage: lengthiest subsequent dissection.</li><li><strong>Virchow's method (1 mark):</strong> Individual organs removed one by one with immediate dissection of each. Advantage: quick and effective for single-organ pathology; good for targeted cases. Disadvantage: inter-organ relationships are disrupted.</li><li><strong>En bloc — Ghon (2 marks):</strong> Compromise between the above two — most widely used in the UK. Advantage: relatively quick; preserves most important inter-organ relationships. Disadvantage: requires more skill than Virchow's.</li><li><strong>In situ — Rokitansky (1 mark):</strong> Organs dissected in place with little evisceration. Advantage: protects staff from highly transmissible diseases; method of choice in such cases. Disadvantage: technically demanding; rarely performed.</li></ul></div></div>
+
+<!-- SAQ 16 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 16</span><span class="sa-points">5 MARKS</span></div><div class="q-text">What is "chain of evidence" in the context of medico-legal autopsies? Why is it important and how is it maintained?</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><strong>Definition (1 mark):</strong> The unbroken documentation and control of all specimens, samples, and items of evidence from the moment of collection at autopsy to their final use in court proceedings.<br><br><strong>Importance (2 marks):</strong> Any break in the chain of evidence renders the specimen inadmissible in court or open to challenge by the defence. Without it, there is no guarantee that the specimen tested was the one collected from the deceased, and evidence of homicide may be dismissed.<br><br><strong>Maintenance (2 marks):</strong><ul><li>Identifying the body by authorized persons before autopsy begins</li><li>All articles (clothes, jewellery, bullets, trace materials) are listed, labelled, sealed, and mentioned in the report</li><li>Specimens handed to the police constable/IO against a signed receipt</li><li>All documentation signed; alterations initialled; nothing erased</li><li>Photographic documentation of major findings</li></ul></div></div>
+
+<!-- SAQ 17 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 17</span><span class="sa-points">5 MARKS</span></div><div class="q-text">What information can be obtained from examining the eyes during the external examination at autopsy?</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><ul><li><strong>Petechial haemorrhages (1 mark):</strong> In the conjunctiva — strongly suggests asphyxial death (throttling, compression asphyxia, strangulation). Also seen in cases of high venous pressure (cardiac failure, severe coughing).</li><li><strong>Pupil state and colour (1 mark):</strong> Dilated fixed pupils suggest death; pin-point pupils may suggest opioid poisoning before death; lens or corneal opacities can indicate underlying disease or time since death.</li><li><strong>Scleral icterus (1 mark):</strong> Yellow discolouration of sclera → jaundice (liver disease, haemolytic conditions).</li><li><strong>Softening of the eyeball (1 mark):</strong> Indicates time since death; occurs as intraocular pressure drops postmortem.</li><li><strong>Contact lenses (1 mark):</strong> May aid in identification; their presence may also contribute to accidents (e.g., distorted vision in road traffic cases).</li><li><strong>Artificial eyes:</strong> Important for identification purposes.</li></ul></div></div>
+
+<!-- SAQ 18 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 18</span><span class="sa-points">5 MARKS</span></div><div class="q-text">Describe the post-autopsy reconstruction of the body and explain why it is important.</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><strong>Importance (1 mark):</strong> Post-autopsy reconstruction must be of a high standard so that the body does not leak and can be viewed by the next of kin without distress. It upholds dignity of the deceased and is a professional obligation.<br><br><strong>Steps (4 marks):</strong><ul><li><strong>Fluid removal:</strong> Residual blood, ascitic/pleural fluid, and bowel contents are aspirated and dried from cavities to prevent leakage.</li><li><strong>Wadding:</strong> Cavities lined with cotton wool or adequate wadding to absorb remaining fluids.</li><li><strong>Viscera containment:</strong> Organs placed in biohazard/clear plastic bags, returned to cavities on top of the wadding. Foreign objects (gloves, syringes) disposed of separately.</li><li><strong>Skull:</strong> Skull cap secured with notches to prevent slippage; brain and dura placed in plastic bag inside cranial cavity; wadding added.</li><li><strong>Suturing:</strong> Continuous or baseball suture using nylon (or cotton for cost-effectiveness). Body then washed with water and disinfectant detergent (hot water avoided to prevent skin damage).</li></ul></div></div>
+
+<!-- SAQ 19 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 19</span><span class="sa-points">5 MARKS</span></div><div class="q-text">What are the indications for a panel (board) of doctors at a medico-legal autopsy? How does the composition of the panel affect its conclusion?</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><strong>Indications for a panel (2 marks):</strong><ul><li>Custodial deaths (deaths in police or prison custody)</li><li>Deaths on the operation table (intraoperative deaths)</li><li>Second autopsies (re-examination where the first autopsy result is contested)</li></ul><strong>Composition rules (2 marks):</strong><ul><li>Two doctors are required for suspicious death of a female within 7 years of marriage (burns or other suspicious cause)</li><li>A panel should ideally have an <strong>odd number of members</strong> so that a majority decision can be reached in case of disagreement</li></ul><strong>Significance (1 mark):</strong> When autopsy surgeons disagree on the cause or manner of death, the majority opinion guides the legal conclusion — an odd-numbered panel always allows for a deciding vote, preventing a deadlock in high-stakes cases such as homicides.</div></div>
+
+<!-- SAQ 20 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 20</span><span class="sa-points">5 MARKS</span></div><div class="q-text">Why should the word "probably" be avoided in an autopsy report? What is the recommended approach when the cause or manner of death cannot be established?</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><strong>Why avoid "probably" (2 marks):</strong><ul><li>Cause and manner of death are opinions, not absolute facts — but they should be stated with professional confidence. The word "probably" introduces ambiguity that can be exploited in legal proceedings.</li><li>A poor, uncertain opinion is far worse than no opinion — it misleads legal authorities rather than informing them. An experienced autopsy surgeon should give the most supportable opinion based on all available evidence.</li></ul><strong>Recommended approach (3 marks):</strong><ul><li>If the cause of death cannot be ascertained: state cause of death as <strong>"undetermined"</strong></li><li>If the manner of death cannot be established: state manner of death as <strong>"unknown"</strong></li><li>Preserve viscera, await laboratory results, and submit a <strong>supplementary/provisional report</strong> if further investigations are pending</li><li>In suspected poisoning: reserve the final opinion until the Chemical Examiner's report is received</li></ul></div></div>
+</div>
+
+<!-- SAQ ARTEFACTS -->
+<div id="saq-artefacts" style="scroll-margin-top:70px;margin-top:2rem;">
+<p style="color:var(--text3);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;">Unit 3 · PM Artefacts · SAQ 21–30</p>
+
+<!-- SAQ 21 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 21</span><span class="sa-points">5 MARKS</span></div><div class="q-text">Define a postmortem artefact and classify them by causative agent, giving examples.</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><strong>Definition (1 mark):</strong> A change or feature that was not physiologically or pathologically present in the body before death, but was caused or introduced after death, leading to confusion about its nature and causing misinterpretation of medicolegally significant findings.<br><br><strong>Classification by causative agent (3 marks — 1 each):</strong><ul><li><strong>Due to postmortem changes:</strong> Rigor mortis variants (heat/cold/gas stiffening), lividity changes, decomposition blisters, marbling, adipocere, mummification</li><li><strong>Third party artefacts:</strong> Animal activity (insect/rodent/bird), criminal mutilation (Kennedy/Rayalaseema), surgical alteration, embalming, handling during transport</li><li><strong>Environmental artefacts:</strong> Post-mortem corrosion by gasoline, burns/heat effects, submersion changes, exhumation damage</li></ul><strong>Medicolegal consequence (1 mark):</strong> Misidentification can lead to wrong conclusions about cause/manner of death and ultimately the imprisonment of innocent persons.</div></div>
+
+<!-- SAQ 22 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 22</span><span class="sa-points">5 MARKS</span></div><div class="q-text">Describe the artefacts that can be produced by CPR and other resuscitation measures, and how they might be misinterpreted.</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><ul><li><strong>Injection sites (1 mark):</strong> Multiple injection marks from IV access/medications may be mistaken for drug abuse marks. History and case sheet essential.</li><li><strong>Defibrillator marks (1 mark):</strong> Paddle/pad burns on the chest simulate antemortem contact abrasions or thermal burns.</li><li><strong>CPR injuries (2 marks):</strong> Rib and sternal fractures; haemothorax; haemopneumothorax from fractured ribs; fat embolism from bone marrow release; lacerations of spleen, liver, and diaphragm from vigorous compressions — all can simulate blunt force assault.</li><li><strong>Positive pressure ventilation (1 mark):</strong> Emphysema and sub-pleural air — may simulate spontaneous pneumothorax or blast injury pathology.</li><li><strong>Endotracheal intubation:</strong> Injuries to larynx and adjacent tissues by inexperienced intubators may simulate throttling.</li></ul></div></div>
+
+<!-- SAQ 23 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 23</span><span class="sa-points">5 MARKS</span></div><div class="q-text">How does postmortem lividity (hypostasis) create medicolegal artefacts? Give examples of how different hypostasis patterns can mislead an autopsy surgeon.</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><strong>Mechanism (1 mark):</strong> After death, blood gravitates to dependent parts due to gravity. When localised or differently coloured due to environment or poisoning, this can simulate pathological conditions.<br><br><strong>Examples of misinterpretation (4 marks — 1 each):</strong><ul><li><strong>Localised lividity → bruise:</strong> Localised pooling of blood in one area can be mistaken for a blunt force contusion</li><li><strong>Heart hypostasis → myocardial infarction:</strong> Blood pooling in the dependent posterior wall of the heart simulates ischaemic discolouration</li><li><strong>Lung hypostasis → pneumonia:</strong> Dependent consolidation from lividity mimics bronchopneumonic consolidation</li><li><strong>Stomach/intestine hypostasis → poisoning/strangulation:</strong> Discolouration of intestine suggests infarcted bowel; stomach discolouration suggests corrosive poisoning</li><li><strong>Pink lividity in refrigerated body → CO poisoning:</strong> The pale pink colour of hypostasis in a refrigerated body can be confused with the cherry-red lividity of carbon monoxide poisoning</li></ul></div></div>
+
+<!-- SAQ 24 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 24</span><span class="sa-points">5 MARKS</span></div><div class="q-text">Differentiate gas stiffening from true rigor mortis. What other conditions mimic rigor mortis, and how are they distinguished?</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><strong>Gas stiffening vs Rigor mortis (2 marks):</strong><ul><li>Gas stiffening: caused by putrefactive gases inflating tissue spaces; no particular order of appearance/disappearance; joints NOT tight (can be moved easily); stiffening disappears when areas are incised; associated with other decomposition changes</li><li>Rigor mortis: predictable cephalocaudal order; joints firmly fixed; resolves in ~36 hours in normal conditions; no tissue inflation</li></ul><strong>Heat stiffening (2 marks):</strong> Occurs at surrounding temperature >65°C; much more marked than rigor mortis; remains until muscles/ligaments soften with decomposition; associated with burns/fire; rigor mortis does NOT occur simultaneously with heat stiffening.<br><br><strong>Cold stiffening (1 mark):</strong> Caused by freezing of body fluids and solidification of subcutaneous fat; resolves when body is placed in warm water to thaw; easily distinguished by context (frozen environment).</div></div>
+
+<!-- SAQ 25 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 25</span><span class="sa-points">5 MARKS</span></div><div class="q-text">Describe the artefacts associated with embalming and their medicolegal significance.</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><ul><li><strong>Trochar insertion wounds (1 mark):</strong> The embalmer's trochar creates wounds from the neck and abdomen that can mimic stab wounds or gunshot wound entry/exit points.</li><li><strong>Wound track distortion (1 mark):</strong> Existing wounds (especially gunshot tracks) can be distorted, and false tracks can be created — making determination of direction of fire impossible or misleading.</li><li><strong>Bruise simulation/exaggeration (1 mark):</strong> High-pressure embalming fluid can extravasate blood from vessels, creating false bruises or enlarging small, pre-existing bruises — leading to over-estimation of assault severity.</li><li><strong>Toxicological interference (1 mark):</strong> Embalming chemicals (formaldehyde, methanol, glycerine) contaminate tissue samples, potentially causing false positive/negative results for drugs, poisons, and alcohol.</li><li><strong>Histological damage (1 mark):</strong> Chemical fixation destroys cellular detail needed for vital reaction assessment, making it impossible to determine whether wounds were inflicted ante- or postmortem by histological means.</li></ul></div></div>
+
+<!-- SAQ 26 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 26</span><span class="sa-points">5 MARKS</span></div><div class="q-text">What are animal-induced postmortem artefacts? How do wounds produced by different animals differ, and how can they be distinguished from antemortem injuries?</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><strong>Key distinguishing feature (1 mark):</strong> Animal-induced postmortem wounds show NO bleeding, no blood clots, and no vital reaction — their absence is the fundamental differentiator from antemortem wounds.<br><br><strong>Patterns by animal (3 marks):</strong><ul><li><strong>Rats/rodents:</strong> Nibbled pale white wounds with gnawing marks; superficial, irregular, scalloped margins</li><li><strong>Dogs/jackals:</strong> Deeper tooth impressions with tearing; may resemble superficial stab injuries</li><li><strong>Ants/insects:</strong> Extensive superficial tissue damage in sandy/moist areas; brown parchmentised areas mimicking abrasions</li><li><strong>Birds/vultures:</strong> Clean circular holes from beaks — highly similar to gunshot entry wounds</li><li><strong>Fish/crabs/aquatic animals:</strong> Damage to soft areas (lips, genitalia, fingers, toes) in drowned bodies</li></ul><strong>Additional differentiation (1 mark):</strong> Pattern of involvement, location on body, context of discovery, absence of haemorrhage/coagulation, and forensic entomology can all aid in distinguishing animal from human-inflicted wounds.</div></div>
+
+<!-- SAQ 27 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 27</span><span class="sa-points">5 MARKS</span></div><div class="q-text">Describe the Kennedy Phenomenon and Rayalaseema Phenomenon. How do they affect forensic investigation?</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><strong>Kennedy Phenomenon (2 marks):</strong> Medico-legal evaluation of a firearm injury made difficult or impossible by surgical alteration or cleaning of the wound. Surgical debridement of gunshot wounds removes gunpowder residue, alters the wound margins, and changes its overall character — as occurred in the J.F. Kennedy assassination case. The original entry/exit characteristics and range estimation become unreliable.<br><br><strong>Rayalaseema Phenomenon (2 marks):</strong> Deliberate criminal mutilation of a firearm injury to conceal its nature. Examples include cutting or stabbing through a gunshot wound to make it appear as a stab wound, or inserting a bullet into a stab wound to suggest a gunshot. This is an intentional act by criminals to obstruct justice and confuse the autopsy surgeon.<br><br><strong>Key difference (1 mark):</strong> Kennedy = medical/surgical (unintentional alteration); Rayalaseema = criminal/deliberate (intentional mutilation). Both compromise the medicolegal investigation of firearm cases.</div></div>
+
+<!-- SAQ 28 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 28</span><span class="sa-points">5 MARKS</span></div><div class="q-text">List the artefacts that can be introduced during the postmortem examination itself, and how the autopsy surgeon can avoid or minimise them.</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><ul><li><strong>Visceral organ injuries (1 mark):</strong> Accidental cuts/tears during dissection may be mistaken for antemortem injuries. Prevention: careful technique; annotate clearly as postmortem artefact in report.</li><li><strong>Skull fracture extension (1 mark):</strong> Saw artefacts during skull opening may extend existing antemortem fractures, distorting the fracture pattern. Prevention: careful sawing; photograph fractures before any cutting.</li><li><strong>Hyoid/thyroid fracture (1 mark):</strong> Forceful extraction of neck organs can fracture the hyoid or thyroid cartilage — simulating manual strangulation. Prevention: extreme caution when removing neck structures; consider in-situ dissection of neck in strangulation cases.</li><li><strong>Blood oozing into neck (1 mark):</strong> Blood from vessels may seep into neck dissection planes during evisceration, simulating antemortem haemorrhage. Prevention: open the skull and drain blood from neck vessels before dissecting the neck.</li><li><strong>Rib fractures in elderly (1 mark):</strong> Osteoporotic ribs may fracture during chest opening or body handling, being mistaken for blunt trauma fractures. Prevention: note bone quality; gentle technique; comment on bone density in report.</li></ul></div></div>
+
+<!-- SAQ 29 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 29</span><span class="sa-points">5 MARKS</span></div><div class="q-text">How can decomposition artefacts cause misinterpretation in a medico-legal autopsy? Give five specific examples.</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><p>1 mark each for any five well-explained examples:</p><ul><li><strong>Postmortem blisters → antemortem burns:</strong> Gas-filled blisters from putrefactive gases under the epidermis look identical to thermal burn blisters; histology differentiates (PM blisters lack vital reaction)</li><li><strong>Blood-stained froth from nose/mouth → pulmonary oedema or head injury:</strong> Decomposition gases force bloody fluid upward; context (history, scene) and other findings needed</li><li><strong>False groove on neck from tight collar → strangulation:</strong> A tight shirt collar/neck tie can leave a groove in the neck during decomposition that mimics a ligature mark; absence of ecchymosis in the groove helps differentiate</li><li><strong>Rupture of oesophagus/stomach from gastric juices → corrosive acid poisoning:</strong> Postmortem self-digestion (autolysis) by gastric acid can perforate the stomach wall; absence of vital reaction in the margins and chemical analysis clarify</li><li><strong>Loose flaccid vaginal introitus with blood-stained discharge → sexual assault:</strong> Normal decomposition changes in female genitalia; full forensic workup (swabs, histopathology) required before any conclusion</li><li><strong>Marbling → bruising:</strong> The greenish-black network pattern from haemolysed blood in decomposing vessels follows vessel anatomy; bruises are irregular and non-vascular in distribution</li></ul></div></div>
+
+<!-- SAQ 30 -->
+<div class="sa-card"><div class="q-meta"><span class="q-num">SAQ 30</span><span class="sa-points">5 MARKS</span></div><div class="q-text">What are the medicolegal consequences of failing to recognise postmortem artefacts? What qualities in an autopsy surgeon minimise this risk?</div><button class="sa-reveal-btn" onclick="revealSAQ(this)">Reveal Answer</button><div class="sa-answer"><strong>Medicolegal consequences (3 marks):</strong><ul><li>Wrong conclusion as to cause of death (e.g., declaring natural death when it was homicide, or vice versa)</li><li>Incorrect determination of manner of death (accidental vs suicidal vs homicidal)</li><li>Misidentifying antemortem vs postmortem wounds — falsely implicating injury in death</li><li>Unjustified suspicion of foul play — police investigating innocent persons</li><li>Misguided direction to the investigating officer, wasting investigative resources</li><li><strong>Ultimate consequence: Imprisonment of an innocent person — miscarriage of justice</strong></li></ul><strong>Qualities that minimise risk (2 marks):</strong><ul><li><strong>Ability and knowledge:</strong> Deep understanding of normal postmortem phenomena, decomposition patterns, and the full spectrum of artefacts</li><li><strong>Dedication:</strong> Thorough, systematic examination — not taking shortcuts</li><li><strong>Wisdom:</strong> Correlating gross findings with history, scene evidence, case sheet, laboratory results, and clinical context before reaching any conclusion</li><li><strong>Intellectual humility:</strong> Willingness to state "undetermined" rather than force an uncertain conclusion</li></ul></div></div>
+</div>
+
+<!-- ============================================================ CASE STUDIES ============================================================ -->
+<div class="unit-div"></div>
+<div class="sec-header" id="case">
+  <span class="sec-num">Section C</span>
+  <h2 class="sec-title">Case Study Questions — 5 Questions (20 marks each)</h2>
+</div>
+<p style="color:var(--text2);font-size:13.5px;margin-bottom:1.5rem;">Each case study carries 20 marks. Read the scenario carefully, answer all sub-parts, then reveal the model answer for self-assessment.</p>
+
+<!-- CASE 1 -->
+<div class="case-card" id="case1">
+  <div class="case-banner"><span class="case-badge">CASE STUDY 01</span><span class="case-marks">20 MARKS</span></div>
+  <div class="case-body">
+    <div class="case-scenario"><em>Scenario:</em> A 45-year-old male is found dead on a roadside. He has multiple injuries. On examination of the body: there is a 4 cm × 3 cm area of dark brown parchment-like change on the forehead; a 6 cm × 4 cm purple discolouration on the right shoulder (margins blurred, situated in subcutaneous fatty layer); a 5 cm ragged wound on the scalp with irregular margins, tissue tags, crushed hair bulbs, and minimal bleeding; and an area of skin showing parallel longitudinal lines with epidermis heaped at one end on the left arm.</div>
+    <div class="case-parts">
+      <div class="case-part"><span>Part A (4 marks)</span>Identify and classify each of the four injuries described.</div>
+      <div class="case-part"><span>Part B (4 marks)</span>Describe the medicolegal significance of each injury finding in the context of determining manner of death.</div>
+      <div class="case-part"><span>Part C (4 marks)</span>The shoulder discolouration shows colour changes to yellow at the periphery. Explain the biochemical basis of this colour change and what it tells you about the age of the injury.</div>
+      <div class="case-part"><span>Part D (4 marks)</span>Describe how the scalp wound should be examined, documented, and what complications of such wounds are known.</div>
+      <div class="case-part"><span>Part E (4 marks)</span>What questions should the autopsy surgeon ask when evaluating whether these injuries are consistent with a road traffic accident?</div>
+    </div>
+    <button class="case-reveal-btn" onclick="revealCase(this)">Reveal Model Answer</button>
+    <div class="case-answer">
+      <h4>Part A — Injury Identification (4 marks)</h4>
+      <ul><li><strong>Forehead:</strong> Antemortem abrasion — specifically an imprint/pressure abrasion (dark brown parchment-like = characteristic of antemortem abrasion with dried crust)</li><li><strong>Right shoulder:</strong> Subcutaneous bruise/contusion — blurred edges and subcutaneous fatty layer location are characteristic features</li><li><strong>Scalp wound:</strong> Laceration (split type) — ragged margins, tissue tags, crushed hair bulbs, minimal bleeding are hallmarks of blunt force laceration</li><li><strong>Left arm:</strong> Graze abrasion (sliding/scrape) — parallel longitudinal lines with epidermis heaped at one end indicating direction of force; most common in RTAs</li></ul>
+      <h4>Part B — Medicolegal Significance (4 marks)</h4>
+      <ul><li><strong>Parchment abrasion on forehead:</strong> Indicates the precise point of impact; direction of force can be inferred; antemortem (dark brown, parchment) vs postmortem (pale yellow) helps confirm injuries occurred before death</li><li><strong>Subcutaneous bruise:</strong> Confirms blunt force trauma occurred before death; subcutaneous location means it appeared soon after impact; absent vital reaction would indicate postmortem</li><li><strong>Scalp laceration:</strong> Indicates significant blunt force applied to the head; tissue tags and crushed hair bulbs confirm blunt (not sharp) force; antemortem vital reaction (bruising at margins) to be confirmed histologically</li><li><strong>Graze abrasion:</strong> Epidermis heaped at one end indicates direction of drag; strongly consistent with RTA where the body slides across the road surface; embedded glass or gravel can confirm vehicular involvement</li></ul>
+      <h4>Part C — Biochemical Basis of Colour Change (4 marks)</h4>
+      <p>The bruise heals through the following sequence: Haemoglobin released from lysed red cells → broken down by macrophages to <strong>biliverdin</strong> (green) → converted by biliverdin reductase enzyme to <strong>bilirubin</strong> (yellow). Separately, iron released from haemoglobin combines with ferritin → <strong>haemosiderin</strong> (brown). Colour change starts at the periphery and extends inwards. The peripheral yellow colour (bilirubin) indicates the bruise is in the resolving phase — generally several days to a week old, though exact timing is unreliable. Only "recent" vs "old" should be stated formally.</p>
+      <h4>Part D — Examination and Documentation of Scalp Wound (4 marks)</h4>
+      <ul><li>If injuries are obscured by hair, the area should be shaved before detailed examination</li><li>Document: type/nature, size (L×B×D), shape, site (two anatomical landmarks), direction of force application, margins/edges/base, distance from heel, vital reaction</li><li>Deep or penetrating wounds should NOT be probed until the body is internally examined (to preserve wound track)</li><li>Photograph with measuring scale and unique autopsy number before any dissection</li><li><strong>Complications:</strong> Haemorrhage is profuse in scalp because temporal arteries are firmly bound and cannot retract; risk of intracranial injury (skull fracture, epidural/subdural haematoma); risk of infection with permanent scarring</li></ul>
+      <h4>Part E — RTA Consistency Assessment (4 marks)</h4>
+      <ul><li>Are the injuries consistent with the pattern of a vehicle impact? (Primary: contact injuries from the vehicle; secondary: fall to the ground; tertiary: dragging over the road surface)</li><li>Is there embedded glass, gravel, or paint material in the wounds matching the scene?</li><li>What is the distribution of injuries — are they consistent with the alleged mechanism? (e.g., bilateral or multiple injuries from rolling suggest dragging)</li><li>Is there any injury to the lower limbs consistent with bumper contact at a specific height?</li><li>Are there any injuries inconsistent with RTA that suggest assault before the body was placed on the road?</li><li>Scene examination: blood, skid marks, vehicle paint transfer, position of body on road</li></ul>
+    </div>
+  </div>
+</div>
+
+<!-- CASE 2 -->
+<div class="case-card" id="case2">
+  <div class="case-banner"><span class="case-badge">CASE STUDY 02</span><span class="case-marks">20 MARKS</span></div>
+  <div class="case-body">
+    <div class="case-scenario"><em>Scenario:</em> A 30-year-old male is brought to the mortuary. He was found in his locked bedroom with a gunshot wound to the right temple. A revolver is found tightly clasped in his right hand. The wound at the temple is circular with an abrasion collar, grease collar, and evidence of burning and blackening of surrounding skin. On the left side of the head there is a larger, irregular wound with everted, torn edges. No suicide note was found.</div>
+    <div class="case-parts">
+      <div class="case-part"><span>Part A (5 marks)</span>Describe the features of the right temple wound and classify it. At what range was the shot fired? Justify your answer.</div>
+      <div class="case-part"><span>Part B (5 marks)</span>Describe the left-sided head wound. What is it? What variations in its shape can occur and why?</div>
+      <div class="case-part"><span>Part C (5 marks)</span>Using the "5 S's" mnemonic, assess whether this death is consistent with suicide. What is the significance of the revolver being tightly clasped?</div>
+      <div class="case-part"><span>Part D (5 marks)</span>If this case is taken to court and the defence argues that the surgical team cleaned the wound at a hospital before the patient died, what phenomenon does this describe? How does it affect the forensic investigation?</div>
+    </div>
+    <button class="case-reveal-btn" onclick="revealCase(this)">Reveal Model Answer</button>
+    <div class="case-answer">
+      <h4>Part A — Right Temple Wound Classification & Range (5 marks)</h4>
+      <p><strong>Classification: Entry wound</strong> (2 marks) — Features present: circular hole with abrasion collar (epidermis scraped as bullet enters), grease collar (from barrel lubricant), burning and blackening of surrounding skin.</p>
+      <p><strong>Range: Contact to close range (within 15 cm)</strong> (3 marks) — The presence of burning and blackening indicates the muzzle was within approximately 6–15 cm of the skin. At tight contact range there would also be muzzle imprint and cherry red tissues; blackening without tattooing suggests slightly farther than true contact but within close range. Powder tattooing alone (without blackening) would indicate 15–30 cm. At distances >40 cm, only the abrasion collar remains.</p>
+      <h4>Part B — Left Head Wound (5 marks)</h4>
+      <p><strong>Classification: Exit wound</strong> (1 mark)</p>
+      <p><strong>Characteristics (2 marks):</strong> Larger and more irregular than entry wound; everted, torn edges; haemorrhagic subcutaneous tissue may protrude; absence of abrasion collar, burning, blackening, tattooing.</p>
+      <p><strong>Variations in shape and reasons (2 marks):</strong></p>
+      <ul><li>Stellate/cruciate — common on the scalp due to splitting forces as bullet exits through the rigid skull</li><li>Larger/more destructive — if bullet tumbled inside and exits non-nose-first</li><li>Multiple fragments — if bullet breaks up inside, creating multiple small exit points</li><li>Shored exit wound — circular with abrasion margin if the scalp was pressed against a hard surface at exit</li><li>Elliptical — if bullet exits at an oblique angle</li></ul>
+      <h4>Part C — Assessment Against 5 S's (5 marks)</h4>
+      <ul><li><strong>Site (1 mark):</strong> Right temple — classical suicidal site. Consistent with suicide.</li><li><strong>Single shot (1 mark):</strong> Only one entry wound described. Consistent with suicide.</li><li><strong>Scene (1 mark):</strong> Found in a locked bedroom with no disturbance described — strongly consistent with suicide.</li><li><strong>Suicidal note (0.5 mark):</strong> Absent — does not exclude suicide; approximately 25–30% of suicides do not leave notes.</li><li><strong>Spasm — Cadaveric spasm (1.5 marks):</strong> The revolver tightly clasped in the right hand is the <strong>hallmark finding</strong>. Cadaveric spasm occurs at the instant of death, locking the hand in its final position. It cannot be simulated postmortem by placing a weapon in a relaxed hand — the grip strength pattern in genuine cadaveric spasm is different from postmortem placement.</li></ul>
+      <p><strong>Overall assessment:</strong> All five of the S's are satisfied (the absent suicide note is not disqualifying). The findings are highly consistent with a suicidal gunshot wound.</p>
+      <h4>Part D — Kennedy Phenomenon (5 marks)</h4>
+      <p><strong>Phenomenon: Kennedy Phenomenon</strong> (1 mark) — Medico-legal evaluation of a firearm injury made difficult by surgical cleaning, debridement, or alteration of the wound.</p>
+      <p><strong>How it occurs (2 marks):</strong> Surgical debridement removes gunpowder residue (soot, unburnt particles) from the wound margins and surrounding skin. Suturing closes and distorts the wound opening. The original wound dimensions, shape, and range-indicating features (blackening, tattooing, burning) are partially or entirely destroyed.</p>
+      <p><strong>Effect on forensic investigation (2 marks):</strong><ul><li>Range estimation becomes unreliable or impossible — defence can argue it was a distant shot (homicide) rather than close-range (suicide)</li><li>Entry/exit distinction may be obscured after suturing</li><li>Histological vital reaction in the wound margins is altered by surgical manipulation</li><li>Named after the J.F. Kennedy assassination case where surgical intervention at Parkland Memorial Hospital altered the wound characteristics, leading to decades of forensic controversy</li><li>Autopsy surgeon must note in the report that the wound was surgically altered and qualify all range estimates accordingly</li></ul></p>
+    </div>
+  </div>
+</div>
+
+<!-- CASE 3 -->
+<div class="case-card" id="case3">
+  <div class="case-banner"><span class="case-badge">CASE STUDY 03</span><span class="case-marks">20 MARKS</span></div>
+  <div class="case-body">
+    <div class="case-scenario"><em>Scenario:</em> A 28-year-old female is found dead at home. On external examination: there is a ligature mark around the neck; multiple small crescent-shaped abrasions are present on the neck; there is petechiae in the conjunctivae bilaterally; the face appears cyanosed. Her husband states she died from a fall down the stairs. When the body is brought for autopsy, it is noted the body had been embalmed by the family before the police could intervene.</div>
+    <div class="case-parts">
+      <div class="case-part"><span>Part A (5 marks)</span>Classify the abrasions on the neck. What type of violence do they suggest, and what is their significance in determining manner of death?</div>
+      <div class="case-part"><span>Part B (5 marks)</span>Describe the significance of conjunctival petechiae and cyanosis in this case. What mechanism produces these findings?</div>
+      <div class="case-part"><span>Part C (5 marks)</span>The body has been embalmed. List the specific problems this creates for this particular case, and what the autopsy surgeon can still document.</div>
+      <div class="case-part"><span>Part D (5 marks)</span>During autopsy, the neck organs are being extracted and a thyroid cartilage fracture is found. How do you distinguish whether this is antemortem (caused by strangulation) or a postmortem artefact introduced during the autopsy?</div>
+    </div>
+    <button class="case-reveal-btn" onclick="revealCase(this)">Reveal Model Answer</button>
+    <div class="case-answer">
+      <h4>Part A — Neck Abrasion Classification (5 marks)</h4>
+      <p><strong>Type of abrasion (2 marks):</strong> Crescent-shaped abrasions are scratch/linear abrasions caused by fingernails (nails have a curved shape producing crescent marks). These are a specific sub-type of scratch abrasion.</p>
+      <p><strong>Violence suggested (2 marks):</strong> Fingernail abrasions on the neck are characteristic of <strong>manual strangulation (throttling)</strong>. They can be produced by the victim's own nails (trying to remove the assailant's grip) or by the assailant's nails during grip.</p>
+      <p><strong>Significance in manner of death (1 mark):</strong> These are highly specific indicators of assault and are inconsistent with a fall down the stairs. They indicate external application of force to the neck — strongly supporting homicide.</p>
+      <h4>Part B — Petechiae and Cyanosis (5 marks)</h4>
+      <p><strong>Mechanism (3 marks):</strong> In strangulation, external compression of the neck causes: (1) obstruction of venous outflow (jugular veins compressed) while arterial inflow continues briefly → rapid rise in venous/capillary pressure above the level of constriction → rupture of small capillaries → petechiae. Cyanosis results from failure of oxygenated blood to reach the brain and facial tissues combined with venous congestion → deoxyhaemoglobin accumulation → blue discolouration.</p>
+      <p><strong>Significance (2 marks):</strong> Bilateral conjunctival petechiae in the context of a neck ligature mark and fingernail abrasions strongly support asphyxial death from strangulation. Petechiae are also seen in other forms of asphyxia (hanging, smothering, choking) and occasionally in severe cardiac failure or coughing — but in this context, the combination of findings is specific. A fall down the stairs would not typically produce this pattern.</p>
+      <h4>Part C — Problems from Embalming (5 marks)</h4>
+      <p><strong>Specific problems in this case (4 marks):</strong></p>
+      <ul><li><strong>Bruise alteration:</strong> Embalming fluid pressure can extravasate blood, creating false bruises on the neck or enlarging any existing petechiae/bruising — making it impossible to accurately map the strangulation grip</li><li><strong>Toxicological interference:</strong> If the husband had administered poison (possible in suspected domestic violence), embalming chemicals now contaminate all visceral samples</li><li><strong>Histological damage:</strong> Vital reaction in wounds and petechiae cannot be reliably assessed histologically after embalming — impossible to determine if injuries were truly antemortem</li><li><strong>Wound track distortion:</strong> Trochar insertion creates new neck wounds potentially obscuring the original injury pattern</li></ul>
+      <p><strong>What can still be documented (1 mark):</strong> The ligature mark pattern (if clearly defined), macroscopic findings of petechiae (if still visible), external injury pattern, and any retained foreign trace evidence. Careful documentation with photography of all remaining findings is essential.</p>
+      <h4>Part D — Antemortem vs Postmortem Thyroid Fracture (5 marks)</h4>
+      <p><strong>Antemortem fracture (strangulation) features (3 marks):</strong></p>
+      <ul><li>Haemorrhage into the fracture site and surrounding soft tissues (vital reaction) — even if embalming has occurred, large haematomas may still be grossly visible</li><li>Petechial haemorrhages in surrounding laryngeal mucosa</li><li>Histology: inflammatory cells, red cell extravasation into fracture margins (though compromised by embalming)</li><li>Surrounding muscle oedema and haemorrhage</li></ul>
+      <p><strong>Postmortem artefact features (2 marks):</strong></p>
+      <ul><li>No haemorrhage at the fracture site (vessels do not bleed postmortem without cardiac pumping)</li><li>Clean fracture margins without tissue reaction</li><li>Fracture pattern consistent with the direction of neck organ removal (pathologists extend the head during neck dissection → force applied posteriorly at C6–C7 and indirectly to the larynx)</li><li>Note: In elderly individuals, even minimal dissection force can fracture calcified thyroid cartilage — especially important to document bone quality</li></ul>
+    </div>
+  </div>
+</div>
+
+<!-- CASE 4 -->
+<div class="case-card" id="case4">
+  <div class="case-banner"><span class="case-badge">CASE STUDY 04</span><span class="case-marks">20 MARKS</span></div>
+  <div class="case-body">
+    <div class="case-scenario"><em>Scenario:</em> An unidentified severely decomposed body is found in a shallow grave in a forest area 3 weeks after a person was reported missing. On exhumation, the body shows greenish-black vessel outlines visible through the skin, bloating with gas, and blistering of the skin. Multiple wounds are found: some are pale white nibbled areas on the face; one is a 2 cm circular hole on the scalp with blackened edges; and bone fragments are scattered around. Insects are present throughout.</div>
+    <div class="case-parts">
+      <div class="case-part"><span>Part A (5 marks)</span>Identify the decomposition features described and explain what each indicates about the postmortem interval and environment.</div>
+      <div class="case-part"><span>Part B (5 marks)</span>Examine the wounds: classify the pale white nibbled areas, the circular scalp wound, and the scattered bone fragments. What are their possible origins and what artefacts must be considered?</div>
+      <div class="case-part"><span>Part C (5 marks)</span>What are the specific challenges of performing an autopsy on this decomposed exhumed body? Describe the precautions and special techniques used.</div>
+      <div class="case-part"><span>Part D (5 marks)</span>How can forensic entomology assist in this case? What specimens should be collected and what information can they provide?</div>
+    </div>
+    <button class="case-reveal-btn" onclick="revealCase(this)">Reveal Model Answer</button>
+    <div class="case-answer">
+      <h4>Part A — Decomposition Features (5 marks)</h4>
+      <ul><li><strong>Greenish-black vessel outlines through skin — Marbling (2 marks):</strong> Caused by haemolysis of red cells; haemoglobin from lysed cells tracks along blood vessels, staining skin in a network pattern. Indicates early-to-mid putrefaction; develops within days to 1–2 weeks depending on temperature. This is a decomposition artefact — must not be mistaken for bruising or trauma.</li><li><strong>Bloating / gas distension (2 marks):</strong> Putrefactive bacteria produce gases (H₂S, CO₂, methane) that inflate the body cavities and tissue spaces. The body in early stages may appear obese (swollen oedematous corpulent) — must not be mistaken for antemortem obesity. Gas in tissues creates "gas stiffening" which can simulate rigor mortis.</li><li><strong>Skin blistering (1 mark):</strong> Postmortem blisters form as putrefactive gases accumulate under the epidermis, separating it from the dermis. Must not be confused with antemortem burn or scald blisters — differentiated by histology (absence of vital reaction in PM blisters).</li></ul>
+      <h4>Part B — Wound Classification (5 marks)</h4>
+      <ul><li><strong>Pale white nibbled areas on face (2 marks):</strong> Animal-induced artefacts — most consistent with rodent activity (rats) which produce nibbled pale white wounds with gnawing marks. Alternatively, insect/arthropod activity at moist areas. Key feature: no bleeding, no blood clots, no vital reaction. These must not be interpreted as antemortem assault injuries.</li><li><strong>Circular scalp hole with blackened edges (2 marks):</strong> Could be: (1) gunshot entry wound — would require careful examination for abrasion collar even in decomposed state; OR (2) postmortem vulture/bird activity — birds create circular holes from their beaks that closely resemble gunshot entries; OR (3) maggot/putrefaction-produced hole with darkened rim from decomposition. Differentiating features: abrasion collar, bone fracture pattern, retained bullet/fragments — radiological examination mandatory.</li><li><strong>Scattered bone fragments (1 mark):</strong> Could be from exhumation (digging damage), animal scattering, or perimortem blunt force trauma. Exhumation artefact — digging may produce postmortem bone fractures that must be distinguished from perimortem injuries (perimortem fractures show specific green bone characteristics).</li></ul>
+      <h4>Part C — Autopsy Challenges and Techniques (5 marks)</h4>
+      <ul><li><strong>Identification challenges (1 mark):</strong> Standard identification methods unavailable — must use dental records, DNA, fingerprints (if fingerprint preservation is possible), anthropological assessment, jewellery/clothing, implants/prosthetics</li><li><strong>PPE and biohazard precautions (1 mark):</strong> Full PPE (gloves, mask, face shield, coveralls) required; decomposed bodies carry significant infection risk; autopsy should be performed in well-ventilated/negative-pressure environment</li><li><strong>Artefact recognition (1 mark):</strong> All changes must be carefully assessed — the autopsy surgeon must have comprehensive knowledge of decomposition changes to separate genuine injuries from artefacts (marbling, blistering, gas stiffening, skin slippage)</li><li><strong>Radiological examination (1 mark):</strong> Mandatory in this case (suspected gunshot wound, bone fragments); full body X-ray before any incision to locate bullets, foreign bodies, identify perimortem fractures and decomposition-related changes</li><li><strong>Scene and anthropological expertise (1 mark):</strong> Forensic anthropologist to assess skeletal remains; forensic entomologist for insect evidence; detailed documentation of body position, burial depth, orientation, associated evidence, soil samples</li></ul>
+      <h4>Part D — Forensic Entomology (5 marks)</h4>
+      <p><strong>Role (1 mark):</strong> Forensic entomology uses insect succession patterns on decomposing bodies to estimate the postmortem interval (PMI) — how long ago the person died. Insects colonise bodies in a predictable sequence depending on species, season, and environment.</p>
+      <p><strong>Specimens to collect (2 marks):</strong></p>
+      <ul><li>Live larvae (maggots) of all sizes from different body regions — preserved in 75–80% ethanol for identification AND kept alive for rearing to adult for species identification</li><li>Adult insects present at the scene</li><li>Pupae and pupal casings (indicate previous fly generations)</li><li>Soil samples from beneath the body — contain puparia of earlier colonisers that have already completed their cycle</li><li>Record ambient temperature, soil temperature, maggot mass temperature, and GPS coordinates</li></ul>
+      <p><strong>Information provided (2 marks):</strong></p>
+      <ul><li>PMI estimation: the oldest insect species identified indicates the minimum time since death (first colonisers arrive within hours of death)</li><li>Whether the body was moved postmortem: presence of insect species inconsistent with the location suggests the body was moved after initial colonisation elsewhere</li><li>Season/environment of death: species composition reveals whether death occurred indoors vs outdoors, in a different geographic region, or under different seasonal conditions</li><li>Whether the body was covered/disturbed: delayed colonisation patterns suggest wrapping or burial occurred soon after death</li></ul>
+    </div>
+  </div>
+</div>
+
+<!-- CASE 5 -->
+<div class="case-card" id="case5">
+  <div class="case-banner"><span class="case-badge">CASE STUDY 05</span><span class="case-marks">20 MARKS</span></div>
+  <div class="case-body">
+    <div class="case-scenario"><em>Scenario:</em> A 55-year-old male is found dead in his home. He lives alone. Police describe the scene as a "locked room." The body is supine on the floor. On examination: face is cyanosed; there is a pale yellow discolouration on the right cheek (no parchment, no scab); cherry-red discolouration of the postmortem lividity on the back; a 3 cm wound on the left forearm described as "clean-cut with well-defined margins, greater length than depth, deeper at one end, shallower at the other." Police speculate he was "attacked." Temperature data from the body suggests death occurred 3 days ago. The home had a gas boiler reported as faulty by a neighbour.</div>
+    <div class="case-parts">
+      <div class="case-part"><span>Part A (4 marks)</span>Analyse the pale yellow discolouration on the right cheek. Is it an antemortem or postmortem abrasion? How do you differentiate?</div>
+      <div class="case-part"><span>Part B (5 marks)</span>Interpret the cherry-red lividity. What does it indicate, and how does the faulty gas boiler factor into your assessment?</div>
+      <div class="case-part"><span>Part C (5 marks)</span>Examine the forearm wound. Classify it, describe its characteristics, and determine whether it is consistent with assault (homicidal), suicide, or accident.</div>
+      <div class="case-part"><span>Part D (3 marks)</span>The police conclude "murder." Based on your autopsy findings, what is the most likely manner of death? Justify your answer and describe what additional investigations you would order.</div>
+      <div class="case-part"><span>Part E (3 marks)</span>A neighbour suggests that the wound on the forearm looks similar to "injection marks from drug use." How would you distinguish incised wounds from needle injection marks at autopsy?</div>
+    </div>
+    <button class="case-reveal-btn" onclick="revealCase(this)">Reveal Model Answer</button>
+    <div class="case-answer">
+      <h4>Part A — Cheek Abrasion Analysis (4 marks)</h4>
+      <p><strong>Classification: Postmortem abrasion (2 marks)</strong> — Pale yellow colour with no parchment-like darkening and no scab formation are the hallmarks of a <strong>postmortem abrasion</strong>. An antemortem abrasion would show dark brown parchment-like appearance (from drying and vital reaction), scab formation in older injuries, possible bleeding surface if fresh, and healing evidence. In postmortem abrasions, there is no vital reaction, no healing, and no scab — just pale yellow desiccation.</p>
+      <p><strong>Medicolegal implication (2 marks):</strong> The pale yellow postmortem abrasion on the right cheek was likely caused after death — possibly from the body sliding or being moved, or contact with the floor during decomposition. This injury cannot be attributed to an assailant as a cause of the death. Police speculation of "attack" based on this finding is incorrect — it is a postmortem artefact from handling or body position.</p>
+      <h4>Part B — Cherry-Red Lividity Interpretation (5 marks)</h4>
+      <p><strong>Significance of cherry-red colour (2 marks):</strong> Cherry-red postmortem lividity is characteristic of <strong>carbon monoxide (CO) poisoning</strong>. CO binds haemoglobin with 240× the affinity of oxygen, forming carboxyhaemoglobin (COHb) which is bright cherry red in colour. This colour is retained in lividity even after death.</p>
+      <p><strong>Differential — refrigeration (1 mark):</strong> Pink lividity can also occur in refrigerated bodies — but this body has been dead for 3 days at room temperature, making refrigeration-related pink colour very unlikely. Cherry red (vs pale pink) and the context strongly point to CO.</p>
+      <p><strong>Gas boiler connection (2 marks):</strong> A faulty gas boiler is a major source of CO — incomplete combustion of natural gas produces CO. A locked room with a faulty boiler creates a closed environment where CO accumulates to fatal levels. This is entirely consistent with <strong>accidental CO poisoning</strong>. The boiler must be inspected, tested for CO emission levels, and documented as part of the investigation.</p>
+      <h4>Part C — Forearm Wound Analysis (5 marks)</h4>
+      <p><strong>Classification: Incised wound (1 mark)</strong></p>
+      <p><strong>Characteristics consistent with description (2 marks):</strong> Clean-cut with well-defined margins (characteristic of sharp weapon); greater length than depth; deeper at one end ("head of wound") and shallowing progressively toward the other end ("tailing of wound").</p>
+      <p><strong>Medicolegal context (2 marks):</strong></p>
+      <ul><li><strong>Suicidal:</strong> Location on the forearm is consistent with suicide (accessible area). The pattern of deeper at commencement with tailing is a characteristic of voluntary self-infliction. Hesitation cuts (multiple tentative wounds) may also be present. This is a common site for suicidal incised wounds.</li><li><strong>Homicidal:</strong> Less likely — homicidal incised wounds are typically in inaccessible areas; they tend to be more random; the forearm is a classic suicidal site not a homicidal target site. However, defence wounds on the forearm would be more irregular.</li><li><strong>Accidental:</strong> Unlikely to produce a single clean incised wound with tailing on the volar forearm.</li></ul>
+      <h4>Part D — Manner of Death Assessment (3 marks)</h4>
+      <p><strong>Most likely manner: Accidental CO poisoning with possible concurrent suicide attempt</strong></p>
+      <ul><li>Cherry-red lividity + faulty gas boiler + locked room + found supine = classic accidental CO poisoning scenario</li><li>The incised forearm wound may represent a concurrent suicide attempt — but CO poisoning may have caused death before blood loss from the wound became fatal</li><li><strong>Additional investigations (1 mark):</strong> Carboxyhaemoglobin level in blood (COHb >50% is typically fatal); toxicology screen for drugs and alcohol; gas boiler CO emission testing; scene investigation for CO detector absence; histology of forearm wound for vital reaction (to establish whether cut was made before or at the time of death)</li></ul>
+      <h4>Part E — Incised Wound vs Injection Marks (3 marks)</h4>
+      <ul><li><strong>Shape and margins (1 mark):</strong> Incised wounds are elongated with clean-cut, well-defined margins and measurable length and depth; injection marks are puncture wounds — round to oval, small (1–3 mm diameter), with no significant length</li><li><strong>Surrounding changes (1 mark):</strong> Chronic injection sites show surrounding fibrosis, hyperpigmentation, track marks (linear fibrotic cords along veins), and collapsed veins; single incised wounds do not. Fresh injection sites may show bruising around the puncture.</li><li><strong>Distribution (1 mark):</strong> Injection marks are typically multiple and clustered along vein distributions (antecubital fossa, dorsum of hand, groin); suicidal incised wounds are typically on the volar forearm or wrist, parallel or slightly diagonal, often with multiple shallow hesitation cuts alongside a deeper definitive cut</li></ul>
+    </div>
+  </div>
+</div>
+
+<div style="height:4rem;"></div>
+</main>
+</div>
+
+<script>
+// MCQ ANSWER DATA — correct answers
+const answers = {
+  1:'B',2:'C',3:'B',4:'B',5:'B',6:'B',7:'C',8:'B',9:'B',10:'C',
+  11:'C',12:'B',13:'B',14:'D',15:'B',16:'B',17:'A',18:'B',19:'C',20:'B',
+  21:'B',22:'C',23:'C',24:'B',25:'C',26:'B',27:'B',28:'B',29:'B',30:'B',
+  31:'B',32:'B',33:'C',34:'C',35:'B',36:'B',37:'B',38:'B',39:'A',40:'C',
+  41:'B',42:'B',43:'B',44:'B',45:'A',46:'B',47:'B',48:'B',49:'B',50:'C'
+};
+
+const explanations = {
+  1:'Legally, a wound requires breach of the full thickness of the skin (both epidermis and dermis). Bruises and abrasions are excluded by this definition.',
+  2:'Bruises/contusions are NOT wounds under the strict legal definition because the skin surface is not breached — there is only subsurface haemorrhage.',
+  3:'Unlike a bruise (which may appear distant from the actual impact due to tracking), an abrasion always marks the exact point of contact, making it more forensically precise.',
+  4:'Graze abrasions result from horizontal friction between skin and a rough surface — the hallmark mechanism in road traffic accidents (gravel rash).',
+  5:'A haematoma forms when blood collects as a defined mass rather than diffusing through tissues. Diffuse bleeding is called a bruise or contusion.',
+  6:'Biliverdin reductase converts biliverdin (green) to bilirubin (yellow). This is why bruises turn yellow during healing.',
+  7:'Lacerations are caused by blunt force and show ragged irregular margins, tissue tags, and crushed hair bulbs — the result of tearing rather than cutting.',
+  8:'Scalp temporal arteries are firmly bound within the scalp fibrous tissue and cannot retract or contract when cut, leading to persistent heavy bleeding.',
+  9:'The progressive shallowing of a wound towards its end is called "tailing" — the opposite end (deeper) is the "head." Tailing indicates the direction of the cut.',
+  10:'Hesitation cuts are multiple superficial preliminary cuts before the final wound, indicating the individual was tentative — strongly supports self-infliction.',
+  11:'In stab wounds, depth is always greater than width and length — this is the defining characteristic distinguishing them from incised wounds.',
+  12:'The negative pressure created when the jugular vein is severed sucks air into the venous system, causing fatal air embolism.',
+  13:'Kinetic energy = ½mv². Because velocity is squared in the equation, doubling velocity quadruples KE — making it the dominant factor in wounding power.',
+  14:'At tight contact range, there is typically LITTLE OR NO powder tattooing — the gases and soot are driven directly into the wound rather than spreading across the surface. Heavy tattooing appears at intermediate ranges (15–40 cm).',
+  15:'Exit wounds have everted torn edges with protruding subcutaneous tissue — NO abrasion collar, burning, blackening, or tattooing (all of which require proximity to the muzzle and are entry-wound features).',
+  16:'Cadaveric spasm — the weapon remaining firmly gripped in the hand at the moment of death — is the hallmark finding in suicidal firearm deaths. It cannot be easily replicated postmortem.',
+  17:'An unconscious person (cardiac arrest) cannot protect themselves when falling — so they fall forward and strike the face directly. A conscious person would extend their hands, producing palmar abrasions instead.',
+  18:'Fingernail abrasions (scratch abrasions in a crescent pattern) are classically associated with throttling, sexual assault, and child abuse — contexts involving gripping or struggling with another person.',
+  19:'Medico-legal/forensic autopsy is conducted under statutory authority for deaths that are sudden, suspicious, unnatural, or criminal — the purpose is to protect citizens\' legal rights.',
+  20:'No next-of-kin consent is needed — only an official legal requisition (authorisation) from the police or Magistrate is required before a medico-legal autopsy can proceed.',
+  21:'Colour changes such as jaundice, bruise colour progression, and postmortem staining cannot be accurately perceived and differentiated under artificial light.',
+  22:'The I-shaped incision (from chin to symphysis pubis, avoiding the umbilicus) is the most commonly used incision in routine medico-legal autopsies.',
+  23:'In suspected neck compression asphyxia, the skull and abdomen are opened first to drain blood from the neck vessels via skull vessels — this provides a cleaner, less blood-contaminated field for the critical neck dissection.',
+  24:'The modified Y-shaped incision extends over the clavicle and behind the ears to provide optimal access to neck structures — used specifically for hanging and strangulation cases.',
+  25:'The Ghon (En bloc) method is the most widely used in the UK — it is a compromise that is relatively quick while preserving inter-organ relationships important for pathological assessment.',
+  26:'In suspected poisoning, the autopsy opinion is held in reserve until the Chemical Examiner\'s toxicological report is received. Viscera must be preserved for analysis.',
+  27:'Radiological examination at autopsy is specifically indicated for gunshot wounds (to locate retained bullets), child abuse, charred/mutilated remains, and decomposed bodies.',
+  28:'The correct terminology is "undetermined" for cause and "unknown" for manner — these are the accepted terms when the autopsy cannot establish the answer, not "probably" or vague qualifiers.',
+  29:'By regulation, a second doctor must be present when a female has died within 7 years of marriage from burns or other suspicious circumstances.',
+  30:'The Rokitansky (in situ) method minimises the risk to staff by keeping organs in place during dissection — the method of choice when highly transmissible infections (e.g., Ebola, prion diseases) are suspected.',
+  31:'Chain of evidence requires absolute identification and control of ALL specimens — labelling, sealing, listing in the report, and handover to police against a signed receipt.',
+  32:'Bilateral conjunctival petechiae are a classic sign of asphyxial death — caused by venous obstruction and capillary rupture due to raised venous pressure above the level of neck compression.',
+  33:'Both positive AND negative findings must be recorded. The word "probably" should be avoided in autopsy reports — it introduces ambiguity that can be exploited legally.',
+  34:'A tense/tight capsule indicates the organ is enlarged (under increased pressure). A loose, wrinkled capsule suggests the organ has shrunk.',
+  35:'A postmortem artefact is specifically a change NOT present before death but caused/introduced after death — leading to confusion and potential misinterpretation of findings.',
+  36:'CPR produces rib and sternal fractures from chest compressions, and can cause lacerations of the liver and spleen — all of which can simulate blunt thoracic trauma or assault.',
+  37:'Inexperienced endotracheal intubation can injure the larynx and adjacent soft tissues in a pattern that resembles manual strangulation (throttling) — a common cause of diagnostic confusion.',
+  38:'Embalming fluid under pressure extravasates blood from veins and arteries into surrounding tissues — creating false bruises or enlarging existing ones.',
+  39:'Localised postmortem lividity (blood pooling in a restricted area) can closely resemble a contusion (bruise) in colour and distribution.',
+  40:'Carbon monoxide binds haemoglobin to form carboxyhaemoglobin, which is cherry red in colour. This is distinct from cyanide (bright red) and phosphorus/bichromate (chocolate/dark brown).',
+  41:'Refrigerated bodies develop pink lividity (due to oxygenation of haemoglobin in the cold) which can be confused with the cherry red of CO poisoning — always correlate with history and toxicology.',
+  42:'The Undertaker\'s fracture typically occurs at C6–C7, caused by forceful extension of the head during body handling or neck organ extraction during autopsy.',
+  43:'The absence of bleeding or blood clots is the fundamental feature distinguishing animal-induced postmortem wounds from antemortem injuries — no vital reaction occurs after death.',
+  44:'In gas stiffening: joints are not tightly fixed (unlike rigor mortis), stiffening disappears with incisions to release gas, and putrefactive tissue inflation is visible — features absent in true rigor mortis.',
+  45:'Kennedy Phenomenon = medico-legal evaluation of firearm injury made difficult by SURGICAL cleaning/suturing of wounds (medical alteration). Named after the JFK assassination case.',
+  46:'Rayalaseema Phenomenon = DELIBERATE CRIMINAL mutilation of a firearm injury (e.g., stabbing through a gunshot wound) — to conceal that a firearm was used. This is distinct from the Kennedy Phenomenon (medical/surgical alteration).',
+  47:'Hypostasis in the dependent lung creates a consolidated, heavy, consolidated appearance that mimics bronchopneumonic or pneumonic consolidation — a common source of diagnostic error.',
+  48:'Pugilistic attitude is caused by heat coagulation and shortening of muscle proteins — it is a postmortem heat artefact and does NOT indicate the person was alive or fighting when the fire started.',
+  49:'Postmortem decomposition changes in the vaginal area mimic sexual assault features. Full forensic workup (swabs, histopathology, uterine examination) is always required before drawing any conclusion.',
+  50:'The ultimate medicolegal risk of misidentifying postmortem artefacts is the imprisonment of an innocent person — a complete miscarriage of justice. This is why artefact recognition is a fundamental forensic skill.'
+};
+
+let correct = 0, wrong = 0, total = 0;
+
+function answer(el, qNum, choice) {
+  const card = document.getElementById('qc' + qNum);
+  if (card.classList.contains('answered-correct') || card.classList.contains('answered-wrong')) return;
+  const options = el.parentElement.querySelectorAll('.option');
+  options.forEach(o => o.classList.add('locked'));
+  const correct_ans = answers[qNum];
+  const fb = document.getElementById('fb' + qNum);
+  total++;
+  if (choice === correct_ans) {
+    el.classList.add('selected-correct');
+    card.classList.add('answered-correct');
+    fb.className = 'feedback show correct';
+    fb.innerHTML = '<span class="feedback-icon">✓ Correct.</span>' + explanations[qNum];
+    correct++;
+  } else {
+    el.classList.add('selected-wrong');
+    card.classList.add('answered-wrong');
+    // reveal correct
+    options.forEach(o => {
+      const letter = o.querySelector('.opt-letter').textContent;
+      if (letter === correct_ans) o.classList.add('reveal-correct');
+    });
+    fb.className = 'feedback show wrong';
+    fb.innerHTML = '<span class="feedback-icon">✗ Incorrect.</span> The correct answer is <strong>' + correct_ans + '</strong>. ' + explanations[qNum];
+    wrong++;
+  }
+  document.getElementById('sc-correct').textContent = correct;
+  document.getElementById('sc-wrong').textContent = wrong;
+  document.getElementById('sc-total').textContent = total + ' / 50';
+}
+
+function revealSAQ(btn) {
+  const ans = btn.nextElementSibling;
+  if (ans.classList.contains('show')) {
+    ans.classList.remove('show');
+    btn.textContent = 'Reveal Answer';
+  } else {
+    ans.classList.add('show');
+    btn.textContent = 'Hide Answer';
+  }
+}
+
+function revealCase(btn) {
+  const ans = btn.nextElementSibling;
+  if (ans.classList.contains('show')) {
+    ans.classList.remove('show');
+    btn.textContent = 'Reveal Model Answer';
+  } else {
+    ans.classList.add('show');
+    btn.textContent = 'Hide Model Answer';
+  }
+}
+
+function resetAll() {
+  correct = 0; wrong = 0; total = 0;
+  document.getElementById('sc-correct').textContent = '0';
+  document.getElementById('sc-wrong').textContent = '0';
+  document.getElementById('sc-total').textContent = '0 / 50';
+  for (let i = 1; i <= 50; i++) {
+    const card = document.getElementById('qc' + i);
+    if (card) {
+      card.classList.remove('answered-correct', 'answered-wrong');
+      const options = card.querySelectorAll('.option');
+      options.forEach(o => {
+        o.classList.remove('selected-correct', 'selected-wrong', 'reveal-correct', 'locked');
+      });
+      const fb = document.getElementById('fb' + i);
+      if (fb) { fb.className = 'feedback'; fb.innerHTML = ''; }
+    }
+  }
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+}
+
+// Progress bar
+window.addEventListener('scroll', () => {
+  const scrollTop = document.documentElement.scrollTop;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = (scrollTop / docHeight) * 100;
+  document.getElementById('progress').style.width = progress + '%';
+});
+
+// Active sidebar
+const links = document.querySelectorAll('.sb-link');
+const targets = ['mcq','mcq-wounds','mcq-autopsy','mcq-artefacts','saq','saq-wounds','saq-autopsy','saq-artefacts','case','case1','case2','case3','case4','case5'];
+window.addEventListener('scroll', () => {
+  let current = '';
+  targets.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 80) current = id;
+  });
+  links.forEach(l => {
+    const href = l.getAttribute('href').replace('#','');
+    l.classList.toggle('active', href === current);
+  });
+}, {passive:true});
+</script>
+</body>
+</html>
