@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forensic Medicine — Exam Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root[data-theme="dark"]{--bg:#0c0e14;--bg2:#13161e;--bg3:#1a1f2b;--border:#252c3d;--text:#e2e8f4;--text2:#94a3be;--text3:#5a6a84;--accent:#38bdf8;--accent2:#818cf8;--accent3:#34d399;--accent4:#fb923c;--accent5:#f472b6;--card:#141921;--card2:#1c2232;--shadow:0 4px 32px rgba(0,0,0,.55);--correct-bg:rgba(52,211,153,.08);--correct-border:#34d399;--wrong-bg:rgba(244,114,182,.08);--wrong-border:#f472b6;--disabled:#2a3040}
+:root[data-theme="light"]{--bg:#f1f5fb;--bg2:#e8eef8;--bg3:#dde5f3;--border:#c5d0e5;--text:#1a2540;--text2:#445070;--text3:#7a8eaa;--accent:#0369a1;--accent2:#4338ca;--accent3:#059669;--accent4:#c2410c;--accent5:#be185d;--card:#ffffff;--card2:#f0f5fb;--shadow:0 4px 20px rgba(0,0,0,.09);--correct-bg:rgba(5,150,105,.07);--correct-border:#059669;--wrong-bg:rgba(190,24,93,.07);--wrong-border:#be185d;--disabled:#d0d8e8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s}
+
+/* TOP BAR */
+.topbar{position:sticky;top:0;z-index:99;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:1rem;padding:.75rem 2rem;backdrop-filter:blur(14px)}
+.topbar-logo{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:var(--accent)}
+.topbar-sub{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--text3);flex:1}
+.theme-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:.3rem .8rem;cursor:pointer;border-radius:20px;font-family:'DM Mono',monospace;font-size:.7rem;transition:all .2s}
+.theme-btn:hover{background:var(--border)}
+
+/* SCORE BAR */
+.scorebar{background:var(--bg2);border-bottom:1px solid var(--border);padding:.6rem 2rem;display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
+.score-pill{font-family:'DM Mono',monospace;font-size:.72rem;display:flex;align-items:center;gap:.4rem}
+.score-val{font-weight:700;font-size:.9rem}
+.s-mcq{color:var(--accent)}
+.s-saq{color:var(--accent2)}
+.s-case{color:var(--accent3)}
+.s-total{color:var(--accent4)}
+
+/* CONTENT */
+.wrap{max-width:900px;margin:0 auto;padding:2.5rem 2rem}
+@media(max-width:600px){.wrap{padding:1.5rem 1rem}}
+
+/* SECTION BANNER */
+.sec-banner{border-radius:12px;padding:1.6rem 2rem;margin-bottom:2.5rem;position:relative;overflow:hidden}
+.sec-banner.mcq-banner{background:linear-gradient(135deg,rgba(56,189,248,.08),rgba(56,189,248,.02));border:1px solid rgba(56,189,248,.25)}
+.sec-banner.saq-banner{background:linear-gradient(135deg,rgba(129,140,248,.08),rgba(129,140,248,.02));border:1px solid rgba(129,140,248,.25)}
+.sec-banner.case-banner{background:linear-gradient(135deg,rgba(52,211,153,.08),rgba(52,211,153,.02));border:1px solid rgba(52,211,153,.25)}
+.sec-tag{font-family:'DM Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.3rem}
+.mcq-banner .sec-tag{color:var(--accent)}
+.saq-banner .sec-tag{color:var(--accent2)}
+.case-banner .sec-tag{color:var(--accent3)}
+.sec-title{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;margin-bottom:.3rem}
+.sec-desc{font-size:.95rem;color:var(--text2)}
+.sec-meta{display:flex;gap:1rem;margin-top:.8rem;flex-wrap:wrap}
+.meta-chip{font-family:'DM Mono',monospace;font-size:.68rem;background:var(--bg3);border:1px solid var(--border);padding:.2rem .6rem;border-radius:20px;color:var(--text3)}
+
+/* MCQ */
+.mcq-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.4rem 1.6rem;margin-bottom:1.2rem;transition:border-color .2s;box-shadow:var(--shadow)}
+.mcq-card.answered-correct{border-color:var(--correct-border);background:var(--correct-bg)}
+.mcq-card.answered-wrong{border-color:var(--wrong-border);background:var(--wrong-bg)}
+.q-header{display:flex;gap:.8rem;align-items:flex-start;margin-bottom:1rem}
+.q-num{font-family:'DM Mono',monospace;font-size:.7rem;font-weight:700;background:var(--bg3);border:1px solid var(--border);padding:.2rem .55rem;border-radius:5px;color:var(--accent);white-space:nowrap;flex-shrink:0;margin-top:.1rem}
+.q-text{font-size:1rem;line-height:1.65;color:var(--text);font-weight:400}
+.q-topic{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--text3);margin-bottom:.7rem;padding-left:.1rem}
+
+/* OPTIONS */
+.options{display:flex;flex-direction:column;gap:.5rem}
+.option{display:flex;align-items:flex-start;gap:.75rem;padding:.65rem .9rem;border-radius:8px;border:1px solid var(--border);cursor:pointer;transition:all .18s;background:var(--bg2);position:relative}
+.option:hover:not(.locked){background:var(--bg3);border-color:var(--accent)}
+.option.locked{cursor:default}
+.option.selected-correct{background:var(--correct-bg);border-color:var(--correct-border)}
+.option.selected-wrong{background:var(--wrong-bg);border-color:var(--wrong-border)}
+.option.reveal-correct{background:var(--correct-bg);border-color:var(--correct-border)}
+.opt-letter{font-family:'DM Mono',monospace;font-size:.72rem;font-weight:700;min-width:1.5rem;height:1.5rem;display:flex;align-items:center;justify-content:center;border-radius:4px;background:var(--bg3);border:1px solid var(--border);color:var(--text3);flex-shrink:0;transition:all .18s}
+.option.selected-correct .opt-letter{background:var(--correct-border);border-color:var(--correct-border);color:#fff}
+.option.selected-wrong .opt-letter{background:var(--wrong-border);border-color:var(--wrong-border);color:#fff}
+.option.reveal-correct .opt-letter{background:var(--correct-border);border-color:var(--correct-border);color:#fff}
+.opt-text{font-size:.96rem;line-height:1.5;color:var(--text);flex:1}
+.opt-icon{font-size:.9rem;margin-left:auto;flex-shrink:0}
+
+/* FEEDBACK */
+.feedback{display:none;margin-top:.8rem;padding:.7rem 1rem;border-radius:7px;font-size:.9rem;line-height:1.55}
+.feedback.show{display:block}
+.feedback.correct-fb{background:var(--correct-bg);border:1px solid var(--correct-border);color:var(--text)}
+.feedback.wrong-fb{background:var(--wrong-bg);border:1px solid var(--wrong-border);color:var(--text)}
+.fb-title{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;margin-bottom:.25rem}
+.correct-fb .fb-title{color:var(--accent3)}
+.wrong-fb .fb-title{color:var(--accent5)}
+
+/* SAQ */
+.saq-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.5rem 1.6rem;margin-bottom:1.2rem;box-shadow:var(--shadow)}
+.saq-marks{font-family:'DM Mono',monospace;font-size:.65rem;background:rgba(129,140,248,.12);color:var(--accent2);padding:.15rem .5rem;border-radius:12px;display:inline-block;margin-bottom:.5rem}
+.saq-q{font-size:1rem;line-height:1.7;margin-bottom:.9rem;color:var(--text)}
+.answer-toggle{display:flex;align-items:center;gap:.5rem;background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:.45rem .9rem;border-radius:7px;cursor:pointer;font-family:'DM Mono',monospace;font-size:.72rem;width:fit-content;transition:all .2s}
+.answer-toggle:hover{background:var(--border);color:var(--text)}
+.answer-toggle .toggle-icon{transition:transform .25s}
+.answer-toggle.open .toggle-icon{transform:rotate(90deg)}
+.model-answer{display:none;margin-top:.8rem;padding:1rem 1.2rem;background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent2);border-radius:0 8px 8px 0}
+.model-answer.open{display:block}
+.ma-title{font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem}
+.ma-content{font-size:.95rem;line-height:1.75;color:var(--text)}
+.ma-content ol{padding-left:1.5rem;margin:.4rem 0}
+.ma-content ol li{margin-bottom:.3rem}
+.ma-content strong{color:var(--text);font-weight:600}
+
+/* CASE STUDY */
+.case-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.6rem 1.8rem;margin-bottom:1.5rem;box-shadow:var(--shadow)}
+.case-scenario{background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--accent3);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
+.case-scenario-title{font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;color:var(--accent3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem}
+.case-scenario-text{font-size:.97rem;line-height:1.75;color:var(--text)}
+.case-marks{font-family:'DM Mono',monospace;font-size:.65rem;background:rgba(52,211,153,.12);color:var(--accent3);padding:.15rem .5rem;border-radius:12px;display:inline-block;margin-bottom:.6rem}
+.case-questions{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem}
+.case-questions li{display:flex;gap:.7rem;font-size:.97rem;line-height:1.6;color:var(--text);padding:.4rem 0;border-bottom:1px dashed var(--border)}
+.case-questions li:last-child{border-bottom:none}
+.cq-num{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--accent3);background:rgba(52,211,153,.1);padding:.1rem .45rem;border-radius:4px;height:fit-content;margin-top:.12rem;flex-shrink:0}
+
+/* DIVIDER */
+.div-section{height:1px;background:linear-gradient(90deg,var(--border),transparent);margin:3rem 0 2.5rem}
+
+/* PROGRESS */
+.progress-bar{height:4px;background:var(--bg3);border-radius:2px;margin:.6rem 0 0;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .4s ease}
+
+/* RESET BTN */
+.reset-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:.35rem .9rem;border-radius:7px;cursor:pointer;font-family:'DM Mono',monospace;font-size:.7rem;transition:all .2s}
+.reset-btn:hover{background:var(--border);color:var(--text)}
+
+/* PRINT */
+@media print{.topbar,.scorebar,.theme-btn,.reset-btn{display:none}.wrap{padding:1rem}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <div class="topbar-logo">Forensic Medicine</div>
+    <div class="topbar-sub">Exam Practice — Dr. Royronald Ongong'a</div>
+  </div>
+  <span style="flex:1"></span>
+  <button class="reset-btn" onclick="resetAll()">↺ Reset All</button>
+  <button class="theme-btn" onclick="toggleTheme()">☀️ Light</button>
+</div>
+
+<div class="scorebar">
+  <div class="score-pill"><span>MCQ Score:</span><span class="score-val s-mcq" id="mcq-score">0/60</span></div>
+  <div class="score-pill"><span>SAQ Revealed:</span><span class="score-val s-saq" id="saq-score">0/30</span></div>
+  <div class="score-pill"><span>Cases Revealed:</span><span class="score-val s-case" id="case-score">0/10</span></div>
+  <div style="flex:1"></div>
+  <div style="min-width:140px">
+    <div class="score-pill"><span>MCQ Progress:</span><span class="score-val s-total" id="mcq-pct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="mcq-prog" style="width:0%"></div></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ═══════════════════════════════ MCQ ═══════════════════════════════ -->
+<div class="sec-banner mcq-banner">
+  <div class="sec-tag">Section 1</div>
+  <div class="sec-title">Multiple Choice Questions</div>
+  <div class="sec-desc">Select the single best answer. Immediate feedback provided after each selection.</div>
+  <div class="sec-meta">
+    <span class="meta-chip">60 Questions</span>
+    <span class="meta-chip">1 mark each</span>
+    <span class="meta-chip">Total: 60 marks</span>
+    <span class="meta-chip">All topics covered</span>
+  </div>
+</div>
+
+<div id="mcq-container"></div>
+
+<div class="div-section"></div>
+
+<!-- ═══════════════════════════════ SAQ ═══════════════════════════════ -->
+<div class="sec-banner saq-banner">
+  <div class="sec-tag">Section 2</div>
+  <div class="sec-title">Short Answer Questions</div>
+  <div class="sec-desc">Attempt each question, then reveal the model answer to compare. Each question carries 5 marks.</div>
+  <div class="sec-meta">
+    <span class="meta-chip">30 Questions</span>
+    <span class="meta-chip">5 marks each</span>
+    <span class="meta-chip">Total: 150 marks</span>
+  </div>
+</div>
+
+<div id="saq-container"></div>
+
+<div class="div-section"></div>
+
+<!-- ═══════════════════════════════ CASE ═══════════════════════════════ -->
+<div class="sec-banner case-banner">
+  <div class="sec-tag">Section 3</div>
+  <div class="sec-title">Long Answer Case Studies</div>
+  <div class="sec-desc">Read each clinical scenario carefully. Attempt a full answer before revealing the model response. Each carries 20 marks.</div>
+  <div class="sec-meta">
+    <span class="meta-chip">10 Cases</span>
+    <span class="meta-chip">20 marks each</span>
+    <span class="meta-chip">Total: 200 marks</span>
+  </div>
+</div>
+
+<div id="case-container"></div>
+
+</div><!-- wrap -->
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   MCQ DATA — 60 questions
+═══════════════════════════════════════════════════════ */
+const mcqs = [
+  // TRACE EVIDENCE — BLOOD
+  {n:1,topic:"Trace Evidence — Blood",q:"Which of the following is the FIRST recommended step when searching for blood at a crime scene?",opts:["Spray luminol over the entire surface","Use alternate light source (Polilight)","Conduct a thorough examination with a high-intensity white light","Apply fluorescein and hydrogen peroxide"],ans:2,exp:"A high-intensity white light should always be the first choice. It can reveal diluted brownish stains, blood in floorboard cracks, carpet padding, and behind baseboards without risking DNA degradation."},
+  {n:2,topic:"Trace Evidence — Blood",q:"The Kastle-Meyer test uses which chemical indicator?",opts:["Luminol","Reduced phenolphthalein","Fluorescein","Benzidine"],ans:1,exp:"The Kastle-Meyer solution is a reduced phenolphthalein indicator. Hb's peroxidase activity oxidizes it to bright pink phenolphthalein in the presence of H₂O₂."},
+  {n:3,topic:"Trace Evidence — Blood",q:"Luminol exhibits chemiluminescence because it is oxidized by:",opts:["Myoglobin","Cytochrome C","Hemoglobin","Albumin"],ans:2,exp:"Luminol is oxidized by hemoglobin (Hb), the oxygen-transport metalloprotein in red blood cells, exhibiting chemiluminescence in the dark."},
+  {n:4,topic:"Trace Evidence — Blood",q:"Which of these substances will cause a FALSE POSITIVE in the Kastle-Meyer test?",opts:["Urine","Saliva","Cauliflower peroxidase","Semen"],ans:2,exp:"Peroxidases naturally found in vegetables like cauliflower or broccoli will give false positive results because they have similar peroxidase-like activity to hemoglobin."},
+  {n:5,topic:"Trace Evidence — Blood",q:"The Takayama confirmatory test produces which characteristic crystals?",opts:["Yellow needle-shaped spermine picrate","Blue rhombic chlorine iodide crystals","Pink needle/rhomboid pyridine ferroprotoporphyrin crystals","Green acicular calcium oxalate crystals"],ans:2,exp:"The Takayama test is based on the formation of insoluble PINK needle or rhomboid-shaped crystals of pyridine ferroprotoporphyrin (hemochromogen)."},
+  {n:6,topic:"Trace Evidence — Blood",q:"The ABAcard HemaTrace detects which human protein?",opts:["Glycophorin A","Human serum albumin","Prostate specific antigen","Human hemoglobin"],ans:3,exp:"ABAcard HemaTrace uses monoclonal anti-human Hb antibodies to detect human hemoglobin. Glycophorin A is detected by RSID-Blood."},
+  {n:7,topic:"Trace Evidence — Blood",q:"Which Vacutainer is MOST suitable for DNA analysis?",opts:["Gray top (sodium fluoride)","Red top (no additives)","Purple top (EDTA)","Green top (lithium heparin)"],ans:2,exp:"Purple top Vacutainers contain EDTA which is suitable for DNA testing. Yellow top (ACD) is also suitable and is the author's personal preference."},
+  {n:8,topic:"Trace Evidence — Blood",q:"One of the FOUR listed problems with luminol is that it reacts with:",opts:["Urea and creatinine","Potassium permanganate and cobalt ions","Amylase and glycogen","Acid phosphatase"],ans:1,exp:"Luminol gives false reactions with copper ions, iron compounds, cobalt ions, potassium permanganate (found in some dyes), and bleach (hydrated sodium hypochlorite)."},
+  {n:9,topic:"Trace Evidence — Blood",q:"The RSID-Blood test detects which antigen?",opts:["Human serum albumin","Semenogelin","Human glycophorin A","Prostate specific antigen"],ans:2,exp:"RSID-Blood uses two monoclonal antibodies to detect human glycophorin A, which is abundantly and specifically expressed in red blood cells."},
+  {n:10,topic:"Trace Evidence — Blood",q:"In blood spatter analysis, the formula for impact angle is:",opts:["arctan(Width/Length)","arccos(Width/Length)","arcsin(Width/Length)","arcsin(Length/Width)"],ans:2,exp:"Impact angle = arcsin(Width ÷ Length). The width is divided by the length of the bloodstain ellipse. Do NOT measure the tail."},
+
+  // BLOOD SPATTER
+  {n:11,topic:"Blood Spatter Analysis",q:"Bloodstains with predominant diameters of LESS THAN 1 mm are consistent with:",opts:["Low velocity impact (dripping)","Medium velocity impact (stabbing)","High velocity impact (gunshot)","Transfer stains"],ans:2,exp:"When the preponderance of individual bloodstain diameters are less than 1mm, they are consistent with high velocity impact, most often a shooting."},
+  {n:12,topic:"Blood Spatter Analysis",q:"A drop of blood with width 9 mm and length 18 mm has an impact angle of:",opts:["45°","60°","30°","90°"],ans:2,exp:"Impact angle = arcsin(9/18) = arcsin(0.5) = 30°. The more acute the angle, the more elongated the stain."},
+  {n:13,topic:"Blood Spatter Analysis",q:"Which bloodstain pattern is created when a wet bloody surface contacts a secondary surface?",opts:["Projected pattern","Passive pattern","Transfer pattern","Arterial spurt"],ans:2,exp:"A transfer bloodstain is created when a wet, bloody surface comes in contact with a secondary surface. A recognizable image (e.g., bloody handprint) may be observed."},
+  {n:14,topic:"Blood Spatter Analysis",q:"Blood projected onto a ceiling almost always results from:",opts:["Blunt force trauma","Medium velocity stabbing","A gunshot with an upward trajectory","Low velocity passive dripping"],ans:2,exp:"When blood is projected upward with sufficient force to strike a ceiling, it will almost always be a result of a gunshot having an upward trajectory, more often a suicide than a homicide."},
+  {n:15,topic:"Blood Spatter Analysis",q:"If the blood stain is 10 ft from the source and the angle of impact is 70°, what is the height?",opts:["10 ft","27.5 ft","37.3 ft","5.75 ft"],ans:1,exp:"Height = Distance × tan(angle) = 10 × tan(70°) = 10 × 2.747 = 27.5 ft."},
+
+  // SALIVA, SEMEN, VAGINAL
+  {n:16,topic:"Trace Evidence — Biological",q:"The classical forensic identification marker for saliva is:",opts:["Lysozyme","Amylase","Lactoferrin","Mucin"],ans:1,exp:"The classical identification marker for saliva is the enzyme amylase, usually present in large quantities in saliva. However, amylase is also found in pancreatic juice and fecal material."},
+  {n:17,topic:"Trace Evidence — Semen",q:"The Christmas Tree Stain uses which combination of reagents?",opts:["Haematoxylin and Eosin","Methylene blue and crystal violet","Picroindigocarmine and Nuclear Fast Red (Kernechtrot)","Giemsa and Wright stain"],ans:2,exp:"The Christmas Tree Stain uses Picroindigocarmine (stains neck/tail green/blue) and Nuclear Fast Red/Kernechtrot (stains sperm heads red; acrosomal cap pink)."},
+  {n:18,topic:"Trace Evidence — Semen",q:"RSID-Semen detects which seminal vesicle-specific antigen?",opts:["PSA (Prostate Specific Antigen)","Semenogelin","Glycophorin A","Tamm-Horsfall protein"],ans:1,exp:"RSID-Semen identifies semenogelin, which is unique to seminal vesicle secretions. There is no cross-reactivity with other bodily fluids or with semen from other mammals."},
+  {n:19,topic:"Trace Evidence — Semen",q:"Seminal fluid's Acid Phosphatase activity compared to other body fluids is:",opts:["10–50 times greater","100–200 times greater","500–1000 times greater","Equal to vaginal fluid"],ans:2,exp:"Seminal fluid contains 500 to 1000 times greater acid phosphatase (AP) than any other body fluid. AP activity has been detected in dried samples years after the stain was deposited."},
+  {n:20,topic:"Trace Evidence — Semen",q:"After ejaculation, in the vagina, complete spermatozoa are present for up to:",opts:["3 hours","12 hours","26 hours","72 hours"],ans:2,exp:"Complete sperm can be found in the vagina for up to 26 hours after ejaculation. At room temperature: full motility for 3 hours, 50% at 8 hours, 10% at 24 hours."},
+
+  // HAIR
+  {n:21,topic:"Trace Evidence — Hair",q:"The human cuticle scale pattern is described as:",opts:["Spinous","Coronal","Imbricate","Flattened-coronal"],ans:2,exp:"Human hair cuticle scales are flattened and narrow, called imbricate. Cats/seals/mink have spinous (petal-like) scales; rodents/bats have coronal (crown-stacked) scales."},
+  {n:22,topic:"Trace Evidence — Hair",q:"In hair analysis, the medullary index is defined as:",opts:["Length of medulla ÷ total hair length","Diameter of medulla ÷ total hair diameter","Weight of medulla ÷ total hair weight","Width of cortex ÷ width of cuticle"],ans:1,exp:"The medullary index is the ratio of the diameter of the medulla to the entire hair diameter. Human: <⅓; Animal: >½."},
+  {n:23,topic:"Trace Evidence — Hair",q:"In the hair life cycle, the ANAGEN phase represents what percentage of all hair?",opts:["10–18%","2%","80–90%","50%"],ans:2,exp:"Anagen (active growth) represents 80–90% of all human hair and lasts approximately 1000 days. Catagen is 2%; Telogen is 10–18%."},
+  {n:24,topic:"Trace Evidence — Hair",q:"Neutron Activation Analysis (NAA) of hair can identify up to how many elements in 2 cm of hair?",opts:["5","14","9","20"],ans:1,exp:"NAA can identify up to 14 different substances in 2 cm of hair. The probability of two people having the same concentration of 9 elements is about 1 in 1,000,000."},
+  {n:25,topic:"Trace Evidence — Hair",q:"A postmortem root band in hair appears as:",opts:["A white depigmented ring near the tip","A dark band near the root","A yellow band in the mid-shaft","An absence of medulla near the root"],ans:1,exp:"When hairs originate from a body in a state of decomposition, a dark band may appear near the root of the hair. This is labeled a postmortem root band."},
+  {n:26,topic:"Trace Evidence — Hair",q:"Which hair analysis technique should be performed BEFORE DNA analysis?",opts:["Neutron activation analysis","PCR amplification","Full microscopical comparison","Infrared spectroscopy"],ans:2,exp:"A full and detailed microscopical comparison must always be done PRIOR to DNA analysis because DNA analysis is destructive and consumes portions of hair, and microscopical examination cannot always be done afterward."},
+  {n:27,topic:"Trace Evidence — Hair",q:"Mongoloid (Asian) hair is distinguished by:",opts:["Flattened cross-section with buckling","Round to oval cross-section, fine granules","Circular cross section, significantly thicker cuticle, wide continuous medulla","Kinky texture with clumped pigment"],ans:2,exp:"Mongoloid hair is regularly coarse, straight, circular in cross section (widest diameter), with significantly thicker cuticle, wide continuous medulla, and larger patchy pigment granules with possible reddish appearance."},
+
+  // SEXUAL OFFENCES
+  {n:28,topic:"Sexual Offences — Rape",q:"According to the Kenyan Sexual Offences Act 2006, the minimum sentence for rape is:",opts:["5 years","10 years","15 years","20 years"],ans:1,exp:"Under the Sexual Offences Act 2006, a person convicted of rape is liable to imprisonment for a term of NOT LESS than 10 years, which may be enhanced to life imprisonment."},
+  {n:29,topic:"Sexual Offences — Rape",q:"A charge of rape is defined legally as:",opts:["A medical diagnosis confirmed by a doctor","A legal diagnosis — the doctor should only state whether evidence of sexual intercourse exists","A criminal diagnosis made by police","A psychiatric diagnosis"],ans:1,exp:"Rape is a LEGAL diagnosis, not a medical one. Medical opinion must NEVER include the word 'rape.' The doctor should state whether there is evidence of sexual intercourse and whether injuries are consistent with force."},
+  {n:30,topic:"Sexual Offences — Rape",q:"During examination of a rape victim, which precaution is MANDATORY throughout the entire examination?",opts:["A male police officer must be present","A female nurse must be present throughout","The victim must be in a private room alone","A magistrate must authorize each step"],ans:1,exp:"A female nurse MUST be present throughout the entire examination. This is mandatory regardless of the gender of the examining doctor."},
+  {n:31,topic:"Sexual Offences — Rape",q:"In a rape case, the first vaginal swab should be taken from:",opts:["The cervical os","The high vaginal vault","The introitus and perineum","The uterine cavity"],ans:2,exp:"The collection sequence is: (1) introitus and perineum, (2) low vaginal swab, (3) high vaginal swab, (4) cervical mucus swab — only if alleged rape occurred ≥24 hours prior."},
+  {n:32,topic:"Sexual Offences — Rape",q:"Statutory rape is defined as sexual intercourse with a person who is:",opts:["Unable to communicate consent","Under 18 years of age regardless of consent","Intoxicated","Mentally unsound"],ans:1,exp:"Statutory rape is sexual intercourse with a person under 18 years of age — WITH OR WITHOUT consent. The age of the victim makes consent legally irrelevant."},
+  {n:33,topic:"Sexual Offences — Rape",q:"Which tool is used to detect injuries not visible to the naked eye during examination of a rape victim?",opts:["UV light","Colposcopy","Toluidine blue only","Magnifying glass"],ans:1,exp:"Colposcopy is used to detect injuries not visible to the naked eye. Toluidine blue stains injured areas. UV light is for seminal stain detection."},
+  {n:34,topic:"Sexual Offences — Examination",q:"To demonstrate evidence of vaginal secretions on the accused's glans, one test uses:",opts:["Barbario's test with picric acid","Lugol's iodine — blue color indicates vaginal glycogen","Fluorescein + H₂O₂","Takayama reagent"],ans:1,exp:"Moist filter paper rubbed on the glans + Lugol's iodine → blue color due to the rich glycogen content of vaginal secretions. Also, a smear from glans + Papanicolaou stain can reveal vaginal epithelial cells."},
+  {n:35,topic:"Sexual Offences — Examination",q:"If the accused person refuses consent for medical examination, the examiner may:",opts:["Abandon the examination","Request a court order and wait indefinitely","Use reasonable force to conduct the examination","Only conduct a clothed external examination"],ans:2,exp:"Unlike the victim (where absence of consent means no examination), if the ACCUSED refuses consent, reasonable force may be used for the examination."},
+
+  // INCEST & UNNATURAL OFFENCES
+  {n:36,topic:"Sexual Offences — Incest",q:"Under the Kenyan Sexual Offences Act, incest with a female victim UNDER 18 years carries:",opts:["Minimum 5 years","Minimum 10 years","Life imprisonment (consent is immaterial)","A fine and community service"],ans:2,exp:"If the female victim is under 18 years, the accused shall be liable to LIFE IMPRISONMENT. It is immaterial that the act was obtained with the consent of the female person."},
+  {n:37,topic:"Sexual Offences — Unnatural",q:"The ONLY definitive proof of sodomy is:",opts:["Anal laceration with triangular base at external sphincter","Funnel-shaped depression of buttocks","Presence of semen in the anus","Dilated and patulous anus"],ans:2,exp:"All signs of sodomy except injuries may disappear within 1–2 days. The ONLY proof of sodomy is the presence of semen in the anus."},
+  {n:38,topic:"Sexual Offences — Unnatural",q:"In habitual passive agents of sodomy, perianal skin typically shows:",opts:["Fresh lacerations and bleeding","Thickening and keratinization","Abrasions with lubricant smears","Tenderness and inflammation"],ans:1,exp:"In habitual passive agents, perianal skin may be thickened and keratinized (due to chronic friction). There is no pain or tenderness, and perianal hair is usually shaved."},
+  {n:39,topic:"Sexual Offences — Bestiality",q:"The SURE evidence of bestiality is:",opts:["Injuries to animal genitalia","Stains of dung on accused's clothing","Finding of human spermatozoa in the genital tract of the animal","Transmitted infection in the animal"],ans:2,exp:"The sure evidence of bestiality is the finding of human spermatozoa in the genital tract of the animal. Examination of the animal is therefore critical."},
+
+  // PARAPHILIAS
+  {n:40,topic:"Sexual Offences — Paraphilias",q:"Frotteurism most commonly occurs:",opts:["In the victim's home during a burglary","In crowded trains, buses, and elevators","At isolated outdoor locations","During religious gatherings"],ans:1,exp:"Frotteurism occurs in crowded public spaces — trains, buses, elevators, bicycle stands. The act of rubbing genitals against non-consenting persons. In Japan, known as chikan."},
+  {n:41,topic:"Sexual Offences — Paraphilias",q:"Pedophilia is defined as intense sexual urges toward prepubescent children by a person who is at least:",opts:["5 years older and ≥16 years of age","10 years older and ≥18 years of age","3 years older and ≥14 years of age","5 years older and ≥18 years of age"],ans:0,exp:"Pedophilia involves sexual activity with a prepubescent child (≤13 years) by a person who is ≥16 years old AND at least 5 years older than the child."},
+  {n:42,topic:"Sexual Offences — Paraphilias",q:"The term 'voyeurism' is derived from the French word meaning:",opts:["To touch","To see","To expose","To hear"],ans:1,exp:"Voyeurism comes from French 'voir' meaning 'to see.' Voyeurs observe unsuspecting people undress, naked, or during intercourse. They are colloquially called 'Peeping Toms.'"},
+
+  // PREGNANCY
+  {n:43,topic:"Pregnancy",q:"Hegar's sign (softening of the cervix) appears at approximately which gestational age?",opts:["4 weeks","7–10 weeks","16–18 weeks","20 weeks"],ans:1,exp:"Hegar's sign (extreme softening of the lower uterine segment and cervix) appears at 7–10th week of pregnancy. It is classified as a probable sign of pregnancy."},
+  {n:44,topic:"Pregnancy",q:"Quickening (fetal movements felt by mother) appears at which weeks in a primigravida?",opts:["12–14 weeks","16–18 weeks","18–20 weeks","22–24 weeks"],ans:2,exp:"Quickening occurs at 18–20th week in primigravida (first pregnancy). In multigravida, it is earlier at 16–18th week. It is a presumptive sign of pregnancy."},
+  {n:45,topic:"Pregnancy",q:"The earliest viable age of a fetus is:",opts:["210 days (7 months)","180 days (6 months)","240 days (8 months)","154 days (5.5 months)"],ans:1,exp:"The earliest viable age is 180 days or 6 months. The average viable age is 210 days (7 months). Viability means capability of the fetus to lead independent life after birth."},
+  {n:46,topic:"Pregnancy",q:"Pseudocyesis (phantom pregnancy) is characterized by:",opts:["Actual fetal development with false negative pregnancy test","Signs and symptoms of pregnancy without being pregnant, from psychic/hormonal disorder","Twin pregnancy with one fetus papyraceous","Post-term pregnancy beyond 354 days"],ans:1,exp:"Pseudocyesis is a condition where a woman shows most signs and symptoms of pregnancy (enlarged abdomen, nausea, weight gain) but is NOT pregnant. It results from psychic and hormonal disorders."},
+  {n:47,topic:"Pregnancy",q:"In which type of unusual pregnancy are two ova from the SAME menstrual cycle fertilized by sperm from two separate acts of coitus?",opts:["Superfoetation","Superfecundation","Fetus papyraseous","Twin pregnancy"],ans:1,exp:"Superfecundation = two ova from the SAME menstrual cycle fertilized by sperms from two separate acts of coitus occurring within a short period. The fetal age difference is small."},
+  {n:48,topic:"Pregnancy",q:"The medico-legal importance of pregnancy includes: pregnancy in a girl of ≤16 years (unmarried) points towards:",opts:["Statutory rape","Consensual intercourse","Criminal abortion","Adultery"],ans:0,exp:"Pregnancy in an unmarried girl of 16 years or less, or a married girl of 15 years or less, points towards the commission of the offence of rape (statutory rape)."},
+
+  // ABORTION
+  {n:49,topic:"Abortion",q:"Which of the following is a humanitarian indication for Medical Termination of Pregnancy (MTP)?",opts:["Widow requesting termination","Contraceptive failure","Pregnancy as a result of rape","Unmarried woman requesting termination"],ans:2,exp:"Pregnancy as a result of rape is listed as a humanitarian indication for MTP. Social indications include widow status and contraceptive failure."},
+  {n:50,topic:"Abortion",q:"Ecbolics used in criminal abortion include:",opts:["Castor oil, jalap, senna","Oestrogen and borax","Ergots, quinine, and strychnine","Oil of turpentine and cantharides"],ans:2,exp:"Ecbolics directly contract the pregnant uterus and include ergots, quinine, and strychnine. Emmenagogues (oestrogen, borax) initiate menstrual flow; purgatives (castor oil, senna) and irritants are separate categories."},
+  {n:51,topic:"Abortion",q:"The immediate effect of criminal abortion that involves sudden death is:",opts:["Septicaemia","Reflex vagal inhibition","Pulmonary embolism","Tetanus"],ans:1,exp:"Immediate effects of criminal abortion include: shock and haemorrhage, air embolism, and reflex vagal inhibition (can cause sudden death). Sepsis and tetanus are delayed effects."},
+  {n:52,topic:"Abortion",q:"Which finding DISTINGUISHES criminal abortion from natural abortion?",opts:["Haemorrhage","Enlarged breasts","Foreign bodies in the genital tract","Soft external os"],ans:2,exp:"Foreign bodies in the genital tract (instruments, catheters, utus paste) are found in criminal abortion but ABSENT in natural abortion. Criminal abortion also shows: frequent infection, abdominal violence marks, genital injuries, and toxic drug effects."},
+
+  // INFANTICIDE / DELIVERY
+  {n:53,topic:"Infanticide",q:"Infanticide is defined as killing of a newly born baby within how many days of birth?",opts:["7 days","10 days","15 days","28 days"],ans:2,exp:"Infanticide = killing of a newly born baby within 15 days of its birth."},
+  {n:54,topic:"Infanticide",q:"The hydrostatic test (lung float test) is based on the principle that:",opts:["After breathing, lung specific gravity increases above water","After breathing, air expands alveoli, reducing specific gravity so lungs float","Decomposition gases increase lung buoyancy before birth","Blood content of the lung determines its ability to float"],ans:1,exp:"After breathing, air expands the alveoli, decreasing specific gravity below water density → lungs float. Before breathing (fetal), unexpanded lungs are heavier than water and sink. Positive test = evidence of respiration after birth."},
+  {n:55,topic:"Infanticide",q:"In a live-born infant, the lung-to-body weight ratio is approximately:",opts:["1:70","1:35","1:20","1:50"],ans:1,exp:"In a live-born infant, the lung-to-body weight ratio is 1:35. In a still-born infant it is 1:70, reflecting the unexpanded, dense lungs."},
+  {n:56,topic:"Infanticide",q:"Precipitate labour is most likely to occur in:",opts:["Primigravida with a narrow pelvis","Multipara women with a roomy pelvis","Elderly primigravida","Teenage primigravida"],ans:1,exp:"Precipitate labour is defined as sudden and rapid delivery, especially in multipara women with roomy pelvis, often without the mother's knowledge."},
+  {n:57,topic:"Infanticide",q:"SIDS (Sudden Infant Death Syndrome) most commonly occurs between which ages?",opts:["Birth – 2 weeks","2 weeks – 2 years (peak: 2nd–3rd month)","2–5 years","5–10 years"],ans:1,exp:"SIDS occurs in the age range of 2 weeks to 2 years, most commonly between the 1st and 7th month, with peak incidence in the 2nd–3rd month. Slight male predominance; more common in colder months."},
+
+  // BATTERED BABY & SIDS
+  {n:58,topic:"Battered Baby / MBPS",q:"Munchausen Syndrome by Proxy (MBPS) is confirmed when symptoms:",opts:["Worsen when the child is with the parent","Regress when the child is SEPARATED from the parent","Appear only during hospitalisation","Cannot be reproduced in a clinical setting"],ans:1,exp:"A key diagnostic criterion for MBPS is REGRESSION of symptoms when the child is separated from the parent/caregiver. This is because the caregiver is producing or fabricating the symptoms."},
+  {n:59,topic:"Battered Baby / MBPS",q:"A hallmark sign of Battered Baby Syndrome distinguishing it from accidental injury is:",opts:["Single traumatic injury in an active toddler","Injuries of DIFFERENT ages present simultaneously; delay in seeking medical care","Injuries confined to the extremities only","Normal skeletal survey findings"],ans:1,exp:"Multiple soft tissue injuries (abrasions, bruises, lacerations) OF DIFFERENT AGES occurring simultaneously, plus DELAY in seeking medical attention, are hallmark features of Battered Baby Syndrome (Caffey Syndrome)."},
+  {n:60,topic:"Seminal Fluid",q:"The Barbario's test for semen produces:",opts:["Pink needle-shaped hemochromogen crystals","Yellow needle-shaped rhombic crystals of spermine picrate","Blue-black starch-iodine complex","Red-orange crystals of acid phosphatase"],ans:1,exp:"Barbario's test: stain + glass picric acid → yellow needle-shaped rhombic crystals of spermine picrate. This depends on prostatic secretions and is used as a chemical test for semen."}
+];
+
+/* ═══════════════════════════════════════════════════════
+   SAQ DATA — 30 questions
+═══════════════════════════════════════════════════════ */
+const saqs = [
+  {n:1,topic:"Trace Evidence — Blood",q:"Enumerate FOUR problems with using Luminol as a presumptive test for blood at a crime scene.",marks:5,ans:`<strong>Four Problems with Luminol:</strong>
+<ol>
+<li><strong>Only a presumptive test:</strong> If the stain is so dilute it can only be visualized with luminol, no further analysis (confirmatory testing, DNA, genetic markers) can be performed.</li>
+<li><strong>False positives:</strong> Luminol reacts with copper ions, iron compounds, cobalt ions, potassium permanganate (in some dyes), bleach (hydrated sodium hypochlorite), and plant peroxidases — giving false-positive reactions.</li>
+<li><strong>Loss of genetic markers:</strong> Studies show that luminol causes the loss of several genetic markers, potentially destroying key evidence.</li>
+<li><strong>Water-based medium:</strong> Because luminol is water-based, it can smear latent (possibly bloody) impressions like shoeprints or fingerprints, and further dilute already diluted stains beyond genetic marker detection limits.</li>
+</ol>`},
+  {n:2,topic:"Trace Evidence — Blood",q:"Describe the step-by-step procedure for the Kastle-Meyer test for blood.",marks:5,ans:`<strong>Kastle-Meyer Procedure:</strong>
+<ol>
+<li>Moisten a cotton swab with distilled water and gently touch it to the dried blood sample (small amount only).</li>
+<li>Add 1–2 drops of 70% ethanol to the swab (exposes Hb for increased sensitivity).</li>
+<li>Add 1–2 drops of Kastle-Meyer solution (reduced phenolphthalein — should be colorless or pale yellow). If the solution is pink, discard it — it is oxidized and the test will not work.</li>
+<li>Add 1–2 drops of 3% hydrogen peroxide solution.</li>
+<li>Interpretation: <strong>Immediate pink = Positive for blood.</strong> Delayed pink (~30 sec) = not a true positive (H₂O₂ oxidizing phenolphthalein). Limitations: false positive with cauliflower/broccoli peroxidases; does not differentiate human from animal blood.</li>
+</ol>`},
+  {n:3,topic:"Blood Spatter",q:"A blood drop is found with a width of 15 mm and a length of 30 mm. Calculate the angle of impact and explain what this tells a forensic investigator.",marks:5,ans:`<strong>Calculation:</strong>
+<ol>
+<li>Formula: Impact Angle = arcsin(Width ÷ Length)</li>
+<li>= arcsin(15 ÷ 30) = arcsin(0.5) = <strong>30°</strong></li>
+<li><strong>Interpretation:</strong> A 30° angle indicates an oblique impact — the blood drop struck the surface at 30° from horizontal. This means the blood source was NOT directly above the stain.</li>
+<li>At 30°, the stain will begin to produce a satellite "tail" — the tail points in the direction of travel of the blood drop, helping reconstruct the direction of movement.</li>
+<li>Using the area of convergence (drawing lines from multiple drops), the 3D point of origin (height above ground) can be calculated using: Height = Distance × tan(30°). This helps determine the victim's position and the sequence of events.</li>
+</ol>`},
+  {n:4,topic:"Trace Evidence — Semen",q:"Describe the Christmas Tree staining method for confirming the presence of semen.",marks:5,ans:`<strong>Christmas Tree Stain:</strong>
+<ol>
+<li>It is the most reliable confirmatory test for semen — based on positive visual identification of spermatozoa.</li>
+<li><strong>Two reagents used consecutively:</strong>
+   <ul style="margin:.3rem 0 .3rem 1.2rem">
+   <li>Picroindigocarmine → stains the neck and tail of sperm <strong>green and blue</strong></li>
+   <li>Nuclear Fast Red (Kernechtrot) → stains sperm heads <strong>red</strong>; acrosomal cap <strong>pink</strong></li>
+   </ul>
+</li>
+<li><strong>Important caveat:</strong> Sperm tails degrade first after ejaculation, so the analyst must distinguish sperm heads from mucosal/epithelial cells whose nuclei also stain red.</li>
+<li>Intact sperm can be recovered from vaginal cavity for a period following intercourse, and from surfaces/fabrics if semen dried quickly before natural breakdown occurs.</li>
+<li>A vasectomized, oligospermic or aspermiac male can still produce seminal fluid — in such cases, PSA (P30) and AP tests are more useful than sperm identification.</li>
+</ol>`},
+  {n:5,topic:"Trace Evidence — Hair",q:"Compare human hair and animal hair under microscopic examination. Give FIVE distinguishing features.",marks:5,ans:`<strong>Human vs. Animal Hair — 5 Distinguishing Features:</strong>
+<ol>
+<li><strong>Pigment distribution:</strong> Human hair — pigment denser toward the cuticle. Animal hair — pigment denser toward the medulla; may have ovoid bodies or dense pigment masses.</li>
+<li><strong>Medulla thickness:</strong> Human — thin (less than ⅓ of hair diameter) or absent. Animal — usually thick (more than ½ of hair diameter).</li>
+<li><strong>Medullary index:</strong> Human: &lt;0.33; Animal: &gt;0.50.</li>
+<li><strong>Cuticle scale pattern:</strong> Human — imbricate (flattened and narrow). Animals — spinous (petal-like: cats, seals) or coronal (crown-stacked: rodents, bats).</li>
+<li><strong>Color banding:</strong> Humans typically have one consistent color along the shaft length. Animal hair may show banded color patterns (e.g., tipped fur). Also, pigment granules in animals may appear in unique patterns not seen in human hair.</li>
+</ol>`},
+  {n:6,topic:"Sexual Offences — Rape",q:"List the specimens that must be collected from the VICTIM in an alleged rape case.",marks:5,ans:`<strong>Specimens to Collect from Victim:</strong>
+<ol>
+<li><strong>Clothing:</strong> Air dry and send intact; examine for tears, blood, semen, mud stains.</li>
+<li><strong>Blood (plain tube):</strong> For blood grouping. Blood (anticoagulated): for alcohol and drug testing.</li>
+<li><strong>Urine:</strong> For drug detection.</li>
+<li><strong>Nail scrapings:</strong> For blood and epidermis of accused; DNA fingerprinting.</li>
+<li><strong>Vaginal swabs (sequence):</strong> (a) Introitus and perineum; (b) Low vaginal swab; (c) High vaginal swab; (d) Cervical mucus — ONLY if alleged rape was ≥24 hours ago. Presence of spermatozoa in vagina = definite evidence of sexual intercourse.</li>
+<li><strong>Pubic hair:</strong> Combing for foreign hairs; cut 20 pubic hairs for comparison; matted pubic hair cut and sent.</li>
+<li><strong>Body stains:</strong> Dried stains → scraped into envelope. Moist stains → swabs in distilled water.</li>
+</ol>`},
+  {n:7,topic:"Sexual Offences — Rape",q:"Describe the significance of injuries found on the body of an alleged rape victim. Give FIVE specific injury patterns and their forensic meaning.",marks:5,ans:`<strong>Injury Patterns in Rape and Their Significance:</strong>
+<ol>
+<li><strong>Petechiae on face/conjunctiva:</strong> Indicate partial asphyxia — forcible restraint over the neck to subdue the victim or make her unconscious.</li>
+<li><strong>Injuries around mouth and neck:</strong> Made to prevent the victim from calling for help; suggest forcible restraint and deliberate silencing.</li>
+<li><strong>Wrist/arm and thigh/leg injuries (grasp marks):</strong> Indicate holding/restraining of the victim — characteristic bruising from grip of assailant's hands.</li>
+<li><strong>Injuries on back and buttocks:</strong> Back injuries often from ground friction; buttock injuries from intercourse in certain positions.</li>
+<li><strong>Bite marks (face, breasts, genitalia):</strong> Indicate aggressive/sadistic behaviour; provide DNA evidence from assailant's saliva and dental pattern comparison for identification.</li>
+</ol>`},
+  {n:8,topic:"Sexual Offences — Examination",q:"Describe the examination of the accused in an alleged rape case. Include consent, genital examination, and samples.",marks:5,ans:`<strong>Examination of Accused — Rape Case:</strong>
+<ol>
+<li><strong>Consent:</strong> Unlike the victim, if the accused refuses consent for examination, <strong>reasonable force may be used</strong>. Preliminary data, history, and general physical examination are similar to the victim.</li>
+<li><strong>Local/Genital examination:</strong> (a) Examine for development and congenital anomalies to rule out impotency. (b) Record ALL injuries — abrasions, tears of frenulum, bruises. (c) Comment on presence/absence of smegma (cheesy sebaceous secretion on corona glandis — absence may suggest recent washing).</li>
+<li><strong>Demonstrating vaginal secretions:</strong> (a) Moist filter paper on glans + Lugol's iodine → blue = positive (rich glycogen in vaginal secretions). (b) Smear from glans + Papanicolaou stain → look for vaginal epithelial cells microscopically.</li>
+<li><strong>Samples:</strong> Clothes/undergarments, foreign hair/fibers, fingernail scrapings, scalp hair, swabs from teeth/bite marks, pubic hair combing and clippings, urethral swabs, swabs from glans, blood (serology, drugs, DNA profiling), STD testing.</li>
+</ol>`},
+  {n:9,topic:"Sexual Offences — Incest",q:"Define incest, list its types, and describe FIVE circumstances predisposing to incest.",marks:5,ans:`<strong>Incest:</strong>
+<ol>
+<li><strong>Definition:</strong> Sexual intercourse by a man with a woman closely related by blood or by marriage (prohibited degrees of relationship): daughter, granddaughter, sister, stepsister, or aunt.</li>
+<li><strong>Types:</strong> (a) Consanguinal — between blood relatives. (b) Affinal — between adoption/marriage relatives. (c) Quasi-relative — foster parent/live-in partner in parental role.</li>
+<li><strong>Five Predisposing Circumstances:</strong>
+   <ol style="margin:.3rem 0 .3rem 1.2rem">
+   <li>Family strife and disorganization</li>
+   <li>Low socioeconomic status and overcrowding</li>
+   <li>Lack of parental supervision</li>
+   <li>Alcohol removing natural inhibitions</li>
+   <li>Cerebral diseases (general paralysis, senile degeneration) reducing impulse control</li>
+   </ol>
+</li>
+<li><strong>Kenyan Law:</strong> Minimum 10 years; life imprisonment if victim &lt;18 years. Consent of victim &lt;18 is immaterial.</li>
+</ol>`},
+  {n:10,topic:"Sexual Offences — Sodomy",q:"Describe the findings in the medical examination of an alleged HABITUAL passive agent in a sodomy case.",marks:5,ans:`<strong>Findings in Habitual Passive Agent — Sodomy:</strong>
+<ol>
+<li><strong>Blood-stained discharge:</strong> Usually NOT observed (compared to non-habituated victims).</li>
+<li><strong>Perianal area:</strong> Hair is usually shaved. Perianal skin is thickened and keratinized from chronic irritation. No pain or tenderness on examination.</li>
+<li><strong>Lateral traction test:</strong> Positive — buttocks separate easily to reveal a funnel-shaped depression toward the anus.</li>
+<li><strong>Anus:</strong> Dilated and patulous (abnormally open). Loss of rugosity of the mucous membrane. Presence of fresh/old fissures or sinuses.</li>
+<li><strong>Rectum:</strong> Prolapse of rectal mucosa. Evidence of STDs. Digital examination is relatively painless.</li>
+<li><strong>Key medicolegal note:</strong> All these signs (except injuries) may disappear within 1–2 days. The ONLY definitive proof of sodomy is the presence of semen in the anus.</li>
+</ol>`},
+  {n:11,topic:"Pregnancy",q:"Classify the signs of pregnancy into presumptive, probable, and positive signs. Give THREE examples of each.",marks:5,ans:`<strong>Signs of Pregnancy — Classification:</strong>
+<ol>
+<li><strong>Presumptive Signs (subjective, non-conclusive):</strong>
+   <ul style="margin:.2rem 0 .2rem 1.2rem">
+   <li>Amenorrhoea (absence of menstruation)</li>
+   <li>Morning sickness (nausea and vomiting)</li>
+   <li>Jacquemier's/Chadwick's sign: vaginal mucosa changes from pink → violet → blue due to venous obstruction (after 4th week)</li>
+   </ul>
+</li>
+<li><strong>Probable Signs (objective but not diagnostic):</strong>
+   <ul style="margin:.2rem 0 .2rem 1.2rem">
+   <li>Hegar's sign: softening of cervix at 7–10th week</li>
+   <li>Goodell's sign: extreme cervical softening + bluish discoloration (~4 months)</li>
+   <li>Braxton Hick's sign: intermittent painless uterine contractions</li>
+   </ul>
+</li>
+<li><strong>Positive/Certain Signs (conclusive):</strong>
+   <ul style="margin:.2rem 0 .2rem 1.2rem">
+   <li>Fetal movement felt after 20th week</li>
+   <li>Auscultation of fetal heart sounds (18–20th week; 120–160 bpm)</li>
+   <li>Ultrasound (USG) visualization of fetus from 6th week</li>
+   </ul>
+</li>
+</ol>`},
+  {n:12,topic:"Pregnancy",q:"Describe FIVE medico-legal importances of pregnancy in criminal law.",marks:5,ans:`<strong>MLI of Pregnancy in Criminal Cases:</strong>
+<ol>
+<li><strong>Suspension of death sentence:</strong> Execution of a death sentence may be suspended in advanced (confirmed) pregnancy.</li>
+<li><strong>Evidence of rape:</strong> Pregnancy claimed to result from rape — medical examination required to confirm; pregnancy in an unmarried girl ≤16 or married girl ≤15 points toward rape.</li>
+<li><strong>Determination of gestational age:</strong> Helps establish timeline of alleged assault; confirms or refutes dates given by accused or victim.</li>
+<li><strong>Blackmail and false accusations:</strong> A girl may falsely blame a man for pregnancy for blackmailing purposes; medical examination can help establish the true timeline.</li>
+<li><strong>Motive in homicide/suicide:</strong> Pregnancy (especially illegitimate) may ascertain motive behind suicide or homicide of an unmarried woman or widow.</li>
+</ol>`},
+  {n:13,topic:"Pregnancy",q:"Distinguish between superfecundation and superfoetation.",marks:5,ans:`<strong>Superfecundation vs. Superfoetation:</strong>
+<ol>
+<li><strong>Superfecundation:</strong> Fertilization of TWO ova discharged at the SAME menstrual period by sperm from TWO SEPARATE acts of coitus occurring within a short interval. The fetuses are from the same cycle but different fathers. Fetal age difference is small. More possible than superfoetation.</li>
+<li><strong>Superfoetation:</strong> Fertilization of a SECOND ovum in a woman who is ALREADY PREGNANT (from a subsequent cycle). Requires continuation of ovulation during pregnancy. At least ONE menstrual cycle difference between fetal ages. EXTREMELY rare in humans (requires two uteri or continued cycling).</li>
+<li><strong>Medico-legal significance of superfecundation:</strong> Disputed paternity cases — twins with different fathers (heteropaternal superfecundation). DNA testing of both children compared to putative fathers.</li>
+</ol>`},
+  {n:14,topic:"Abortion",q:"List the complications of criminal abortion under four categories.",marks:5,ans:`<strong>Complications of Criminal Abortion:</strong>
+<ol>
+<li><strong>Local injuries:</strong> Excoriation, lacerations, and perforations of upper vagina, cervix, and uterine wall from instruments or forcible insertion of objects.</li>
+<li><strong>Immediate effects:</strong> (a) Shock and haemorrhage — most common cause of early death. (b) Air embolism — from instruments introducing air into uterine sinuses. (c) Reflex vagal inhibition — sudden death from vagal stimulation.</li>
+<li><strong>Delayed effects:</strong> (a) Sepsis, septicaemia, pyaemia — from contaminated instruments or retained products. (b) Toxaemia. (c) Peritonitis. (d) Tetanus — from soil-contaminated instruments.</li>
+<li><strong>Remote effects:</strong> (a) Jaundice and renal failure. (b) Bacterial endocarditis, pneumonia, empyema, meningitis. (c) Deep vein thrombosis → pulmonary embolism. (d) Disseminated Intravascular Coagulation (DIC).</li>
+</ol>`},
+  {n:15,topic:"Abortion",q:"Differentiate between natural abortion and criminal abortion.",marks:5,ans:`<strong>Natural vs. Criminal Abortion:</strong>
+<ol>
+<li><strong>Cause:</strong> Natural = spontaneous (chromosomal defect, uterine abnormality, Rh incompatibility, systemic disease). Criminal = induced by drugs, physical violence, or local instruments.</li>
+<li><strong>Infection:</strong> Natural = rare. Criminal = frequent (contaminated instruments, retained products).</li>
+<li><strong>Marks of violence on abdomen:</strong> Natural = absent. Criminal = may be present (blows, kicks, tight pressure).</li>
+<li><strong>Genital injuries:</strong> Natural = absent. Criminal = present (excoriation, lacerations, perforations of cervix/uterus).</li>
+<li><strong>Foreign bodies and toxic drug effects:</strong> Natural = absent. Criminal = may find foreign bodies in genital tract; toxic effects of abortifacient drugs in vagina, cervix, GIT, uterus; wounds on fetus may be present.</li>
+</ol>`},
+  {n:16,topic:"Infanticide",q:"Describe the hydrostatic test for live birth. State its principle, method, and four fallacies.",marks:5,ans:`<strong>Hydrostatic Test (Lung Float Test):</strong>
+<ol>
+<li><strong>Principle:</strong> Fetal unexpanded lungs have specific gravity >1.0 (heavier than water — sink). After breathing, air expands alveoli → specific gravity decreases below 1.0 → lungs float. A positive test is proof that respiration occurred after birth.</li>
+<li><strong>Method:</strong> Remove lungs intact → place in water → observe (float = positive; sink = negative). Then separate lobes and test individually → then cut small pieces and test. Stomach-bowel test: bowel placed in water; swallowed air = positive.</li>
+<li><strong>Four Fallacies:</strong>
+   <ul style="margin:.2rem 0 .2rem 1.2rem">
+   <li><strong>False positive:</strong> (a) Emphysema from putrefactive (decomposition) gases mimics air expansion. (b) Artificial respiration performed on still-born may introduce air into lungs.</li>
+   <li><strong>False negative:</strong> (a) Pulmonary consolidation, oedema, or congenital tumour may cause breathing lungs to sink. (b) Asphyxia neonatorum or only partial breathing may result in minimal lung expansion.</li>
+   </ul>
+</li>
+</ol>`},
+  {n:17,topic:"Infanticide",q:"List the modes of infanticide under acts of commission and omission.",marks:5,ans:`<strong>Modes of Infanticide:</strong>
+<ol>
+<li><strong>Acts of Commission (Active killing):</strong>
+   <ul style="margin:.2rem 0 .2rem 1.2rem">
+   <li>Suffocation (pillow, plastic bag, hand over nose/mouth)</li>
+   <li>Strangulation (ligature around neck)</li>
+   <li>Throttling (manual strangulation)</li>
+   <li>Drowning (lavatory pan, bucket, river)</li>
+   <li>Blunt force to head — skull fractures</li>
+   <li>Penetrating wounds</li>
+   <li>Twisting the neck</li>
+   <li>Poisoning</li>
+   </ul>
+</li>
+<li><strong>Acts of Omission (Neglect):</strong>
+   <ul style="margin:.2rem 0 .2rem 1.2rem">
+   <li>Failure to ligate the umbilical cord → fatal haemorrhage</li>
+   <li>Failure to provide nutrition (starvation)</li>
+   <li>Failure to protect from extremes of temperature (exposure)</li>
+   <li>Failure of proper nursing care (improper assistance during labour)</li>
+   </ul>
+</li>
+<li><strong>Medico-legal note:</strong> Precipitate labour complications (falling into lavatory pan → suffocation/drowning; skull fracture from fall; haemorrhage from torn cord) must be distinguished from deliberate acts.</li>
+</ol>`},
+  {n:18,topic:"Infanticide",q:"Describe Battered Baby Syndrome (Caffey Syndrome). What are the features that suggest non-accidental injury?",marks:5,ans:`<strong>Battered Baby Syndrome:</strong>
+<ol>
+<li><strong>Definition:</strong> A battered baby is one who presents with signs of multiple injuries not accidental in nature but inflicted by parents or foster parents.</li>
+<li><strong>Features of the victim:</strong> Age typically &lt;1 year; male predominance; often the eldest or youngest child, or an unwanted/illegitimate child.</li>
+<li><strong>Perpetrator profile:</strong> Younger parents; socially isolated; lower education; lower socioeconomic class; family disharmony; emotional problems; criminal record; unemployed.</li>
+<li><strong>Precipitating factors:</strong> Crying, refusal to be quiet, soiling of nappies.</li>
+<li><strong>Features suggesting non-accidental injury:</strong>
+   <ul style="margin:.2rem 0 .2rem 1.2rem">
+   <li>Injuries OF DIFFERENT AGES simultaneously (fresh bruises + healing fractures)</li>
+   <li>Injuries inconsistent with stated history (e.g., claimed to have fallen off bed but has multiple rib fractures)</li>
+   <li>DELAY in seeking medical attention</li>
+   <li>Injury to head, neck, face — unusual locations for accidental childhood injury</li>
+   <li>Pattern injuries (bite marks, belt marks)</li>
+   </ul>
+</li>
+</ol>`},
+  {n:19,topic:"MBPS",q:"What is Munchausen Syndrome by Proxy? Describe FOUR diagnostic criteria and FOUR methods of illness production.",marks:5,ans:`<strong>Munchausen Syndrome by Proxy (MBPS):</strong>
+<ol>
+<li><strong>Definition:</strong> A relatively rare form of child abuse where a primary caretaker (usually the mother) exaggerates or fabricates illnesses or symptoms in a child to obtain medical attention and sympathy. It is a peculiar and dangerous form of child abuse.</li>
+<li><strong>Four Diagnostic Criteria:</strong>
+   <ul style="margin:.2rem 0 .2rem 1.2rem">
+   <li>Illness is produced or alleged, or both, by a parent</li>
+   <li>Repeated requests for medical care → multiple medical procedures performed</li>
+   <li>Parental denial of knowledge of the cause of symptoms</li>
+   <li>Regression (improvement) of symptoms when the child is SEPARATED from the parent</li>
+   </ul>
+</li>
+<li><strong>Four Methods of Illness Production:</strong>
+   <ul style="margin:.2rem 0 .2rem 1.2rem">
+   <li>Adding blood (from finger prick) to child's urine sample → false haematuria</li>
+   <li>Blocking child's airway (closed nostrils + jaw pushed up, or pillow/towel over face) → apnoea episodes</li>
+   <li>Administering insulin → hypoglycaemia</li>
+   <li>Administering laxatives or salt → diarrhoea; inducing vomiting by other means</li>
+   </ul>
+</li>
+</ol>`},
+  {n:20,topic:"Paraphilias",q:"Define paraphilia. Describe FIVE paraphilias with their forensic significance.",marks:5,ans:`<strong>Paraphilia — Definition and Forensic Significance:</strong>
+<ol>
+<li><strong>Definition:</strong> (Greek: para = besides, philos = loving) — sexual arousal in response to objects or situations not part of normative arousal patterns. Characterized by ≥6 months of intense, recurrent sexual urges involving non-human objects, causing pain/suffering, or involving non-consenting partners.</li>
+<li><strong>Sadism:</strong> Gratification from inflicting pain. Extreme form = lust murder (homicide with mutilation of sexual organs). Forensic: multiple patterned injuries on victim; bite marks; sadistic assault features.</li>
+<li><strong>Pedophilia:</strong> Sexual urges toward children ≤13 by person ≥16 who is ≥5 years older. Forensic: one of the few psychiatric diagnoses where the symptom behavior constitutes a criminal act.</li>
+<li><strong>Exhibitionism:</strong> Intentional genital exposure in public. Forensic: public nuisance offense; offender often has compulsive neurosis or psychopathic personality.</li>
+<li><strong>Voyeurism:</strong> Observing unsuspecting people undress or have intercourse. Forensic: sociopathic personality — voyeurs may escalate to sexual crimes.</li>
+<li><strong>Frotteurism:</strong> Rubbing genitals against non-consenting persons in public. Forensic: crowded public transport; constitutes indecent assault/sexual harassment if complaint is made.</li>
+</ol>`},
+  {n:21,topic:"Trace Evidence — Blood",q:"Describe the principle and procedure of the Takayama confirmatory test for blood. What constitutes a positive result?",marks:5,ans:`<strong>Takayama Confirmatory Test:</strong>
+<ol>
+<li><strong>Principle:</strong> Sodium hydroxide releases heme prosthetic groups from globin by alkaline hydrolysis. Glucose reduces the heme iron. Pyridine then combines with the reduced heme to form pyridine ferroprotoporphyrin — an insoluble pink crystalline compound.</li>
+<li><strong>Reagent preparation:</strong> Takayama reagent = 10 mL saturated glucose + 10 mL 10% NaOH + 10 mL pyridine + 20 mL deionized water. Store refrigerated in dark bottle. Must be tested against a positive control before each use.</li>
+<li><strong>Procedure:</strong> (a) Place small portion of suspected blood on microscope slide. (b) Add a drop of Takayama reagent; cover with coverslip. (c) Warm on hotplate — reddish colour appears. (d) Observe microscopically.</li>
+<li><strong>Positive result:</strong> Formation of pink needle or rhomboid-shaped crystals = confirms presence of blood. Note: absence of crystals does NOT confirm absence of blood.</li>
+</ol>`},
+  {n:22,topic:"Blood Spatter",q:"Classify bloodstain patterns into three main categories. Describe THREE subtypes of projected bloodstains.",marks:5,ans:`<strong>Bloodstain Pattern Classification:</strong>
+<ol>
+<li><strong>Passive bloodstains:</strong> Created by gravity alone. Include drips (from stationary wound), pools, and flows. Round drops at 90° angle impact. The simplest and most common pattern.</li>
+<li><strong>Transfer bloodstains:</strong> Created when a wet bloody surface contacts a secondary surface. May leave recognizable image: bloody handprint, footwear impressions. Important for connecting suspect to scene.</li>
+<li><strong>Projected bloodstains (three subtypes):</strong>
+   <ul style="margin:.2rem 0 .2rem 1.2rem">
+   <li><strong>Arterial spurt/gush:</strong> Blood exiting under arterial pressure — creates characteristic arc or wave patterns on walls/floors. Indicates arterial injury.</li>
+   <li><strong>Cast-off stains:</strong> Blood released or thrown from a blood-bearing object in motion (e.g., swinging weapon). Creates linear pattern of individual drops. Helps determine number of blows and direction of swing.</li>
+   <li><strong>Impact spatter:</strong> Created when a blood source receives a blow or force — random dispersion of smaller drops. Velocity determines drop size: &lt;1 mm = high velocity (gunshot); ≥1 mm = medium velocity (blunt/stabbing).</li>
+   </ul>
+</li>
+</ol>`},
+  {n:23,topic:"Trace Evidence — Semen",q:"Describe the Acid Phosphatase test for semen. What is its principle, positive result, and limitations?",marks:5,ans:`<strong>Acid Phosphatase Test for Semen:</strong>
+<ol>
+<li><strong>Principle:</strong> The male prostate gland secretes high amounts of acid phosphatase (AP) into semen — 500–1000× more than any other body fluid. In the presence of Alpha-Naphthyl acid phosphate and Brentamine Fast Blue (Brentamine Spot Test), AP produces a dark purple colour in less than one minute.</li>
+<li><strong>Positive result:</strong> Dark purple colour appearing within 1 minute = presumptive positive for semen. The shade depends on enzyme activity (affected by age and storage conditions).</li>
+<li><strong>Quantitative ranges:</strong> 340–360 Bodansky units normally. &gt;1,000 Bodansky units with non-motile sperm = ejaculation within 12 hours. Positive reaction detected for up to 36 hours post-coitally.</li>
+<li><strong>Limitations:</strong> (a) HIGHLY PRESUMPTIVE only — vaginal secretions and other body fluids also contain AP, though at much lower levels. (b) AP degrades with moisture and heat within days. (c) AP markedly decreases after 24h post-coitus and diminishes after 48h in vaginal swabs. (d) Does not confirm the source of semen.</li>
+</ol>`},
+  {n:24,topic:"Trace Evidence — Hair",q:"What is the medico-legal significance of hair evidence? List SIX types of information that can be obtained from hair.",marks:5,ans:`<strong>Medico-Legal Significance of Hair Evidence:</strong>
+<ol>
+<li><strong>Racial identification:</strong> Microscopic features (pigment distribution, medullary index, cuticle pattern) can indicate whether hair is Caucasoid, Mongoloid, or Negroid origin.</li>
+<li><strong>Species determination:</strong> Distinguish human from animal hair — medulla thickness, pigmentation pattern, cuticle scales (first step in forensic hair analysis).</li>
+<li><strong>Drug use history:</strong> Hair shaft testing reveals drugs of abuse; a timeline of drug use can be developed (hair grows ~1.3 cm/month).</li>
+<li><strong>Heavy metal/toxin exposure:</strong> Neutron Activation Analysis detects poisons (arsenic, lead) along the hair shaft — indicating timing of exposure.</li>
+<li><strong>DNA profiling:</strong> Anagen hairs with follicular tissue → nuclear DNA (high discrimination). Telogen hairs → mitochondrial DNA (maternal lineage). Individual identification possible.</li>
+<li><strong>Physical transfer evidence:</strong> Presence of foreign hairs on victim/accused/crime scene establishes physical contact between individuals (Locard's Exchange Principle). Nutritional deficiencies and time of coloring can also be assessed.</li>
+</ol>`},
+  {n:25,topic:"Delivery",q:"Differentiate between a nulliparous and a parous uterus using FIVE features.",marks:5,ans:`<strong>Nulliparous vs. Parous Uterus:</strong>
+<ol>
+<li><strong>Size and weight:</strong> Nulliparous = 7×5×2 cm, weighing 40 g. Parous = 10×6×2.5 cm, weighing 80–100 g.</li>
+<li><strong>Body-to-cervix ratio:</strong> Nulliparous = body and cervix of approximately equal length. Parous = body is twice the length of the cervix.</li>
+<li><strong>Uterine cavity:</strong> Nulliparous = inner walls are convex, forming a triangular cavity with less space. Parous = inner walls are concave, forming a comparatively larger and more spacious cavity.</li>
+<li><strong>External os:</strong> Nulliparous = small, round, dimple-like depressed opening. Parous = transverse slit-like opening (due to cervical lacerations during delivery).</li>
+<li><strong>Placental attachment scar:</strong> Nulliparous = absent. Parous = present on the uterine wall. Internal os: Nulliparous = circular, well-defined. Parous = ill-defined with wrinkled margin.</li>
+</ol>`},
+  {n:26,topic:"SIDS",q:"Define SIDS. What are FIVE important epidemiological features of SIDS?",marks:5,ans:`<strong>SIDS — Definition and Epidemiology:</strong>
+<ol>
+<li><strong>Definition:</strong> Sudden Infant Death Syndrome (SIDS / cot death / crib death) is the sudden death of an infant that is unexpected by history and in whom a thorough autopsy fails to reveal an adequate cause of death.</li>
+<li><strong>Age:</strong> Age range 2 weeks to 2 years. Peak incidence 1st–7th month, especially 2nd–3rd month of life.</li>
+<li><strong>Sex:</strong> Slight male predominance.</li>
+<li><strong>Season:</strong> More common in colder/winter months.</li>
+<li><strong>Socioeconomic factors:</strong> More common in low-income families, single-parent households, and poor living conditions.</li>
+<li><strong>Risk factors:</strong> Prematurity (increases risk), hypersensitivity to cow's milk, infection. Twins have higher incidence than singletons. The cause remains unknown by definition — thorough autopsy reveals no adequate cause.</li>
+</ol>`},
+  {n:27,topic:"Pregnancy — Signs of Delivery",q:"Describe the signs of recent delivery in a LIVING woman.",marks:5,ans:`<strong>Signs of Recent Delivery in a Living Woman:</strong>
+<ol>
+<li><strong>General:</strong> Woman is pale, exhausted, and ill-looking due to blood loss and exertion of labour.</li>
+<li><strong>Breasts:</strong> Full, enlarged, tender with knotty feeling. Colostrum or milk may be expressed. Areola is dark; nipple is enlarged.</li>
+<li><strong>Abdomen:</strong> Pendulous and wrinkled with striae gravidarum. Uterine fundus palpable as a hard, contracted muscular mass.</li>
+<li><strong>Vagina:</strong> Smooth-walled, relaxed, and capacious. May show recent tears (usually heals by day 7). Rugae begin to reappear at ~3rd week.</li>
+<li><strong>Lochia:</strong> Lochia rubra (blood-stained) 4–5 days → lochia serosa (pinkish-brown) 4–5 days → lochia alba (white/yellowish) up to 2–3 weeks post-delivery.</li>
+<li><strong>Cervix:</strong> Soft and dilated. Internal os begins to close within the first 24 hours. Labia may be tender, swollen, bruised or lacerated. Perineum may be lacerated.</li>
+</ol>`},
+  {n:28,topic:"Sexual Offences",q:"Define rape according to the Kenyan Sexual Offences Act 2006. List the penalties for rape, attempted rape, and gang rape.",marks:5,ans:`<strong>Rape — Kenyan Law:</strong>
+<ol>
+<li><strong>Definition (s.3 SOA 2006):</strong> A person commits rape if: (a) he/she intentionally and unlawfully commits an act that causes penetration with his/her genital organs; AND (b) the other person does not consent to the penetration; OR (c) consent is obtained by force, threats, or intimidation of any kind.</li>
+<li><strong>Penalties:</strong>
+   <ul style="margin:.2rem 0 .2rem 1.2rem">
+   <li><strong>Rape:</strong> Minimum 10 years imprisonment; may be enhanced to LIFE imprisonment.</li>
+   <li><strong>Attempted Rape:</strong> Minimum 5 years; may be enhanced to LIFE imprisonment.</li>
+   <li><strong>Gang Rape:</strong> (rape in association with others or with common intention) → Minimum 15 years; may be enhanced to LIFE imprisonment.</li>
+   </ul>
+</li>
+<li><strong>Important legal principle:</strong> "A charge of rape is easy to make, hard to prove, harder still to disprove." Rape is a LEGAL diagnosis — medical reports must not use the word "rape" but state whether evidence of sexual intercourse exists.</li>
+</ol>`},
+  {n:29,topic:"Abortion",q:"What are the indications for Medical Termination of Pregnancy (MTP)? Classify them under maternal and fetal categories.",marks:5,ans:`<strong>MTP Indications:</strong>
+<ol>
+<li><strong>Maternal Medical:</strong> Active pulmonary TB; chronic nephritis/PCKD/nephrotic syndrome; CCF, malignant HTN, rheumatic heart disease; severe thyroid disorders with cardiac problems; uncontrolled DM; ulcerative colitis; chorea; multiple sclerosis.</li>
+<li><strong>Maternal Surgical:</strong> Malignancy (Ca breast, cervix, ovary); chronic pyloric stenosis.</li>
+<li><strong>Obstetric:</strong> Toxemia of pregnancy; threatened abortion with persistent severe haemorrhage; repeated caesarean sections; uterine fibroids; irreducible prolapse of gravid uterus.</li>
+<li><strong>Psychiatric:</strong> Schizophrenia; severe depression.</li>
+<li><strong>Fetal:</strong> Ectopic pregnancy; dead fetus; hydatidiform mole; placental detachment/disease; acute hydramnios; gross fetal malformation.</li>
+<li><strong>Humanitarian/Social:</strong> Pregnancy as result of rape (humanitarian); widow; contraceptive failure (social).</li>
+</ol>`},
+  {n:30,topic:"Delivery",q:"What is precipitate labour? State its medico-legal importance and list FOUR complications.",marks:5,ans:`<strong>Precipitate Labour:</strong>
+<ol>
+<li><strong>Definition:</strong> Sudden and rapid delivery of a fetus, especially in multipara women with a roomy pelvis, without the knowledge of the mother. May be true (genuine rapid delivery) or pseudo/false precipitate labour.</li>
+<li><strong>Medico-legal importance:</strong> (a) May be used to explain or disguise infanticide. (b) The circumstances may be used as a defence — claiming delivery was unattended and death was accidental. Courts must determine whether death was from natural precipitate labour complications or from a deliberate criminal act.</li>
+<li><strong>Four Complications:</strong>
+   <ul style="margin:.2rem 0 .2rem 1.2rem">
+   <li><strong>Suffocation:</strong> Baby may fall into lavatory pan and drown/suffocate.</li>
+   <li><strong>Head injury/skull fracture:</strong> Baby falls onto hard floor/surface without support.</li>
+   <li><strong>Haemorrhage:</strong> Fatal bleeding from torn umbilical cord (failure to ligate).</li>
+   <li><strong>Drowning:</strong> If delivery occurs in toilet pan or near water.</li>
+   </ul>
+</li>
+</ol>`}
+];
+
+/* ═══════════════════════════════════════════════════════
+   CASE STUDY DATA — 10 cases
+═══════════════════════════════════════════════════════ */
+const cases = [
+  {n:1,title:"The Cleaned Crime Scene",scenario:"A woman is found dead in her apartment. Police observe that the floors have been recently scrubbed and there is a strong smell of bleach. Despite this, an investigator notices faint brownish discolouration in the floorboard cracks and behind the skirting board. A neighbour reports hearing a struggle two nights prior.",marks:20,
+  qs:["What should be the FIRST step in searching for blood evidence at this scene? Justify your answer. (4 marks)","Describe how you would use the LUMINOL test at this scene, including its limitations. (4 marks)","If presumptive tests are positive, describe the confirmatory tests for blood you would use and their principles. (6 marks)","How would you collect and preserve the reference blood sample and which Vacutainer would you use for DNA testing? (3 marks)","State THREE false positive substances that could give false reactions in the bleach-cleaned scene. (3 marks)"],
+  ans:`<strong>Model Answer — The Cleaned Crime Scene:</strong>
+<ol>
+<li><strong>First Step (4 marks):</strong> A thorough examination using a HIGH-INTENSITY WHITE LIGHT should be the first step. Rationale: (a) Diluted blood leaves brownish stains that are visible with high-intensity light; (b) Blood flows into floorboard cracks, carpet padding, and behind baseboards — exactly where discolouration was noted; (c) This approach preserves all evidence and does not risk DNA degradation or smearing of impressions (unlike luminol); (d) Visible stains can then be collected and sent for confirmatory testing. Luminol should be the LAST resort.</li>
+<li><strong>Luminol (4 marks):</strong> Apply in a DARK ROOM after all other methods have been exhausted. Luminol is oxidised by hemoglobin → chemiluminescence (glow in the dark). Can detect even very dilute stains after attempted cleaning. LIMITATIONS: (a) Only presumptive — too dilute for further analysis; (b) FALSE POSITIVES: bleach (sodium hypochlorite) — especially relevant here; copper/iron compounds; plant peroxidases; potassium permanganate; (c) Causes LOSS of genetic markers/DNA; (d) Water-based — can smear any latent impressions; (e) Should be LAST resort, not first choice.</li>
+<li><strong>Confirmatory Tests (6 marks):</strong> (a) TAKAYAMA TEST: NaOH releases heme from globin → glucose reduces iron → pyridine forms pyridine ferroprotoporphyrin → PINK NEEDLE/RHOMBOID CRYSTALS under microscope = positive. (b) ABAcard HEMATRACE: Detects human hemoglobin using lateral flow immunoassay with monoclonal anti-human Hb antibodies. Two pink lines (T+C) = positive. Also: (c) RSID-Blood: Detects human glycophorin A — two monoclonal antibodies; requires positive in T line and C line. All three are specific for human blood and are non-presumptive confirmatory tests.</li>
+<li><strong>Reference Blood Collection (3 marks):</strong> Collect directly from person into a Vacutainer — NOT from bloody clothing. For DNA testing: PURPLE TOP (EDTA) Vacutainer — suitable for DNA analysis. Yellow top (ACD) also suitable (author's preference). Store refrigerated (not frozen) at ~4°C until transported to the lab.</li>
+<li><strong>Three False Positives in Bleach-Cleaned Scene (3 marks):</strong> (a) Bleach/sodium hypochlorite — directly relevant to this case; (b) Iron compounds (from cleaning implements/rust on plumbing); (c) Copper ions (from copper pipes/cookware).</li>
+</ol>`},
+
+  {n:2,title:"The Bloodstain Reconstruction",scenario:"Crime scene investigators are called to a single-story house where a violent assault occurred. Multiple blood drops are found on the tiled floor. One drop measures width 8 mm and length 16 mm. The area of convergence is 4 feet from the front edge of that drop. Multiple tiny mist-like stains are also found on the adjacent wall.",marks:20,
+  qs:["Calculate the angle of impact of the blood drop described. Show your working. (4 marks)","Calculate the height at which bleeding originated (point of origin). Show your working. (4 marks)","What category of bloodstain pattern do the mist-like stains on the wall represent? What does this indicate about the weapon used? (4 marks)","Define the area of convergence and explain how it is established at a crime scene. (4 marks)","State FOUR important principles a blood spatter analyst should follow when drawing conclusions. (4 marks)"],
+  ans:`<strong>Model Answer — Blood Spatter Reconstruction:</strong>
+<ol>
+<li><strong>Angle of Impact (4 marks):</strong> Formula: Impact Angle = arcsin(Width ÷ Length). Width = 8 mm; Length = 16 mm. arcsin(8/16) = arcsin(0.5) = <strong>30°</strong>. The blood drop struck the surface at 30° from horizontal — an oblique impact. The pointed tail of the stain indicates the direction of travel. (Note: Do NOT measure the tail in the length measurement.)</li>
+<li><strong>Height/Point of Origin (4 marks):</strong> Formula: Height = Distance × tan(angle of impact). Distance = 4 feet; Angle = 30°. Height = 4 × tan(30°) = 4 × 0.577 = <strong>2.31 feet</strong> above the floor. This is the height above the ground at which the wound was bleeding — suggesting the victim was likely kneeling or the wound was at waist level.</li>
+<li><strong>Mist-like stains (4 marks):</strong> These are HIGH VELOCITY IMPACT SPATTER. Diameters &lt;1 mm are consistent with HIGH velocity impact. This indicates the weapon was most likely a FIREARM (gunshot). The mist results from the blood source being subjected to explosive force. Other causes: high-speed collision, explosion. This has major implications — investigators should look for a firearm and cartridge casings.</li>
+<li><strong>Area of Convergence (4 marks):</strong> The area of convergence is the 2D location on a surface where lines drawn through the long axes of multiple blood drops converge — representing the spot where the assault occurred. Established by: (a) Measuring the angle (direction of travel) of multiple individual stains; (b) Drawing lines along the long axis of each stain backward (toward the tail direction); (c) The intersection point of these lines on the floor/surface = area of convergence. Strings may be used at the scene. The 3D point of origin (height) is then calculated using the tangent formula.</li>
+<li><strong>Four BPA Principles (4 marks):</strong> (a) A few stains do NOT make a pattern — require sufficient number; (b) Draw conclusions with reservations and qualifications; (c) It is acceptable to admit insufficient evidence to draw a conclusion — no opinion is better than an incorrect forced opinion; (d) When blood is projected upward to strike a ceiling, it is almost always a result of a gunshot with upward trajectory — more often suicide than homicide.</li>
+</ol>`},
+
+  {n:3,title:"The Alleged Rape Case — Night Assault",scenario:"A 23-year-old woman presents to the casualty department at 6:00 AM stating she was raped by an unknown male the previous evening at approximately 10:00 PM. She has not bathed or changed clothes. She has petechiae on her face and bruising on her wrists. She is distressed and initially refuses examination.",marks:20,
+  qs:["What are the preconditions that MUST be met before the medical examination can proceed? (4 marks)","Describe the general body examination you would perform, focusing on the injuries described and what they indicate. (4 marks)","Describe the sequence of vaginal swab collection and what each swab is intended to detect. (4 marks)","The woman says she brushed her teeth after the assault. What forensic evidence may still be recoverable from the oral cavity? (4 marks)","What is your medical opinion on this case, and why can you NOT use the word 'rape' in your report? (4 marks)"],
+  ans:`<strong>Model Answer — Alleged Rape Case:</strong>
+<ol>
+<li><strong>Preconditions (4 marks):</strong> (a) AUTHORIZATION: A properly written order from police or court is required before examination can be performed. (b) IDENTIFICATION: Victim must be identified by relatives, police, or ID marks. (c) CONSENT: Since she is >12 years of age, witnessed, written, and informed consent is REQUIRED. If she refuses, the examination CANNOT be undertaken (unlike the accused, where reasonable force may be used). (d) FEMALE NURSE: Must be present throughout the ENTIRE examination. (e) NO DELAY: Examination should be done as early as possible to preserve perishable evidence.</li>
+<li><strong>General Examination and Injury Significance (4 marks):</strong> (a) Petechiae on face/conjunctiva = partial asphyxia from forcible restraint over the neck — victim was being choked or restrained to subdue her/prevent calling out. (b) Bruising on wrists = holding/restraint injuries — consistent with victim being held down against her will. (c) Mental state: document if the victim appears intoxicated or under influence of drugs (toxicological samples needed). (d) Full body examination for additional injuries: back (ground friction), thighs, mouth (injuries from hand placed over face), bite marks on breasts. Record all injuries with diagrams/photographs, including size, shape, distribution, and estimated age.</li>
+<li><strong>Vaginal Swab Sequence (4 marks):</strong> Four swabs in this specific order: (a) Swab 1 — Introitus and perineum: external surface; detects fresh semen deposited externally. (b) Swab 2 — Low vaginal swab: lower vaginal vault; highest concentration of semen short-term. (c) Swab 3 — High vaginal vault swab: upper vaginal vault. (d) Swab 4 — Cervical mucus: ONLY because alleged rape occurred >8 hours prior (approximately 8 hours passed). Cervical mucus preserves sperm longer. The presence of spermatozoa in the vagina is DEFINITE evidence of sexual intercourse. Spermatozoa motility: full motility for 3 hours, complete sperm present for 26 hours.</li>
+<li><strong>Oral Evidence After Tooth Brushing (4 marks):</strong> Despite tooth brushing, some evidence may remain: (a) Buccal swabs taken within 8 hours of oro-penile contact can still reveal seminal traces if there was oral sex — specifically spermatozoa in the oral mucosa. (b) Saliva and buccal cells from the assailant may be present on the victim's lips or skin near the mouth. (c) Amylase detected in penile swabs from the assailant can confirm oro-penile contact. (d) However, tooth brushing and hot drinks significantly reduce the recovery of seminal traces from the oral cavity — state limitations in report. UV light can detect residual fluorescent semen traces.</li>
+<li><strong>Medical Opinion (4 marks):</strong> The medical opinion should state: "There is evidence of recent sexual intercourse, with injuries consistent with forcible restraint." RAPE IS A LEGAL DIAGNOSIS — NOT A MEDICAL ONE. The word 'rape' must NEVER appear in a medical report because: (a) The existence of consent is a LEGAL determination made by a court — not a medical one; (b) The doctor's role is to document findings, not adjudicate; (c) The phrase 'rape' implies a legal conclusion that exceeds the doctor's competence; (d) Medical opinion covers: evidence of sexual intercourse, injuries suggesting force/restraint, age of injuries, and presence/absence of semen. The court determines whether rape occurred based on all available evidence.</li>
+</ol>`},
+
+  {n:4,title:"The Newborn Found in a Drain",scenario:"A female newborn infant is found by a member of the public in a storm drain. The infant appears to be full-term and is cold, with no obvious external injuries. The umbilical cord is torn rather than cut. Police suspect infanticide. You are called to perform an autopsy.",marks:20,
+  qs:["What are the FOUR main objectives of performing an autopsy on a newborn in this context? (4 marks)","Describe the hydrostatic test — its principle, method, and FOUR fallacies that can give false results. (6 marks)","How would you distinguish a still-born from a live-born infant using lung characteristics? Give FIVE differences. (5 marks)","The umbilical cord is torn rather than cut. What is the forensic significance of this finding? (3 marks)","What are the features of a viable fetus at 7 months? Give FIVE features. (2 marks)"],
+  ans:`<strong>Model Answer — Newborn Found in Drain:</strong>
+<ol>
+<li><strong>Four Objectives of Autopsy (4 marks):</strong> (a) Determine whether the infant was dead-born, still-born, or LIVE-BORN — this is the crucial first question. (b) Determine the cause of death — natural (prematurity, SIDS, asphyxia) vs. unnatural (suffocation, strangulation, drowning). (c) Determine the manner of death — accidental (precipitate labour complications: fall, cord, drowning) vs. homicidal (infanticide). (d) Determine the intrauterine age (gestational age) and therefore whether the infant was viable (capable of independent life) — critical for legal liability.</li>
+<li><strong>Hydrostatic Test (6 marks):</strong> PRINCIPLE: Fetal (unexpanded) lungs have specific gravity >1.0 — they sink in water. After breathing, air expands alveoli → specific gravity decreases below 1.0 → lungs float. Positive test = evidence of respiration after birth. METHOD: (a) Remove lungs intact and place in container of water; (b) Observe: float = positive (live born), sink = negative; (c) Separate lobes and test individually; (d) Cut small pieces — each piece tested separately; (e) Stomach-bowel test: bowel containing swallowed air also floats = positive. FOUR FALLACIES: (a) FALSE POSITIVE: Putrefactive/decomposition gases cause emphysema mimicking air expansion — lungs from decomposing body float regardless of breathing; (b) FALSE POSITIVE: Artificial respiration performed on a still-born may introduce air; (c) FALSE NEGATIVE: Consolidation (pneumonia), oedema, congenital tumour cause heavy lungs despite breathing; (d) FALSE NEGATIVE: Partial breathing or asphyxia neonatorum may result in minimal alveolar expansion — lungs may not float fully.</li>
+<li><strong>Live-born vs. Still-born Lungs — 5 Differences (5 marks):</strong> (a) COLOUR: Live-born = mottled pink; Still-born = uniform dark blue-red. (b) VOLUME/POSITION: Live-born = fill entire thoracic cavity, overlapping heart; Still-born = small, lying behind heart, pleura wrinkled. (c) CONSISTENCY: Live-born = spongy, elastic, crepitant; Still-born = dense, firm, liver-like, non-crepitant. (d) EDGES: Live-born = rounded; Still-born = sharp. (e) HYDROSTATIC TEST: Live-born = positive (floats); Still-born = negative (sinks). Lung:body weight ratio — Live: 1:35; Still: 1:70.</li>
+<li><strong>Torn vs. Cut Cord (3 marks):</strong> A TORN cord suggests the cord was NOT deliberately cut and tied — this is consistent with: (a) Precipitate labour (unattended delivery) — the cord may tear during rapid unassisted delivery; (b) Act of OMISSION type infanticide — failure to ligate the cord leads to fatal haemorrhage; (c) Alternatively, deliberate tearing. However, a CUT cord suggests deliberate assistance at delivery. The forensic significance: a torn cord supports a claim of precipitate/unattended labour, while a cut-but-unligated cord may suggest deliberate omission. Haemorrhage from the cord end should be assessed.</li>
+<li><strong>Five Features of 7-Month Viable Fetus (2 marks — any 5):</strong> Length 13–16 inches; Weight 2–4 lbs; Skin raw-looking with thick vernix caseosa; Eyelids non-adherent with eyelashes present; Nails well-developed but not reaching fingertip; Testes may be at internal inguinal ring; Caecum in right iliac fossa; Ossification centers in talus and 2nd/3rd sternum segments; Convolutions of cerebral hemispheres forming.</li>
+</ol>`},
+
+  {n:5,title:"Criminal Abortion — The Perforated Uterus",scenario:"A 28-year-old unmarried woman presents to casualty in septic shock with acute abdominal pain and rigidity. She gives no history of pregnancy. On examination, she has a temperature of 39.5°C, tachycardia, and tenderness in the lower abdomen. Vaginal examination reveals lacerations of the cervix and a bluish-grey paste visible in the cervical os. She later admits to visiting a traditional practitioner 3 days prior.",marks:20,
+  qs:["What is the most likely forensic diagnosis? Justify using the clinical findings. (4 marks)","List the complications of criminal abortion in order of time of occurrence (immediate, delayed, remote). (6 marks)","Describe the post-mortem findings in a case of criminal abortion (internal findings). (5 marks)","What are the medico-legal duties of the examining doctor in this case? (3 marks)","How would you distinguish this case from a natural (spontaneous) abortion on post-mortem examination? (2 marks)"],
+  ans:`<strong>Model Answer — Criminal Abortion:</strong>
+<ol>
+<li><strong>Forensic Diagnosis and Justification (4 marks):</strong> Most likely diagnosis: CRIMINAL ABORTION with septic complications (likely uterine perforation and peritonitis). Justification: (a) Unmarried woman — motive present; (b) Denial of pregnancy history — consistent with concealment; (c) Lacerations of cervix — signs of instrumentation/local violence; (d) Bluish-grey paste in cervical os = UTUS PASTE (contains mercury) — a known criminal abortifacient; (e) Septic shock (fever, tachycardia, peritonism) 3 days later — consistent with delayed complication of instrumentation; (f) History of visiting traditional practitioner 3 days prior — the timing correlates with procedure and onset of sepsis.</li>
+<li><strong>Complications in Time Order (6 marks):</strong> LOCAL INJURIES (immediate): Excoriation, lacerations, perforations of upper vagina, cervix, uterine wall. IMMEDIATE (hours): (a) Shock and haemorrhage; (b) Air embolism; (c) Reflex vagal inhibition. DELAYED (days): (a) Sepsis/septicaemia/pyaemia; (b) Toxaemia; (c) Peritonitis; (d) Tetanus. REMOTE (weeks-months): (a) Jaundice, renal suppression, renal failure; (b) Bacterial endocarditis, pneumonia, empyema, meningitis; (c) Deep vein thrombosis → pulmonary embolism; (d) DIC (Disseminated Intravascular Coagulation); (e) Poisonous effects of abortifacient drugs.</li>
+<li><strong>Post-Mortem Internal Findings (5 marks):</strong> (a) Pelvic floor and organs: lacerations, contusions, ruptures, inflammation, infection, haemorrhage, marks of instrumentation. (b) Cervix and os: laceration, tear, bruising; evidence of dilatation; evidence of instrumentation; application of abortifacient (paste/chemical burns). (c) Uterus: enlarged; placental attachment site visible; injuries (tears/perforations); foreign bodies; remains of fetus, placenta, and membranes. (d) Microscopic/histopathological examination: inflammatory infiltrate, necrotic tissue, organism identification. (e) Chemical examination: viscera and uterus sampled for identification of abortifacient substances (mercury from utus paste, other toxic substances).</li>
+<li><strong>Medico-Legal Duties of Examining Doctor (3 marks):</strong> (a) Consult a professional colleague before undertaking management. (b) Render proper treatment to the patient (duty of care is primary). (c) The law demands police be informed about a crime — the doctor should inform police while otherwise maintaining professional secrecy. (d) If the woman gives a dying declaration — it must be properly recorded and witnessed. (e) If the woman dies → inform police for arrangement of post-mortem examination and further investigations. Doctor must document all findings meticulously.</li>
+<li><strong>Distinguish from Natural Abortion (2 marks):</strong> Criminal: Foreign bodies in genital tract; marks of instrumentation; toxic drug effects in vagina/cervix/GIT/uterus; marks of violence on abdomen; frequent infection; fetal wounds. Natural: These findings are ABSENT. Natural abortion also has underlying pathological cause (chromosomal, uterine anomaly, systemic disease) — no external trauma or instrumentation marks.</li>
+</ol>`},
+
+  {n:6,title:"The Incest Case",scenario:"A 15-year-old girl is brought to a children's hospital by a social worker after disclosing to her school counsellor that her biological father has been sexually abusing her for 2 years. She is now 12 weeks pregnant. She appears withdrawn and exhibits regressive behaviour.",marks:20,
+  qs:["Define incest and state its classification under Kenyan law with the prescribed penalties. (4 marks)","Describe the psychological effects of incest on the victim. List EIGHT effects. (4 marks)","What specific medico-legal examination findings would you expect in this case? (4 marks)","State the specimens you would collect and their forensic purpose in proving the relationship between the victim and the accused. (4 marks)","Discuss the medico-legal significance of the pregnancy in this case, including its relevance to criminal prosecution. (4 marks)"],
+  ans:`<strong>Model Answer — Incest Case:</strong>
+<ol>
+<li><strong>Definition, Classification and Penalties (4 marks):</strong> DEFINITION: Sexual intercourse by a man with a woman closely related to him by blood or by marriage (prohibited degrees of relationship) — daughter, granddaughter, sister, stepsister, aunt, niece, or grandmother. CLASSIFICATION: (a) Consanguinal — between blood relatives (this case: father-daughter). (b) Affinal — between adoption or marriage relatives. (c) Quasi-relative — foster parent or live-in partner in parental role. KENYAN LAW (SOA 2006): Any male committing indecent act or act causing penetration with listed female relatives → MINIMUM 10 YEARS imprisonment. If the female victim is UNDER 18 years → LIFE IMPRISONMENT. CONSENT IS IMMATERIAL if victim is under 18. Attempted incest → minimum 10 years.</li>
+<li><strong>Eight Psychological Effects (4 marks):</strong> (a) General behaviour problems and delinquency; (b) Anxiety and fearfulness; (c) Regressive behaviours (bed-wetting, thumb-sucking); (d) Nightmares and sleep disturbances; (e) Withdrawal from normal activities and social isolation; (f) Internalizing and externalizing disorders; (g) Cruelty to others and self-injury; (h) Post-Traumatic Stress Disorder (PTSD). Additional: poor self-esteem; age-inappropriate sexual behaviour; depression.</li>
+<li><strong>Medico-Legal Examination Findings (4 marks):</strong> (a) General: withdrawn, regressive behaviour as already noted; assess for signs of chronic abuse. (b) Signs of pregnancy at 12 weeks: uterine enlargement, Hegar's sign, positive pregnancy test. (c) Hymen: may show old healed lacerations or complete disruption — but absence of hymen injuries does NOT exclude sexual abuse. (d) Vagina: may show scarring from repeated penetration. (e) Perineum: look for old scarring or fistulas. (f) Evidence of STDs must be screened (important in chronic abuse). (g) Age confirmation: dental examination, secondary sexual characteristics, skeletal X-ray if needed. (h) Colposcopy: detect subtle injuries not visible to the naked eye; toluidine blue for staining injured epithelium.</li>
+<li><strong>Specimens and Their Forensic Purpose (4 marks):</strong> (a) Blood from victim and accused: DNA profiling — establish biological relationship (paternity of fetus). Also ABO blood grouping. (b) Vaginal swabs: detect presence of spermatozoa; acid phosphatase activity. (c) Fetal tissue (from termination if performed): fetal DNA compared to accused's DNA — provides definitive proof of paternity and incestuous relationship. (d) Fingernail scrapings from victim: may contain accused's epithelial cells/blood. (e) Clothing: examine for semen stains (fluorescence, acid phosphatase). (f) Hair: pubic hair from victim — foreign hairs compared to accused for contact evidence.</li>
+<li><strong>Significance of Pregnancy (4 marks):</strong> (a) PROOF OF INTERCOURSE: Pregnancy at age 15 is incontrovertible proof that sexual intercourse occurred. (b) STATUTORY RAPE: The girl is 15 years old — any sexual intercourse with her is statutory rape under the SOA 2006, regardless of apparent consent. (c) INCEST + RAPE: The combination means both offences are charged. Life imprisonment applies because victim is under 18. (d) DNA PATERNITY: DNA from fetal tissue compared to accused's DNA can provide near-certain proof (>99.99%) of paternity, directly linking the accused to the crime. (e) Medico-legal importance: Pregnancy in a girl ≤16 years (unmarried) points towards commission of rape — courts recognise this. (f) MTP (termination): Pregnancy from rape is a humanitarian indication for MTP — the girl has legal right to termination with proper medical support.</li>
+</ol>`},
+
+  {n:7,title:"The Suspicious Infant Death",scenario:"A 3-month-old male infant is brought to hospital by his 19-year-old mother, declared dead on arrival. The mother states the baby 'stopped breathing in the night.' On examination, the infant has fresh bruising on the right cheek, a healing rib fracture (estimated 2 weeks old), and retinal haemorrhages on fundoscopic examination. The mother has delayed presentation by 6 hours.",marks:20,
+  qs:["What syndrome does this clinical picture most likely represent? Justify using the findings. (4 marks)","Define SIDS. Explain why this case does NOT meet the criteria for SIDS. (4 marks)","Describe the profile of the perpetrator and precipitating factors typically associated with this condition. (4 marks)","Describe Munchausen Syndrome by Proxy. How does it differ from this case? (4 marks)","What are the medico-legal obligations of the paediatrician/forensic pathologist in this case? (4 marks)"],
+  ans:`<strong>Model Answer — Suspicious Infant Death:</strong>
+<ol>
+<li><strong>Diagnosis and Justification (4 marks):</strong> Diagnosis: BATTERED BABY SYNDROME (Caffey Syndrome) / Non-Accidental Injury (NAI). Justification: (a) INJURIES OF DIFFERENT AGES: Fresh bruising on cheek (recent) + healing rib fracture estimated 2 weeks old = injuries at different times, incompatible with a single accidental event; (b) RETINAL HAEMORRHAGES: Classic finding of shaken baby syndrome — a form of NAI; caused by violent shaking; (c) CHEEK BRUISING: Unusual location for accidental childhood injury in a 3-month-old who cannot yet walk/crawl; (d) DELAY IN PRESENTATION: 6-hour delay in seeking medical care is a hallmark of NAI; (e) Age (3 months), male sex, and young mother (19 years) match the epidemiological profile of battered baby.</li>
+<li><strong>SIDS vs. This Case (4 marks):</strong> SIDS DEFINITION: Sudden death of an infant that is UNEXPECTED by history and in whom a THOROUGH AUTOPSY FAILS to reveal an ADEQUATE CAUSE of death. WHY THIS IS NOT SIDS: (a) Thorough examination reveals PHYSICAL INJURIES (bruising, healing rib fractures, retinal haemorrhages) — an adequate cause of suspicious death IS found; (b) SIDS does not produce physical injuries; (c) Delay in presentation, injuries of different ages, and unusual injury locations are all inconsistent with SIDS; (d) SIDS is a diagnosis of EXCLUSION — all other causes must be ruled out first. In this case, non-accidental injury is strongly supported by objective physical findings.</li>
+<li><strong>Perpetrator Profile and Precipitating Factors (4 marks):</strong> PERPETRATOR PROFILE: Younger parents (19-year-old mother matches); socially isolated; lower education level; lower socioeconomic class; family disharmony; emotional problems; possible criminal record; unemployed; unstable relationships. PERPETRATOR may be the mother, father, or other caregiver. PRECIPITATING FACTORS: (a) Infant crying repeatedly; (b) Refusal to be quiet/settle; (c) Soiling of nappies; (d) Sleep deprivation of caregiver. VICTIM PROFILE: Age &lt;1 year; male predominance; eldest or youngest child; unwanted or illegitimate child. TREATMENT: History discrepancies (e.g., "stopped breathing in the night" does not explain rib fractures); delay in seeking medical attention.</li>
+<li><strong>MBPS vs. This Case (4 marks):</strong> MUNCHAUSEN SYNDROME BY PROXY (MBPS): A caregiver fabricates or produces illness in a child to gain medical attention/sympathy. Diagnostic criteria: illness produced or alleged by parent; repeated medical care requests; parental denial of causing symptoms; symptoms improve on SEPARATION from parent. METHODS: Adding blood to urine, blocking airways, giving insulin, laxatives. DIFFERENCE FROM THIS CASE: (a) MBPS involves FABRICATION or production of ILLNESS symptoms (not physical trauma); (b) This case shows definitive PHYSICAL INJURIES (bruising, fractures, retinal haemorrhages) — actual traumatic infliction; (c) MBPS child typically has repeated unexplained medical problems that improve in hospital; (d) This infant has died with objective injury evidence — more consistent with direct physical abuse/Battered Baby Syndrome than MBPS. Both are forms of child abuse but mechanistically different.</li>
+<li><strong>Medico-Legal Obligations (4 marks):</strong> (a) MANDATORY REPORTING: In cases of suspected child abuse, the doctor is legally and ethically OBLIGATED to report to child protection authorities and police — this supersedes patient confidentiality; (b) DOCUMENTATION: Meticulous documentation of all findings, photographs of injuries, measurement and description of bruises with estimated age; (c) AUTOPSY: Full forensic post-mortem examination — including skeletal survey (bone scan/X-rays for old fractures), vitreous humor toxicology, histopathology of brain/retina, ophthalmic examination; (d) Preserve specimens: blood for toxicology and DNA, tissue samples, eye vitreous; (e) CHAIN OF CUSTODY: Maintain evidence integrity for legal proceedings; (f) Statement and expert witness: doctor may be required to give expert testimony in criminal proceedings. Child must be treated as a potential victim of a crime from the outset.</li>
+</ol>`},
+
+  {n:8,title:"The Decomposed Body and Hair Evidence",scenario:"The decomposed body of an adult male is discovered in a forest. A clump of hair is found clutched in the victim's hand. Investigation reveals a suspect who denies being at the scene. The hair is sent to the forensic lab. The victim's body shows evidence of advanced decomposition with adipocere formation.",marks:20,
+  qs:["What types of information can be obtained from the questioned hair (the clump in the victim's hand)? List SIX types. (6 marks)","Describe how you would determine whether the hair is of human or animal origin. Give FIVE differentiating features. (5 marks)","Explain the sequence of microscopic examination versus DNA analysis. Why must microscopy precede DNA analysis? (4 marks)","What types of DNA can be extracted from hair? Describe the circumstances for use of each. (3 marks)","What is a postmortem root band and what is its significance in this investigation? (2 marks)"],
+  ans:`<strong>Model Answer — Hair Evidence:</strong>
+<ol>
+<li><strong>Six Types of Information from Hair (6 marks):</strong> (a) RACIAL ORIGIN: Microscopic features (pigment distribution, cross-section shape, cuticle pattern, medullary index) indicate Caucasoid, Mongoloid, or Negroid ancestry. (b) BODY REGION: Type of hair (head, pubic, body, beard, axillary) determined by shape, texture, and microscopic features. (c) TREATMENT HISTORY: Bleaching (disturbed cuticle, yellow colour, sharp demarcation line), dyeing (cortex and cuticle colour changes), timing of last colouring. (d) DRUG/TOXIN TIMELINE: Hair grows ~1.3 cm/month; chemical analysis of sections reveals when drug use or poisoning occurred. (e) DNA PROFILING: Individual identification (if follicular tissue is present) or maternal lineage (mitochondrial DNA). (f) PHYSICAL CONTACT EVIDENCE: Presence of suspect's hair on victim (and vice versa) demonstrates Locard's Exchange Principle — physical contact between individuals.</li>
+<li><strong>Human vs. Animal Hair — 5 Features (5 marks):</strong> (a) PIGMENT DISTRIBUTION: Human = denser toward the cuticle; Animal = denser toward the medulla, may have ovoid bodies or banded patterns. (b) MEDULLA THICKNESS: Human = thin (&lt;⅓ of hair diameter) or absent; Animal = thick (&gt;½ of hair diameter). (c) MEDULLARY INDEX: Human &lt;0.33; Animal &gt;0.50. (d) CUTICLE SCALE PATTERN: Human = imbricate (flattened, narrow); Animals = spinous (petal-like: cat, seal) or coronal (crown: rodent, bat). (e) COLOUR PATTERNS: Humans = one consistent colour along entire length; Animals = may have banded colour patterns; animal hair may also show species-specific pigment granule arrangements.</li>
+<li><strong>Microscopy Before DNA — Sequence and Rationale (4 marks):</strong> SEQUENCE: (a) Full macroscopic examination first (length, colour, curliness); (b) Microscopical examination under 40–400× magnification; (c) Comparison microscopy with known samples from suspect; (d) ONLY THEN proceed to DNA analysis. RATIONALE: (a) DNA analysis is DESTRUCTIVE — it consumes portions of the hair and cannot be undone; (b) Once hair is consumed for DNA, microscopic comparison may be impossible; (c) Microscopy is cost-effective, quick, and non-destructive; (d) Microscopically excluded hairs (wrong race, wrong body region) may NOT require DNA analysis, saving resources; (e) In cases where DNA extraction fails, microscopic comparison may still provide associative evidence. Microscopy and DNA are COMPLEMENTARY — together they provide stronger conclusions than either alone.</li>
+<li><strong>Types of DNA from Hair (3 marks):</strong> (a) NUCLEAR DNA (nDNA): Inherited from both parents — highest discrimination power. Available from ANAGEN phase hairs with follicular tissue (root sheath cells actively dividing). Best for individual identification. (b) MITOCHONDRIAL DNA (mtDNA): Inherited solely from the MOTHER. Present in hair shafts and roots of TELOGEN hairs (no follicular tissue needed). Useful when nDNA is unavailable. Lower discrimination (all people in the same maternal line share the same mtDNA). (c) When to use: Anagen hairs with follicular tags → nDNA first choice. Telogen shed hairs without follicle → mtDNA. In this decomposed body case, postmortem changes affect DNA quality — mtDNA more likely to survive degradation.</li>
+<li><strong>Postmortem Root Band (2 marks):</strong> When hairs originate from a body in a state of decomposition, a DARK BAND appears near the ROOT of the hair — called a postmortem root band. SIGNIFICANCE: (a) Its presence in the questioned hair (from victim's hand) indicates the hair may have been shed/pulled from a decomposing body — consistent with the victim being in an advanced state of decomposition. (b) However, if the suspect's hair shows this band and the suspect is alive, it would be an inconsistency requiring explanation. (c) It confirms that the hair was present at or around the time of/after decomposition, which helps establish the timeline of events.</li>
+</ol>`},
+
+  {n:9,title:"The Rape-Murder Investigation — Semen Evidence",scenario:"A 30-year-old woman is found dead in her home with signs of sexual assault. At autopsy, there are ligature marks on the neck (cause of death: manual strangulation). Vaginal swabs are taken. A suspect is identified who claims he had consensual intercourse with the deceased 48 hours prior. He has undergone a vasectomy.",marks:20,
+  qs:["Describe the complete examination of the genitalia at autopsy in a case of alleged sexual assault. (4 marks)","Given that the suspect is vasectomized, what semen tests would be positive and which would be negative? Explain. (5 marks)","The suspect claims consensual intercourse 48 hours prior. How does this affect the evidentiary value of: (a) sperm motility, (b) acid phosphatase, and (c) PSA findings? (5 marks)","Describe the injuries at the neck and their significance in establishing manner of death. (3 marks)","What DNA evidence from semen/stains would definitively link the suspect to the assault? Describe the process. (3 marks)"],
+  ans:`<strong>Model Answer — Rape-Murder Investigation:</strong>
+<ol>
+<li><strong>Genital Examination at Autopsy (4 marks):</strong> External: (a) Vulva — examine labia majora and minora for bruising, lacerations, swelling. (b) Hymen — note whether intact, partially disrupted, or completely absent; document fresh vs. old tears. (c) Perineum — examine for lacerations, bruising, abrasions. (d) Inner thighs — grasp marks, bruising from forcible restraining. INTERNAL: (a) Vagina — examine walls for lacerations, bruising; note presence of semen (odour, appearance). (b) Collect vaginal swabs in sequence: introitus/perineum → low vaginal → high vaginal → cervical mucus. (c) Apply toluidine blue to detect mucosal injuries not visible to naked eye. (d) Colposcopy at autopsy for microtrauma. (e) Anus and perianal region if sodomy suspected. Record ALL injuries with size, location, and estimated age.</li>
+<li><strong>Vasectomized Suspect — Semen Tests (5 marks):</strong> VASECTOMY prevents sperm production from reaching the ejaculate (2–4 months after procedure). Therefore: NEGATIVE TESTS: (a) Christmas Tree Stain for spermatozoa — NO sperm present; (b) Motility assessment — no sperm. POSITIVE TESTS (semen still produced): (a) ACID PHOSPHATASE (AP) — positive: prostate secretion is unaffected; (b) PSA/P30 (Prostate Specific Antigen) — positive: prostate gland intact; (c) RSID-SEMEN (Semenogelin) — positive: seminal vesicle secretion intact (~60% of semen volume). KEY POINT: "The only proof of semen is the presence of spermatozoa" is NO LONGER fully accurate — vasectomized males can still be identified via PSA, semenogelin, and AP. The absence of sperm does NOT disprove sexual intercourse in a vasectomized male.</li>
+<li><strong>48-Hour Consensual Intercourse Claim (5 marks):</strong> (a) SPERM MOTILITY: At 48 hours, motility would be essentially absent (full motility lasts 3 hours; 50% at 8 hours; 10% at 24 hours; complete sperm present at ~26 hours). Finding non-motile sperm at 48 hours is possible but cannot distinguish assault from consensual sex. Does NOT disprove the claim. (b) ACID PHOSPHATASE: AP activity markedly DECREASES after 24 hours and DIMINISHES after 48 hours in post-coital vaginal swabs. If AP is very low or absent, it is consistent with intercourse 48 hours prior. However, AP in dried stains can persist much longer — context matters. If AP is high, it may suggest more recent intercourse. (c) PSA: More stable than AP. A positive PSA after 48 hours is consistent with the suspect's claim. PSA positive alone cannot distinguish timing. OVERALL: The 48-hour consensual claim cannot be definitively refuted by these tests alone — however, the pattern of injuries (ligature marks, bruising, genital trauma) combined with DNA matching provides the critical evidence.</li>
+<li><strong>Neck Injuries and Manner of Death (3 marks):</strong> LIGATURE MARKS on neck from manual strangulation include: (a) Fingernail crescent-shaped abrasions (from fingers gripping) — symmetrically placed indicating a frontal strangle or lateral strangulation; (b) Fingertip bruises (from thumb/finger pressure); (c) Internal: fracture of thyroid cartilage or hyoid bone; petechial haemorrhages in conjunctiva and face; congested neck vessels; haemorrhage in strap muscles of neck. SIGNIFICANCE: (a) Manner of death = HOMICIDE; (b) Strangulation requires sustained, deliberate force — incompatible with accidental or self-inflicted death; (c) Petechiae in conjunctiva = asphyxia confirming neck compression; (d) Pattern of marks may help identify whether one or two hands were used.</li>
+<li><strong>DNA Evidence from Semen (3 marks):</strong> (a) DNA PROFILING: Extract DNA from vaginal swabs — use differential extraction to separate sperm DNA from epithelial cell DNA. Perform STR (Short Tandem Repeat) profiling. Compare suspect's STR profile to DNA extracted from semen. Probability of match by chance is astronomically low (&lt;1 in billions). (b) SINCE SUSPECT IS VASECTOMIZED: Sperm cells absent — extract DNA from seminal plasma (cellular components from prostate/seminal vesicles may contain DNA-bearing cells). Alternatively, epithelial cells shed from the suspect's urethra during ejaculation may be present. (c) If DNA profiles match → definitively links suspect to assault. Combined with physical injury evidence → conclusive case for rape-murder.</li>
+</ol>`},
+
+  {n:10,title:"The Maternal Death — Post-Abortion Complications",scenario:"A 22-year-old woman is brought to the emergency department moribund. She is in septic shock with peritonitis. Her abdomen shows bruising. She dies 2 hours after admission. Her mother discloses she was 4 months pregnant and had visited an unknown 'doctor' 5 days earlier. A post-mortem examination is requested.",marks:20,
+  qs:["What features on post-mortem examination would indicate that this was a criminal rather than spontaneous abortion? (5 marks)","Classify the abortifacient methods used in criminal abortion under three categories with examples. (5 marks)","What are the autopsy findings (internal) you would expect in this case? Describe systematically. (5 marks)","What samples should be collected at autopsy for toxicological and forensic analysis? (3 marks)","Discuss the medico-legal responsibilities of the doctor and list THREE implications under Kenyan law for performing an illegal abortion. (2 marks)"],
+  ans:`<strong>Model Answer — Maternal Death from Criminal Abortion:</strong>
+<ol>
+<li><strong>Features Indicating Criminal vs. Spontaneous Abortion (5 marks):</strong> (a) MARKS OF VIOLENCE on abdomen (bruising described) — present in criminal abortion; absent in spontaneous. (b) FOREIGN BODIES in genital tract — instruments, catheters, utus paste (mercury paste), rubber tubes. (c) GENITAL TRACT INJURIES: excoriation, lacerations, perforations of upper vagina, cervix, uterine wall — deliberate instrumentation; absent in natural abortion. (d) TOXIC DRUG EFFECTS: chemical burns in vagina, cervix, GI tract, uterus from abortifacient drugs; specific drug residues on toxicological analysis. (e) INFECTION: Frequent and severe in criminal abortion (contaminated instruments, retained products); rare in natural abortion. (f) FETAL WOUNDS: Instrument-caused wounds on fetus. (g) Timing: 5 days since procedure → delayed effects (peritonitis, sepsis) are classic criminal abortion complications.</li>
+<li><strong>Criminal Abortifacient Methods (5 marks):</strong> CATEGORY A — ABORTIFACIENT DRUGS: (i) Ecbolics (directly contract pregnant uterus): ergots, quinine, strychnine; (ii) Emmenagogues (initiate menstrual flow): oestrogen, borax; (iii) Purgatives: jalap, castor oil, senna; (iv) Irritants: cantharides, oil of turpentine. CATEGORY B — GENERAL PHYSICAL VIOLENCE: (i) Severe abdominal pressure (blows, kicks, tight bandaging); (ii) Heavy exercise (jumping, jolting, riding); (iii) Cupping; (iv) Extreme hot/cold hip baths. CATEGORY C — LOCAL VIOLENCE: (i) Hot/cold vaginal douches; (ii) Objects inserted into uterine cavity; (iii) Foreign body insertion into uterus; (iv) Syringe aspiration; (v) Introduction of utus paste (contains mercury) into uterus — likely method in this case given 'unknown doctor'.</li>
+<li><strong>Autopsy Internal Findings (5 marks):</strong> PELVIC ORGANS: Uterus enlarged (4 months gestation); uterine wall may show perforation site; placental attachment visible; fetal remains, placenta, or membranes may be partially retained; instrument-entry wounds on uterine wall. CERVIX: Soft; dilated; lacerations, tears, bruising; chemical burns (from utus paste); evidence of dilatation and instrumentation. PERITONEAL CAVITY: Signs of PERITONITIS — fibrinous/purulent exudate; bowel loops matted together; free pus in peritoneum. VAGINA: Upper vaginal excoriation and lacerations; chemical burns from local irritants; foreign body marks. SYSTEMATIC FINDINGS: (a) Pelvic cellulitis; (b) Fallopian tube inflammation; (c) Ovaries congested; (d) Bladder: oedema and hyperaemia; (e) Microscopic/histopathology: necrotic decidua, inflammatory infiltrate, organisms. Chemical: viscera for abortifacient drug identification.</li>
+<li><strong>Autopsy Samples for Toxicology/Forensics (3 marks):</strong> (a) Blood (heart/peripheral) and urine: for abortifacient drug identification (mercury from utus paste, ecbolics); also for alcohol and other substances. (b) Uterine content and vaginal swabs: for identification of abortifacient paste/chemical; culture for organisms (Clostridium tetani, E. coli). (c) Liver, kidney, brain (viscera): chemical analysis for systemic toxic effects of abortifacient drugs; heavy metal analysis (mercury, lead). (d) Gastric contents: for oral abortifacients. (e) Fetal tissue and placenta: histopathology; confirm gestational age. (f) Swabs from vagina, cervix, uterus: organism culture for septicaemia workup.</li>
+<li><strong>Medico-Legal Responsibilities and Kenyan Law (2 marks):</strong> DOCTOR'S DUTIES: (a) If patient is alive — treat first, then report; maintain professional secrecy except where law requires disclosure; record dying declaration if given. (b) DEATH OCCURRED → Mandatory duty to INFORM POLICE for arrangement of post-mortem examination. THREE KENYAN LAW IMPLICATIONS for illegal abortion: (a) The person performing the illegal abortion (the unlicensed 'doctor') is guilty of a criminal offence — liable to prosecution under the Penal Code for causing death; (b) A licensed medical officer who violates the provisions of the MTP Act (performing abortion without proper indication or procedure) is liable to criminal punishment and medical deregistration; (c) A woman falsely charged with inducing criminal abortion upon herself has legal recourse; conversely, if she survived and it could be proven she consented to the procedure, she may also face legal consequences depending on circumstances.</li>
+</ol>`}
+];
+
+/* ═══════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════ */
+let mcqAnswers = new Array(mcqs.length).fill(null);
+let saqRevealed = new Array(saqs.length).fill(false);
+let caseRevealed = new Array(cases.length).fill(false);
+
+/* ═══════════════════════════════════════════════════════
+   RENDER MCQ
+═══════════════════════════════════════════════════════ */
+function renderMCQ(){
+  const c = document.getElementById('mcq-container');
+  c.innerHTML = mcqs.map((q,i) => {
+    const answered = mcqAnswers[i] !== null;
+    const correct = answered && mcqAnswers[i] === q.ans;
+    const cardClass = !answered ? '' : (correct ? 'answered-correct' : 'answered-wrong');
+    const opts = q.opts.map((o,j) => {
+      let cls = 'option' + (answered ? ' locked' : '');
+      let icon = '';
+      if(answered){
+        if(j === q.ans){ cls += ' reveal-correct'; icon = '<span class="opt-icon">✓</span>'; }
+        else if(j === mcqAnswers[i] && j !== q.ans){ cls += ' selected-wrong'; icon = '<span class="opt-icon">✗</span>'; }
+      }
+      return `<div class="${cls}" onclick="selectMCQ(${i},${j})">
+        <span class="opt-letter">${String.fromCharCode(65+j)}</span>
+        <span class="opt-text">${o}</span>${icon}
+      </div>`;
+    }).join('');
+    const fbClass = answered ? (correct ? 'correct-fb show' : 'wrong-fb show') : '';
+    const fbTitle = answered ? (correct ? '✓ Correct!' : '✗ Incorrect') : '';
+    return `<div class="mcq-card ${cardClass}" id="mcq-${i}">
+      <div class="q-header">
+        <span class="q-num">Q${q.n}</span>
+        <div>
+          <div class="q-topic">${q.topic}</div>
+          <div class="q-text">${q.q}</div>
+        </div>
+      </div>
+      <div class="options">${opts}</div>
+      <div class="feedback ${fbClass}">
+        <div class="fb-title">${fbTitle}</div>
+        <div>${q.exp}</div>
+      </div>
+    </div>`;
+  }).join('');
+  updateScores();
+}
+
+function selectMCQ(qi, oi){
+  if(mcqAnswers[qi] !== null) return;
+  mcqAnswers[qi] = oi;
+  renderMCQ();
+}
+
+/* ═══════════════════════════════════════════════════════
+   RENDER SAQ
+═══════════════════════════════════════════════════════ */
+function renderSAQ(){
+  const c = document.getElementById('saq-container');
+  c.innerHTML = saqs.map((q,i) => {
+    const revealed = saqRevealed[i];
+    return `<div class="saq-card" id="saq-${i}">
+      <div class="q-header">
+        <span class="q-num">Q${q.n}</span>
+        <div>
+          <div class="q-topic">${q.topic}</div>
+          <span class="saq-marks">${q.marks} marks</span>
+          <div class="saq-q">${q.q}</div>
+        </div>
+      </div>
+      <button class="answer-toggle ${revealed ? 'open' : ''}" onclick="toggleSAQ(${i})">
+        <span class="toggle-icon">▶</span>
+        ${revealed ? 'Hide Model Answer' : 'Show Model Answer'}
+      </button>
+      <div class="model-answer ${revealed ? 'open' : ''}">
+        <div class="ma-title">Model Answer</div>
+        <div class="ma-content">${q.ans}</div>
+      </div>
+    </div>`;
+  }).join('');
+  updateScores();
+}
+
+function toggleSAQ(i){
+  saqRevealed[i] = !saqRevealed[i];
+  renderSAQ();
+}
+
+/* ═══════════════════════════════════════════════════════
+   RENDER CASES
+═══════════════════════════════════════════════════════ */
+function renderCases(){
+  const c = document.getElementById('case-container');
+  c.innerHTML = cases.map((cs,i) => {
+    const revealed = caseRevealed[i];
+    const qlist = cs.qs.map((q,j) => `<li><span class="cq-num">${j+1}</span>${q}</li>`).join('');
+    return `<div class="case-card" id="case-${i}">
+      <div class="q-header">
+        <span class="q-num">Case ${cs.n}</span>
+        <div>
+          <span class="case-marks">${cs.marks} marks</span>
+          <div class="q-text" style="font-weight:700;font-size:1.05rem;margin-bottom:.6rem">${cs.title}</div>
+        </div>
+      </div>
+      <div class="case-scenario">
+        <div class="case-scenario-title">📋 Clinical Scenario</div>
+        <div class="case-scenario-text">${cs.scenario}</div>
+      </div>
+      <ul class="case-questions">${qlist}</ul>
+      <button class="answer-toggle ${revealed ? 'open' : ''}" onclick="toggleCase(${i})">
+        <span class="toggle-icon">▶</span>
+        ${revealed ? 'Hide Model Answer' : 'Reveal Full Model Answer'}
+      </button>
+      <div class="model-answer ${revealed ? 'open' : ''}">
+        <div class="ma-title">Comprehensive Model Answer</div>
+        <div class="ma-content">${cs.ans}</div>
+      </div>
+    </div>`;
+  }).join('');
+  updateScores();
+}
+
+function toggleCase(i){
+  caseRevealed[i] = !caseRevealed[i];
+  renderCases();
+}
+
+/* ═══════════════════════════════════════════════════════
+   SCORES
+═══════════════════════════════════════════════════════ */
+function updateScores(){
+  const correct = mcqAnswers.filter((a,i) => a !== null && a === mcqs[i].ans).length;
+  const answered = mcqAnswers.filter(a => a !== null).length;
+  const sReveal = saqRevealed.filter(Boolean).length;
+  const cReveal = caseRevealed.filter(Boolean).length;
+  document.getElementById('mcq-score').textContent = `${correct}/${answered} answered`;
+  document.getElementById('saq-score').textContent = `${sReveal}/30`;
+  document.getElementById('case-score').textContent = `${cReveal}/10`;
+  const pct = Math.round(answered/60*100);
+  document.getElementById('mcq-pct').textContent = pct + '%';
+  document.getElementById('mcq-prog').style.width = pct + '%';
+}
+
+/* ═══════════════════════════════════════════════════════
+   THEME
+═══════════════════════════════════════════════════════ */
+function toggleTheme(){
+  const h = document.documentElement;
+  const t = h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  h.setAttribute('data-theme', t);
+  document.querySelector('.theme-btn').textContent = t === 'dark' ? '☀️ Light' : '🌙 Dark';
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════════════════ */
+function resetAll(){
+  if(!confirm('Reset all MCQ answers and close all revealed answers?')) return;
+  mcqAnswers = new Array(mcqs.length).fill(null);
+  saqRevealed = new Array(saqs.length).fill(false);
+  caseRevealed = new Array(cases.length).fill(false);
+  renderMCQ(); renderSAQ(); renderCases();
+}
+
+/* ═══════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════ */
+renderMCQ();
+renderSAQ();
+renderCases();
+</script>
+</body>
+</html>
