@@ -4,245 +4,863 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Forensic Medicine Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root {
-    --bg: #0f172a;
-    --card: #1e293b;
-    --text: #e2e8f0;
-    --accent: #38bdf8;
+  --bg: #080c14;
+  --surface: #0e1420;
+  --card: #131b28;
+  --card-hover: #18233a;
+  --border: rgba(99,179,237,0.12);
+  --border-hover: rgba(99,179,237,0.35);
+  --text: #e8edf5;
+  --text-muted: #7a8fa8;
+  --accent: #38bdf8;
+  --accent-dim: rgba(56,189,248,0.12);
+  --accent-glow: rgba(56,189,248,0.25);
+  --sidebar-w: 260px;
+  --transition: 0.22s cubic-bezier(.4,0,.2,1);
 }
 
 .light {
-    --bg: #f1f5f9;
-    --card: #ffffff;
-    --text: #0f172a;
-    --accent: #2563eb;
+  --bg: #f0f4f8;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --card-hover: #f7faff;
+  --border: rgba(30,80,140,0.13);
+  --border-hover: rgba(30,80,140,0.35);
+  --text: #0d1b2a;
+  --text-muted: #5a718a;
+  --accent: #1d6fdb;
+  --accent-dim: rgba(29,111,219,0.08);
+  --accent-glow: rgba(29,111,219,0.18);
 }
 
-* {
-    box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
 
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    display: flex;
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background var(--transition), color var(--transition);
 }
 
-/* SIDEBAR */
+/* ── SIDEBAR ── */
 .sidebar {
-    width: 240px;
-    min-height: 100vh;
-    background: var(--card);
-    padding: 18px;
-    position: fixed;
+  width: var(--sidebar-w);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  height: 100vh;
+  position: fixed;
+  top: 0; left: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 100;
+  transition: transform var(--transition), background var(--transition);
 }
 
-.sidebar h2 {
-    color: var(--accent);
-    margin-top: 0;
+.sidebar-header {
+  padding: 28px 22px 18px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
 }
 
-.sidebar a {
-    display: block;
-    text-decoration: none;
-    color: var(--text);
-    padding: 8px;
-    border-radius: 6px;
-    margin: 6px 0;
-    font-size: 14px;
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
 }
 
-.sidebar a:hover {
-    background: var(--accent);
-    color: white;
+.logo-icon {
+  width: 36px; height: 36px;
+  background: var(--accent-dim);
+  border: 1px solid var(--border-hover);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
 }
 
-/* MAIN */
+.logo-text {
+  font-family: 'DM Serif Display', serif;
+  font-size: 17px;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.logo-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 12px 20px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.nav-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 14px 10px 6px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 400;
+  transition: background var(--transition), color var(--transition);
+  margin-bottom: 2px;
+}
+
+.nav-link .nav-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--transition);
+}
+
+.nav-link:hover {
+  background: var(--accent-dim);
+  color: var(--text);
+}
+
+.nav-link:hover .nav-num {
+  background: var(--accent-glow);
+}
+
+.sidebar-footer {
+  padding: 14px 12px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.theme-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.theme-btn:hover {
+  background: var(--accent-dim);
+  border-color: var(--border-hover);
+  color: var(--text);
+}
+
+.theme-pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+/* ── TOPBAR (mobile) ── */
+.topbar {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+  height: 56px;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 200;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-btn {
+  width: 36px; height: 36px;
+  background: var(--accent-dim);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--accent);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.topbar-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 15px;
+}
+
+.topbar-theme {
+  width: 36px; height: 36px;
+  background: var(--accent-dim);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--accent);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ── OVERLAY (mobile) ── */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 99;
+  backdrop-filter: blur(2px);
+}
+
+.overlay.active { display: block; }
+
+/* ── MAIN ── */
 .main {
-    margin-left: 260px;
-    padding: 20px;
-    width: 100%;
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+  padding: 0;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
+/* ── HERO ── */
+.hero {
+  padding: 48px 40px 36px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
 }
 
-.toggle-btn {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 6px;
-    background: var(--accent);
-    color: white;
-    cursor: pointer;
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 320px; height: 320px;
+  background: var(--accent-dim);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
-/* GRID */
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--accent-dim);
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(56,189,248,0.2);
+  margin-bottom: 18px;
+}
+
+.hero-eyebrow span {
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.15;
+  color: var(--text);
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero p {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 520px;
+  line-height: 1.6;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.stat-divider {
+  width: 1px;
+  background: var(--border);
+  align-self: stretch;
+}
+
+/* ── GRID SECTION ── */
+.section {
+  padding: 36px 40px 48px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── CARDS ── */
 .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 14px;
-    margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
 }
 
-/* CARDS */
 .card {
-    background: var(--card);
-    padding: 14px;
-    border-radius: 10px;
-    transition: 0.2s ease;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: border-color var(--transition), background var(--transition), transform 0.18s ease;
+  text-decoration: none;
+  color: var(--text);
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent-dim);
+  opacity: 0;
+  transition: opacity var(--transition);
+  pointer-events: none;
 }
 
 .card:hover {
-    transform: translateY(-2px);
+  border-color: var(--border-hover);
+  background: var(--card-hover);
+  transform: translateY(-2px);
+}
+
+.card:hover::before { opacity: 1; }
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card-icon {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.card-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--accent-dim);
+  padding: 3px 8px;
+  border-radius: 20px;
 }
 
 .card h3 {
-    margin: 0 0 10px 0;
-    color: var(--accent);
-    font-size: 16px;
+  font-family: 'DM Serif Display', serif;
+  font-size: 16.5px;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--text);
 }
 
-.card a {
-    display: inline-block;
-    margin-right: 8px;
-    margin-top: 8px;
-    padding: 6px 10px;
-    border-radius: 5px;
-    background: var(--accent);
-    color: white;
-    text-decoration: none;
-    font-size: 13px;
+.card-desc {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.55;
+  flex: 1;
 }
 
-/* MOBILE RESPONSIVE (CLEAN NOT OVERCROWDED) */
+.card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all var(--transition);
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #080c14;
+}
+
+.btn-primary:hover {
+  opacity: 0.88;
+}
+
+.btn-secondary {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid rgba(56,189,248,0.2);
+}
+
+.btn-secondary:hover {
+  background: var(--accent-glow);
+}
+
+/* Color variants for card icons */
+.icon-blue   { background: rgba(56,189,248,0.12); }
+.icon-violet { background: rgba(139,92,246,0.12); }
+.icon-rose   { background: rgba(251,113,133,0.12); }
+.icon-amber  { background: rgba(251,191,36,0.12); }
+.icon-emerald{ background: rgba(52,211,153,0.12); }
+.icon-orange { background: rgba(251,146,60,0.12); }
+.icon-teal   { background: rgba(45,212,191,0.12); }
+
+/* ── SEARCH BAR ── */
+.search-wrap {
+  padding: 0 40px 28px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 16px;
+  max-width: 480px;
+  transition: border-color var(--transition);
+}
+
+.search-box:focus-within {
+  border-color: var(--border-hover);
+}
+
+.search-box span {
+  color: var(--text-muted);
+  font-size: 16px;
+}
+
+.search-box input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.search-box input::placeholder { color: var(--text-muted); }
+
+.search-kbd {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  background: var(--accent-dim);
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero { padding: 36px 24px 28px; }
+  .section { padding: 28px 24px 40px; }
+  .search-wrap { padding: 0 24px 24px; }
+  .hero::before { display: none; }
+}
+
 @media (max-width: 768px) {
-
-    body {
-        flex-direction: column;
-    }
-
-    .sidebar {
-        position: relative;
-        width: 100%;
-        height: auto;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        justify-content: center;
-        padding: 12px;
-    }
-
-    .sidebar h2 {
-        width: 100%;
-        text-align: center;
-    }
-
-    .sidebar a {
-        font-size: 12px;
-        padding: 6px 8px;
-        margin: 2px;
-    }
-
-    .main {
-        margin-left: 0;
-        padding: 15px;
-    }
-
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  .topbar { display: flex; }
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.active { transform: translateX(0); }
+  .main { margin-left: 0; padding-top: 56px; }
+  .grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 16px; }
+  .stat-divider { display: none; }
+  .hero { padding: 24px 16px 24px; }
+  .section { padding: 20px 16px 36px; }
+  .search-wrap { padding: 0 16px 20px; }
+  .hero h1 { font-size: 26px; }
 }
+
+@media (min-width: 1200px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+  animation: fadeUp 0.4s ease both;
+}
+
+.card:nth-child(1) { animation-delay: 0.05s; }
+.card:nth-child(2) { animation-delay: 0.10s; }
+.card:nth-child(3) { animation-delay: 0.15s; }
+.card:nth-child(4) { animation-delay: 0.20s; }
+.card:nth-child(5) { animation-delay: 0.25s; }
+.card:nth-child(6) { animation-delay: 0.30s; }
+.card:nth-child(7) { animation-delay: 0.35s; }
 </style>
 </head>
-
 <body>
 
-<!-- SIDEBAR -->
-<div class="sidebar">
-    <h2>☠ Forensic Guide</h2>
-
-    <a href="#m1">Intro</a>
-    <a href="#m2">Injuries</a>
-    <a href="#m3">Evidence</a>
-    <a href="#m4">Death</a>
-    <a href="#m5">Drowning</a>
-    <a href="#m6">Reproductive</a>
-    <a href="#dna">DNA</a>
+<!-- TOPBAR (mobile) -->
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    <div class="topbar-title">☠ Forensic Guide</div>
+  </div>
+  <button class="topbar-theme" onclick="toggleTheme()">🌙</button>
 </div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar" aria-label="Site navigation">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <div class="logo-icon">☠</div>
+      <div>
+        <div class="logo-text">Forensic Guide</div>
+        <div class="logo-sub">Medicine Study System</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-nav">
+    <div class="nav-label">Overview</div>
+    <a class="nav-link" href="#top">
+      <span class="nav-num">⌂</span> Dashboard
+    </a>
+
+    <div class="nav-label">Modules</div>
+    <a class="nav-link" href="#m1" onclick="closeMenu()">
+      <span class="nav-num">1</span> Intro & Trace Evidence
+    </a>
+    <a class="nav-link" href="#m2" onclick="closeMenu()">
+      <span class="nav-num">2</span> Injuries & Autopsy
+    </a>
+    <a class="nav-link" href="#m3" onclick="closeMenu()">
+      <span class="nav-num">3</span> Evidence & Sexual Offences
+    </a>
+    <a class="nav-link" href="#m4" onclick="closeMenu()">
+      <span class="nav-num">4</span> Death Investigation
+    </a>
+    <a class="nav-link" href="#m5" onclick="closeMenu()">
+      <span class="nav-num">5</span> Drowning & Paternity
+    </a>
+    <a class="nav-link" href="#m6" onclick="closeMenu()">
+      <span class="nav-num">6</span> Reproductive Forensics
+    </a>
+    <a class="nav-link" href="#dna" onclick="closeMenu()">
+      <span class="nav-num">7</span> DNA Analysis
+    </a>
+  </div>
+
+  <div class="sidebar-footer">
+    <button class="theme-btn" onclick="toggleTheme()">
+      <span>Toggle theme</span>
+      <span class="theme-pill" id="theme-label">Dark</span>
+    </button>
+  </div>
+</nav>
 
 <!-- MAIN -->
-<div class="main">
+<main class="main" id="top">
 
-<div class="header">
-    <h1>Forensic Medicine Study Guide</h1>
-    <button class="toggle-btn" onclick="toggleTheme()">🌙 Theme</button>
-</div>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">
+      <span></span> Exam prep system
+    </div>
+    <h1>Forensic Medicine<br><em>Study Dashboard</em></h1>
+    <p>Seven modules covering the full forensic medicine curriculum. Notes and practice questions for every topic — built for mobile and desktop.</p>
 
-<p>Clean, structured revision dashboard for exam prep.</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">7</div>
+        <div class="stat-label">Modules</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <div class="stat-num">14</div>
+        <div class="stat-label">Resources</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Curriculum</div>
+      </div>
+    </div>
+  </div>
 
-<div class="grid">
+  <!-- SEARCH -->
+  <div class="search-wrap" style="padding-top: 28px;">
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="search" placeholder="Search modules..." id="search-input" oninput="filterCards(this.value)" />
+      <span class="search-kbd">/</span>
+    </div>
+  </div>
 
-    <div class="card" id="m1">
+  <!-- MODULES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Study Modules</div>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="grid" id="card-grid">
+
+      <div class="card" id="m1" data-title="Intro & Trace Evidence">
+        <div class="card-top">
+          <div class="card-icon icon-blue">🔬</div>
+          <span class="card-num">M-01</span>
+        </div>
         <h3>Intro & Trace Evidence</h3>
-        <a href="intro-notes.html">Notes</a>
-        <a href="intro-questions.html">Questions</a>
-    </div>
+        <p class="card-desc">Foundations of forensic medicine, Locard's exchange principle, trace evidence collection, and laboratory analysis techniques.</p>
+        <div class="card-actions">
+          <a class="btn btn-primary" href="intro-notes.html">📄 Notes</a>
+          <a class="btn btn-secondary" href="intro-questions.html">✏️ Questions</a>
+        </div>
+      </div>
 
-    <div class="card" id="m2">
+      <div class="card" id="m2" data-title="Injuries & Autopsy">
+        <div class="card-top">
+          <div class="card-icon icon-rose">🩺</div>
+          <span class="card-num">M-02</span>
+        </div>
         <h3>Injuries & Autopsy</h3>
-        <a href="injuries-notes.html">Notes</a>
-        <a href="injuries-questions.html">Questions</a>
-    </div>
+        <p class="card-desc">Wound classification, blunt and sharp force trauma, gunshot wounds, autopsy procedures, and post-mortem examinations.</p>
+        <div class="card-actions">
+          <a class="btn btn-primary" href="injuries-notes.html">📄 Notes</a>
+          <a class="btn btn-secondary" href="injuries-questions.html">✏️ Questions</a>
+        </div>
+      </div>
 
-    <div class="card" id="m3">
+      <div class="card" id="m3" data-title="Evidence & Sexual Offences">
+        <div class="card-top">
+          <div class="card-icon icon-violet">⚖️</div>
+          <span class="card-num">M-03</span>
+        </div>
         <h3>Evidence & Sexual Offences</h3>
-        <a href="evidence-notes.html">Notes</a>
-        <a href="evidence-questions.html">Questions</a>
-    </div>
+        <p class="card-desc">Chain of custody, evidence preservation, forensic examination in sexual assault cases, and medico-legal documentation.</p>
+        <div class="card-actions">
+          <a class="btn btn-primary" href="evidence-notes.html">📄 Notes</a>
+          <a class="btn btn-secondary" href="evidence-questions.html">✏️ Questions</a>
+        </div>
+      </div>
 
-    <div class="card" id="m4">
+      <div class="card" id="m4" data-title="Death Investigation">
+        <div class="card-top">
+          <div class="card-icon icon-amber">💀</div>
+          <span class="card-num">M-04</span>
+        </div>
         <h3>Death Investigation</h3>
-        <a href="death-notes.html">Notes</a>
-        <a href="death-questions.html">Questions</a>
-    </div>
+        <p class="card-desc">Cause vs. manner of death, time-of-death estimation, decomposition stages, scene investigation, and death certification.</p>
+        <div class="card-actions">
+          <a class="btn btn-primary" href="death-notes.html">📄 Notes</a>
+          <a class="btn btn-secondary" href="death-questions.html">✏️ Questions</a>
+        </div>
+      </div>
 
-    <div class="card" id="m5">
+      <div class="card" id="m5" data-title="Drowning & Paternity">
+        <div class="card-top">
+          <div class="card-icon icon-teal">🌊</div>
+          <span class="card-num">M-05</span>
+        </div>
         <h3>Drowning & Paternity</h3>
-        <a href="drowning-notes.html">Notes</a>
-        <a href="drowning-questions.html">Questions</a>
-    </div>
+        <p class="card-desc">Wet and dry drowning mechanisms, diatom testing, paternity testing methods, blood grouping, and identity determination.</p>
+        <div class="card-actions">
+          <a class="btn btn-primary" href="drowning-notes.html">📄 Notes</a>
+          <a class="btn btn-secondary" href="drowning-questions.html">✏️ Questions</a>
+        </div>
+      </div>
 
-    <div class="card" id="m6">
+      <div class="card" id="m6" data-title="Reproductive Forensics">
+        <div class="card-top">
+          <div class="card-icon icon-orange">🧬</div>
+          <span class="card-num">M-06</span>
+        </div>
         <h3>Reproductive Forensics</h3>
-        <a href="reproductive-notes.html">Notes</a>
-        <a href="reproductive-questions.html">Questions</a>
-    </div>
+        <p class="card-desc">Forensic aspects of pregnancy, abortion law and medicine, infanticide, gestational age determination, and neonatal viability.</p>
+        <div class="card-actions">
+          <a class="btn btn-primary" href="reproductive-notes.html">📄 Notes</a>
+          <a class="btn btn-secondary" href="reproductive-questions.html">✏️ Questions</a>
+        </div>
+      </div>
 
-    <div class="card" id="dna">
+      <div class="card" id="dna" data-title="Forensic DNA Analysis">
+        <div class="card-top">
+          <div class="card-icon icon-emerald">🧪</div>
+          <span class="card-num">M-07</span>
+        </div>
         <h3>Forensic DNA Analysis</h3>
-        <a href="dna-notes.html">Notes</a>
-        <a href="dna-questions.html">Questions</a>
+        <p class="card-desc">PCR techniques, STR profiling, mitochondrial DNA, CODIS database, touch DNA, familial searching, and courtroom interpretation.</p>
+        <div class="card-actions">
+          <a class="btn btn-primary" href="dna-notes.html">📄 Notes</a>
+          <a class="btn btn-secondary" href="dna-questions.html">✏️ Questions</a>
+        </div>
+      </div>
+
     </div>
+  </div>
 
-</div>
-
-</div>
+</main>
 
 <script>
-function toggleTheme() {
-    document.body.classList.toggle("light");
-}
-</script>
+  let isDark = true;
 
+  function toggleTheme() {
+    isDark = !isDark;
+    document.body.classList.toggle('light', !isDark);
+    document.getElementById('theme-label').textContent = isDark ? 'Dark' : 'Light';
+  }
+
+  function toggleMenu() {
+    document.getElementById('sidebar').classList.toggle('active');
+    document.getElementById('overlay').classList.toggle('active');
+  }
+
+  function closeMenu() {
+    document.getElementById('sidebar').classList.remove('active');
+    document.getElementById('overlay').classList.remove('active');
+  }
+
+  function filterCards(query) {
+    const q = query.toLowerCase();
+    document.querySelectorAll('.card').forEach(card => {
+      const title = card.dataset.title?.toLowerCase() || '';
+      const desc = card.querySelector('.card-desc')?.textContent.toLowerCase() || '';
+      const visible = title.includes(q) || desc.includes(q);
+      card.style.display = visible ? '' : 'none';
+    });
+  }
+
+  // Keyboard shortcut: "/" to focus search
+  document.addEventListener('keydown', e => {
+    if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+      e.preventDefault();
+      document.getElementById('search-input').focus();
+    }
+    if (e.key === 'Escape') {
+      closeMenu();
+      document.getElementById('search-input').blur();
+    }
+  });
+</script>
 </body>
 </html>
