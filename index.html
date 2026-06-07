@@ -29,10 +29,39 @@ body {
     font-family: Arial, sans-serif;
     background: var(--bg);
     color: var(--text);
-    display: flex;
 }
 
-/* SIDEBAR */
+/* ===== TOP BAR (MOBILE MENU) ===== */
+.topbar {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--card);
+    padding: 10px;
+    z-index: 1000;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.menu-btn {
+    font-size: 22px;
+    background: none;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.toggle-btn {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    background: var(--accent);
+    color: white;
+}
+
+/* ===== SIDEBAR ===== */
 .sidebar {
     width: 250px;
     background: var(--card);
@@ -40,6 +69,7 @@ body {
     padding: 20px;
     position: fixed;
     overflow-y: auto;
+    transition: transform 0.3s ease;
 }
 
 .sidebar h2 {
@@ -60,32 +90,16 @@ body {
     color: white;
 }
 
-/* MAIN */
+/* ===== MAIN ===== */
 .main {
     margin-left: 270px;
     padding: 20px;
-    width: 100%;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.toggle-btn {
-    padding: 8px 12px;
-    cursor: pointer;
-    border: none;
-    border-radius: 6px;
-    background: var(--accent);
-    color: white;
-}
-
-/* CARDS */
+/* ===== GRID ===== */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 15px;
     margin-top: 20px;
 }
@@ -111,37 +125,63 @@ body {
     border-radius: 5px;
     text-decoration: none;
 }
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+
+    .topbar {
+        display: flex;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+        position: fixed;
+        z-index: 999;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .main {
+        margin-left: 0;
+        padding-top: 60px;
+    }
+}
 </style>
 </head>
 
 <body>
 
+<!-- TOP BAR (mobile) -->
+<div class="topbar">
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    <button class="toggle-btn" onclick="toggleTheme()">🌙</button>
+</div>
+
 <!-- SIDEBAR -->
-<div class="sidebar">
+<div class="sidebar" id="sidebar">
     <h2>☠ Forensic Guide</h2>
 
     <a href="#top">Dashboard</a>
 
     <h3>Modules</h3>
 
-    <a href="#m1">Intro & Trace Evidence</a>
-    <a href="#m2">Injuries & Autopsy</a>
-    <a href="#m3">Evidence & Sexual Offences</a>
-    <a href="#m4">Death Investigation</a>
-    <a href="#m5">Drowning & Paternity</a>
-    <a href="#m6">Reproductive Forensics</a>
-    <a href="#dna">DNA Analysis</a>
+    <a href="#m1" onclick="closeMenu()">Intro & Trace Evidence</a>
+    <a href="#m2" onclick="closeMenu()">Injuries & Autopsy</a>
+    <a href="#m3" onclick="closeMenu()">Evidence & Sexual Offences</a>
+    <a href="#m4" onclick="closeMenu()">Death Investigation</a>
+    <a href="#m5" onclick="closeMenu()">Drowning & Paternity</a>
+    <a href="#m6" onclick="closeMenu()">Reproductive Forensics</a>
+    <a href="#dna" onclick="closeMenu()">DNA Analysis</a>
 </div>
 
 <!-- MAIN -->
 <div class="main" id="top">
 
-<div class="header">
-    <h1>Forensic Medicine Study Dashboard</h1>
-    <button class="toggle-btn" onclick="toggleTheme()">🌙 Toggle Theme</button>
-</div>
+<h1>Forensic Medicine Study Dashboard</h1>
 
-<p>Everything you need for exam prep — organized and structured.</p>
+<p>Everything you need for exam prep — now mobile friendly.</p>
 
 <div class="grid">
 
@@ -193,6 +233,16 @@ body {
 <script>
 function toggleTheme() {
     document.body.classList.toggle("light");
+}
+
+function toggleMenu() {
+    document.getElementById("sidebar").classList.toggle("active");
+}
+
+function closeMenu() {
+    if (window.innerWidth <= 768) {
+        document.getElementById("sidebar").classList.remove("active");
+    }
 }
 </script>
 
